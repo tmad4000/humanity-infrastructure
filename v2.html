@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Humanity Infrastructure — Open Infrastructure for Human Flourishing</title>
+<meta name="description" content="We build the missing civilization layer. Open-source tools, knowledge systems, and coordination infrastructure — free for all of humanity." />
+<meta property="og:title" content="Humanity Infrastructure" />
+<meta property="og:description" content="Open infrastructure for human flourishing. We build the missing civilization layer." />
+<meta property="og:type" content="website" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,700;1,6..72,300;1,6..72,400&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg: #0b0e15;
+  --bg-2: #101520;
+  --bg-3: #161d2b;
+  --card: #131929;
+  --card-h: #192034;
+  --text: #e2e6ef;
+  --muted: #7e8ba3;
+  --faint: #434d63;
+  --a1: #e8b84b;   /* amber */
+  --a2: #5b9cf6;   /* blue */
+  --a3: #5fd3a8;   /* green */
+  --border: rgba(255,255,255,.07);
+  --border2: rgba(255,255,255,.13);
+  --max: 1100px;
+  --serif: 'Newsreader', Georgia, serif;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'IBM Plex Sans', -apple-system, sans-serif;
+}
+[data-theme="light"] {
+  --bg: #f5f4ef;
+  --bg-2: #eeede6;
+  --bg-3: #e7e5db;
+  --card: #ffffff;
+  --card-h: #f7f6f0;
+  --text: #131620;
+  --muted: #4a5370;
+  --faint: #9097ac;
+  --a1: #b8860b;
+  --a2: #2a5bc4;
+  --a3: #0a7a52;
+  --border: rgba(0,0,0,.09);
+  --border2: rgba(0,0,0,.17);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── Blueprint grid background ─────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(91,156,246,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(91,156,246,.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+[data-theme="light"] body::before {
+  background-image:
+    linear-gradient(rgba(42,91,196,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(42,91,196,.05) 1px, transparent 1px);
+}
+
+a { color: var(--a2); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 28px; position: relative; z-index: 1; }
+
+/* ── Nav ────────────────────────────────────────────────── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: saturate(180%) blur(14px);
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  border-bottom: 1px solid var(--border);
+}
+nav .wrap {
+  display: flex; align-items: center;
+  justify-content: space-between; height: 64px; gap: 16px;
+}
+.brand {
+  display: flex; align-items: center; gap: 12px;
+  font-family: var(--mono); font-size: .92rem;
+  font-weight: 600; color: var(--text); letter-spacing: .01em;
+}
+.brand-mark {
+  width: 34px; height: 34px;
+  background: var(--a1);
+  border-radius: 8px;
+  display: grid; place-items: center;
+  font-size: .9rem; flex: none;
+}
+.brand-name { line-height: 1.2; }
+.brand-name em { display: block; font-style: normal; font-size: .65rem; color: var(--muted); font-weight: 400; letter-spacing: .06em; text-transform: uppercase; }
+.nav-links { display: flex; gap: 24px; align-items: center; }
+.nav-links a { color: var(--muted); font-size: .88rem; font-weight: 500; font-family: var(--mono); transition: color .12s; }
+.nav-links a:hover { color: var(--text); text-decoration: none; }
+.theme-btn {
+  background: var(--card); border: 1px solid var(--border2);
+  color: var(--text); width: 36px; height: 36px; border-radius: 9px;
+  cursor: pointer; font-size: .95rem; display: grid; place-items: center;
+  transition: background .12s;
+}
+.theme-btn:hover { background: var(--card-h); }
+@media(max-width:700px) { .nav-links a:not(.cta) { display: none; } }
+
+/* ── Hero ───────────────────────────────────────────────── */
+header.hero {
+  padding: 100px 0 72px;
+  position: relative;
+  overflow: hidden;
+}
+header.hero::after {
+  content: '';
+  position: absolute;
+  top: -60px; right: -120px;
+  width: 700px; height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,184,75,.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: .72rem; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--a1);
+  border: 1px solid rgba(232,184,75,.25);
+  padding: 7px 14px; border-radius: 4px;
+  margin-bottom: 30px; background: rgba(232,184,75,.06);
+}
+.eyebrow::before {
+  content: ''; width: 6px; height: 6px;
+  background: var(--a1); border-radius: 50%;
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+h1 {
+  font-family: var(--serif); font-size: clamp(3rem,7vw,5.5rem);
+  font-weight: 300; line-height: 1.02; letter-spacing: -.02em;
+  margin: 0 0 28px; max-width: 840px;
+}
+h1 strong { font-weight: 700; color: var(--a1); }
+h1 em { font-style: italic; color: var(--text); }
+
+.lede {
+  font-size: clamp(1.05rem,2.2vw,1.3rem); color: var(--muted);
+  max-width: 680px; margin: 0 0 14px; line-height: 1.7;
+  font-family: var(--serif);
+}
+.sub {
+  font-family: var(--mono); font-size: .82rem; color: var(--faint);
+  margin: 0 0 40px;
+}
+.btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 13px 22px; border-radius: 6px; font-weight: 600;
+  font-size: .95rem; font-family: var(--mono); border: 1px solid transparent;
+  cursor: pointer; transition: transform .12s ease, box-shadow .12s ease;
+  text-decoration: none;
+}
+.btn:hover { transform: translateY(-2px); text-decoration: none; }
+.btn.primary {
+  background: var(--a1); color: #0b0e15;
+  box-shadow: 0 4px 20px rgba(232,184,75,.3);
+}
+.btn.primary:hover { box-shadow: 0 6px 28px rgba(232,184,75,.4); }
+.btn.ghost {
+  background: transparent; border-color: var(--border2); color: var(--text);
+}
+.btn.ghost:hover { background: var(--card); }
+
+/* ── Section chrome ─────────────────────────────────────── */
+section { padding: 72px 0; border-top: 1px solid var(--border); position: relative; z-index: 1; }
+.sect-label {
+  font-family: var(--mono); font-size: .68rem; font-weight: 600;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--a1); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+.sect-label::after {
+  content: ''; flex: 1; max-width: 60px; height: 1px; background: rgba(232,184,75,.3);
+}
+.sect-h {
+  font-family: var(--serif); font-size: clamp(1.8rem,3.8vw,2.8rem);
+  font-weight: 400; letter-spacing: -.02em; margin: 0 0 14px; line-height: 1.1;
+}
+.sect-h em { font-style: italic; color: var(--a1); }
+.sect-p { color: var(--muted); font-size: 1.02rem; max-width: 680px; margin: 0 0 44px; font-family: var(--serif); }
+
+/* ── Pillars ────────────────────────────────────────────── */
+.pillars { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.pillar {
+  background: var(--card); padding: 28px 26px;
+  transition: background .14s;
+}
+.pillar:hover { background: var(--card-h); }
+.pillar-num {
+  font-family: var(--mono); font-size: .68rem; color: var(--a1);
+  font-weight: 600; letter-spacing: .1em; margin-bottom: 16px;
+}
+.pillar h3 {
+  font-family: var(--serif); font-size: 1.15rem; font-weight: 400;
+  margin: 0 0 10px; line-height: 1.25;
+}
+.pillar p { color: var(--muted); font-size: .9rem; line-height: 1.6; }
+
+/* ── Tools grid ─────────────────────────────────────────── */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.tcard {
+  display: block; background: var(--card); padding: 24px;
+  transition: background .14s ease; position: relative;
+  text-decoration: none;
+}
+.tcard:hover { background: var(--card-h); text-decoration: none; }
+.tcard-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
+.tcard-icon {
+  width: 44px; height: 44px; border-radius: 10px;
+  background: var(--bg-2); display: grid; place-items: center;
+  font-size: 1.4rem; flex: none; border: 1px solid var(--border);
+}
+.tag {
+  font-family: var(--mono); font-size: .6rem; font-weight: 600;
+  letter-spacing: .07em; text-transform: uppercase;
+  padding: 4px 9px; border-radius: 4px;
+}
+.tag.live { background: rgba(95,211,168,.1); color: var(--a3); border: 1px solid rgba(95,211,168,.25); }
+.tag.build { background: rgba(232,184,75,.1); color: var(--a1); border: 1px solid rgba(232,184,75,.25); }
+.tag.idea { background: rgba(91,156,246,.1); color: var(--a2); border: 1px solid rgba(91,156,246,.25); }
+.tcard h3 { font-family: var(--serif); font-size: 1.12rem; font-weight: 400; color: var(--text); margin: 0 0 6px; }
+.tcard .url { font-family: var(--mono); font-size: .72rem; color: var(--a2); margin-bottom: 10px; display: block; }
+.tcard p { color: var(--muted); font-size: .88rem; line-height: 1.55; }
+
+/* ── Build list ─────────────────────────────────────────── */
+.filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+.chip {
+  background: var(--card); border: 1px solid var(--border2);
+  color: var(--muted); padding: 7px 16px; border-radius: 4px;
+  font-size: .8rem; font-weight: 600; font-family: var(--mono);
+  cursor: pointer; transition: all .12s ease;
+}
+.chip:hover { background: var(--card-h); color: var(--text); }
+.chip.active { background: var(--a1); color: #0b0e15; border-color: var(--a1); }
+.bcard {
+  background: var(--card); border-top: 1px solid var(--border);
+  padding: 18px 20px; display: flex; flex-direction: column;
+  gap: 6px; position: relative; transition: background .12s;
+}
+.bcard:hover { background: var(--card-h); }
+.bcard:first-child { border-radius: 8px 8px 0 0; border-top: none; }
+.bcard .cat { font-family: var(--mono); font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
+.bcard h3 { font-family: var(--serif); margin: 0; font-size: 1rem; font-weight: 400; padding-right: 80px; }
+.bcard p { margin: 0; color: var(--muted); font-size: .87rem; }
+.bcard .row { display: flex; align-items: center; gap: 14px; margin-top: 2px; }
+.bcard .claim { font-family: var(--mono); font-size: .78rem; font-weight: 600; color: var(--a3); }
+.bcard a.ext { font-family: var(--mono); font-size: .76rem; color: var(--faint); }
+.bcards-wrap { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.buildnote { margin-top: 24px; color: var(--faint); font-size: .88rem; text-align: center; font-family: var(--mono); }
+.claim-head { margin: 52px 0 20px; }
+.claim-head h3 {
+  font-family: var(--serif); font-size: 1.5rem; font-weight: 400;
+  margin: 0 0 8px; display: flex; align-items: center; gap: 12px;
+}
+.claim-head p { color: var(--muted); font-size: .95rem; font-family: var(--serif); }
+.livedot {
+  width: 9px; height: 9px; border-radius: 50%; background: #ef5f5f; display: inline-block;
+  box-shadow: 0 0 0 0 rgba(239,95,95,.5); animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(239,95,95,.5)} 70%{box-shadow:0 0 0 8px rgba(239,95,95,0)} 100%{box-shadow:0 0 0 0 rgba(239,95,95,0)} }
+.witloading { color: var(--faint); padding: 32px; text-align: center; font-family: var(--mono); font-size: .85rem; }
+
+/* ── Blockquote ─────────────────────────────────────────── */
+blockquote {
+  margin: 0; background: var(--card); border: 1px solid var(--border);
+  border-left: 3px solid var(--a1); border-radius: 0 10px 10px 0;
+  padding: 28px 32px;
+  font-family: var(--serif); font-size: 1.15rem; font-weight: 300;
+  color: var(--text); font-style: italic; line-height: 1.65;
+}
+blockquote cite {
+  display: block; margin-top: 16px; font-size: .88rem;
+  color: var(--faint); font-style: normal; font-family: var(--mono);
+}
+
+/* ── Resource links ─────────────────────────────────────── */
+.links-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.lcol { background: var(--card); padding: 22px; }
+.lcol h4 { font-family: var(--mono); font-size: .75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 14px; }
+.lcol ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+.lcol li a { color: var(--muted); font-size: .88rem; font-family: var(--serif); transition: color .12s; }
+.lcol li a:hover { color: var(--a2); }
+
+/* ── CTA band ───────────────────────────────────────────── */
+.cta-band {
+  border: 1px solid var(--border2); border-radius: 14px;
+  padding: 52px 48px; text-align: center;
+  background: linear-gradient(135deg, rgba(232,184,75,.06) 0%, rgba(91,156,246,.05) 100%);
+  position: relative; overflow: hidden;
+}
+.cta-band::before {
+  content: '';
+  position: absolute; bottom: -60px; right: -60px;
+  width: 300px; height: 300px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(91,156,246,.08) 0%, transparent 70%);
+}
+.cta-band h2 { font-family: var(--serif); font-size: clamp(1.6rem,3.5vw,2.4rem); font-weight: 300; margin: 0 0 14px; letter-spacing: -.02em; }
+.cta-band h2 strong { font-weight: 700; }
+.cta-band p { color: var(--muted); max-width: 600px; margin: 0 auto 30px; font-size: 1.02rem; font-family: var(--serif); }
+
+/* ── Footer ─────────────────────────────────────────────── */
+footer { padding: 48px 0 60px; border-top: 1px solid var(--border); }
+footer .wrap { display: flex; flex-direction: column; gap: 36px; }
+.footer-top { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+.footer-brand { display: flex; align-items: center; gap: 10px; }
+.footer-brand .brand-mark { width: 28px; height: 28px; font-size: .75rem; border-radius: 6px; }
+.footer-brand span { font-family: var(--mono); font-size: .88rem; color: var(--muted); }
+.footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+.footer-links a { font-family: var(--mono); font-size: .8rem; color: var(--faint); }
+.footer-links a:hover { color: var(--muted); }
+
+/* ── Humanity³ legacy section ───────────────────────────── */
+.legacy {
+  border-top: 1px solid var(--border);
+  padding: 28px 0 0; margin-top: 8px;
+}
+.legacy-inner {
+  display: flex; align-items: baseline; flex-wrap: wrap;
+  gap: 6px 20px; opacity: .55;
+}
+.legacy-label {
+  font-family: var(--mono); font-size: .68rem; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--faint);
+}
+.legacy-links { display: flex; flex-wrap: wrap; gap: 14px; }
+.legacy-links a { font-family: var(--mono); font-size: .75rem; color: var(--faint); }
+.legacy-links a:hover { color: var(--muted); opacity: 1; }
+
+/* ── Scroll entrance ────────────────────────────────────── */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity .5s ease, transform .5s ease; }
+.reveal.in { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <a class="brand" href="#top">
+    <div class="brand-mark">⚡</div>
+    <div class="brand-name">
+      Humanity Infrastructure
+      <em>Open Civilization Layer</em>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="#mission">Mission</a>
+    <a href="#tools">Tools</a>
+    <a href="#buildlist">Build List</a>
+    <a href="#vision">Resources</a>
+    <a href="#join">Join</a>
+    <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">☀️</button>
+  </div>
+</div></nav>
+
+<a id="top"></a>
+<header class="hero"><div class="wrap">
+  <div class="eyebrow">Infrastructure for Human Flourishing</div>
+  <h1>We build the missing<br/><em>civilization layer.</em></h1>
+  <p class="lede">Open-source tools, knowledge systems, and coordination infrastructure — free for all of humanity. The not-just-engineering equivalent of the open-source movement.</p>
+  <p class="sub">// knowledge as a birthright · tools that make people independent · coordinating as a superorganism</p>
+  <div class="btns">
+    <a class="btn primary" href="#tools">Explore the infrastructure →</a>
+    <a class="btn ghost" href="#mission">Read the mission</a>
+  </div>
+</div></header>
+
+<section id="mission"><div class="wrap">
+  <div class="sect-label">The Mission</div>
+  <h2 class="sect-h">Imagine it were everyone's birthright<br/>to access the <em>sum-total of human know-how.</em></h2>
+  <p class="sect-p">Humanity Infrastructure is a hub of knowledge resources and open-source tools — built to bring flourishing into every person's reach. We envision something most of the developed world eventually becomes part of, to a greater or lesser degree.</p>
+  <div class="pillars reveal">
+    <div class="pillar">
+      <div class="pillar-num">01 — Knowledge</div>
+      <h3>Knowledge as a public good</h3>
+      <p>Survival and thriving guides, medical know-how, open curricula, role-model casting, the craftsmanship of software. Shouldn't tools from 10 years ago be free by now?</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">02 — Tools</div>
+      <h3>Tools that make people independent</h3>
+      <p>Open reputation systems, collective-action infrastructure, personal-leverage automation, assistive tech. Hacked-together infrastructure that helps people help themselves.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">03 — Coordination</div>
+      <h3>Coordinate as a superorganism</h3>
+      <p>Guilds taking on epic quests. Global sense-making. Volunteerism and philanthropy for everyone — ways to pitch in on the problems that matter, together.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">04 — Flourishing</div>
+      <h3>Flourishing in reach for all</h3>
+      <p>From "how to thrive as a highly sensitive person on a budget" to "how to rebuild society from scratch." Compassionate, practical, and free.</p>
+    </div>
+  </div>
+</div></section>
+
+<section id="tools"><div class="wrap">
+  <div class="sect-label">Working Infrastructure</div>
+  <h2 class="sect-h">Pieces that <em>already exist.</em></h2>
+  <p class="sect-p">Free and open. Use them today — and help build the rest.</p>
+  <div class="grid reveal">
+    <a class="tcard" href="https://nvctranslator.com" target="_blank" rel="noopener">
+      <div class="tcard-top"><div class="tcard-icon">🕊️</div><span class="tag live">Live</span></div>
+      <h3>NVC Translator</h3>
+      <span class="url">nvctranslator.com</span>
+      <p>Translate any text into Marshall Rosenberg's Nonviolent Communication. How can AI make us more compassionate?</p>
+    </a>
+    <a class="tcard" href="https://globalbr.ai" target="_blank" rel="noopener">
+      <div class="tcard-top"><div class="tcard-icon">🧠</div><span class="tag live">Live</span></div>
+      <h3>Noos</h3>
+      <span class="url">globalbr.ai</span>
+      <p>A universal knowledge graph — the "codex" backend. Capture, connect, and query human know-how with per-node privacy.</p>
+    </a>
+    <a class="tcard" href="https://wikihub.md" target="_blank" rel="noopener">
+      <div class="tcard-top"><div class="tcard-icon">📚</div><span class="tag live">Live</span></div>
+      <h3>WikiHub</h3>
+      <span class="url">wikihub.md</span>
+      <p>GitHub for LLM wikis. Hosting for open, agent-native markdown knowledge bases — forkable, shareable, version-controlled.</p>
+    </a>
+    <a class="tcard" href="https://listhub.globalbr.ai" target="_blank" rel="noopener">
+      <div class="tcard-top"><div class="tcard-icon">📝</div><span class="tag live">Live</span></div>
+      <h3>ListHub</h3>
+      <span class="url">listhub.globalbr.ai</span>
+      <p>Open list & note publishing with a REST API and two-way git sync. Home of the open-lists movement.</p>
+    </a>
+    <a class="tcard" href="https://worldissuetracker.com" target="_blank" rel="noopener">
+      <div class="tcard-top"><div class="tcard-icon">🌐</div><span class="tag live">Live</span></div>
+      <h3>World Issue Tracker</h3>
+      <span class="url">worldissuetracker.com</span>
+      <p>A public issue tracker for civic and shared problems — a bottom-up list of what's broken, and who's fixing it.</p>
+    </a>
+    <a class="tcard" href="https://tmad4000.github.io/brainstorms/" target="_blank" rel="noopener">
+      <div class="tcard-top"><div class="tcard-icon">💡</div><span class="tag live">Live</span></div>
+      <h3>Idea List</h3>
+      <span class="url">tmad4000.github.io/brainstorms</span>
+      <p>An open idea bank — projects, hackathon ideas, and easily-solvable world problems, free for anyone to take and build.</p>
+    </a>
+    <a class="tcard" href="https://github.com/tmad4000/claude-mind" target="_blank" rel="noopener">
+      <div class="tcard-top"><div class="tcard-icon">🔬</div><span class="tag live">Live</span></div>
+      <h3>Claude Mind</h3>
+      <span class="url">github.com/tmad4000/claude-mind</span>
+      <p>Collaborative AI–human exploration of open problems — guilds working the quests, Polymath-style.</p>
+    </a>
+    <a class="tcard" href="https://github.com/tmad4000/vibe-coding-guide" target="_blank" rel="noopener">
+      <div class="tcard-top"><div class="tcard-icon">⚡</div><span class="tag live">Live</span></div>
+      <h3>Vibe Coding Guide</h3>
+      <span class="url">github.com/tmad4000/vibe-coding-guide</span>
+      <p>Open guide to AI-assisted coding — making the craftsmanship of software buildable by everyone.</p>
+    </a>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <blockquote class="reveal">
+    "We need these tools, all of them, and to be honest with you, they need to be in the hands of everybody… When humans come into guilds to do epic quests, they're problem-solving, they're inventing a solution. That's how this planet's going to get fixed."
+    <cite>— Jack Park, on guilds &amp; global sense-making</cite>
+  </blockquote>
+</div></section>
+
+<section id="buildlist"><div class="wrap">
+  <div class="sect-label">The Open Build List</div>
+  <h2 class="sect-h">What still needs to <em>be built.</em></h2>
+  <p class="sect-p">The infrastructure for human flourishing is mostly <em>not built yet.</em> Below is the running list — ideas, works-in-progress, and what's done. See one you want to build? <strong>Claim it.</strong></p>
+  <div class="filters" id="filters">
+    <button class="chip active" data-f="all">All</button>
+    <button class="chip" data-f="idea">💡 Ideas</button>
+    <button class="chip" data-f="building">🔨 In progress</button>
+    <button class="chip" data-f="done">✅ Done</button>
+  </div>
+  <div class="bcards-wrap">
+    <div id="buildgrid"></div>
+  </div>
+  <p class="buildnote">This list is open. Add an idea or claim one on the <a href="https://missing-civ-infrastructure.worldissuetracker.com/" target="_blank" rel="noopener">Missing Civilization Infrastructure</a> board — or email <a href="mailto:jacobcole4000@gmail.com">jacobcole4000@gmail.com</a>.</p>
+
+  <div class="claim-head reveal">
+    <h3><span class="livedot"></span> &nbsp;Claim a quest — live from the tracker</h3>
+    <p>These ideas are filed as real, public issues on the <a href="https://missing-civ-infrastructure.worldissuetracker.com/" target="_blank" rel="noopener">World Issue Tracker</a>. Vote, discuss, or claim one to build — updates in real time.</p>
+  </div>
+  <div class="bcards-wrap" style="margin-top:16px">
+    <div id="witgrid"><div class="witloading">Loading open quests from the tracker…</div></div>
+  </div>
+</div></section>
+
+<section id="vision"><div class="wrap">
+  <div class="sect-label">The Living Document</div>
+  <h2 class="sect-h">The full vision — and <em>where to add to it.</em></h2>
+  <p class="sect-p">Humanity Infrastructure is an open, growing project. These are the canonical sources. Add yourself, add a project, add a resource.</p>
+  <div class="links-cols reveal">
+    <div class="lcol">
+      <h4>📜 Read the source</h4>
+      <ul>
+        <li><a href="https://www.notion.so/jacobblog/Humanity-3-0-and-Dharmic-blueprint-314fda9cff6380bfae57ff843cce32dd" target="_blank" rel="noopener">Humanity 3.0 &amp; the Dharmic blueprint</a></li>
+        <li><a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" target="_blank" rel="noopener">The Codex — master doc (Google Docs)</a></li>
+        <li><a href="https://plausible-text-76b.notion.site/Cody-s-Healing-List-v4-b05b097d529c4c54b5d62f87f55b1f6f" target="_blank" rel="noopener">Healing Resources — "Cody Codex"</a></li>
+        <li><a href="http://worldquestguild.connectordocs.com/" target="_blank" rel="noopener">World Quest Guild — add yourself</a></li>
+      </ul>
+    </div>
+    <div class="lcol">
+      <h4>🧭 Movements within</h4>
+      <ul>
+        <li><a href="http://opensource.jacobcole.net" target="_blank" rel="noopener">Open Source dashboard</a></li>
+        <li><a href="http://openlists.jacobcole.net" target="_blank" rel="noopener">Open Lists movement</a></li>
+        <li><a href="http://fixingtheinternet.jacobcole.net/" target="_blank" rel="noopener">Fixing the Internet</a></li>
+        <li><a href="http://favorverse.jacobcole.net/" target="_blank" rel="noopener">Favorverse — volunteerism</a></li>
+        <li><a href="http://thunderpledge.jacobcole.net" target="_blank" rel="noopener">ThunderPledge — collective action</a></li>
+      </ul>
+    </div>
+    <div class="lcol">
+      <h4>🌿 Knowledge &amp; flourishing</h4>
+      <ul>
+        <li><a href="http://meditation.jacobcole.net/" target="_blank" rel="noopener">Open meditation curricula</a></li>
+        <li><a href="http://chronicpain.jacobcole.net/" target="_blank" rel="noopener">Treating chronic pain</a></li>
+        <li><a href="http://foodslist.jacobcole.net/" target="_blank" rel="noopener">How to eat well</a></li>
+        <li><a href="http://supplements.jacobcole.net/" target="_blank" rel="noopener">Supplement stacks</a></li>
+        <li><a href="http://bodymasters.jacobcole.net" target="_blank" rel="noopener">Body Masters</a></li>
+        <li><a href="http://education.jacobcole.net" target="_blank" rel="noopener">Education resources</a></li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<section id="join"><div class="wrap">
+  <div class="cta-band reveal">
+    <h2>Help us build the <strong>missing infrastructure.</strong></h2>
+    <p>This project is open to contributors, builders, and anyone who believes the tools for flourishing should be free. Pick a quest, claim an idea, or just use the tools and tell others.</p>
+    <div class="btns" style="justify-content:center">
+      <a class="btn primary" href="https://missing-civ-infrastructure.worldissuetracker.com/" target="_blank" rel="noopener">Browse open quests →</a>
+      <a class="btn ghost" href="mailto:jacobcole4000@gmail.com">Get in touch</a>
+    </div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="brand-mark">⚡</div>
+      <span>Humanity Infrastructure</span>
+    </div>
+    <div class="footer-links">
+      <a href="#mission">Mission</a>
+      <a href="#tools">Tools</a>
+      <a href="#buildlist">Build List</a>
+      <a href="#vision">Resources</a>
+      <a href="#join">Join</a>
+      <a href="mailto:jacobcole4000@gmail.com">Contact</a>
+    </div>
+  </div>
+
+  <!-- Humanity³ legacy links — subtle -->
+  <div class="legacy">
+    <div class="legacy-inner" style="flex-direction:column;gap:12px;align-items:flex-start;">
+      <div style="display:flex;flex-wrap:wrap;gap:6px 20px;align-items:baseline;">
+        <span class="legacy-label">Design versions →</span>
+        <div class="legacy-links">
+          <a href="/v2">v2 — Dark / Blueprint (current)</a>
+          <a href="/">v1 — Editorial / Red</a>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px 20px;align-items:baseline;">
+        <span class="legacy-label">Previously at humanity3.earth →</span>
+        <div class="legacy-links">
+          <a href="https://humanity3.earth" target="_blank" rel="noopener">humanity3.earth</a>
+          <a href="https://humanity3.earth#manifesto" target="_blank" rel="noopener">The Codex</a>
+          <a href="https://humanity3.earth#tools" target="_blank" rel="noopener">Tools</a>
+          <a href="https://humanity3.earth#buildlist" target="_blank" rel="noopener">Build List</a>
+          <a href="https://humanity3.earth#vision" target="_blank" rel="noopener">Vision</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></footer>
+
+<script>
+/* ── Theme toggle ── */
+const themeBtn = document.getElementById('themeBtn');
+const stored = localStorage.getItem('hi-theme');
+if (stored) { document.documentElement.setAttribute('data-theme', stored); themeBtn.textContent = stored === 'light' ? '🌙' : '☀️'; }
+themeBtn.addEventListener('click', () => {
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  themeBtn.textContent = next === 'light' ? '🌙' : '☀️';
+  localStorage.setItem('hi-theme', next);
+});
+
+/* ── Scroll reveal ── */
+const observer = new IntersectionObserver(els => {
+  els.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); observer.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* ── Build list data ── */
+const BUILD_ITEMS = [
+  { cat:'knowledge', title:'Universal survival guide', desc:'From food & shelter to emotional regulation — the knowledge every human needs, in every language.', status:'idea' },
+  { cat:'coordination', title:'Open reputation system', desc:'Portable, cross-platform reputation that travels with you — not locked to one silo.', status:'idea' },
+  { cat:'health', title:'Open chronic-pain protocol', desc:'Aggregated evidence-based treatments for common chronic conditions, freely editable.', status:'building', url:'http://chronicpain.jacobcole.net/' },
+  { cat:'coordination', title:'Volunteerism marketplace', desc:'Match people who want to help with tasks that need doing — a Craigslist for good deeds.', status:'idea' },
+  { cat:'knowledge', title:'Open meditation curricula', desc:'Secular, evidence-based meditation courses — from beginner to advanced, free forever.', status:'done', url:'http://meditation.jacobcole.net/' },
+  { cat:'tools', title:'Collective action toolkit', desc:'Lower the barrier to coordinating groups around shared goals — pledges, commitments, accountability.', status:'building', url:'http://thunderpledge.jacobcole.net' },
+  { cat:'knowledge', title:'How to eat well (open guide)', desc:'Evidence-based nutrition guide with community editing and regional adaptations.', status:'done', url:'http://foodslist.jacobcole.net/' },
+  { cat:'tools', title:'Personal knowledge graph for everyone', desc:'Noos but for non-technical users — a simple interface for connected notes and learning.', status:'building', url:'https://globalbr.ai' },
+  { cat:'coordination', title:'Open skill-matching', desc:'Connect people who need help with people who have the skill — like LinkedIn but free and open.', status:'idea' },
+  { cat:'tools', title:'NVC Translator for teams', desc:'Extend NVC Translator to async team contexts — Slack/email de-escalation at scale.', status:'idea' },
+];
+
+let activeFilter = 'all';
+const filterMap = { idea:['idea'], building:['building'], done:['done'] };
+
+function renderBuildList() {
+  const grid = document.getElementById('buildgrid');
+  const items = activeFilter === 'all' ? BUILD_ITEMS : BUILD_ITEMS.filter(i => (filterMap[activeFilter]||[]).includes(i.status));
+  if (!items.length) { grid.innerHTML = '<div class="witloading">No items in this category yet.</div>'; return; }
+  grid.innerHTML = items.map(item => `
+    <div class="bcard" data-status="${item.status}">
+      <div class="cat">${item.cat}</div>
+      <h3>${item.title}</h3>
+      ${item.desc ? `<p>${item.desc}</p>` : ''}
+      <div class="row">
+        <span class="claim">${item.status === 'done' ? '✅ Done' : item.status === 'building' ? '🔨 In progress' : '→ Available to claim'}</span>
+        ${item.url ? `<a class="ext" href="${item.url}" target="_blank" rel="noopener">↗ See it</a>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+document.getElementById('filters').addEventListener('click', e => {
+  const chip = e.target.closest('.chip');
+  if (!chip) return;
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  activeFilter = chip.dataset.f;
+  renderBuildList();
+});
+
+renderBuildList();
+
+/* ── Live WIT issues ── */
+async function loadWIT() {
+  const grid = document.getElementById('witgrid');
+  try {
+    const res = await fetch('https://api.worldissuetracker.com/api/v1/issues?tracker=missing-civ-infrastructure&status=open&limit=6');
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+    const issues = data.issues || data.data || data || [];
+    if (!issues.length) { grid.innerHTML = '<div class="witloading">No open quests right now — check back soon.</div>'; return; }
+    grid.innerHTML = issues.map(i => `
+      <div class="bcard">
+        <div class="cat">Open quest · #${i.id || i.number || ''}</div>
+        <h3>${i.title}</h3>
+        ${i.description ? `<p>${i.description.slice(0,180)}${i.description.length>180?'…':''}</p>` : ''}
+        <div class="row">
+          <span class="claim">→ Available to claim</span>
+          <a class="ext" href="${i.url||'https://missing-civ-infrastructure.worldissuetracker.com/'}" target="_blank" rel="noopener">↗ View on WIT</a>
+        </div>
+      </div>`).join('');
+  } catch {
+    grid.innerHTML = '<div class="witloading">Could not load live quests — <a href="https://missing-civ-infrastructure.worldissuetracker.com/" target="_blank" rel="noopener">view them on the tracker ↗</a></div>';
+  }
+}
+loadWIT();
+</script>
+</body>
+</html>
