@@ -5,7 +5,6 @@ addEventListener('fetch', event => {
 async function handleRequest(request) {
   const url = new URL(request.url)
   const path = url.pathname
-
   if (path === '/v2' || path.startsWith('/v2/')) {
     return new Response(V2_HTML, { headers: { 'Content-Type': 'text/html;charset=UTF-8' } })
   }
@@ -187,7 +186,7 @@ const MAIN_HTML = `<!DOCTYPE html>
   <p class="sub">“Building tools for the well-intended.” This is how we coordinate as a superorganism.</p>
   <div class="btns">
     <a class="btn primary" href="#tools">Explore the tools →</a>
-    <a class="btn ghost" href="#manifesto">Read the manifesto</a>
+    <a class="btn ghost" href="/contribute">Find your contribution →</a>
   </div>
 </div></header>
 
