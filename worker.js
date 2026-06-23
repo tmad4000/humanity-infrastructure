@@ -163,6 +163,45 @@ const MAIN_HTML = `<!DOCTYPE html>
   footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:18px;align-items:center}
   footer a{color:var(--muted)}
   .ver{font-variant-numeric:tabular-nums;opacity:.7}
+
+  /* Contribute modal */
+  .modal-overlay{display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);overflow-y:auto;padding:24px 16px}
+  .modal-overlay.open{display:flex;align-items:flex-start;justify-content:center}
+  .modal-box{background:var(--bg-soft);border:1px solid var(--border-strong);border-radius:16px;width:100%;max-width:640px;margin:auto;padding:32px;position:relative;box-shadow:0 24px 80px rgba(0,0,0,.7)}
+  .modal-close{position:absolute;top:16px;right:16px;background:var(--card);border:1px solid var(--border-strong);color:var(--text);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:1.1rem;display:grid;place-items:center;line-height:1}
+  .modal-close:hover{background:var(--card-hover)}
+  .modal-eyebrow{font-family:-apple-system,BlinkMacSystemFont,monospace;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;font-weight:600}
+  .modal-title{font-size:1.55rem;font-weight:600;letter-spacing:-.02em;margin-bottom:6px}
+  .modal-sub{color:var(--muted);font-size:.92rem;margin-bottom:24px;line-height:1.5}
+  .m-field{margin-bottom:16px}
+  .m-field label{display:block;font-size:.8rem;color:var(--muted);font-family:monospace;margin-bottom:6px;letter-spacing:.04em}
+  .m-field label span{color:var(--faint)}
+  .m-field input,.m-field textarea{width:100%;background:var(--card);border:1px solid var(--border-strong);border-radius:8px;color:var(--text);font-family:inherit;font-size:.93rem;padding:10px 14px;outline:none;transition:border-color .15s}
+  .m-field input:focus,.m-field textarea:focus{border-color:var(--accent-2)}
+  .m-field input::placeholder,.m-field textarea::placeholder{color:var(--faint)}
+  .m-field textarea{resize:vertical;min-height:80px;line-height:1.5}
+  .m-submit{display:block;width:100%;padding:13px;background:linear-gradient(110deg,var(--accent),var(--accent-2));color:#06120d;font-family:inherit;font-size:.9rem;font-weight:700;border:none;border-radius:8px;cursor:pointer;letter-spacing:.03em;transition:opacity .15s;margin-top:4px}
+  .m-submit:hover{opacity:.9}
+  .m-submit:disabled{opacity:.38;cursor:not-allowed}
+  .m-status{font-family:monospace;font-size:.78rem;color:var(--muted);margin-top:12px;text-align:center;min-height:18px}
+  .m-results{margin-top:24px;display:none}
+  .m-results.show{display:block}
+  .m-profile{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:18px}
+  .m-profile-name{font-size:1.1rem;font-weight:600;margin-bottom:2px}
+  .m-profile-role{font-size:.75rem;color:var(--accent-warm);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-family:monospace}
+  .m-profile-bio{color:var(--muted);font-size:.88rem;line-height:1.6}
+  .m-match{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:10px;transition:border-color .15s}
+  .m-match:hover{border-color:var(--border-strong)}
+  .m-match-name{font-size:.85rem;font-weight:600;color:var(--accent-2);margin-bottom:4px}
+  .m-match-fit{font-size:.87rem;color:var(--text);margin-bottom:8px;line-height:1.5}
+  .m-match-quest{font-size:.78rem;color:var(--accent);border-left:2px solid var(--accent);padding-left:10px;line-height:1.45}
+  .m-match-link{display:inline-block;margin-top:8px;font-family:monospace;font-size:.72rem;color:var(--faint)}
+  .m-save-row{margin-top:20px;padding-top:18px;border-top:1px solid var(--border);display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .m-save-btn{padding:9px 20px;background:transparent;border:1px solid var(--accent-2);color:var(--accent-2);font-family:inherit;font-size:.8rem;font-weight:600;border-radius:8px;cursor:pointer;transition:all .15s;white-space:nowrap}
+  .m-save-btn:hover{background:var(--accent-2);color:var(--bg)}
+  .m-save-note{font-size:.78rem;color:var(--faint);flex:1}
+  .m-save-ok{font-family:monospace;font-size:.78rem;color:var(--accent);display:none}
+  .m-save-ok.show{display:block}
 </style>
 </head>
 <body>
@@ -186,7 +225,7 @@ const MAIN_HTML = `<!DOCTYPE html>
   <p class="sub">“Building tools for the well-intended.” This is how we coordinate as a superorganism.</p>
   <div class="btns">
     <a class="btn primary" href="#tools">Explore the tools →</a>
-    <a class="btn ghost" href="/contribute">Find your contribution →</a>
+    <button class="btn ghost" onclick="openContribute()" style="cursor:pointer;font-size:inherit">Find your contribution →</button>
   </div>
 </div></header>
 
@@ -353,6 +392,43 @@ const MAIN_HTML = `<!DOCTYPE html>
   </div>
 </footer>
 
+<!-- Contribute modal -->
+<div class="modal-overlay" id="contributeModal" onclick="closeContributeIfBg(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeContribute()" aria-label="Close">✕</button>
+    <div class="modal-eyebrow">Find your quest</div>
+    <div class="modal-title">How can you contribute?</div>
+    <div class="modal-sub">Share a bit about yourself and we'll match you to the open infrastructure projects where you'd have the most impact.</div>
+    <div class="m-field">
+      <label for="m-twitter">X / Twitter handle <span>(optional)</span></label>
+      <input id="m-twitter" type="text" placeholder="@handle or x.com/handle"/>
+    </div>
+    <div class="m-field">
+      <label for="m-linkedin">LinkedIn URL <span>(optional)</span></label>
+      <input id="m-linkedin" type="url" placeholder="linkedin.com/in/yourname"/>
+    </div>
+    <div class="m-field">
+      <label for="m-homepage">Personal website or portfolio <span>(optional)</span></label>
+      <input id="m-homepage" type="url" placeholder="https://yoursite.com"/>
+    </div>
+    <div class="m-field">
+      <label for="m-about">About you <span>(work, interests, what you want to build)</span></label>
+      <textarea id="m-about" placeholder="e.g. I'm a therapist who's been thinking about AI and nonviolent communication…"></textarea>
+    </div>
+    <button class="m-submit" id="m-analyzeBtn" onclick="mRunAnalysis()">Find my contribution →</button>
+    <div class="m-status" id="m-status"></div>
+    <div class="m-results" id="m-results">
+      <div class="m-profile" id="m-profile"></div>
+      <div id="m-matches"></div>
+      <div class="m-save-row">
+        <button class="m-save-btn" id="m-saveBtn" onclick="mSave()">Save to World Issue Tracker →</button>
+        <span class="m-save-note">Creates a public profile in the HI Contributors tracker</span>
+        <span class="m-save-ok" id="m-saveOk"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   // ---- Open Build List data (lifted from the Codex master doc) ----
   var BUILD=[
@@ -487,6 +563,79 @@ const MAIN_HTML = `<!DOCTYPE html>
       sync();
     });
   })();
+
+  // ---- Contribute modal ----
+  var mResult = null;
+  function openContribute(){
+    document.getElementById('contributeModal').classList.add('open');
+    document.body.style.overflow='hidden';
+  }
+  function closeContribute(){
+    document.getElementById('contributeModal').classList.remove('open');
+    document.body.style.overflow='';
+  }
+  function closeContributeIfBg(e){
+    if(e.target===document.getElementById('contributeModal')) closeContribute();
+  }
+  document.addEventListener('keydown',function(e){if(e.key==='Escape') closeContribute();});
+
+  async function mRunAnalysis(){
+    var btn=document.getElementById('m-analyzeBtn');
+    var status=document.getElementById('m-status');
+    var results=document.getElementById('m-results');
+    var twitter=document.getElementById('m-twitter').value.trim();
+    var linkedin=document.getElementById('m-linkedin').value.trim();
+    var homepage=document.getElementById('m-homepage').value.trim();
+    var about=document.getElementById('m-about').value.trim();
+    if(!twitter&&!linkedin&&!homepage&&!about){status.textContent='Please fill in at least one field.';return;}
+    btn.disabled=true;
+    status.textContent='Gathering your profile data…';
+    results.classList.remove('show');
+    try{
+      var res=await fetch('/contribute/analyze',{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({twitter_handle:twitter,linkedin_url:linkedin,homepage_url:homepage,about_text:about})
+      });
+      var data=await res.json();
+      if(data.error){status.textContent='⚠ '+data.error;btn.disabled=false;return;}
+      mResult=data;
+      mRenderResults(data);
+      status.textContent=data.sources&&data.sources.length?'Analyzed from: '+data.sources.join(', '):'';
+      results.classList.add('show');
+    }catch(e){status.textContent='Something went wrong. Try again?';}
+    btn.disabled=false;
+  }
+
+  function mRenderResults(data){
+    document.getElementById('m-profile').innerHTML=
+      '<div class="m-profile-name">'+(data.name||'You')+'</div>'
+      +'<div class="m-profile-role">'+(data.top_role||'')+'</div>'
+      +'<div class="m-profile-bio">'+(data.summary||'')+'</div>';
+    document.getElementById('m-matches').innerHTML=(data.matches||[]).map(function(m){
+      return '<div class="m-match">'
+        +'<div class="m-match-name">'+m.project+'</div>'
+        +'<div class="m-match-fit">'+m.fit+'</div>'
+        +'<div class="m-match-quest">Quest: '+m.quest+'</div>'
+        +'<a class="m-match-link" href="'+m.url+'" target="_blank" rel="noopener">'+m.url+' ↗</a>'
+        +'</div>';
+    }).join('');
+  }
+
+  async function mSave(){
+    var btn=document.getElementById('m-saveBtn');
+    var ok=document.getElementById('m-saveOk');
+    if(!mResult) return;
+    btn.disabled=true; btn.textContent='Saving…';
+    try{
+      var res=await fetch('/contribute/save',{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(Object.assign({},mResult,{handle:document.getElementById('m-twitter').value.trim()||document.getElementById('m-linkedin').value.trim()}))
+      });
+      var data=await res.json();
+      if(data.success){btn.style.display='none';ok.textContent='✓ Saved! View at worldissuetracker.com/tracker/hi-contributors';ok.classList.add('show');}
+      else{btn.textContent='Save failed — try again';btn.disabled=false;}
+    }catch(e){btn.textContent='Save failed — try again';btn.disabled=false;}
+  }
 </script>
 </body>
 </html>
