@@ -4,6 +4,10 @@
 
 Open infrastructure for human flourishing — knowledge, tools, and coordination systems for everyone.
 
+## Suggest a resource or contribute
+
+[Suggest a resource](https://github.com/tmad4000/humanity-infrastructure/issues/new?template=suggest-resource.yml) · [Pull request guide](CONTRIBUTING.md) · [Email a suggestion](mailto:jacob@ideaflow.io)
+
 ## Design versions
 
 | URL | File | Description |
@@ -26,7 +30,7 @@ curl -s -X PUT \
   --data-binary @worker.js
 ```
 
-Or run `./deploy.sh` (requires `CF_API_KEY` env var or uses the key from `~/.config/cloudflare.env`).
+Or run `./deploy.sh` (requires `CF_API_KEY` env var or uses the key from `~/.config/cloudflare/global-api-key`).
 
 ## Origin
 
