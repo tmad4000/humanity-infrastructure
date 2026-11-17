@@ -1,0 +1,36 @@
+name: Suggest a resource
+description: Recommend a tool, guide, knowledge resource or project to feature.
+title: "[Resource] "
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Resource name
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: Official link
+      placeholder: https://example.org
+    validations:
+      required: true
+  - type: textarea
+    id: benefit
+    attributes:
+      label: What does it do, and who does it help?
+      description: A short, factual description and why it belongs in Humanity Infrastructure.
+    validations:
+      required: true
+  - type: textarea
+    id: access
+    attributes:
+      label: Access, license and limitations
+      description: Is it free or open source? Note costs, availability, platform or regional limits.
+    validations:
+      required: true
+  - type: textarea
+    id: affiliation
+    attributes:
+      label: Your affiliation (if any)
+      description: Creators and contributors are welcome; please disclose your relationship.

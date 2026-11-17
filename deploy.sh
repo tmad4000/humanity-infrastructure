@@ -45,9 +45,10 @@ print(f"worker.js rebuilt: {len(worker)} bytes")
 PYEOF
 
 # Deploy
-CF_API_KEY="${CF_API_KEY:-$(grep CF_API_KEY ~/.config/cloudflare.env 2>/dev/null | cut -d= -f2)}"
+CF_API_KEY="${CF_API_KEY:-$(cat "$HOME/.config/cloudflare/global-api-key" 2>/dev/null)}"
 if [ -z "$CF_API_KEY" ]; then
-  CF_API_KEY="8ad55c49e86f4b6d923c4e191a459be7e03b8"
+  echo "Set CF_API_KEY or provide ~/.config/cloudflare/global-api-key" >&2
+  exit 1
 fi
 
 curl -s -X PUT \

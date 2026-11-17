@@ -212,6 +212,7 @@ const MAIN_HTML = `<!DOCTYPE html>
     <a href="#tools">Tools</a>
     <a href="#buildlist">Build List</a>
     <a href="#vision">The Vision</a>
+    <a href="#submit">Submit a resource</a>
     <a href="#join">Join</a>
     <button class="theme-btn" id="themeBtn" title="Toggle light/dark" aria-label="Toggle theme">☀️</button>
   </div>
@@ -247,9 +248,14 @@ const MAIN_HTML = `<!DOCTYPE html>
   <div class="section-head">
     <div class="kicker">Working Tools</div>
     <h2>Pieces of the infrastructure that already exist</h2>
-    <p>Free and open. Use them today — and help build the rest.</p>
+    <p>Free and open. Use them today — and help build the rest. <a href="#submit">Suggest a resource →</a></p>
   </div>
   <div class="grid">
+    <a id="lastbook" class="card" href="https://lastbook.org" target="_blank" rel="noopener">
+      <span class="tag live">Featured</span>
+      <div class="top"><span class="emoji">📖</span><div><h3>Lastbook</h3><div class="url">lastbook.org</div></div></div>
+      <p>A free, open-source offline library of practical manuals, videos and maps, with optional local AI. Knowledge for preparedness and rebuilding, available after setup without an internet connection.</p>
+    </a>
     <a class="card" href="https://nvctranslator.com" target="_blank" rel="noopener">
       <span class="tag live">Live</span>
       <div class="top"><span class="emoji">🕊️</span><div><h3>NVC Translator</h3><div class="url">nvctranslator.com</div></div></div>
@@ -361,6 +367,18 @@ const MAIN_HTML = `<!DOCTYPE html>
   </div>
 </div></section>
 
+<section id="submit"><div class="wrap">
+  <h2>What else should be featured?</h2>
+  <p>Help grow Humanity Infrastructure. Suggest useful tools, open knowledge, practical guides or projects that help people flourish. You do not need to be a developer.</p>
+  <p>Send the name, link, a short description and who it helps. Include access or licensing details and any affiliation. We review suggestions before featuring them.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:12px;margin:24px 0">
+    <a class="btn primary" href="https://github.com/tmad4000/humanity-infrastructure/issues/new?template=suggest-resource.yml">Suggest a resource on GitHub →</a>
+    <a class="btn ghost" href="mailto:jacob@ideaflow.io?subject=Humanity%20Infrastructure%20resource%20suggestion&amp;body=Name%3A%0ALink%3A%0AWho%20it%20helps%3A%0AAccess%20or%20license%3A%0AMy%20affiliation%3A">Suggest by email</a>
+    <a class="btn ghost" href="https://github.com/tmad4000/humanity-infrastructure/blob/main/CONTRIBUTING.md">Contribute a pull request →</a>
+  </div>
+  <p><a href="https://github.com/tmad4000/humanity-infrastructure">Browse the website source on GitHub</a> · <a href="https://worldissuetracker.com/tracker/lastbook">Lastbook community feedback and fixes</a></p>
+</div></section>
+
 <section id="join"><div class="wrap">
   <div class="cta-band">
     <h2>If you're not part of this, what are you doing with your life?</h2>
@@ -380,7 +398,7 @@ const MAIN_HTML = `<!DOCTYPE html>
   <div style="text-align:right">
     <a href="https://www.notion.so/jacobblog/Humanity-3-0-and-Dharmic-blueprint-314fda9cff6380bfae57ff843cce32dd" target="_blank" rel="noopener">Blueprint (Notion)</a> ·
     <a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" target="_blank" rel="noopener">Master doc</a><br/>
-    <span class="ver">v0.3.0 · 2026-06-13</span>
+    <span class="ver">v0.4.0 · 2026-11-17</span>
   </div>
 </div>
   <!-- Design versions + legacy -->
@@ -1012,6 +1030,7 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
     <a href="#tools">Tools</a>
     <a href="#buildlist">Build List</a>
     <a href="#vision">Resources</a>
+    <a href="#submit">Submit a resource</a>
     <a href="#join">Join</a>
     <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">☀️</button>
   </div>
@@ -1060,8 +1079,13 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
 <section id="tools"><div class="wrap">
   <div class="sect-label">Working Infrastructure</div>
   <h2 class="sect-h">Pieces that <em>already exist.</em></h2>
-  <p class="sect-p">Free and open. Use them today — and help build the rest.</p>
+  <p class="sect-p">Free and open. Use them today — and help build the rest. <a href="#submit">Suggest a resource →</a></p>
   <div class="grid reveal">
+    <a id="lastbook" class="tcard" href="https://lastbook.org" target="_blank" rel="noopener">
+      <div class="tcard-top"><div class="tcard-icon">📖</div><span class="tag live">Featured</span></div>
+      <h3>Lastbook</h3><span class="url">lastbook.org</span>
+      <p>A free, open-source offline library of practical manuals, videos and maps, with optional local AI. Knowledge for preparedness and rebuilding, available after setup without an internet connection.</p>
+    </a>
     <a class="tcard" href="https://nvctranslator.com" target="_blank" rel="noopener">
       <div class="tcard-top"><div class="tcard-icon">🕊️</div><span class="tag live">Live</span></div>
       <h3>NVC Translator</h3>
@@ -1182,6 +1206,18 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
   </div>
 </div></section>
 
+<section id="submit"><div class="wrap">
+  <h2>What else should be featured?</h2>
+  <p>Help grow Humanity Infrastructure. Suggest useful tools, open knowledge, practical guides or projects that help people flourish. You do not need to be a developer.</p>
+  <p>Send the name, link, a short description and who it helps. Include access or licensing details and any affiliation. We review suggestions before featuring them.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:12px;margin:24px 0">
+    <a class="btn primary" href="https://github.com/tmad4000/humanity-infrastructure/issues/new?template=suggest-resource.yml">Suggest a resource on GitHub →</a>
+    <a class="btn ghost" href="mailto:jacob@ideaflow.io?subject=Humanity%20Infrastructure%20resource%20suggestion&amp;body=Name%3A%0ALink%3A%0AWho%20it%20helps%3A%0AAccess%20or%20license%3A%0AMy%20affiliation%3A">Suggest by email</a>
+    <a class="btn ghost" href="https://github.com/tmad4000/humanity-infrastructure/blob/main/CONTRIBUTING.md">Contribute a pull request →</a>
+  </div>
+  <p><a href="https://github.com/tmad4000/humanity-infrastructure">Browse the website source on GitHub</a> · <a href="https://worldissuetracker.com/tracker/lastbook">Lastbook community feedback and fixes</a></p>
+</div></section>
+
 <section id="join"><div class="wrap">
   <div class="cta-band reveal">
     <h2>Help us build the <strong>missing infrastructure.</strong></h2>
@@ -1194,6 +1230,7 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
 </div></section>
 
 <footer><div class="wrap">
+  <p>v0.4.0 · 2026-11-17</p>
   <div class="footer-top">
     <div class="footer-brand">
       <div class="brand-mark">⚡</div>
@@ -1204,7 +1241,8 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
       <a href="#tools">Tools</a>
       <a href="#buildlist">Build List</a>
       <a href="#vision">Resources</a>
-      <a href="#join">Join</a>
+      <a href="#submit">Submit a resource</a>
+    <a href="#join">Join</a>
       <a href="mailto:jacobcole4000@gmail.com">Contact</a>
     </div>
   </div>
@@ -1697,6 +1735,7 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
     <a href="#tools">Tools</a>
     <a href="#buildlist">Build List</a>
     <a href="#vision">Resources</a>
+    <a href="#submit">Submit a resource</a>
     <a href="#join">Join</a>
     <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">☀️</button>
   </div>
@@ -1745,8 +1784,13 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
 <section id="tools"><div class="wrap">
   <div class="sect-label">Working Infrastructure</div>
   <h2 class="sect-h">Pieces that <em>already exist.</em></h2>
-  <p class="sect-p">Free and open. Use them today — and help build the rest.</p>
+  <p class="sect-p">Free and open. Use them today — and help build the rest. <a href="#submit">Suggest a resource →</a></p>
   <div class="grid reveal">
+    <a id="lastbook" class="tcard" href="https://lastbook.org" target="_blank" rel="noopener">
+      <div class="tcard-top"><div class="tcard-icon">📖</div><span class="tag live">Featured</span></div>
+      <h3>Lastbook</h3><span class="url">lastbook.org</span>
+      <p>A free, open-source offline library of practical manuals, videos and maps, with optional local AI. Knowledge for preparedness and rebuilding, available after setup without an internet connection.</p>
+    </a>
     <a class="tcard" href="https://nvctranslator.com" target="_blank" rel="noopener">
       <div class="tcard-top"><div class="tcard-icon">🕊️</div><span class="tag live">Live</span></div>
       <h3>NVC Translator</h3>
@@ -1867,6 +1911,18 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
   </div>
 </div></section>
 
+<section id="submit"><div class="wrap">
+  <h2>What else should be featured?</h2>
+  <p>Help grow Humanity Infrastructure. Suggest useful tools, open knowledge, practical guides or projects that help people flourish. You do not need to be a developer.</p>
+  <p>Send the name, link, a short description and who it helps. Include access or licensing details and any affiliation. We review suggestions before featuring them.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:12px;margin:24px 0">
+    <a class="btn primary" href="https://github.com/tmad4000/humanity-infrastructure/issues/new?template=suggest-resource.yml">Suggest a resource on GitHub →</a>
+    <a class="btn ghost" href="mailto:jacob@ideaflow.io?subject=Humanity%20Infrastructure%20resource%20suggestion&amp;body=Name%3A%0ALink%3A%0AWho%20it%20helps%3A%0AAccess%20or%20license%3A%0AMy%20affiliation%3A">Suggest by email</a>
+    <a class="btn ghost" href="https://github.com/tmad4000/humanity-infrastructure/blob/main/CONTRIBUTING.md">Contribute a pull request →</a>
+  </div>
+  <p><a href="https://github.com/tmad4000/humanity-infrastructure">Browse the website source on GitHub</a> · <a href="https://worldissuetracker.com/tracker/lastbook">Lastbook community feedback and fixes</a></p>
+</div></section>
+
 <section id="join"><div class="wrap">
   <div class="cta-band reveal">
     <h2>Help us build the <strong>missing infrastructure.</strong></h2>
@@ -1879,6 +1935,7 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
 </div></section>
 
 <footer><div class="wrap">
+  <p>v0.4.0 · 2026-11-17</p>
   <div class="footer-top">
     <div class="footer-brand">
       <div class="brand-mark">⚡</div>
@@ -1889,7 +1946,8 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
       <a href="#tools">Tools</a>
       <a href="#buildlist">Build List</a>
       <a href="#vision">Resources</a>
-      <a href="#join">Join</a>
+      <a href="#submit">Submit a resource</a>
+    <a href="#join">Join</a>
       <a href="mailto:jacobcole4000@gmail.com">Contact</a>
     </div>
   </div>
