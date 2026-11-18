@@ -10,6 +10,8 @@ def escape_js(s):
 with open('index.html') as f: main = f.read()
 with open('v2.html') as f: v2 = f.read()
 with open('v3.html') as f: v3 = f.read()
+with open('classic.html') as f: classic = f.read()
+with open('versions/v4/index.html') as f: archive_v4 = f.read()
 import base64
 with open('og-card.png','rb') as f: og_b64 = base64.b64encode(f.read()).decode()
 
@@ -24,6 +26,12 @@ async function handleRequest(request, env) {{
   if (signup) return signup
   if (path === '/og-card.png') {{
     return new Response(OG_PNG, {{ headers: {{ 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=86400' }} }})
+  }}
+  if (path === '/classic' || path.startsWith('/classic/')) {{
+    return new Response(CLASSIC_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8' }} }})
+  }}
+  if (path === '/v4' || path.startsWith('/v4/')) {{
+    return new Response(ARCHIVE_V4_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8' }} }})
   }}
   if (path === '/v2' || path.startsWith('/v2/')) {{
     return new Response(V2_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8' }} }})
@@ -40,6 +48,8 @@ async function handleRequest(request, env) {{
 const MAIN_HTML = `{escape_js(main)}`
 const V2_HTML = `{escape_js(v2)}`
 const V3_HTML = `{escape_js(v3)}`
+const CLASSIC_HTML = `{escape_js(classic)}`
+const ARCHIVE_V4_HTML = `{escape_js(archive_v4)}`
 const OG_PNG = Uint8Array.from(atob('{og_b64}'), c => c.charCodeAt(0))
 """
 

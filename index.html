@@ -127,7 +127,8 @@
   .claim-head p{color:var(--muted);max-width:640px;margin:0 auto;font-size:.98rem}
   .livedot{width:10px;height:10px;border-radius:50%;background:#ef5f5f;display:inline-block;box-shadow:0 0 0 0 rgba(239,95,95,.5);animation:pulse 2s infinite}
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(239,95,95,.5)}70%{box-shadow:0 0 0 8px rgba(239,95,95,0)}100%{box-shadow:0 0 0 0 rgba(239,95,95,0)}}
-  .card.featured .needline{margin-bottom:8px;color:var(--muted);font-style:italic}
+  .card.featured .needline{margin-bottom:8px;color:var(--muted);font-size:.84rem;line-height:1.5}
+  .need-label{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--accent-warm);margin-right:5px}
   .card.featured .why{margin-top:12px;font-size:.88rem}
   .card.featured .top>div{min-width:0}
   .card.featured h3{padding-right:72px}
@@ -268,18 +269,10 @@
     <article class="card featured" id="lastbook">
       <span class="tag live">Featured</span>
       <div class="top"><span class="emoji">📖</span><div><h3><a href="https://lastbook.org" target="_blank" rel="noopener">Lastbook</a></h3><div class="url">lastbook.org</div></div></div>
-      <p class="needline">Knowledge that survives when the internet doesn't</p>
+      <p class="needline"><span class="need-label">Need</span> Knowledge that survives when the internet doesn't</p>
       <p>A free, open-source offline library of practical manuals, videos and maps, with optional local AI. Knowledge for preparedness and rebuilding, available after setup without an internet connection.</p>
       <ul class="badges"><li class="open">Open source · MIT</li><li>Mac · Windows · Linux</li><li>By farbood &amp; contributors</li></ul>
-      <p class="why"><b>Why it's here:</b> when the network goes down, the knowledge shouldn't. A library you can hand to a neighbour on a drive.</p>
-    </article>
-    <article class="card featured" id="paxi">
-      <span class="tag live">Featured</span>
-      <div class="top"><span class="emoji">🚕</span><div><h3><a href="https://paxi.fyi" target="_blank" rel="noopener">Paxi</a></h3><div class="url">paxi.fyi</div></div></div>
-      <p class="needline">Use the best service for each task, without interface lock-in</p>
-      <p>Compares live ride prices and times across Uber, Lyft, Waymo, Tesla, Zoox, Curb and more, then books the one you choose. Your logins stay on your phone.</p>
-      <ul class="badges"><li>Free · closed source</li><li>iPhone (iOS 17+)</li><li>By Doug Feigelson, a friend of the maintainer</li></ul>
-      <p class="why"><b>Why it's here:</b> every app wants to be the only door. You should be able to compare providers, choose the best one for each job and switch freely. <a href="https://github.com/tmad4000/humanity-infrastructure/issues/2" target="_blank" rel="noopener">Community submission #2</a>.</p>
+      <p class="why"><b>Editor's Note:</b> when the network goes down, the knowledge shouldn't. A library you can hand to a neighbour on a drive.</p>
     </article>
     <a class="card" href="https://nvctranslator.com" target="_blank" rel="noopener">
       <span class="tag live">Live</span>
@@ -301,14 +294,6 @@
       <div class="top"><span class="emoji">🌐</span><div><h3>World Issue Tracker</h3><div class="url">worldissuetracker.com</div></div></div>
       <p>A public issue tracker for civic and shared problems — a bottom-up list of what's broken, and who's fixing it.</p>
     </a>
-    <article class="card featured" id="signudoc">
-      <span class="tag live">Featured</span>
-      <div class="top"><span class="emoji">✍️</span><div><h3><a href="https://github.com/NYLLON-SOFTWARE/SignuDoc" target="_blank" rel="noopener">SignuDoc</a></h3><div class="url">github.com/NYLLON-SOFTWARE/SignuDoc</div></div></div>
-      <p class="needline">Open document signing infrastructure</p>
-      <p>Open-source e-signatures. Send, sign and seal documents from your own cloud at $0 per seat, with audit trails and tamper-evident seals.</p>
-      <ul class="badges"><li class="open">Open source · MIT</li><li>Self-hosted on your Vercel account</li><li>By Kevin Rose / NYLLON</li></ul>
-      <p class="why"><b>Why it's here:</b> agreeing on things is basic civic plumbing. Signing a PDF shouldn't need a per-seat licence or someone else's cloud.</p>
-    </article>
     <a class="card" href="https://tmad4000.github.io/brainstorms/" target="_blank" rel="noopener">
       <span class="tag live">Live</span>
       <div class="top"><span class="emoji">💡</span><div><h3>Idea List</h3><div class="url">tmad4000.github.io/brainstorms</div></div></div>
@@ -324,6 +309,22 @@
       <div class="top"><span class="emoji">⚡</span><div><h3>Vibe Coding Guide</h3><div class="url">github.com/tmad4000/vibe-coding-guide</div></div></div>
       <p>Open guide to AI-assisted coding — making the craftsmanship of software buildable by everyone.</p>
     </a>
+    <article class="card featured" id="signudoc">
+      <span class="tag live">Featured</span>
+      <div class="top"><span class="emoji">✍️</span><div><h3><a href="https://github.com/NYLLON-SOFTWARE/SignuDoc" target="_blank" rel="noopener">SignuDoc</a></h3><div class="url">github.com/NYLLON-SOFTWARE/SignuDoc</div></div></div>
+      <p class="needline"><span class="need-label">Need</span> Open document signing infrastructure</p>
+      <p>Open-source e-signatures. Send, sign and seal documents from your own cloud at $0 per seat, with audit trails and tamper-evident seals.</p>
+      <ul class="badges"><li class="open">Open source · MIT</li><li>Self-hosted on your Vercel account</li><li>By Kevin Rose / NYLLON</li></ul>
+      <p class="why"><b>Editor's Note:</b> agreeing on things is basic civic plumbing. Signing a PDF shouldn't need a per-seat licence or someone else's cloud.</p>
+    </article>
+    <article class="card featured" id="paxi">
+      <span class="tag live">Featured</span>
+      <div class="top"><span class="emoji">🚕</span><div><h3><a href="https://paxi.fyi" target="_blank" rel="noopener">Paxi</a></h3><div class="url">paxi.fyi</div></div></div>
+      <p class="needline"><span class="need-label">Need</span> Use the best service for each task, without interface lock-in</p>
+      <p>Compares live ride prices and times across Uber, Lyft, Waymo, Tesla, Zoox, Curb and more, then books the one you choose. Your logins stay on your phone.</p>
+      <ul class="badges"><li>Free · closed source</li><li>iPhone (iOS 17+)</li><li>By Doug Feigelson, a friend of the maintainer</li></ul>
+      <p class="why"><b>Editor's Note:</b> every app wants to be the only door. You should be able to compare providers, choose the best one for each job and switch freely. <a href="https://github.com/tmad4000/humanity-infrastructure/issues/2" target="_blank" rel="noopener">Community submission #2</a>.</p>
+    </article>
   </div>
 </div></section>
 
@@ -438,7 +439,7 @@
   <div style="text-align:right">
     <a href="https://www.notion.so/jacobblog/Humanity-3-0-and-Dharmic-blueprint-314fda9cff6380bfae57ff843cce32dd" target="_blank" rel="noopener">Blueprint (Notion)</a> ·
     <a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" target="_blank" rel="noopener">Master doc</a><br/>
-    <span class="ver">v0.5.1 · 2026-11-17</span>
+    <span class="ver">v0.5.2 · 2026-11-18</span>
   </div>
 </div>
   <!-- Design versions + legacy -->
@@ -447,6 +448,9 @@
     <a href="/" style="color:var(--accent-2);">v1 — Original / Dark (current)</a>
     <a href="/v2" style="color:var(--accent-2);">v2 — Editorial / Red</a>
     <a href="/v3" style="color:var(--accent-2);">v3 — Dark Blueprint</a>
+    <a href="/v4" style="color:var(--accent-2);">v4 — Archived format</a>
+    <a href="/classic" style="color:var(--accent-2);">Classic — Original layout</a>
+    <a href="https://github.com/tmad4000/humanity-infrastructure/blob/main/VERSION_LOG.md" style="color:var(--accent-2);">Version log &amp; screenshots</a>
   </div>
 </footer>
 
