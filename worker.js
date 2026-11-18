@@ -589,6 +589,14 @@ const MAIN_HTML = `<!DOCTYPE html>
 
 <script>
 
+// Shelf links use /?interest=<key>#letter. Keep this independent of shelf markup.
+const signupInterestLabels = {
+  'unlinked': 'Unlinked', 'superconnector': 'Superconnector', 'openchat': 'OpenChat',
+  'ideaflow-index': 'Ideaflow apps index', 'open-recordings': 'Open Recordings'
+};
+const signupInterestParam = new URLSearchParams(location.search).get('interest');
+if (signupInterestParam) document.getElementById('letter-interest').value = (signupInterestLabels[signupInterestParam] || signupInterestParam).slice(0, 200);
+
 document.getElementById('letter-form').addEventListener('submit', async function(event) {
   event.preventDefault();
   const form = event.currentTarget, button = form.querySelector('button'), status = form.querySelector('.status');

@@ -2,6 +2,8 @@
 
 The footer form and hero invitation capture an occasional letter subscription. D1 stores email, interest (200 characters), optional X handle, explicit public-handle opt-in, consent time, page path, allowlisted UTM values and referrer. Nothing is written to WIT. This slice does not publish handles; the checkbox records permission only. Per-card interest counts and double opt-in are deferred. No mail delivery service is connected yet; the CSV is the migration path to listmonk. Include each row's unsubscribe URL in any letter; exclude rows with `unsubscribed_at`.
 
+Shelf integration: link to `/?interest=<key>#letter`. Known keys `unlinked`, `superconnector`, `openchat`, `ideaflow-index`, and `open-recordings` prefill the optional interest text with the display name. Other values prefill plain text, capped at 200 characters. The API has no item-key field or public count endpoint; send required `email` plus optional `interest`, `handle`, boolean `public_opt_in`, `website` (honeypot), `source_page`, `utm`, `referrer`.
+
 `POST /api/signup` accepts JSON up to 4096 bytes, validates email/handle/interest, rejects cross-origin browser submissions, ignores honeypots and limits each hashed CF-Connecting-IP to five attempts per hour using atomic D1 SQL. Raw IPs are not stored. Rate rows expire through request-driven cleanup after 24 hours. Duplicates do not change consent, opt-in or unsubscribe state, and never reveal an existing token. Resubscription/change-of-details needs a verified-email flow later.
 
 `GET /unsubscribe?t=…` marks the row unsubscribed; repeated requests are safe. Tokens have 256 random bits and are returned only on initial signup and in owner-only export. Private routes use `no-store` and `no-referrer` response headers.
