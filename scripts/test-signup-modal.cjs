@@ -56,8 +56,9 @@ if (!origin) throw Error('Usage: node scripts/test-signup-modal.cjs <preview-ori
     assert.equal(await evaluate("document.documentElement.scrollWidth > innerWidth"),false);
     console.log('PASS mobile/desktop: email-only, labels, focus trap, Escape, restore focus, retry, optional details/prefill, same-email uniform API, Save and Skip; no real submissions');
   } finally {
-    try {await send('Browser.close');} catch {} child.kill();
-    await new Promise(resolve=>child.exitCode!==null?resolve():child.once('exit',resolve));
-    fs.rmSync(profile,{recursive:true,force:true,maxRetries:5,retryDelay:100});
+    try {await send('Browser.close');} catch {}
+    await new Promise(resolve=>{if(child.exitCode!==null)return resolve();const timer=setTimeout(()=>child.kill(),3000);child.once('exit',()=>{clearTimeout(timer);resolve();});});
+    await new Promise(resolve=>setTimeout(resolve,200));
+    fs.rmSync(profile,{recursive:true,force:true,maxRetries:10,retryDelay:200});
   }
 })().catch(error=>{console.error(error);process.exitCode=1;});
