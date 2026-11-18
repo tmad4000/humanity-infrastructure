@@ -67,7 +67,7 @@ async function handleSignup(request, env) {
     const token = crypto.randomUUID().replaceAll('-', '') + crypto.randomUUID().replaceAll('-', '');
     // Update only submitted optional fields, so the email-only step preserves saved details.
     // Preserve unsubscribe state and the existing private token.
-    await env.SIGNUPS.prepare('INSERT INTO signups (id,email,interest,handle,public_opt_in,consent_at,source_page,utm,referrer,unsubscribe_token) VALUES (?,?,?,?,?,?,?,?,?,?) ON CONFLICT(email) DO UPDATE SET interest = CASE WHEN ? THEN excluded.interest ELSE signups.interest END, handle = CASE WHEN ? THEN excluded.handle ELSE signups.handle END, public_opt_in = CASE WHEN ? THEN excluded.public_opt_in ELSE signups.public_opt_in END, consent_at = excluded.consent_at').bind(crypto.randomUUID(),email,interest,handle,handle && data.public_opt_in === true ? 1 : 0,new Date().toISOString(),source,utm,referrer,token,typeof data.interest === 'string' ? 1 : 0,typeof data.handle === 'string' ? 1 : 0,typeof data.handle === 'string' ? 1 : 0).run();
+    await env.SIGNUPS.prepare('INSERT INTO signups (id,email,interest,handle,public_opt_in,consent_at,source_page,utm,referrer,unsubscribe_token) VALUES (?,?,?,?,?,?,?,?,?,?) ON CONFLICT(email) DO UPDATE SET interest = CASE WHEN ? THEN excluded.interest ELSE signups.interest END, handle = CASE WHEN ? THEN excluded.handle ELSE signups.handle END, public_opt_in = CASE WHEN (CASE WHEN ? THEN excluded.handle ELSE signups.handle END) = '' THEN 0 WHEN ? THEN ? ELSE signups.public_opt_in END, consent_at = excluded.consent_at').bind(crypto.randomUUID(),email,interest,handle,handle && data.public_opt_in === true ? 1 : 0,new Date().toISOString(),source,utm,referrer,token,typeof data.interest === 'string' ? 1 : 0,typeof data.handle === 'string' ? 1 : 0,typeof data.handle === 'string' ? 1 : 0,typeof data.public_opt_in === 'boolean' ? 1 : 0,data.public_opt_in === true ? 1 : 0).run();
     // Keep status, body and headers identical for new, duplicate and opted-out emails.
     // Unsubscribe URLs are available only to the owner export for inclusion in letters.
     return signupResponse({ ok: true });
@@ -654,7 +654,7 @@ const MAIN_HTML = `<!DOCTYPE html>
 <label for="letter-handle">X handle <span>(optional)</span></label><input id="letter-handle" name="handle" maxlength="16" placeholder="@yourhandle" autocomplete="off" disabled>
 <label class="consent"><input name="public_opt_in" type="checkbox" disabled> Show my handle publicly</label>
 <small>Your interest stays private. Your handle stays private unless you opt in.</small>
-<div class="actions"><button class="btn primary" type="submit">Save</button><button class="btn ghost" type="button" data-signup-close>Skip</button></div>
+<div class="actions"><button class="btn primary" type="submit">Save</button><button class="btn ghost" type="button" data-signup-skip>Skip</button></div>
 </div>
 <div class="trap" aria-hidden="true"><label for="letter-website">Website</label><input id="letter-website" name="website" tabindex="-1" autocomplete="off"></div>
 <div class="status" role="status" aria-live="polite"></div>
@@ -720,6 +720,17 @@ function openSignup() {
   signupDialog.showModal();
   (signupStep === 1 ? signupEmail : document.getElementById('letter-interest')).focus();
 }
+function finishSignup() {
+  signupDialog.close(); signupStep = 1; signupSavedEmail = '';
+  signupForm.reset(); signupEmail.disabled = false;
+  document.getElementById('letter-email-step').hidden = false; signupDetails.hidden = true;
+  signupDetails.querySelectorAll('input,textarea').forEach(field => field.disabled = true);
+  if (Object.hasOwn(signupInterestLabels, signupInterestParam)) document.getElementById('letter-interest').value = signupInterestLabels[signupInterestParam];
+  document.getElementById('letter-title').textContent = 'Sign up for the interest list';
+  document.getElementById('letter-description').textContent = 'A short, occasional letter about tools for human flourishing. No spam; unsubscribe any time.';
+  signupStatus.textContent = '';
+}
+document.querySelector('[data-signup-skip]').addEventListener('click', finishSignup);
 document.querySelectorAll('[data-signup-open]').forEach(button => button.addEventListener('click', openSignup));
 document.querySelectorAll('[data-signup-close]').forEach(button => button.addEventListener('click', () => signupDialog.close()));
 signupDialog.addEventListener('close', () => { if (signupTrigger?.isConnected) signupTrigger.focus(); });
@@ -760,8 +771,7 @@ signupForm.addEventListener('submit', async function(event) {
       signupStatus.textContent = '';
       if (signupDialog.open) document.getElementById('letter-interest').focus();
     } else {
-      signupStatus.textContent = 'Thanks! Your details are saved.';
-      signupDialog.close();
+      finishSignup();
     }
   } catch (error) { signupStatus.textContent = error.message || 'Could not connect. Please try again.'; }
   finally { signupSubmitting = false; signupForm.querySelectorAll('button[type=submit]').forEach(button => button.disabled = false); }

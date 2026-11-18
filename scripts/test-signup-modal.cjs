@@ -48,8 +48,10 @@ if (!origin) throw Error('Usage: node scripts/test-signup-modal.cjs <preview-ori
     assert.equal(await evaluate("document.getElementById('letter-dialog').open"),false);
     const requests=await evaluate('signupRequests');assert.equal(requests.length,3);assert.equal(requests[2].email,requests[1].email);assert.equal(requests[2].interest,'OpenChat');assert.equal(requests[2].handle,'@builder');assert.equal(requests[2].public_opt_in,true);assert.equal(requests[2].url,'/api/signup');assert.equal(requests[2].website,'');
     assert.equal(await evaluate("document.activeElement.hasAttribute('data-signup-open')"),true);
-    await evaluate("document.querySelector('[data-signup-open]').click();document.querySelector('#letter-details-step [data-signup-close]').click()");
-    assert.equal(await evaluate('signupRequests.length'),3);assert.equal(await evaluate("document.getElementById('letter-dialog').open"),false);
+    await evaluate("document.querySelector('[data-signup-open]').click()");assert.equal(await evaluate("document.activeElement.id"),'letter-email');
+    await evaluate("document.getElementById('letter-email').value='skip@example.com';document.getElementById('letter-form').requestSubmit()");await new Promise(r=>setTimeout(r,50));
+    await evaluate("document.querySelector('[data-signup-skip]').click()");
+    assert.equal(await evaluate('signupRequests.length'),4);assert.equal(await evaluate("document.getElementById('letter-dialog').open"),false);
     await send('Emulation.setDeviceMetricsOverride',{width:1280,height:900,deviceScaleFactor:1,mobile:false},sid);
     assert.equal(await evaluate("document.documentElement.scrollWidth > innerWidth"),false);
     console.log('PASS mobile/desktop: email-only, labels, focus trap, Escape, restore focus, retry, optional details/prefill, same-email uniform API, Save and Skip; no real submissions');
