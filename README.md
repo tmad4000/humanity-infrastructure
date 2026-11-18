@@ -42,7 +42,9 @@ Inclusion is a curated pick, not a safety certification or an endorsement of eve
 
 ## Maintainers: deployment
 
-The site is served by a Cloudflare Worker (`worker.js`, generated from the HTML by `deploy.sh`) on the `humanity-infrastructure` script. The `/contribute` page is a separate worker (`contribute-worker.js`). Run `./deploy.sh` with `CF_API_KEY` set, or with the key at `~/.config/cloudflare/global-api-key`. Contributors never need credentials.
+The site is served by Cloudflare Worker `humanity-infrastructure`. Run `python3 scripts/build.py` to generate `worker.js` from the HTML and private signup routes. `./deploy.sh` deploys through the scoped `wrangler-gcp` wrapper on the authorized host; `./deploy.sh --env preview` targets the separate preview Worker and D1 database. No global API key is used. The `/contribute` page remains a separate Worker.
+
+See [signup operations](SIGNUP-OPERATIONS.md) for storage, secrets, CSV export, verification and rollback. AI-assisted implementation: Codex.
 
 ## Related
 
