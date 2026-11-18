@@ -12,6 +12,8 @@ Shelf integration: link to `/?interest=<key>#letter`. Known keys `unlinked`, `su
 
 ## Storage and secrets
 
+`wrangler.jsonc` declares both D1 environments and documents the required Worker secret names. This Wrangler version provisions secrets separately through `secret bulk`; never put secret values or placeholder values in `vars`. Upload/deploy preserves the existing secret bindings.
+
 Account: `68d006db286e6366317c029df3bb76dd`.
 
 - Production D1: `humanity-infrastructure-signups`, ID `848844f3-4379-4cb6-a7a3-a39a7bfc3624`.
