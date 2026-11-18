@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Humanity Infrastructure — tools and knowledge for human flourishing</title>
+<style>
+:root{--bg:#fbfbfa;--card:#ffffff;--text:#1c2420;--muted:#57655f;--border:#dce2dc;--line:#eaeeea;--p:#1b5738;--p-bg:#edf5f0;--accent:#2f7a52;--badge:#e8efe9;--warn-bg:#f6f1e8;--warn-txt:#725114}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.55;font-size:15px;-webkit-font-smoothing:antialiased}
+a{color:var(--p);text-decoration-thickness:1px;text-underline-offset:2px}
+a:hover{color:var(--accent)}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px}
+header{border-bottom:1px solid var(--border);background:#fff;position:sticky;top:0;z-index:10}
+.nav{display:flex;align-items:center;justify-content:space-between;height:56px}
+.brand{font-weight:700;font-size:16px;color:var(--text);text-decoration:none;letter-spacing:-0.01em}
+.nav-links{display:flex;gap:18px;font-size:13px;align-items:center}
+.pill{background:var(--p-bg);color:var(--p);padding:4px 10px;border-radius:20px;font-weight:600;text-decoration:none;font-size:12px;border:1px solid #c9decb}
+.hero{padding:54px 0 38px;border-bottom:1px solid var(--line)}
+.kicker{color:var(--p);font-size:12px;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;margin-bottom:10px}
+h1{font-size:32px;line-height:1.2;font-weight:700;letter-spacing:-0.02em;margin-bottom:12px;max-width:740px}
+.tagline{font-size:18px;color:var(--muted);max-width:680px;margin-bottom:22px;line-height:1.45}
+.actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.btn{display:inline-block;padding:9px 16px;border-radius:6px;font-weight:600;font-size:14px;text-decoration:none;cursor:pointer;border:none}
+.btn-primary{background:var(--p);color:#fff}
+.btn-primary:hover{background:var(--accent);color:#fff}
+.btn-subtle{background:none;border:1px solid var(--border);color:var(--text)}
+.btn-subtle:hover{background:var(--p-bg);border-color:var(--p)}
+.policy-banner{background:#fff;border:1px solid var(--border);border-left:4px solid var(--p);padding:10px 14px;margin:24px 0;font-size:13px;border-radius:4px;color:var(--muted)}
+.policy-banner strong{color:var(--text)}
+.section-title{font-size:22px;font-weight:700;letter-spacing:-0.01em;margin:38px 0 16px;display:flex;align-items:center;justify-content:space-between}
+.shelves{display:flex;flex-direction:column;gap:22px}
+.shelf{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:22px;box-shadow:0 1px 3px rgba(0,0,0,0.03)}
+.need-tag{font-size:11px;font-weight:700;color:var(--p);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px}
+.need-title{font-size:18px;font-weight:700;margin-bottom:4px}
+.need-desc{font-size:14px;color:var(--muted);margin-bottom:16px}
+.featured{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:16px;margin-bottom:14px}
+.item-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:baseline;margin-bottom:8px}
+.item-title{font-size:17px;font-weight:700}
+.meta-badges{display:flex;flex-wrap:wrap;gap:6px}
+.badge{font-size:11px;padding:2px 7px;border-radius:4px;background:var(--badge);color:#244431;font-weight:600}
+.badge.warn{background:var(--warn-bg);color:var(--warn-txt)}
+.badge.maint{background:#e7f0fa;color:#1d4677}
+.item-summary{font-size:14px;margin-bottom:8px}
+.meta-row{font-size:12px;color:var(--muted);display:flex;flex-wrap:wrap;gap:12px;margin-bottom:6px}
+.note{font-size:13px;background:var(--p-bg);border-left:3px solid var(--p);padding:10px 12px;border-radius:0 4px 4px 0;margin:12px 0}
+.note-tag{font-size:10px;text-transform:uppercase;letter-spacing:0.06em;font-weight:800;color:var(--p);display:block;margin-bottom:2px}
+.see-more{font-size:13px;font-weight:600;display:inline-block;margin-top:4px}
+.compact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:14px}
+.mini-shelf{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:14px}
+.mini-need{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:2px}
+.mini-title{font-size:15px;font-weight:700}
+.card-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:22px;margin:30px 0}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:16px 0}
+.step-item{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:12px;font-size:13px}
+.step-num{font-weight:700;color:var(--p);font-size:12px;display:block;margin-bottom:4px}
+.form-mock{display:flex;gap:8px;max-width:440px;margin-top:10px}
+.input{flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:5px;font-size:14px;background:#fff}
+.help-text{font-size:12px;color:var(--muted);margin-top:6px}
+.eco-strip{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:#fff;padding:16px 0;margin:36px 0 0;font-size:13px}
+.eco-flex{display:flex;flex-wrap:wrap;align-items:center;gap:18px}
+.eco-label{font-weight:700;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:0.06em}
+footer{padding:30px 0 46px;font-size:12px;color:var(--muted);line-height:1.6}
+.foot-links{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:12px}
+.attribution{color:var(--muted);font-size:11px;margin-top:14px}
+@media(max-width:600px){.nav{height:auto;min-height:56px;flex-wrap:wrap;gap:10px;padding-top:10px;padding-bottom:10px}.nav-links{gap:12px}h1{font-size:30px}.section-title{align-items:flex-start;gap:12px}.section-title h2{font-size:24px}}
+</style>
+</head>
+<body>
+<header>
+<div class="wrap nav">
+<a href="#" class="brand">Humanity Infrastructure</a>
+<div class="nav-links">
+<a href="#shelves">Shelves</a>
+<a href="#build-list">Quests</a>
+<a href="#participate">Participate</a>
+<a href="https://github.com/tmad4000/humanity-infrastructure" class="pill" target="_blank" rel="noopener">GitHub ↗</a>
+</div>
+</div>
+</header>
+
+<main class="wrap">
+<section class="hero">
+<div class="kicker">An Open Digital Commons</div>
+<h1>Knowledge is a birthright. So are the tools to use it.</h1>
+<p class="tagline">A directory of tools and knowledge for human flourishing.</p>
+<div class="actions">
+<a href="#shelves" class="btn btn-primary">Browse Shelves</a>
+<a href="https://github.com/tmad4000/humanity-infrastructure/issues/new?template=suggest-resource.yml" class="btn btn-subtle" target="_blank" rel="noopener">Suggest a Resource</a>
+</div>
+<div class="policy-banner">
+<strong>Curatorial Standard:</strong> Free to use. Open where possible. Every listing shows its license. Maintainer projects are labeled explicitly.
+</div>
+</section>
+
+<section id="shelves">
+<div class="section-title">
+<h2>Core Shelves</h2>
+<span style="font-size:12px;color:var(--muted)">Need &rarr; Featured Tool</span>
+</div>
+
+<div class="shelves">
+<!-- Shelf 1: Offline Knowledge -->
+<article class="shelf">
+<div class="need-tag">Need 01</div>
+<h3 class="need-title">Knowledge that survives when the internet doesn't</h3>
+<p class="need-desc">Practical manuals, maps and how-to videos that keep working offline, so people can care for each other through outages and rebuild after them.</p>
+
+<div class="featured">
+<div class="item-head">
+<span class="item-title"><a href="https://lastbook.org" target="_blank" rel="noopener">Lastbook</a></span>
+<div class="meta-badges">
+<span class="badge">MIT (open source)</span>
+<span class="badge">Mac, Windows, Linux</span>
+</div>
+</div>
+<p class="item-summary">A free, open-source offline library of practical manuals, videos and maps, with optional local AI.</p>
+<div class="meta-row">
+<span><strong>Maker:</strong> farbood and contributors</span>
+<span><strong>Code:</strong> <a href="https://github.com/Immortal-Protocols/lastbook" target="_blank" rel="noopener">GitHub</a></span>
+</div>
+</div>
+
+<div class="note">
+<span class="note-tag">Draft Editor's Note</span>
+"When the network goes down, the knowledge shouldn't. Lastbook is a library you can hand to a neighbour on a drive."
+</div>
+<a href="#directory" class="see-more">See more in the Directory of the Internet &rarr;</a>
+</article>
+
+<!-- Shelf 2: Document Signing -->
+<article class="shelf">
+<div class="need-tag">Need 02</div>
+<h3 class="need-title">Open document signing infrastructure</h3>
+<p class="need-desc">Agreeing on things is basic civic plumbing. Signing a PDF shouldn't require a per-seat licence or handing your agreements to someone else's cloud.</p>
+
+<div class="featured">
+<div class="item-head">
+<span class="item-title"><a href="https://github.com/NYLLON-SOFTWARE/SignuDoc" target="_blank" rel="noopener">SignuDoc</a></span>
+<div class="meta-badges">
+<span class="badge">MIT (open source)</span>
+<span class="badge">Vercel self-host</span>
+</div>
+</div>
+<p class="item-summary">Open-source e-signatures: send, sign and seal documents from your own cloud, $0 per seat, with audit trails and tamper-evident seals.</p>
+<div class="meta-row">
+<span><strong>Maker:</strong> Kevin Rose / NYLLON</span>
+<span><strong>Code:</strong> <a href="https://github.com/NYLLON-SOFTWARE/SignuDoc" target="_blank" rel="noopener">NYLLON-SOFTWARE/SignuDoc</a></span>
+</div>
+</div>
+
+<div class="note">
+<span class="note-tag">Draft Editor's Note</span>
+"A small team was quoted $8,100 a year to sign PDFs. Infrastructure this basic should belong to the people using it."
+</div>
+<a href="#directory" class="see-more">See more in the Directory of the Internet &rarr;</a>
+</article>
+
+<!-- Shelf 3: Best Service / No Lock-in -->
+<article class="shelf">
+<div class="need-tag">Need 03</div>
+<h3 class="need-title">Use the best service for each task, without interface lock-in</h3>
+<p class="need-desc">Every app wants to be the only door. People should be able to compare and choose the best provider for each job, and switch freely.</p>
+
+<div class="featured">
+<div class="item-head">
+<span class="item-title"><a href="https://paxi.fyi" target="_blank" rel="noopener">Paxi</a></span>
+<div class="meta-badges">
+<span class="badge warn">Closed source</span>
+<span class="badge warn">Maker is a friend of the maintainer</span>
+<span class="badge">iPhone (iOS 17+)</span>
+</div>
+</div>
+<p class="item-summary">Compares live ride prices and times across Uber, Lyft, Waymo, Tesla, Zoox, Curb and more, then books the one you choose. Logins stay on your phone.</p>
+<div class="meta-row">
+<span><strong>Maker:</strong> Doug Feigelson (Passenger Labs)</span>
+<span><strong>Policy Disclosure:</strong> Free to use, proprietary binary. Included as an exemplar of aggregate interfaces.</span>
+</div>
+</div>
+
+<div class="note">
+<span class="note-tag">Draft Editor's Note</span>
+"One fare board instead of five apps. This is the pattern I want everywhere: you choose the service, the interface works for you."
+</div>
+<a href="#directory" class="see-more">See more in the Directory of the Internet &rarr;</a>
+</article>
+</div>
+
+<!-- Secondary Shelves -->
+<div class="compact-grid">
+<div class="mini-shelf">
+<div class="mini-need">Tools that help people understand each other</div>
+<div class="mini-title"><a href="https://nvctranslator.com" target="_blank" rel="noopener">NVC Translator</a></div>
+<p class="item-summary" style="margin-top:6px">Translate any text into Nonviolent Communication: observations, feelings, needs, requests.</p>
+<span class="badge">License: unverified</span>
+</div>
+
+<div class="mini-shelf">
+<div class="mini-need">A shared list of what's broken &amp; who's fixing it</div>
+<div class="mini-title"><a href="https://worldissuetracker.com" target="_blank" rel="noopener">World Issue Tracker</a></div>
+<p class="item-summary" style="margin-top:6px">Public issue tracking for society. Tag @worldissuetrack with 'file this' on X to capture a problem.</p>
+<span class="badge maint">Built by the maintainer</span> <span class="badge">License unverified</span>
+</div>
+
+<div class="mini-shelf">
+<div class="mini-need">Knowledge that people &amp; agents build together</div>
+<div class="mini-title"><a href="https://wikihub.md" target="_blank" rel="noopener">WikiHub</a> &amp; <a href="https://globalbr.ai" target="_blank" rel="noopener">Noos</a></div>
+<p class="item-summary" style="margin-top:6px">WikiHub: markdown wikis for agents and humans. Noos: universal knowledge graph with per-node privacy.</p>
+<span class="badge maint">Built by the maintainer</span> <span class="badge">License unverified</span>
+</div>
+</div>
+</section>
+
+<!-- Maintainer Lab -->
+<section style="margin-top:30px">
+<h3 style="font-size:14px;text-transform:uppercase;color:var(--muted);letter-spacing:0.05em;margin-bottom:8px">Maintainer Projects &amp; Archives</h3>
+<div style="font-size:13px;display:flex;flex-wrap:wrap;gap:12px">
+<a href="https://tmad4000.github.io/brainstorms" target="_blank" rel="noopener">Idea List &rarr;</a>
+<a href="https://github.com/tmad4000/claude-mind" target="_blank" rel="noopener">Claude Mind &rarr;</a>
+<a href="https://github.com/tmad4000/vibe-coding-guide" target="_blank" rel="noopener">Vibe Coding Guide &rarr;</a>
+<span style="color:var(--muted)">ListHub (superseded by WikiHub)</span>
+</div>
+</section>
+
+<!-- Quests and Build List -->
+<section id="build-list" class="card-box">
+<h2 style="font-size:20px;margin-bottom:6px">Build List &amp; Open Quests</h2>
+<p style="font-size:14px;color:var(--muted);margin-bottom:14px">Missing civilizational infrastructure waiting for builders. Static preview; follow the board for current quests.</p>
+<div style="background:var(--bg);border:1px solid var(--line);padding:14px;border-radius:6px;font-size:13px;margin-bottom:14px">
+<ul style="padding-left:18px;margin-bottom:10px">
+<li>Explore the World Issue Tracker board for what still needs building.</li></ul>
+<div style="display:flex;gap:12px;flex-wrap:wrap">
+<a href="https://worldissuetracker.com/tracker/missing-civ-infrastructure" target="_blank" rel="noopener" class="btn btn-subtle" style="font-size:12px;padding:6px 10px">Missing Civ Infrastructure Board &rarr;</a>
+<a href="https://quests.world" target="_blank" rel="noopener" class="btn btn-subtle" style="font-size:12px;padding:6px 10px">World Quest Guild &rarr;</a>
+</div>
+</div>
+<p style="font-size:12px;color:var(--muted)">
+If the link above doesn't load: <a href="https://docs.google.com/document/d/1OggVeoEN4zAafRAox3yjFYtNwmYFJQHovXLviWI69zY/edit" target="_blank" rel="noopener">open the guild doc directly</a> or inspect the <a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" target="_blank" rel="noopener">HI master working doc</a>.
+</p>
+</section>
+
+<!-- Participation Ladder -->
+<section id="participate" class="card-box">
+<h2 style="font-size:20px;margin-bottom:4px">Participation Ladder</h2>
+<p style="font-size:14px;color:var(--muted)">How to step into Humanity Infrastructure, from curious visitor to core builder.</p>
+
+<div class="steps">
+<div class="step-item"><span class="step-num">Step 01</span><strong><a href="https://github.com/tmad4000/humanity-infrastructure/issues/new?template=suggest-resource.yml">Suggest Resource</a></strong><br>Submit tools via simple GitHub issue form.</div>
+<div class="step-item"><span class="step-num">Step 02</span><strong><a href="https://github.com/tmad4000/humanity-infrastructure/compare">Open a Pull Request</a></strong><br>Propose schema, shelf updates, or fixes.</div>
+<div class="step-item"><span class="step-num">Step 03</span><strong><a href="https://worldissuetracker.com/tracker/missing-civ-infrastructure">Claim a Quest</a></strong><br>Pick tasks from World Issue Tracker.</div>
+<div class="step-item"><span class="step-num">Step 04</span><strong><a href="https://quests.world">Join Quest Guild</a></strong><br>Coordinate with distributed collaborators.</div>
+<div class="step-item"><span class="step-num">Step 05</span><strong>Humanity Infrastructure Builders</strong><br><span style="font-size:11px;color:var(--p);font-weight:600">Coming Soon (Unlinked)</span></div>
+</div>
+
+<div style="border-top:1px solid var(--line);padding-top:16px;margin-top:10px">
+<strong style="font-size:14px">Occasional Letter</strong>
+<p class="help-text">A short, occasional letter. No spam.</p>
+<div role="group" aria-label="Newsletter preview">
+<input type="email" class="input" placeholder="you@domain.org" aria-label="Email address" >
+<button type="button" class="btn btn-primary" disabled>Preview signup</button><p class="help-text">Prototype only. No email is sent or saved.</p>
+</div>
+</div>
+</section>
+</main>
+
+<div class="eco-strip">
+<div class="wrap eco-flex">
+<span class="eco-label">Commons Ecosystem:</span>
+<a href="https://index.ideaflow.app" target="_blank" rel="noopener">Ideaflow Index</a>
+<a href="https://index.ideaflow.app/build" target="_blank" rel="noopener">Build on Ideaflow</a>
+<a href="https://worldissuetracker.com" target="_blank" rel="noopener">World Issue Tracker</a>
+<span id="directory" style="color:var(--muted)">Directory of the Internet (pending)</span>
+</div>
+</div>
+
+<footer>
+<div class="wrap">
+<div class="foot-links">
+<a href="https://github.com/tmad4000/humanity-infrastructure" target="_blank" rel="noopener">GitHub Repository</a>
+<a href="https://github.com/tmad4000/humanity-infrastructure/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Contribution Guide</a>
+<a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a>
+<a href="https://github.com/tmad4000/humanity-infrastructure/issues/new?template=suggest-resource.yml" target="_blank" rel="noopener">Suggest Item</a>
+</div>
+<p>Humanity Infrastructure v0.5.0 static prototype. Free to use, open where possible. Built by the maintainer and the open web commons.</p>
+<div class="attribution">AI-generated by Gemini (gemini-3.8-flash)</div>
+</div>
+</footer>
+</body>
+</html>
