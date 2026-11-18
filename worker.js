@@ -510,10 +510,15 @@ const MAIN_HTML = `<!DOCTYPE html>
       <p>Bring people and their AI agents into the same real-time conversations.</p>
       <p style="margin-top:16px"><a href="/?interest=openchat#letter">Express interest / request access →<span class="sr-only"> OpenChat</span></a></p>
     </article>
+    <article class="card" id="bookshelves">
+      <h3><a href="https://bookshelves.ai" target="_blank" rel="noopener">Bookshelves</a></h3>
+      <p>Photograph your bookshelf and meet people who read what you read.</p>
+      <p style="margin-top:16px"><a href="/?interest=bookshelves#letter">Express interest / request access →<span class="sr-only"> Bookshelves</span></a></p>
+    </article>
     <article class="card" id="ideaflow-index">
       <h3><a href="https://index.ideaflow.app" target="_blank" rel="noopener">Ideaflow apps index</a></h3>
 
-      <p>Find the Ideaflow tools for thinking, connecting, recording and building together.</p>
+      <p>Built on the shared knowledge graph.</p>
       <p style="margin-top:16px"><a href="/?interest=ideaflow-index#letter">Express interest / request access →<span class="sr-only"> Ideaflow apps index</span></a></p>
     </article>
     <article class="card" id="open-recordings">
@@ -714,7 +719,7 @@ const MAIN_HTML = `<!DOCTYPE html>
 // Shelf links use /?interest=<approved-key>#letter.
 const signupInterestLabels = {
   'unlinked': 'Unlinked', 'superconnector': 'Superconnector', 'openchat': 'OpenChat',
-  'ideaflow-index': 'Ideaflow apps index', 'open-recordings': 'Open Recordings'
+  'ideaflow-index': 'Ideaflow apps index', 'open-recordings': 'Open Recordings', 'bookshelves': 'Bookshelves'
 };
 const signupInterestParam = new URLSearchParams(location.search).get('interest');
 if (Object.hasOwn(signupInterestLabels, signupInterestParam)) document.getElementById('letter-interest').value = signupInterestLabels[signupInterestParam];

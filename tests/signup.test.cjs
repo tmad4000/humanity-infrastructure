@@ -48,7 +48,7 @@ test('CSV requires bearer secret, escapes formulas, includes opt-outs and unsubs
 test('query prefills only known own keys, ignores arbitrary and inherited properties',()=>{
  const html=fs.readFileSync('index.html','utf8');
  const snippet=html.slice(html.indexOf('const signupInterestLabels ='),html.indexOf("const signupDialog ="));
- for(const [key,expected] of Object.entries({'unlinked':'Unlinked','superconnector':'Superconnector','openchat':'OpenChat','ideaflow-index':'Ideaflow apps index','open-recordings':'Open Recordings','unknown':'','<script>':'','constructor':'','__proto__':'','toString':''}).concat([['__proto__','']])) {
+ for(const [key,expected] of Object.entries({'unlinked':'Unlinked','superconnector':'Superconnector','openchat':'OpenChat','ideaflow-index':'Ideaflow apps index','open-recordings':'Open Recordings','bookshelves':'Bookshelves','unknown':'','<script>':'','constructor':'','__proto__':'','toString':''}).concat([['__proto__','']])) {
   const field={value:''};vm.runInNewContext(snippet,{URLSearchParams,location:{search:'?interest='+encodeURIComponent(key)},document:{getElementById:()=>field}});assert.equal(field.value,expected,key);
  }
 });
