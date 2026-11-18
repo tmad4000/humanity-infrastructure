@@ -20,6 +20,7 @@ test('signup captures privately, default opt-in off, duplicates preserve state, 
  assert.equal(result.status,200);assert.equal(result.headers.get('Cache-Control'),'no-store');
  const originalStatus=result.status, originalHeaders=[...result.headers];
  const originalBody=await result.text();assert.equal(originalBody,'{"ok":true}');
+ const activeDuplicate=await context.route(request({email:'test@example.com'}),env);assert.equal(activeDuplicate.status,originalStatus);assert.deepEqual([...activeDuplicate.headers],originalHeaders);assert.equal(await activeDuplicate.text(),originalBody);
  const unsubscribeUrl='https://example.com/unsubscribe?t='+rows[0].unsubscribe_token;assert.equal(rows.length,1);assert.equal(rows[0].email,'test@example.com');assert.equal(rows[0].public_opt_in,0);assert.equal(rows[0].utm,'{"utm_source":"test"}');
  result=await context.route(new Request(unsubscribeUrl),env);assert.equal(result.status,200);assert.ok(rows[0].unsubscribed_at);
  assert.equal((await context.route(new Request(unsubscribeUrl),env)).status,200);
@@ -45,7 +46,7 @@ test('CSV requires bearer secret, escapes formulas, includes opt-outs and unsubs
 test('query prefills only known own keys, ignores arbitrary and inherited properties',()=>{
  const html=fs.readFileSync('index.html','utf8');
  const snippet=html.slice(html.indexOf('const signupInterestLabels ='),html.indexOf("document.getElementById('letter-form').addEventListener"));
- for(const [key,expected] of Object.entries({'unlinked':'Unlinked','superconnector':'Superconnector','openchat':'OpenChat','ideaflow-index':'Ideaflow apps index','open-recordings':'Open Recordings','unknown':'','<script>':'','constructor':'','__proto__':'','toString':''})) {
+ for(const [key,expected] of Object.entries({'unlinked':'Unlinked','superconnector':'Superconnector','openchat':'OpenChat','ideaflow-index':'Ideaflow apps index','open-recordings':'Open Recordings','unknown':'','<script>':'','constructor':'','__proto__':'','toString':''}).concat([['__proto__','']])) {
   const field={value:''};vm.runInNewContext(snippet,{URLSearchParams,location:{search:'?interest='+encodeURIComponent(key)},document:{getElementById:()=>field}});assert.equal(field.value,expected,key);
  }
 });
