@@ -7,14 +7,14 @@ vm.runInContext(fs.readFileSync('signup.js','utf8') + '\nthis.route = handleSign
 function fixture() {
  const rows = [], rate = new Map();
  const db = { prepare(sql) { return { bind(...args) { this.args = args; return this; }, async first() {const k=this.args[0]; const attempts=(rate.get(k)||0)+1;rate.set(k,attempts);return {attempts};}, async run() {
-  if(sql.startsWith('INSERT INTO signups')) { const existing=rows.find(r=>r.email===this.args[1]);if(existing) {if(this.args[10])existing.interest=this.args[2];if(this.args[11])existing.handle=this.args[3];if(!existing.handle)existing.public_opt_in=0;else if(this.args[13])existing.public_opt_in=this.args[14];existing.consent_at=this.args[5];return {meta:{changes:1}};} rows.push(Object.fromEntries(['id','email','interest','handle','public_opt_in','consent_at','source_page','utm','referrer','unsubscribe_token'].map((k,i)=>[k,this.args[i]]))); return {meta:{changes:1}}; }
+  if(sql.startsWith('INSERT INTO signups')) { const existing=rows.find(r=>r.email===this.args[1]);if(existing) {if(this.args[10] && this.args[2] && !existing.interest)existing.interest=this.args[2];if(this.args[11])existing.handle=this.args[3];if(!existing.handle)existing.public_opt_in=0;else if(this.args[13])existing.public_opt_in=this.args[14];existing.consent_at=this.args[5];return {meta:{changes:1}};} rows.push(Object.fromEntries(['id','email','interest','handle','public_opt_in','consent_at','source_page','utm','referrer','unsubscribe_token'].map((k,i)=>[k,this.args[i]]))); return {meta:{changes:1}}; }
   if(sql.startsWith('UPDATE signups')) {const row=rows.find(r=>r.unsubscribe_token===this.args[1]);if(row)row.unsubscribed_at=this.args[0];return {meta:{changes:row?1:0}};}
   return {meta:{changes:0}};
  }, async all() { return {results:rows}; } }; } };
  return {rows, env:{SIGNUPS:db,RATE_LIMIT_SALT:'test-salt',ADMIN_EXPORT_TOKEN:'test-admin'}};
 }
 function request(data, extra={}) {return new Request('https://example.com/api/signup',{method:'POST',headers:{'Content-Type':'application/json','CF-Connecting-IP':'192.0.2.1',...extra},body:JSON.stringify(data)});}
-test('signup captures privately, default opt-in off, duplicates update interest/consent and preserve opt-out, unsubscribe is idempotent', async()=>{
+test('signup captures privately, default opt-in off, duplicates retain first interest, refresh consent and preserve opt-out, unsubscribe is idempotent', async()=>{
  const {rows,env}=fixture();
  let result=await context.route(request({email:' TEST@example.com ',interest:'building tools',handle:'@builder',utm:{utm_source:'test',unwanted:'no'}}),env);
  assert.equal(result.status,200);assert.equal(result.headers.get('Cache-Control'),'no-store');
@@ -22,11 +22,11 @@ test('signup captures privately, default opt-in off, duplicates update interest/
  const originalBody=await result.text();assert.equal(originalBody,'{"ok":true}');
  rows[0].consent_at='2000-01-01T00:00:00.000Z';
  const activeDuplicate=await context.route(request({email:'test@example.com',interest:'updated interest'}),env);assert.equal(activeDuplicate.status,originalStatus);assert.deepEqual([...activeDuplicate.headers],originalHeaders);assert.equal(await activeDuplicate.text(),originalBody);
- assert.equal(rows[0].interest,'updated interest');assert.notEqual(rows[0].consent_at,'2000-01-01T00:00:00.000Z');
+ assert.equal(rows[0].interest,'building tools');assert.notEqual(rows[0].consent_at,'2000-01-01T00:00:00.000Z');
  const unsubscribeUrl='https://example.com/unsubscribe?t='+rows[0].unsubscribe_token;assert.equal(rows.length,1);assert.equal(rows[0].email,'test@example.com');assert.equal(rows[0].public_opt_in,0);assert.equal(rows[0].utm,'{"utm_source":"test"}');
  result=await context.route(new Request(unsubscribeUrl),env);assert.equal(result.status,200);assert.ok(rows[0].unsubscribed_at);
  assert.equal((await context.route(new Request(unsubscribeUrl),env)).status,200);
- const duplicate=await context.route(request({email:'test@example.com',interest:'opted-out interest'}),env);assert.equal(duplicate.status,originalStatus);assert.deepEqual([...duplicate.headers],originalHeaders);assert.equal(await duplicate.text(),originalBody);assert.equal(rows[0].public_opt_in,0);assert.ok(rows[0].unsubscribed_at);assert.equal(rows[0].interest,'opted-out interest');
+ const duplicate=await context.route(request({email:'test@example.com',interest:'opted-out interest'}),env);assert.equal(duplicate.status,originalStatus);assert.deepEqual([...duplicate.headers],originalHeaders);assert.equal(await duplicate.text(),originalBody);assert.equal(rows[0].public_opt_in,0);assert.ok(rows[0].unsubscribed_at);assert.equal(rows[0].interest,'building tools');
 });
 test('rejects bad email, long interest, invalid handle, oversized and cross-origin requests',async()=>{
  for(const payload of [{email:'bad'}, {email:'ok@example.com',interest:'a'.repeat(201)},{email:'ok@example.com',handle:'not a handle'}]) assert.equal((await context.route(request(payload),fixture().env)).status,400);
@@ -73,4 +73,16 @@ test('handle-only and publicity-only patches respect independent presence and re
  await context.route(request({email:'patch@example.com',handle:''}),env);assert.equal(rows[0].public_opt_in,0);
  const empty=fixture();await context.route(request({email:'empty@example.com',public_opt_in:true}),empty.env);assert.equal(empty.rows[0].public_opt_in,0);
  await context.route(request({email:'empty@example.com',public_opt_in:true}),empty.env);assert.equal(empty.rows[0].public_opt_in,0);
+});
+
+test('omitted, empty, whitespace and replacement interests preserve the first nonempty value',async()=>{
+ for(const data of [{},{interest:''},{interest:'   '},{interest:'replacement'}]) {
+  const {rows,env}=fixture();await context.route(request({email:'keep@example.com',interest:'first interest'}),env);
+  const token=rows[0].unsubscribe_token;rows[0].consent_at='2000-01-01';
+  const response=await context.route(request({email:'keep@example.com',...data}),env);
+  assert.equal(await response.text(),'{"ok":true}');assert.equal(rows[0].interest,'first interest');assert.equal(rows[0].unsubscribe_token,token);assert.notEqual(rows[0].consent_at,'2000-01-01');
+ }
+ const empty=fixture();await context.route(request({email:'fill@example.com',interest:'  '}),empty.env);
+ await context.route(request({email:'fill@example.com',interest:'  first useful interest  '}),empty.env);
+ assert.equal(empty.rows[0].interest,'first useful interest');
 });
