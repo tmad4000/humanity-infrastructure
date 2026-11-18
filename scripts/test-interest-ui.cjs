@@ -36,6 +36,7 @@ if (!origin) throw Error('Usage: node scripts/test-interest-ui.cjs <preview-orig
     assert.equal(await evaluate("document.querySelector('#signal-form').elements.letter_opt_in.checked"),false);
     await evaluate("document.getElementById('signal-form').requestSubmit()");await new Promise(r=>setTimeout(r,100));
     assert.equal(await evaluate("document.getElementById('signal-thanks').hidden"),false);
+    await evaluate("document.getElementById('signal-tweet').addEventListener('click',event=>event.preventDefault(),{once:true});document.getElementById('signal-tweet').click()");
     const anonymous=await evaluate('signalRequests[0]');assert.equal(anonymous.item_key,'lastbook');assert.equal(anonymous.kind,'want');assert.equal(anonymous.email,'');assert.equal(anonymous.letter_opt_in,false);assert.equal(anonymous.utm.utm_source,'ui-test');
     const intent=new URL(await evaluate("document.getElementById('signal-tweet').href"));assert.equal(intent.hostname,'twitter.com');const shared=new URL(intent.searchParams.get('url'));assert.equal(shared.searchParams.get('ref'),'x-interest');assert.equal(shared.hash,'#lastbook');
     assert.equal(await evaluate("document.querySelector('#lastbook [data-interest-count]').textContent"),'3 want signals');
@@ -53,8 +54,20 @@ if (!origin) throw Error('Usage: node scripts/test-interest-ui.cjs <preview-orig
     assert.equal(await evaluate("document.querySelectorAll('#witgrid [data-signal-kind]').length"),2);
     await send('Emulation.setDeviceMetricsOverride',{width:1280,height:900,deviceScaleFactor:1,mobile:false},sid);assert.equal(await evaluate("document.documentElement.scrollWidth > innerWidth"),false);
     assert.equal(await evaluate("!!document.querySelector('footer a[href=\"/classic\"]')"),true);
-    const events=await evaluate('hiEvents');assert.deepEqual(events.map(event=>event.name),['like_start','like','like_start','like']);
-    for(const event of events)assert.deepEqual(Object.keys(event.props).sort(),['item_key','kind']);
+    assert.equal(await evaluate("document.querySelectorAll('#buildgrid a.claim,#witgrid a.claim').length"),0);
+    const questKey=await evaluate("document.querySelector('#buildgrid [data-interest-item]').dataset.interestItem");
+    await evaluate("window.signalFail=true;document.querySelector('#buildgrid [data-signal-kind=want]').click()");await new Promise(r=>setTimeout(r,100));
+    assert.equal(await evaluate("document.getElementById('letter-dialog').open"),false);
+    await evaluate("document.querySelector('#buildgrid [data-signal-kind=want]').click()");await new Promise(r=>setTimeout(r,100));
+    assert.equal(await evaluate("document.getElementById('letter-dialog').open"),true);assert.equal(await evaluate("document.getElementById('letter-title').textContent"),'Want updates on this? Leave your email');
+    const like=await evaluate('signalRequests[4]');assert.deepEqual(Object.keys(like).sort(),['item_key','kind','website']);assert.equal(like.item_key,questKey);assert.equal(like.kind,'want');
+    await key('Escape');const before=await evaluate('signalRequests.length');
+    await evaluate("document.querySelector('#buildgrid [data-signal-kind=want]').click()");await new Promise(r=>setTimeout(r,50));assert.equal(await evaluate('signalRequests.length'),before);await key('Escape');
+    assert.equal(await evaluate("document.querySelector('#buildgrid [data-signal-kind=want]').getAttribute('aria-pressed')"),'true');
+    await evaluate("document.querySelector('#witgrid [data-signal-kind=want]').click()");await new Promise(r=>setTimeout(r,100));
+    assert.equal(await evaluate("!!document.querySelector('#letter-context-links a[href^=\"https://worldissuetracker.com/\"]')"),true);await key('Escape');
+    const events=await evaluate('hiEvents');assert.deepEqual(events.map(event=>event.name),['interest_want','interest_tweet_intent','interest_building','interest_want','interest_want']);
+    for(const event of events)assert.deepEqual(Object.keys(event.props).sort(),['item_key','placement']);
     assert.doesNotMatch(JSON.stringify(events),/builder@example|maker|letter_opt_in/);
     console.log('PASS interest UI: every static/local/allowlisted-quest card, anonymous/contact flow, count threshold, private builders, retry, focus/Escape, tweet intent/referral, email-modal handoff, filters and mobile/desktop; fetch stubbed, no posts or subscriber writes');
   } finally {

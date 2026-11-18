@@ -16,4 +16,18 @@ Apply `migrations/0002_interest_signals.sql` separately to the preview and produ
 
 Run `node --test tests/*.test.cjs` for actual SQLite-backed interest SQL lifecycle, threshold/privacy, shared rate limit, daily uniqueness, consent/unsubscribe, private CSV and deletion tests, alongside signup/modal regressions. `python3 scripts/build.py` must reproduce `worker.js`. `/classic`, its footer link, archived `/v4`, gallery and existing Connect cards remain available.
 
-Analytics contract: feature-owned optional `hiTrack` emits `like_start` after a valid form opens and `like` only after an HTTP-success `{ok:true}` response, with fixed `{item_key,kind}` properties. No contact/form values are sent. A success is an accepted submission (possibly a daily duplicate), not proof of a new unique vote; counts remain authoritative. Analytics should not attach duplicate button listeners.
+
+## Join-a-Quest links and anonymous ♥ Likes
+
+Root's newer asks are bundled here. `/join` opens the email-first signup with a short World Quest Guild invitation. `/join?quest=<name-or-slug>` or `/?interest=world-quest-guild&quest=<slug>#letter` sanitizes free quest text (normalizes Unicode, strips unsupported characters, collapses whitespace/hyphens/underscores, caps to 100 characters), renders it only with `.textContent`/input `.value`, and submits `I want to join the quest: <name>` with the initial email. This captures the context even if the optional second step is skipped, subject to the existing first-nonempty rule. Unknown ordinary interest keys remain ignored.
+
+Generic link for the Guild Doc: https://humanityinfrastructure.com/join
+
+Example links (existing quest names):
+- https://humanityinfrastructure.com/join?quest=open-templates-for-all-kinds-of-work
+- https://humanityinfrastructure.com/join?quest=best-in-class-tool-registry
+- https://humanityinfrastructure.com/join?quest=integrate-bootloader-thesis-into-humanity-infrastructure-narrative
+
+Local Build List and allowlisted live quest Claim actions become ♥ Like. One click posts only item_key/kind/empty honeypot, without email, handle, attribution or letter consent. After accepted success it opens the optional email modal prefilled with the quest and a safe HTTPS World Issue Tracker link when available. Closing the popup skips email. The browser stores only public item keys and UTC-day values under `hi-quest-likes-v1`; a repeat click that day reopens the optional popup without another POST. Server-side daily uniqueness and the shared hourly limiter remain authoritative if localStorage is unavailable or cleared. Counts remain aggregates from three. The separate “I'm building this” path remains private contact capture.
+
+Final coordinator analytics contract supersedes the early hook names: feature-owned optional `interest_want` or `interest_building` only after HTTP success with `{ok:true}`, plus `interest_tweet_intent` only on the user's intent-link click. Fixed properties are `{item_key, placement}` where placement is `tool_card`, `build_list` or `quest_card`. No start event and no PII/form values. Analytics must not attach duplicate generic signal listeners.

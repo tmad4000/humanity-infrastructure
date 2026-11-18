@@ -256,6 +256,7 @@
   .letter small{display:block;color:var(--muted);margin-top:14px}.letter .close{position:absolute;right:14px;top:12px;border:0;background:none;color:var(--text);font-size:1.3rem;padding:4px 8px}
   .letter [hidden]{display:none!important}.letter :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
   .letter-invite{width:100%;margin:8px 0}.letter-invite button,.signup-link{background:none;border:0;padding:0;color:var(--accent);font:inherit;text-decoration:underline;text-underline-offset:4px;cursor:pointer}
+  #letter-context-links:empty{display:none}
   .signal-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:18px}.signal-actions .btn{font-size:.8rem;padding:7px 10px;cursor:pointer;font-family:inherit}.signal-count{font-size:.78rem;color:var(--muted);width:100%}.signal-dialog[hidden]{display:none}
 </style>
 <script src="/analytics.js"></script>
@@ -508,7 +509,8 @@
     <p>We're building the more general, not-just-engineering equivalent of the open-source movement. There's an enormous amount of low-hanging fruit — and we're looking for designers, engineers, writers, healers, and well-intended humans of every kind.</p>
     <div class="btns" style="justify-content:center">
       <a class="btn primary" href="mailto:jacob@ideaflow.io?subject=Joining%20the%20Codex%20%2F%20Humanity%20Infrastructure">Get involved →</a>
-      <a class="btn ghost" href="https://docs.google.com/document/d/1OggVeoEN4zAafRAox3yjFYtNwmYFJQHovXLviWI69zY/edit" target="_blank" rel="noopener">Join a guild</a>
+      <a class="btn primary" href="/join">Join a quest →</a>
+      <a class="btn ghost" href="https://docs.google.com/document/d/1OggVeoEN4zAafRAox3yjFYtNwmYFJQHovXLviWI69zY/edit" target="_blank" rel="noopener">World Quest Guild doc ↗</a>
     </div>
     <span class="direct">World Quest Guild · short link <a href="https://quests.world" target="_blank" rel="noopener">quests.world</a> (being repaired)</span>
   </div>
@@ -551,6 +553,7 @@
 <button class="close" type="button" data-signup-close aria-label="Close signup">×</button>
 <h2 id="letter-title">Sign up for the interest list</h2>
 <p id="letter-description">A short, occasional letter about tools for human flourishing. No spam; unsubscribe any time.</p>
+<p id="letter-context-links"></p>
 <form id="letter-form">
 <div id="letter-email-step">
 <label for="letter-email">Email</label><input id="letter-email" name="email" type="email" maxlength="254" autocomplete="email" required autofocus>
@@ -611,17 +614,26 @@
 // Shelf links use /?interest=<approved-key>#letter.
 const signupInterestLabels = {
   'unlinked': 'Unlinked', 'superconnector': 'Superconnector', 'openchat': 'OpenChat',
-  'ideaflow-index': 'Ideaflow apps index', 'open-recordings': 'Open Recordings', 'bookshelves': 'Bookshelves'
+  'ideaflow-index': 'Ideaflow apps index', 'open-recordings': 'Open Recordings', 'bookshelves': 'Bookshelves', 'world-quest-guild': 'World Quest Guild'
 };
-const signupInterestParam = new URLSearchParams(location.search).get('interest');
-if (Object.hasOwn(signupInterestLabels, signupInterestParam)) document.getElementById('letter-interest').value = signupInterestLabels[signupInterestParam];
+const signupParams = new URLSearchParams(location.search);
+const signupInterestParam = signupParams.get('interest');
+function sanitizeSignupQuest(raw) {
+  return String(raw || '').normalize('NFKC').replace(/[^\p{L}\p{N} .,:()'_-]/gu, ' ').replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 100).trim();
+}
+const signupJoinRequested = ['/join','/join/'].includes(location.pathname) || signupInterestParam === 'world-quest-guild';
+const signupQuestName = signupJoinRequested ? sanitizeSignupQuest(signupParams.get('quest')) : '';
+const signupPrefilledInterest = signupJoinRequested ? (signupQuestName ? 'I want to join the quest: '+signupQuestName : 'I want to join World Quest Guild') : (Object.hasOwn(signupInterestLabels, signupInterestParam) ? signupInterestLabels[signupInterestParam] : '');
+const signupJoinDescription = signupJoinRequested ? (signupQuestName ? 'Join a quest: '+signupQuestName+'. ' : '')+'World Quest Guild welcomes people who want to help. Leave your email; more details are optional.' : '';
+if (signupPrefilledInterest) document.getElementById('letter-interest').value = signupPrefilledInterest;
+if (signupJoinDescription) document.getElementById('letter-description').textContent = signupJoinDescription;
 
 const signupDialog = document.getElementById('letter-dialog');
 const signupForm = document.getElementById('letter-form');
 const signupEmail = document.getElementById('letter-email');
 const signupDetails = document.getElementById('letter-details-step');
 const signupStatus = signupForm.querySelector('.status');
-let signupStep = 1, signupSubmitting = false, signupTrigger = null, signupSavedEmail = '';
+let signupStep = 1, signupSubmitting = false, signupTrigger = null, signupSavedEmail = '', signupContextInterest = signupJoinRequested ? signupPrefilledInterest : '';
 function openSignup() {
   if (signupDialog.open) return;
   signupTrigger = document.activeElement;
@@ -633,10 +645,30 @@ function finishSignup() {
   signupForm.reset(); signupEmail.disabled = false;
   document.getElementById('letter-email-step').hidden = false; signupDetails.hidden = true;
   signupDetails.querySelectorAll('input,textarea').forEach(field => field.disabled = true);
-  if (Object.hasOwn(signupInterestLabels, signupInterestParam)) document.getElementById('letter-interest').value = signupInterestLabels[signupInterestParam];
+  document.getElementById('letter-interest').value = signupPrefilledInterest;
+  signupContextInterest = signupJoinRequested ? signupPrefilledInterest : '';
+  document.getElementById('letter-context-links').replaceChildren();
   document.getElementById('letter-title').textContent = 'Sign up for the interest list';
-  document.getElementById('letter-description').textContent = 'A short, occasional letter about tools for human flourishing. No spam; unsubscribe any time.';
+  document.getElementById('letter-description').textContent = signupJoinDescription || 'A short, occasional letter about tools for human flourishing. No spam; unsubscribe any time.';
   signupStatus.textContent = '';
+}
+function openSignupWithInterest(label, description, links = []) {
+  finishSignup(); signupContextInterest = String(label).slice(0, 200);
+  document.getElementById('letter-interest').value = signupContextInterest;
+  document.getElementById('letter-title').textContent = 'Want updates on this? Leave your email';
+  document.getElementById('letter-description').textContent = String(description || 'Email is optional. Close this window to skip.');
+  const container = document.getElementById('letter-context-links');
+  for (const link of links) {
+    try {
+      const url = new URL(link.href);
+      const allowed = url.protocol === 'https:' && (url.hostname === 'worldissuetracker.com' || url.hostname.endsWith('.worldissuetracker.com') || (url.hostname === 'twitter.com' && url.pathname === '/intent/tweet'));
+      if (!allowed) continue;
+      const anchor = document.createElement('a'); anchor.href = url.href; anchor.target = '_blank'; anchor.rel = 'noopener noreferrer'; anchor.textContent = link.label;
+      if (typeof link.onClick === 'function') anchor.addEventListener('click', link.onClick);
+      container.append(anchor, document.createTextNode(' '));
+    } catch { /* Ignore invalid source links. */ }
+  }
+  openSignup();
 }
 document.querySelector('[data-signup-skip]').addEventListener('click', finishSignup);
 document.querySelectorAll('[data-signup-open]').forEach(button => button.addEventListener('click', openSignup));
@@ -651,7 +683,7 @@ signupDialog.addEventListener('keydown', event => {
 });
 // Native dialog provides modality and Escape-to-close. Hash links preserve shelf integration.
 window.addEventListener('hashchange', () => { if (location.hash === '#letter') openSignup(); });
-window.addEventListener('load', () => { if (location.hash === '#letter') setTimeout(openSignup, 0); });
+window.addEventListener('load', () => { if (location.hash === '#letter' || signupJoinRequested) setTimeout(openSignup, 0); });
 signupForm.addEventListener('submit', async function(event) {
   event.preventDefault();
   if (signupSubmitting) return;
@@ -661,6 +693,7 @@ signupForm.addEventListener('submit', async function(event) {
   const params = new URLSearchParams(location.search), utm = {};
   ['source','medium','campaign','term','content'].forEach(key => { if (params.has('utm_' + key)) utm['utm_' + key] = params.get('utm_' + key); });
   const payload = {email,website:signupForm.elements.website.value,source_page:location.pathname,utm,referrer:document.referrer};
+  if (submittedStep === 1 && signupContextInterest) payload.interest = signupContextInterest;
   if (submittedStep === 2) Object.assign(payload, {interest:signupForm.elements.interest.value,handle:signupForm.elements.handle.value,public_opt_in:signupForm.elements.public_opt_in.checked});
   signupSubmitting = true;
   signupForm.querySelectorAll('button[type=submit]').forEach(button => button.disabled = true);
@@ -757,11 +790,11 @@ signupForm.addEventListener('submit', async function(event) {
       BUILD.filter(function(b){return f==='all'||b.s===f}).forEach(function(b){
         var lab=labels[b.s]||["idea","Idea"];
         var ext=b.u?'<a class="ext" href="'+b.u+'" target="_blank" rel="noopener">↗ link</a>':'';
-        var claim='<a class="claim" href="https://missing-civ-infrastructure.worldissuetracker.com/" target="_blank" rel="noopener">Claim →</a>';
+        // Anonymous quest Like is mounted by interest-ui.js.
         var el=document.createElement('div');
         el.className='bcard';
         el.dataset.interestItem=b.k; el.id=b.k;
-        el.innerHTML='<span class="tag '+lab[0]+'">'+lab[1]+'</span><div class="cat">'+b.c+'</div><h3>'+b.t+'</h3><p>'+b.d+'</p><div class="row">'+claim+ext+'</div>';
+        el.innerHTML='<span class="tag '+lab[0]+'">'+lab[1]+'</span><div class="cat">'+b.c+'</div><h3>'+b.t+'</h3><p>'+b.d+'</p><div class="row">'+ext+'</div>';
         grid.appendChild(el);
       });
     }
@@ -790,12 +823,12 @@ signupForm.addEventListener('submit', async function(event) {
         var assignee=i.assignee_display_name;
         var action=assignee
           ? '<span class="claimedby">✓ Claimed by '+esc(assignee)+'</span>'
-          : '<a class="claim" href="'+issueUrl(i)+'" target="_blank" rel="noopener">Claim →</a>';
-        var votes=(i.votes!=null)?'<span class="votes">▲ '+i.votes+'</span>':'';
+          : '';
+        var votes=''; // HI like counts are loaded from the aggregate-only interest endpoint.
         var desc=esc((i.description||'').split(' Part of the Humanity')[0]).slice(0,150);
         var el=document.createElement('div');
         el.className='bcard';
-        el.dataset.interestItem='quest-'+i.slug; el.id='quest-'+i.slug;
+        el.dataset.interestItem='quest-'+i.slug; el.id='quest-'+i.slug; el.dataset.questUrl=issueUrl(i);
         el.innerHTML='<span class="tag '+(assignee?'build':'idea')+'">'+(assignee?'🔨 Claimed':'💡 Open')+'</span>'
           +'<div class="cat">'+esc(i.category||'infrastructure')+'</div>'
           +'<h3><a href="'+issueUrl(i)+'" target="_blank" rel="noopener" style="color:inherit">'+esc(i.title)+'</a></h3>'

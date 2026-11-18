@@ -86,3 +86,16 @@ test('omitted, empty, whitespace and replacement interests preserve the first no
  await context.route(request({email:'fill@example.com',interest:'  first useful interest  '}),empty.env);
  assert.equal(empty.rows[0].interest,'first useful interest');
 });
+
+test('Join-a-Quest free text is sanitized/capped, own-key only, and uses a text-only invite',()=>{
+ const html=fs.readFileSync('index.html','utf8');const snippet=html.slice(html.indexOf('const signupInterestLabels ='),html.indexOf('const signupDialog ='));
+ for(const [pathname,search] of [['/join','?quest=open-document-signing'],['/','?interest=world-quest-guild&quest=open-document-signing']]) {
+  const fields={'letter-interest':{value:''},'letter-description':{textContent:''}};
+  vm.runInNewContext(snippet,{URLSearchParams,location:{pathname,search},document:{getElementById:id=>fields[id]}});
+  assert.equal(fields['letter-interest'].value,'I want to join the quest: open document signing');assert.match(fields['letter-description'].textContent,/World Quest Guild welcomes/);
+ }
+ const fields={'letter-interest':{value:''},'letter-description':{textContent:''}};
+ vm.runInNewContext(snippet,{URLSearchParams,location:{pathname:'/join',search:'?quest='+encodeURIComponent('<img src=x onerror=alert(1)> '+ 'x'.repeat(300))},document:{getElementById:id=>fields[id]}});
+ assert.doesNotMatch(fields['letter-interest'].value,/[<>]/);assert.ok(fields['letter-interest'].value.length<=200);assert.ok(fields['letter-interest'].value.slice('I want to join the quest: '.length).length<=100);assert.ok(fields['letter-description'].textContent.length<300);
+ assert.match(html,/if \(submittedStep === 1 && signupContextInterest\) payload.interest = signupContextInterest/);
+});
