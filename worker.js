@@ -502,7 +502,7 @@ const MAIN_HTML = `<!DOCTYPE html>
       <p style="margin-top:16px"><a href="/?interest=ideaflow-index#letter">Express interest / request access →<span class="sr-only"> Ideaflow apps index</span></a></p>
     </article>
     <article class="card" id="open-recordings">
-      <h3><a href="https://index.ideaflow.app/#open-recordings" target="_blank" rel="noopener">Open Recordings</a></h3>
+      <h3><a href="https://index.ideaflow.app" target="_blank" rel="noopener">Open Recordings</a></h3>
       <p class="needline">Alpha</p>
       <p>Record and revisit conversations and highlights, so shared insights stay useful.</p>
       <p style="margin-top:16px"><a href="/?interest=open-recordings#letter">Express interest / request access →<span class="sr-only"> Open Recordings</span></a></p>
@@ -605,7 +605,7 @@ const MAIN_HTML = `<!DOCTYPE html>
 <section id="supporters"><div class="wrap">
   <div class="section-head">
     <h2>Supporters</h2>
-    <p><a href="https://www.ideaflow.io">Ideaflow</a> — tools for connecting people and ideas. Explore the <a href="https://index.ideaflow.app">Ideaflow apps index</a>.</p>
+    <p>Supported by <a href="https://www.ideaflow.io">Ideaflow</a>, the maintainer’s company. Explore the <a href="https://index.ideaflow.app">Ideaflow apps index</a>.</p>
   </div>
 </div></section>
 
@@ -628,7 +628,7 @@ const MAIN_HTML = `<!DOCTYPE html>
   <div style="text-align:right">
     <a href="https://www.notion.so/jacobblog/Humanity-3-0-and-Dharmic-blueprint-314fda9cff6380bfae57ff843cce32dd" target="_blank" rel="noopener">Blueprint (Notion)</a> ·
     <a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" target="_blank" rel="noopener">Master doc</a><br/>
-    <span class="ver">v0.5.2 · 2026-11-18</span>
+    <span class="ver">v0.5.3 · 2026-11-18</span>
   </div>
 </div>
   <!-- Design versions + legacy -->
