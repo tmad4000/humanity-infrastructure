@@ -30,6 +30,7 @@ if (!origin) throw Error('Usage: node scripts/test-interest-ui.cjs <preview-orig
     assert.equal(await evaluate("document.querySelector('#signudoc [data-interest-count]').textContent"),'3 want signals');
     assert.equal(await evaluate("document.documentElement.scrollWidth > innerWidth"),false);
     assert.equal(await evaluate("document.querySelectorAll('a [data-signal-kind]').length"),0);
+    assert.equal(await evaluate("document.querySelectorAll('#bookshelves [data-signal-kind]').length"),2);
     await evaluate("document.querySelector('#lastbook [data-signal-kind=want]').click()");
     assert.equal(await evaluate('document.activeElement.id'),'signal-email');
     assert.equal(await evaluate("document.querySelector('#signal-form').elements.letter_opt_in.checked"),false);
