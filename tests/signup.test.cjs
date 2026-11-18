@@ -18,10 +18,12 @@ test('signup captures privately, default opt-in off, duplicates preserve state, 
  const {rows,env}=fixture();
  let result=await context.route(request({email:' TEST@example.com ',interest:'building tools',handle:'@builder',utm:{utm_source:'test',unwanted:'no'}}),env);
  assert.equal(result.status,200);assert.equal(result.headers.get('Cache-Control'),'no-store');
- const body=await result.json();assert.ok(body.unsubscribe_url);assert.equal(rows.length,1);assert.equal(rows[0].email,'test@example.com');assert.equal(rows[0].public_opt_in,0);assert.equal(rows[0].utm,'{"utm_source":"test"}');
- result=await context.route(new Request(body.unsubscribe_url),env);assert.equal(result.status,200);assert.ok(rows[0].unsubscribed_at);
- assert.equal((await context.route(new Request(body.unsubscribe_url),env)).status,200);
- const duplicate=await (await context.route(request({email:'test@example.com',public_opt_in:true}),env)).json();assert.equal(duplicate.unsubscribe_url,undefined);assert.equal(rows[0].public_opt_in,0);assert.ok(rows[0].unsubscribed_at);
+ const originalStatus=result.status, originalHeaders=[...result.headers];
+ const originalBody=await result.text();assert.equal(originalBody,'{"ok":true}');
+ const unsubscribeUrl='https://example.com/unsubscribe?t='+rows[0].unsubscribe_token;assert.equal(rows.length,1);assert.equal(rows[0].email,'test@example.com');assert.equal(rows[0].public_opt_in,0);assert.equal(rows[0].utm,'{"utm_source":"test"}');
+ result=await context.route(new Request(unsubscribeUrl),env);assert.equal(result.status,200);assert.ok(rows[0].unsubscribed_at);
+ assert.equal((await context.route(new Request(unsubscribeUrl),env)).status,200);
+ const duplicate=await context.route(request({email:'test@example.com',public_opt_in:true}),env);assert.equal(duplicate.status,originalStatus);assert.deepEqual([...duplicate.headers],originalHeaders);assert.equal(await duplicate.text(),originalBody);assert.equal(rows[0].public_opt_in,0);assert.ok(rows[0].unsubscribed_at);
 });
 test('rejects bad email, long interest, invalid handle, oversized and cross-origin requests',async()=>{
  for(const payload of [{email:'bad'}, {email:'ok@example.com',interest:'a'.repeat(201)},{email:'ok@example.com',handle:'not a handle'}]) assert.equal((await context.route(request(payload),fixture().env)).status,400);
@@ -38,4 +40,12 @@ test('CSV requires bearer secret, escapes formulas, includes opt-outs and unsubs
  assert.equal((await context.route(new Request('https://example.com/admin/signups.csv'),env)).status,401);
  const res=await context.route(new Request('https://example.com/admin/signups.csv',{headers:{Authorization:'Bearer test-admin'}}),env);assert.equal(res.status,200);
  const csv=await res.text();assert.match(csv,/'=SUM\(A1\)/);assert.match(csv,/unsubscribe\?t=/);assert.equal(res.headers.get('Cache-Control'),'no-store');
+});
+
+test('query prefills only known own keys, ignores arbitrary and inherited properties',()=>{
+ const html=fs.readFileSync('index.html','utf8');
+ const snippet=html.slice(html.indexOf('const signupInterestLabels ='),html.indexOf("document.getElementById('letter-form').addEventListener"));
+ for(const [key,expected] of Object.entries({'unlinked':'Unlinked','superconnector':'Superconnector','openchat':'OpenChat','ideaflow-index':'Ideaflow apps index','open-recordings':'Open Recordings','unknown':'','<script>':'','constructor':'','__proto__':'','toString':''})) {
+  const field={value:''};vm.runInNewContext(snippet,{URLSearchParams,location:{search:'?interest='+encodeURIComponent(key)},document:{getElementById:()=>field}});assert.equal(field.value,expected,key);
+ }
 });

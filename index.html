@@ -499,7 +499,7 @@ const signupInterestLabels = {
   'ideaflow-index': 'Ideaflow apps index', 'open-recordings': 'Open Recordings'
 };
 const signupInterestParam = new URLSearchParams(location.search).get('interest');
-if (signupInterestParam) document.getElementById('letter-interest').value = (signupInterestLabels[signupInterestParam] || signupInterestParam).slice(0, 200);
+if (Object.hasOwn(signupInterestLabels, signupInterestParam)) document.getElementById('letter-interest').value = signupInterestLabels[signupInterestParam];
 
 document.getElementById('letter-form').addEventListener('submit', async function(event) {
   event.preventDefault();
@@ -512,7 +512,6 @@ document.getElementById('letter-form').addEventListener('submit', async function
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || 'Please try again later.');
     status.textContent = 'Thank you. If this email is new, you’re on the list.';
-    if (data.unsubscribe_url) { const link = document.createElement('a'); link.href = data.unsubscribe_url; link.textContent = ' Unsubscribe'; status.append(link); }
     form.reset();
   } catch(error) { status.textContent = error.message || 'Could not connect. Please try again.'; }
   finally { button.disabled = false; }

@@ -16,7 +16,10 @@ def sql(statement, params):
     return result['result'][0]['results']
 try:
     response=http('/api/signup',{'email':email,'interest':'smoke lifecycle','handle':'hi_test','public_opt_in':False,'source_page':'/smoke','utm':{'utm_source':'release-smoke'},'referrer':'https://example.com/'},{'Content-Type':'application/json','Origin':base})
-    body=json.load(response); assert body['ok']
+    body=json.load(response); assert body == {'ok': True}
+    duplicate=json.load(http('/api/signup',{'email':email},{'Content-Type':'application/json','Origin':base}))
+    assert duplicate == body
+    print(environment+': new/duplicate signup responses identical, no unsubscribe token exposed')
     row=sql('SELECT * FROM signups WHERE email = ?', [email])[0]
     assert row['interest']=='smoke lifecycle' and row['public_opt_in']==0 and row['unsubscribed_at'] is None
     assert json.loads(row['utm'])['utm_source']=='release-smoke' and row['consent_at']
@@ -24,7 +27,7 @@ try:
     export=http('/admin/signups.csv',headers={'Authorization':'Bearer '+secrets['ADMIN_EXPORT_TOKEN']}).read().decode()
     assert any(r['email']==email for r in csv.DictReader(io.StringIO(export)))
     print(environment+': authenticated CSV export verified')
-    unsubscribe=urllib.request.urlopen(urllib.request.Request(body['unsubscribe_url'], headers={'User-Agent':'HI-release-smoke/1.0'}));assert unsubscribe.status==200
+    unsubscribe=urllib.request.urlopen(urllib.request.Request(base+'/unsubscribe?t='+row['unsubscribe_token'], headers={'User-Agent':'HI-release-smoke/1.0'}));assert unsubscribe.status==200
     assert sql('SELECT unsubscribed_at FROM signups WHERE email = ?', [email])[0]['unsubscribed_at']
     print(environment+': one-click unsubscribe stored')
 finally:
