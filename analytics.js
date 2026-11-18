@@ -2,7 +2,7 @@
 (function () {
   'use strict';
   const routes = new Set(['/', '/classic', '/v2', '/v3', '/v4']);
-  const sources = new Set(['x', 'twitter', 'buzz', 'hi_newsletter', 'github', 'lastbook']);
+  const sources = new Set(['x', 'twitter', 'buzz', 'hi_newsletter', 'github', 'lastbook', 'x-interest']);
   function safeUrl(raw) {
     const url = new URL(raw || '/', location.origin);
     const path = routes.has(url.pathname.replace(/\/$/, '') || '/') ? (url.pathname.replace(/\/$/, '') || '/') : '/other';
@@ -42,11 +42,15 @@
     const placement = target.closest('footer') ? 'footer' : target.closest('header,nav') ? 'header' : 'body';
     if (target.matches('[data-signup-open]')) return window.hiTrack('newsletter_signup_start', {placement});
     const url = new URL(target.href, location.origin);
+    const declared = target.dataset.analyticsEvent;
+    if (['suggest_resource', 'pr_guide_open'].includes(declared)) return window.hiTrack(declared, {placement});
     if (!['http:', 'https:'].includes(url.protocol) || url.origin === location.origin) return;
     const host = url.hostname.replace(/^www\./, '');
-    const name = host === 'github.com' ? 'github_click' : ['x.com', 'twitter.com'].includes(host) ? 'x_outbound_click' : 'resource_outbound_click';
+    const listing = target.dataset.analyticsListing || target.closest('.card[id]')?.id;
+    const name = target.matches('.claim') ? 'quest_claim' : listing ? 'resource_outbound_click' : host === 'github.com' ? 'github_click' : ['x.com', 'twitter.com'].includes(host) ? 'x_outbound_click' : 'resource_outbound_click';
     const props = {placement, destination_host: host, elapsed_ms: Math.round(performance.now())};
-    if (host === 'lastbook.org') props.listing_id = 'lastbook';
+    if (listing && /^[a-z0-9-]{1,80}$/.test(listing)) props.listing_id = listing;
+    else if (host === 'lastbook.org') props.listing_id = 'lastbook';
     window.hiTrack(name, props);
   });
 })();

@@ -27,3 +27,9 @@ Release verification: normal browser UA on production, one pageview per page,
 allowed UTM/referrer retained, query PII removed, outbound events once, signup
 success only after success, DNT produces no ingestion, then read counts/events
 back from Umami. Preserve signup bindings and secrets; deploy through coordinator.
+
+Reserved interest events: `interest_want`, `interest_building`, and
+`interest_tweet_intent`, with only public item_key and fixed placement. The
+interest feature owns confirmed-success emission; never infer success from clicks.
+Resource clicks carry the shelf listing_id; guide/suggest and legacy quest-claim
+intent use distinct events. `ref=x-interest` is an approved share attribution.

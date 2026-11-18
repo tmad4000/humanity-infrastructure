@@ -128,7 +128,7 @@ const ANALYTICS_JS = `// Anonymous, cookieless analytics. Never pass form values
 (function () {
   'use strict';
   const routes = new Set(['/', '/classic', '/v2', '/v3', '/v4']);
-  const sources = new Set(['x', 'twitter', 'buzz', 'hi_newsletter', 'github', 'lastbook']);
+  const sources = new Set(['x', 'twitter', 'buzz', 'hi_newsletter', 'github', 'lastbook', 'x-interest']);
   function safeUrl(raw) {
     const url = new URL(raw || '/', location.origin);
     const path = routes.has(url.pathname.replace(/\\/$/, '') || '/') ? (url.pathname.replace(/\\/$/, '') || '/') : '/other';
@@ -168,11 +168,15 @@ const ANALYTICS_JS = `// Anonymous, cookieless analytics. Never pass form values
     const placement = target.closest('footer') ? 'footer' : target.closest('header,nav') ? 'header' : 'body';
     if (target.matches('[data-signup-open]')) return window.hiTrack('newsletter_signup_start', {placement});
     const url = new URL(target.href, location.origin);
+    const declared = target.dataset.analyticsEvent;
+    if (['suggest_resource', 'pr_guide_open'].includes(declared)) return window.hiTrack(declared, {placement});
     if (!['http:', 'https:'].includes(url.protocol) || url.origin === location.origin) return;
     const host = url.hostname.replace(/^www\\./, '');
-    const name = host === 'github.com' ? 'github_click' : ['x.com', 'twitter.com'].includes(host) ? 'x_outbound_click' : 'resource_outbound_click';
+    const listing = target.dataset.analyticsListing || target.closest('.card[id]')?.id;
+    const name = target.matches('.claim') ? 'quest_claim' : listing ? 'resource_outbound_click' : host === 'github.com' ? 'github_click' : ['x.com', 'twitter.com'].includes(host) ? 'x_outbound_click' : 'resource_outbound_click';
     const props = {placement, destination_host: host, elapsed_ms: Math.round(performance.now())};
-    if (host === 'lastbook.org') props.listing_id = 'lastbook';
+    if (listing && /^[a-z0-9-]{1,80}$/.test(listing)) props.listing_id = listing;
+    else if (host === 'lastbook.org') props.listing_id = 'lastbook';
     window.hiTrack(name, props);
   });
 })();
@@ -674,9 +678,9 @@ const MAIN_HTML = `<!DOCTYPE html>
   <p>Help grow Humanity Infrastructure. Suggest useful tools, open knowledge, practical guides or projects that help people flourish. You do not need to be a developer.</p>
   <p>Send the name, link, a short description and who it helps. Include access or licensing details and any affiliation. We review suggestions before featuring them.</p>
   <div style="display:flex;flex-wrap:wrap;gap:12px;margin:24px 0">
-    <a class="btn primary" href="https://github.com/tmad4000/humanity-infrastructure/issues/new?template=suggest-resource.yml">Suggest a resource on GitHub →</a>
-    <a class="btn ghost" href="mailto:jacob@ideaflow.io?subject=Humanity%20Infrastructure%20resource%20suggestion&amp;body=Name%3A%0ALink%3A%0AWho%20it%20helps%3A%0AAccess%20or%20license%3A%0AMy%20affiliation%3A">Suggest by email</a>
-    <a class="btn ghost" href="https://github.com/tmad4000/humanity-infrastructure/blob/main/CONTRIBUTING.md">Contribute a pull request →</a>
+    <a class="btn primary" data-analytics-event="suggest_resource" href="https://github.com/tmad4000/humanity-infrastructure/issues/new?template=suggest-resource.yml">Suggest a resource on GitHub →</a>
+    <a class="btn ghost" data-analytics-event="suggest_resource" href="mailto:jacob@ideaflow.io?subject=Humanity%20Infrastructure%20resource%20suggestion&amp;body=Name%3A%0ALink%3A%0AWho%20it%20helps%3A%0AAccess%20or%20license%3A%0AMy%20affiliation%3A">Suggest by email</a>
+    <a class="btn ghost" data-analytics-event="pr_guide_open" href="https://github.com/tmad4000/humanity-infrastructure/blob/main/CONTRIBUTING.md">Contribute a pull request →</a>
   </div>
   <p><a href="https://github.com/tmad4000/humanity-infrastructure">Browse the website source on GitHub</a> · <a href="https://index.ideaflow.app/build" target="_blank" rel="noopener">Build on Ideaflow</a> · <a href="https://index.ideaflow.app" target="_blank" rel="noopener">Ideaflow apps index</a> · <a href="https://worldissuetracker.com/tracker/lastbook">Lastbook community feedback and fixes</a></p>
 </div></section>
