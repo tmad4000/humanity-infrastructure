@@ -26,7 +26,7 @@ const MAIN_HTML = `<!DOCTYPE html>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Humanity Infrastructure — tools and knowledge for human flourishing</title>
-<meta name="description" content="Humanity Infrastructure: a free directory of tools and knowledge for human flourishing. Each shelf names a need and the best tool we know for it. Suggest what belongs." />
+<meta name="description" content="Humanity Infrastructure: a free directory of tools and knowledge for human flourishing. Find tools for practical needs, from offline knowledge to shared civic work. Suggest what belongs." />
 <meta property="og:title" content="Humanity Infrastructure — tools and knowledge for human flourishing" />
 <meta property="og:description" content="Knowledge is a birthright. So are the tools to use it. A free, open directory of tools and knowledge for human flourishing. Suggest what belongs." />
 <meta property="og:type" content="website" />
@@ -149,14 +149,12 @@ const MAIN_HTML = `<!DOCTYPE html>
   .claim-head p{color:var(--muted);max-width:640px;margin:0 auto;font-size:.98rem}
   .livedot{width:10px;height:10px;border-radius:50%;background:#ef5f5f;display:inline-block;box-shadow:0 0 0 0 rgba(239,95,95,.5);animation:pulse 2s infinite}
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(239,95,95,.5)}70%{box-shadow:0 0 0 8px rgba(239,95,95,0)}100%{box-shadow:0 0 0 0 rgba(239,95,95,0)}}
-  .shelves{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-bottom:44px}
-  .shelf{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:12px}
-  .shelf .need{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-warm);font-weight:700;margin:0}
-  .shelf .needline{font-size:1.12rem;font-weight:750;color:var(--text);letter-spacing:-.01em;margin:0;line-height:1.35}
-  .shelf .item{border-top:1px solid var(--border);padding-top:12px}
-  .shelf .item h3{margin:0 0 4px;font-size:1.02rem}
-  .shelf .item h3 a{color:var(--text)}
-  .shelf .item p{margin:0;color:var(--muted);font-size:.92rem}
+  .card.featured .needline{margin-bottom:8px;color:var(--muted);font-style:italic}
+  .card.featured .why{margin-top:12px;font-size:.88rem}
+  .card.featured .top>div{min-width:0}
+  .card.featured h3{padding-right:72px}
+  .card.featured h3 a{color:inherit}
+  .card.featured .url{overflow-wrap:anywhere}
   .badges{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0;padding:0;list-style:none}
   .badges li{font-size:.7rem;font-weight:650;padding:3px 8px;border-radius:999px;border:1px solid var(--border-strong);color:var(--muted)}
   .badges li.open{color:var(--accent);border-color:rgba(95,211,168,.35)}
@@ -165,8 +163,6 @@ const MAIN_HTML = `<!DOCTYPE html>
   .seemore{font-size:.86rem;font-weight:600;margin-top:auto}
   .direct{display:block;font-size:.78rem;color:var(--muted);margin-top:4px}
   .direct a{color:var(--muted);text-decoration:underline}
-  .maint{font-size:.68rem;color:var(--muted);font-weight:600;letter-spacing:.04em}
-  [data-theme="light"] .shelf .need{color:#8a5a00}
   .witloading{color:var(--faint);padding:30px;grid-column:1/-1;text-align:center}
   .bcard .votes{font-size:.8rem;color:var(--faint);font-weight:600}
   .bcard .claimedby{font-size:.82rem;color:var(--accent-warm);font-weight:700}
@@ -280,41 +276,25 @@ const MAIN_HTML = `<!DOCTYPE html>
   <div class="section-head">
     <div class="kicker">Tools</div>
     <h2>Pieces of the infrastructure that already exist</h2>
-    <p>Each shelf starts with a need, then the best tool we know for it. Free to use. Open where possible. Featured listings show license, platform and maker. <a href="#submit">Suggest a resource →</a></p>
-  </div>
-  <div class="shelves">
-    <article class="shelf" id="lastbook">
-      <p class="need">The need</p>
-      <p class="needline">Knowledge that survives when the internet doesn't</p>
-      <div class="item">
-        <h3><a href="https://lastbook.org" target="_blank" rel="noopener">Lastbook</a> <span class="maint">· featured</span></h3>
-        <p>A free, open-source offline library of practical manuals, videos and maps, with optional local AI. Knowledge for preparedness and rebuilding, available after setup without an internet connection.</p>
-        <ul class="badges"><li class="open">Open source · MIT</li><li>Mac · Windows · Linux</li><li>By farbood &amp; contributors</li></ul>
-      </div>
-      <p class="why"><b>Why it's here:</b> when the network goes down, the knowledge shouldn't. A library you can hand to a neighbour on a drive.</p>
-    </article>
-    <article class="shelf" id="signudoc">
-      <p class="need">The need</p>
-      <p class="needline">Open document signing infrastructure</p>
-      <div class="item">
-        <h3><a href="https://github.com/NYLLON-SOFTWARE/SignuDoc" target="_blank" rel="noopener">SignuDoc</a> <span class="maint">· featured</span></h3>
-        <p>Open-source e-signatures. Send, sign and seal documents from your own cloud at $0 per seat, with audit trails and tamper-evident seals.</p>
-        <ul class="badges"><li class="open">Open source · MIT</li><li>Self-hosted on your Vercel account</li><li>By Kevin Rose / NYLLON</li></ul>
-      </div>
-      <p class="why"><b>Why it's here:</b> agreeing on things is basic civic plumbing. Signing a PDF shouldn't need a per-seat licence or someone else's cloud.</p>
-    </article>
-    <article class="shelf" id="paxi">
-      <p class="need">The need</p>
-      <p class="needline">Use the best service for each task, without interface lock-in</p>
-      <div class="item">
-        <h3><a href="https://paxi.fyi" target="_blank" rel="noopener">Paxi</a> <span class="maint">· featured</span></h3>
-        <p>Compares live ride prices and times across Uber, Lyft, Waymo, Tesla, Zoox, Curb and more, then books the one you choose. Your logins stay on your phone.</p>
-        <ul class="badges"><li>Free · closed source</li><li>iPhone (iOS 17+)</li><li>By Doug Feigelson, a friend of the maintainer</li></ul>
-      </div>
-      <p class="why"><b>Why it's here:</b> every app wants to be the only door. You should be able to compare providers, choose the best one for each job and switch freely. <a href="https://github.com/tmad4000/humanity-infrastructure/issues/2" target="_blank" rel="noopener">Community submission #2</a>.</p>
-    </article>
+    <p>Find tools for practical needs, from offline knowledge to shared civic work. Free to use. Open where possible. Featured listings show license, platform and maker. <a href="#submit">Suggest a resource →</a></p>
   </div>
   <div class="grid">
+    <article class="card featured" id="lastbook">
+      <span class="tag live">Featured</span>
+      <div class="top"><span class="emoji">📖</span><div><h3><a href="https://lastbook.org" target="_blank" rel="noopener">Lastbook</a></h3><div class="url">lastbook.org</div></div></div>
+      <p class="needline">Knowledge that survives when the internet doesn't</p>
+      <p>A free, open-source offline library of practical manuals, videos and maps, with optional local AI. Knowledge for preparedness and rebuilding, available after setup without an internet connection.</p>
+      <ul class="badges"><li class="open">Open source · MIT</li><li>Mac · Windows · Linux</li><li>By farbood &amp; contributors</li></ul>
+      <p class="why"><b>Why it's here:</b> when the network goes down, the knowledge shouldn't. A library you can hand to a neighbour on a drive.</p>
+    </article>
+    <article class="card featured" id="paxi">
+      <span class="tag live">Featured</span>
+      <div class="top"><span class="emoji">🚕</span><div><h3><a href="https://paxi.fyi" target="_blank" rel="noopener">Paxi</a></h3><div class="url">paxi.fyi</div></div></div>
+      <p class="needline">Use the best service for each task, without interface lock-in</p>
+      <p>Compares live ride prices and times across Uber, Lyft, Waymo, Tesla, Zoox, Curb and more, then books the one you choose. Your logins stay on your phone.</p>
+      <ul class="badges"><li>Free · closed source</li><li>iPhone (iOS 17+)</li><li>By Doug Feigelson, a friend of the maintainer</li></ul>
+      <p class="why"><b>Why it's here:</b> every app wants to be the only door. You should be able to compare providers, choose the best one for each job and switch freely. <a href="https://github.com/tmad4000/humanity-infrastructure/issues/2" target="_blank" rel="noopener">Community submission #2</a>.</p>
+    </article>
     <a class="card" href="https://nvctranslator.com" target="_blank" rel="noopener">
       <span class="tag live">Live</span>
       <div class="top"><span class="emoji">🕊️</span><div><h3>NVC Translator</h3><div class="url">nvctranslator.com</div></div></div>
@@ -335,6 +315,14 @@ const MAIN_HTML = `<!DOCTYPE html>
       <div class="top"><span class="emoji">🌐</span><div><h3>World Issue Tracker</h3><div class="url">worldissuetracker.com</div></div></div>
       <p>A public issue tracker for civic and shared problems — a bottom-up list of what's broken, and who's fixing it.</p>
     </a>
+    <article class="card featured" id="signudoc">
+      <span class="tag live">Featured</span>
+      <div class="top"><span class="emoji">✍️</span><div><h3><a href="https://github.com/NYLLON-SOFTWARE/SignuDoc" target="_blank" rel="noopener">SignuDoc</a></h3><div class="url">github.com/NYLLON-SOFTWARE/SignuDoc</div></div></div>
+      <p class="needline">Open document signing infrastructure</p>
+      <p>Open-source e-signatures. Send, sign and seal documents from your own cloud at $0 per seat, with audit trails and tamper-evident seals.</p>
+      <ul class="badges"><li class="open">Open source · MIT</li><li>Self-hosted on your Vercel account</li><li>By Kevin Rose / NYLLON</li></ul>
+      <p class="why"><b>Why it's here:</b> agreeing on things is basic civic plumbing. Signing a PDF shouldn't need a per-seat licence or someone else's cloud.</p>
+    </article>
     <a class="card" href="https://tmad4000.github.io/brainstorms/" target="_blank" rel="noopener">
       <span class="tag live">Live</span>
       <div class="top"><span class="emoji">💡</span><div><h3>Idea List</h3><div class="url">tmad4000.github.io/brainstorms</div></div></div>
@@ -453,7 +441,7 @@ const MAIN_HTML = `<!DOCTYPE html>
   <div style="text-align:right">
     <a href="https://www.notion.so/jacobblog/Humanity-3-0-and-Dharmic-blueprint-314fda9cff6380bfae57ff843cce32dd" target="_blank" rel="noopener">Blueprint (Notion)</a> ·
     <a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" target="_blank" rel="noopener">Master doc</a><br/>
-    <span class="ver">v0.5.0 · 2026-11-18</span>
+    <span class="ver">v0.5.1 · 2026-11-17</span>
   </div>
 </div>
   <!-- Design versions + legacy -->
@@ -1143,25 +1131,19 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
 <section id="tools"><div class="wrap">
   <div class="sect-label">Working Infrastructure</div>
   <h2 class="sect-h">Pieces that <em>already exist.</em></h2>
-  <p class="sect-p">Featured listings start with a need. Free to use. Open where possible. Featured listings show their license. <a href="#submit">Suggest a resource →</a></p>
+  <p class="sect-p">Find tools for practical needs. Free to use. Open where possible. Featured listings show their license. <a href="#submit">Suggest a resource →</a></p>
   <div class="grid reveal">
     <a id="lastbook" class="tcard" href="https://lastbook.org" target="_blank" rel="noopener">
       <div class="tcard-top"><div class="tcard-icon">📖</div><span class="tag live">Featured</span></div>
       <h3>Lastbook</h3><span class="url">lastbook.org</span>
       <p>A free, open-source offline library of practical manuals, videos and maps, with optional local AI. Knowledge for preparedness and rebuilding, available after setup without an internet connection.</p>
-      <p><strong>Need:</strong> knowledge that survives when the internet doesn't. Open source (MIT) · Mac, Windows, Linux.</p>
-    </a>
-    <a id="signudoc" class="tcard" href="https://github.com/NYLLON-SOFTWARE/SignuDoc" target="_blank" rel="noopener">
-      <div class="tcard-top"><div class="tcard-icon">✍️</div><span class="tag live">Featured</span></div>
-      <h3>SignuDoc</h3><span class="url">github.com/NYLLON-SOFTWARE/SignuDoc</span>
-      <p>Open-source e-signatures. Send, sign and seal documents from your own cloud at $0 per seat, with audit trails and tamper-evident seals.</p>
-      <p><strong>Need:</strong> open document signing infrastructure. Open source (MIT) · self-hosted on Vercel · by Kevin Rose / NYLLON.</p>
+      <p>Knowledge that survives when the internet doesn't. Open source (MIT) · Mac, Windows, Linux.</p>
     </a>
     <a id="paxi" class="tcard" href="https://paxi.fyi" target="_blank" rel="noopener">
       <div class="tcard-top"><div class="tcard-icon">🚕</div><span class="tag live">Featured</span></div>
       <h3>Paxi</h3><span class="url">paxi.fyi</span>
       <p>Compares live ride prices and times across Uber, Lyft, Waymo, Tesla, Zoox, Curb and more, then books the one you choose.</p>
-      <p><strong>Need:</strong> use the best service for each task, without interface lock-in. Free · closed source · iPhone · by Doug Feigelson, a friend of the maintainer.</p>
+      <p>Use the best service for each task, without interface lock-in. Free · closed source · iPhone · by Doug Feigelson, a friend of the maintainer.</p>
     </a>
     <a class="tcard" href="https://nvctranslator.com" target="_blank" rel="noopener">
       <div class="tcard-top"><div class="tcard-icon">🕊️</div><span class="tag live">Live</span></div>
@@ -1186,6 +1168,12 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
       <h3>World Issue Tracker</h3>
       <span class="url">worldissuetracker.com</span>
       <p>A public issue tracker for civic and shared problems — a bottom-up list of what's broken, and who's fixing it.</p>
+    </a>
+    <a id="signudoc" class="tcard" href="https://github.com/NYLLON-SOFTWARE/SignuDoc" target="_blank" rel="noopener">
+      <div class="tcard-top"><div class="tcard-icon">✍️</div><span class="tag live">Featured</span></div>
+      <h3>SignuDoc</h3><span class="url">github.com/NYLLON-SOFTWARE/SignuDoc</span>
+      <p>Open-source e-signatures. Send, sign and seal documents from your own cloud at $0 per seat, with audit trails and tamper-evident seals.</p>
+      <p>Open document signing infrastructure. Open source (MIT) · self-hosted on Vercel · by Kevin Rose / NYLLON.</p>
     </a>
     <a class="tcard" href="https://tmad4000.github.io/brainstorms/" target="_blank" rel="noopener">
       <div class="tcard-top"><div class="tcard-icon">💡</div><span class="tag live">Live</span></div>
@@ -1859,25 +1847,19 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
 <section id="tools"><div class="wrap">
   <div class="sect-label">Working Infrastructure</div>
   <h2 class="sect-h">Pieces that <em>already exist.</em></h2>
-  <p class="sect-p">Featured listings start with a need. Free to use. Open where possible. Featured listings show their license. <a href="#submit">Suggest a resource →</a></p>
+  <p class="sect-p">Find tools for practical needs. Free to use. Open where possible. Featured listings show their license. <a href="#submit">Suggest a resource →</a></p>
   <div class="grid reveal">
     <a id="lastbook" class="tcard" href="https://lastbook.org" target="_blank" rel="noopener">
       <div class="tcard-top"><div class="tcard-icon">📖</div><span class="tag live">Featured</span></div>
       <h3>Lastbook</h3><span class="url">lastbook.org</span>
       <p>A free, open-source offline library of practical manuals, videos and maps, with optional local AI. Knowledge for preparedness and rebuilding, available after setup without an internet connection.</p>
-      <p><strong>Need:</strong> knowledge that survives when the internet doesn't. Open source (MIT) · Mac, Windows, Linux.</p>
-    </a>
-    <a id="signudoc" class="tcard" href="https://github.com/NYLLON-SOFTWARE/SignuDoc" target="_blank" rel="noopener">
-      <div class="tcard-top"><div class="tcard-icon">✍️</div><span class="tag live">Featured</span></div>
-      <h3>SignuDoc</h3><span class="url">github.com/NYLLON-SOFTWARE/SignuDoc</span>
-      <p>Open-source e-signatures. Send, sign and seal documents from your own cloud at $0 per seat, with audit trails and tamper-evident seals.</p>
-      <p><strong>Need:</strong> open document signing infrastructure. Open source (MIT) · self-hosted on Vercel · by Kevin Rose / NYLLON.</p>
+      <p>Knowledge that survives when the internet doesn't. Open source (MIT) · Mac, Windows, Linux.</p>
     </a>
     <a id="paxi" class="tcard" href="https://paxi.fyi" target="_blank" rel="noopener">
       <div class="tcard-top"><div class="tcard-icon">🚕</div><span class="tag live">Featured</span></div>
       <h3>Paxi</h3><span class="url">paxi.fyi</span>
       <p>Compares live ride prices and times across Uber, Lyft, Waymo, Tesla, Zoox, Curb and more, then books the one you choose.</p>
-      <p><strong>Need:</strong> use the best service for each task, without interface lock-in. Free · closed source · iPhone · by Doug Feigelson, a friend of the maintainer.</p>
+      <p>Use the best service for each task, without interface lock-in. Free · closed source · iPhone · by Doug Feigelson, a friend of the maintainer.</p>
     </a>
     <a class="tcard" href="https://nvctranslator.com" target="_blank" rel="noopener">
       <div class="tcard-top"><div class="tcard-icon">🕊️</div><span class="tag live">Live</span></div>
@@ -1902,6 +1884,12 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
       <h3>World Issue Tracker</h3>
       <span class="url">worldissuetracker.com</span>
       <p>A public issue tracker for civic and shared problems — a bottom-up list of what's broken, and who's fixing it.</p>
+    </a>
+    <a id="signudoc" class="tcard" href="https://github.com/NYLLON-SOFTWARE/SignuDoc" target="_blank" rel="noopener">
+      <div class="tcard-top"><div class="tcard-icon">✍️</div><span class="tag live">Featured</span></div>
+      <h3>SignuDoc</h3><span class="url">github.com/NYLLON-SOFTWARE/SignuDoc</span>
+      <p>Open-source e-signatures. Send, sign and seal documents from your own cloud at $0 per seat, with audit trails and tamper-evident seals.</p>
+      <p>Open document signing infrastructure. Open source (MIT) · self-hosted on Vercel · by Kevin Rose / NYLLON.</p>
     </a>
     <a class="tcard" href="https://tmad4000.github.io/brainstorms/" target="_blank" rel="noopener">
       <div class="tcard-top"><div class="tcard-icon">💡</div><span class="tag live">Live</span></div>
