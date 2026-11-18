@@ -450,6 +450,7 @@ const MAIN_HTML = `<!DOCTYPE html>
   .resource-details>summary::after{content:"+";font-size:1.2rem;color:var(--accent);flex:none}
   .resource-details[open]>summary::after{content:"−"}
   .resource-overview{display:grid;grid-template-columns:minmax(140px,.8fr) minmax(0,1.5fr) minmax(160px,1fr);gap:16px;align-items:baseline;flex:1;min-width:0}
+  .row-status{display:inline-block;margin:4px 0 0 8px;padding:2px 7px;border:1px solid var(--border-strong);border-radius:999px;font-size:.64rem;font-weight:700;color:var(--accent-warm);vertical-align:middle}
   .resource-title{font-size:1.02rem;font-weight:700;color:var(--text)}
   .resource-pitch{font-size:.9rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .resource-url{font-size:.8rem;overflow-wrap:anywhere}
@@ -771,13 +772,7 @@ const MAIN_HTML = `<!DOCTYPE html>
       </details>
       <div class="resource-actions"></div>
     </article>
-    <article class="card resource-row" id="ideaflow" data-interest-item="ideaflow" data-interest-title="Ideaflow">
-      <details class="resource-details">
-        <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">Ideaflow</span><span class="resource-pitch">Frictionless thought capture.</span><a class="resource-url" href="https://ideaflow.app" target="_blank" rel="noopener">ideaflow.app</a></span></summary>
-        <div class="resource-body"><p>Frictionless thought capture.</p></div>
-      </details>
-      <div class="resource-actions"></div>
-    </article>
+
     <article class="card resource-row" id="ideaflow-index" data-interest-item="ideaflow-index" data-interest-title="Ideaflow apps index">
       <details class="resource-details">
         <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">Ideaflow apps index</span><span class="resource-pitch">Explore tools built on the shared knowledge graph.</span><a class="resource-url" href="https://index.ideaflow.app" target="_blank" rel="noopener">index.ideaflow.app</a></span></summary>
@@ -794,6 +789,51 @@ const MAIN_HTML = `<!DOCTYPE html>
     </article>
   </div>
 </div></section>
+
+<section id="agent-infrastructure"><div class="wrap">
+  <div class="section-head"><div class="kicker">Build and control</div><h2>Open agent &amp; coding infrastructure</h2><p>Capture your thoughts and work with the agents you choose. Public tools and source repositories are linked below; unfinished work is marked.</p></div>
+  <div class="resource-list">
+    <article class="card resource-row" id="ideaflow" data-interest-item="ideaflow" data-interest-title="Ideaflow">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">Ideaflow</span><span class="resource-pitch">Frictionless thought capture.</span><a class="resource-url" href="https://ideaflow.app" target="_blank" rel="noopener">ideaflow.app</a></span></summary>
+        <div class="resource-body"><p>Frictionless thought capture.</p></div>
+      </details>
+      <div class="resource-actions"></div>
+    </article>
+    <article class="card resource-row" id="ideaflow-local-only" data-interest-item="ideaflow-local-only" data-interest-title="Ideaflow Local-only">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span><span class="resource-title" role="heading" aria-level="3">Ideaflow Local-only</span><span class="row-status">Featured</span></span><span class="resource-pitch">Frictionless thought capture, entirely offline on your Mac.</span><a class="resource-url" href="https://apps.apple.com/us/app/ideaflow-local-only/id6751647522?mt=12" target="_blank" rel="noopener">apps.apple.com · Mac App Store</a></span></summary>
+        <div class="resource-body"><p>A macOS notebook built for local, offline use. View the public App Store listing for availability and requirements.</p></div>
+      </details><div class="resource-actions"></div>
+    </article>
+    <article class="card resource-row" id="open-voice-assistant" data-interest-item="open-voice-assistant" data-interest-title="Open voice assistant">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span><span class="resource-title" role="heading" aria-level="3">Open voice assistant</span><span class="row-status">WORK IN PROGRESS</span></span><span class="resource-pitch">An open voice-first way to work with your assistant.</span><span class="resource-url muted">No public link yet</span></span></summary>
+        <div class="resource-body"><p>Work in progress. A public release or source link is not available here yet.</p></div>
+      </details><div class="resource-actions"></div>
+    </article>
+    <article class="card resource-row" id="paseo" data-interest-item="paseo" data-interest-title="Paseo">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span><span class="resource-title" role="heading" aria-level="3">Paseo</span></span><span class="resource-pitch">Control your coding agents remotely.</span><a class="resource-url" href="https://paseo.sh" target="_blank" rel="noopener">paseo.sh</a></span></summary>
+        <div class="resource-body"><p>An open-source interface for managing coding agents across desktop and mobile.</p></div>
+      </details><div class="resource-actions"></div>
+    </article>
+    <article class="card resource-row" id="paseo-ideaflow" data-interest-item="paseo-ideaflow" data-interest-title="Paseo · Jacob’s fork">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span><span class="resource-title" role="heading" aria-level="3">Paseo · Jacob’s fork</span></span><span class="resource-pitch">Control your coding agents remotely.</span><a class="resource-url" href="https://github.com/tmad4000/paseo" target="_blank" rel="noopener">github.com/tmad4000/paseo</a></span></summary>
+        <div class="resource-body"><p>Jacob’s public Paseo fork, with his work on agent orchestration and the remote workflow. This is a development fork; use its repository for source and release information.</p></div>
+      </details><div class="resource-actions"></div>
+    </article>
+    <article class="card resource-row" id="buzz-ideaflow" data-interest-item="buzz-ideaflow" data-interest-title="Buzz Ideaflow">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span><span class="resource-title" role="heading" aria-level="3">Buzz Ideaflow</span><span class="row-status">Development fork</span></span><span class="resource-pitch">Control your agents remotely, from chat.</span><a class="resource-url" href="https://github.com/tmad4000/buzz" target="_blank" rel="noopener">github.com/tmad4000/buzz</a></span></summary>
+        <div class="resource-body"><p>Jacob’s public fork of Buzz for working with agents through chat. This links to development source, rather than a hosted service.</p></div>
+      </details><div class="resource-actions"></div>
+    </article>
+  </div>
+</div></section>
+
+
 
 <section><div class="wrap">
   <blockquote>
