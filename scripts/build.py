@@ -31,6 +31,9 @@ async function handleRequest(request, env) {{
   const signup = await handleSignup(request, env)
   if (signup) return signup
   if (path === '/analytics.js') return new Response(ANALYTICS_JS, {{ headers: {{ 'Content-Type': 'application/javascript;charset=UTF-8', 'Cache-Control': 'public, max-age=300' }} }})
+  const interest = await handleInterest(request, env)
+  if (interest) return interest
+  if (path === '/interest-ui.js') return new Response(INTEREST_UI, {{ headers: {{ 'Content-Type': 'application/javascript;charset=UTF-8', 'Cache-Control': 'no-store' }} }})
   if (path === '/designs') return Response.redirect(url.origin + '/designs/', 302)
   if (path.startsWith('/designs/')) {{
     const key = path.endsWith('/') ? path + 'index.html' : path
@@ -77,7 +80,9 @@ const ARCHIVE_V4_HTML = `{escape_js(archive_v4)}`
 const OG_PNG = Uint8Array.from(atob('{og_b64}'), c => c.charCodeAt(0))
 """
 
-worker = Path('signup.js').read_text() + '\n' + worker
+items = json.loads(Path('interest-items.json').read_text())
+interest_ui = Path('interest-ui.js').read_text().replace('__INTEREST_ITEMS__', json.dumps(items, ensure_ascii=True))
+worker = 'const INTEREST_ITEMS = ' + json.dumps(items, ensure_ascii=True) + ';\n' + Path('signup.js').read_text() + '\n' + Path('interest.js').read_text() + '\n' + worker + '\nconst INTEREST_UI = ' + json.dumps(interest_ui, ensure_ascii=True) + ';\n'
 with open('worker.js', 'w') as f:
     f.write(worker)
 print(f"worker.js rebuilt: {len(worker)} bytes")
