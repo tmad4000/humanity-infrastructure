@@ -26,6 +26,10 @@ if (!origin) throw Error('Usage: node scripts/test-interest-ui.cjs <preview-orig
     await send('Page.navigate',{url:origin+'/?utm_source=ui-test'},sid);
     for(let i=0;i<100;i++){if(await evaluate("!!document.querySelector('#lastbook [data-signal-kind]')"))break;await new Promise(r=>setTimeout(r,50));}
     await new Promise(r=>setTimeout(r,100));
+    assert.deepEqual(await evaluate("[...document.querySelectorAll('#tools > .wrap > .grid > article.card')].slice(0,2).map(card=>card.id)"),['lastbook','unlinked']);
+    assert.equal(await evaluate("document.querySelectorAll('.editor-note[open]').length"),0);
+    await evaluate("document.querySelector('#lastbook .editor-note summary').click()");assert.equal(await evaluate("document.querySelector('#lastbook .editor-note').open"),true);await evaluate("document.querySelector('#lastbook .editor-note summary').click()");
+    assert.equal(await evaluate("!!document.getElementById('lastbook-conversation')"),true);
     assert.equal(await evaluate("document.querySelector('#lastbook [data-interest-count]').textContent"),'Be the first');
     assert.equal(await evaluate("document.querySelector('#signudoc [data-interest-count]').textContent"),'3 want signals');
     assert.equal(await evaluate("document.documentElement.scrollWidth > innerWidth"),false);
