@@ -998,7 +998,9 @@ signupDialog.addEventListener('keydown', event => {
 });
 // Native dialog provides modality and Escape-to-close. Hash links preserve shelf integration.
 window.addEventListener('hashchange', () => { if (location.hash === '#letter') openSignup(); });
-window.addEventListener('load', () => { if (location.hash === '#letter' || signupJoinRequested) setTimeout(openSignup, 0); });
+// Auto-open on DOMContentLoaded, not window.load: third-party scripts (analytics, X) must never delay it.
+function autoOpenSignup() { if (location.hash === '#letter' || signupJoinRequested) setTimeout(openSignup, 0); }
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', autoOpenSignup); else autoOpenSignup();
 signupForm.addEventListener('submit', async function(event) {
   event.preventDefault();
   if (signupSubmitting) return;

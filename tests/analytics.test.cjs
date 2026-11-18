@@ -79,3 +79,10 @@ test('shared analytics wrapper loads async on every page so a stalled host never
   assert.match(tag[0],/onload="window\.hiAnalyticsFlush && window\.hiAnalyticsFlush\(\)"/,f+': flush on load');
  }
 });
+test('no first-party boot behaviour waits for window load (an async third-party script can hold it open)',()=>{
+ for (const f of ['index.html','classic.html','v2.html','v3.html','versions/v4/index.html','analytics.js','interest-ui.js','scripts/x-embed.js']) {
+  if (!fs.existsSync(f)) continue;
+  assert.doesNotMatch(fs.readFileSync(f,'utf8'),/addEventListener\(\s*['"]load['"]/,f+': uses window load');
+ }
+ assert.match(fs.readFileSync('index.html','utf8'),/document\.addEventListener\('DOMContentLoaded', autoOpenSignup\)/,'signup auto-open on DOMContentLoaded');
+});
