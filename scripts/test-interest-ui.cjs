@@ -29,6 +29,8 @@ if (!origin) throw Error('Usage: node scripts/test-interest-ui.cjs <preview-orig
     assert.equal(await evaluate("document.querySelector('#lastbook [data-interest-count]').textContent"),'Be the first');
     assert.equal(await evaluate("document.querySelector('#signudoc [data-interest-count]').textContent"),'3 want signals');
     assert.equal(await evaluate("document.documentElement.scrollWidth > innerWidth"),false);
+    assert.equal(await evaluate("[...document.querySelectorAll('#buildgrid [data-interest-item]')].every(card=>card.dataset.interestItem.startsWith('build-'))"),true);
+    assert.equal(await evaluate("(()=>{const ids=[...document.querySelectorAll('[data-interest-item]')].map(card=>card.id);return new Set(ids).size===ids.length})()"),true);
     assert.equal(await evaluate("document.querySelectorAll('a [data-signal-kind]').length"),0);
     assert.equal(await evaluate("document.querySelectorAll('#bookshelves [data-signal-kind]').length"),2);
     await evaluate("document.querySelector('#lastbook [data-signal-kind=want]').click()");
