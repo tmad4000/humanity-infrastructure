@@ -1,0 +1,27 @@
+const {test}=require('node:test');
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const vm=require('node:vm');
+const context=vm.createContext({Response,Request,URL,Uint8Array,atob,crypto:globalThis.crypto});
+vm.runInContext(fs.readFileSync('worker.js','utf8').replace('export default {','globalThis.worker = {'),context);
+test('featured tweet is a dated static snapshot with native disclosure and no automatic X embed',async()=>{
+ const response=await context.worker.fetch(new Request('https://example.test/'),{});
+ const html=await response.text();
+ assert.match(html,/Historical snapshot · reported by Jacob, Nov 17, 2026/);
+ assert.match(html,/About 130K views/);
+ assert.match(html,/<details class="tweet-copy">/);
+ assert.match(html,/Thanks for building this, @farbood!/);
+ assert.doesNotMatch(html,/<script[^>]+(?:x-embed\.js|platform\.twitter\.com)/);
+ assert.match(response.headers.get('cache-control'),/no-transform/);
+ assert.doesNotMatch(response.headers.get('content-security-policy'),/platform\.twitter\.com|syndication/);
+ const snapshot=JSON.parse(fs.readFileSync('tweet-snapshot.json','utf8'));
+ assert.equal(snapshot.views.live,false);
+ assert.equal(snapshot.views.reportedOn,'2026-11-17');
+});
+test('cached older pages receive an inert retired embed loader',async()=>{
+ const response=await context.worker.fetch(new Request('https://example.test/x-embed.js'),{});
+ assert.match(response.headers.get('content-type'),/javascript/);
+ const script=await response.text();
+ assert.doesNotMatch(script,/https?:|createElement|MutationObserver|IntersectionObserver/);
+ vm.runInNewContext(script,{});
+});

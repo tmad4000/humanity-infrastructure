@@ -68,7 +68,7 @@ async function handleRequest(request, env) {{
   if (path === '/v1' || path.startsWith('/v1/')) {{
     return Response.redirect('https://humanityinfrastructure.com/', 301)
   }}
-  return new Response(MAIN_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Cache-Control': 'public, no-transform', 'Content-Security-Policy': "script-src 'self' 'unsafe-inline' https://analytics.ideaflow.app https://platform.twitter.com; connect-src 'self' https://api.worldissuetracker.com https://analytics.ideaflow.app https://syndication.twitter.com https://cdn.syndication.twimg.com; frame-src https://platform.twitter.com; object-src 'none'; base-uri 'self'" }} }})
+  return new Response(MAIN_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Cache-Control': 'public, no-transform', 'Content-Security-Policy': "script-src 'self' 'unsafe-inline' https://analytics.ideaflow.app; connect-src 'self' https://api.worldissuetracker.com https://analytics.ideaflow.app; frame-src 'none'; object-src 'none'; base-uri 'self'" }} }})
 }}
 
 const ANALYTICS_JS = `{escape_js(Path('analytics.js').read_text())}`
