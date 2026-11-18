@@ -17,9 +17,11 @@ with open('v3.html') as f: v3 = f.read()
 import base64
 with open('og-card.png','rb') as f: og_b64 = base64.b64encode(f.read()).decode()
 
-worker = f"""addEventListener('fetch', event => {{
-  event.respondWith(handleRequest(event.request))
-}})
+worker = f"""export default {{
+  async fetch(request) {{
+    return handleRequest(request)
+  }}
+}}
 
 async function handleRequest(request) {{
   const url = new URL(request.url)
@@ -57,10 +59,11 @@ if [ -z "$CF_API_KEY" ]; then
   exit 1
 fi
 
+# ES-module worker (required for versions/preview/rollback); multipart upload with metadata.
 curl -s -X PUT \
   "https://api.cloudflare.com/client/v4/accounts/68d006db286e6366317c029df3bb76dd/workers/scripts/humanity-infrastructure" \
   -H "X-Auth-Email: tmad4000@gmail.com" \
   -H "X-Auth-Key: $CF_API_KEY" \
-  -H "Content-Type: application/javascript" \
-  --data-binary @worker.js \
+  -F 'metadata={"main_module":"worker.js","compatibility_date":"2025-01-01"};type=application/json' \
+  -F 'worker.js=@worker.js;type=application/javascript+module' \
   | python3 -c "import sys,json; r=json.load(sys.stdin); print('✓ Deployed' if r.get('success') else f'ERROR: {r.get(\"errors\")}')"
