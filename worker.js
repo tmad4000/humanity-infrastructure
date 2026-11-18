@@ -222,14 +222,22 @@ const ANALYTICS_JS = `// Anonymous, cookieless analytics. Never pass form values
     return payload;
   };
   const pending = [];
+  // Before the wrapper arrives, window.ideaflow can be the <article id="ideaflow"> listing
+  // (named element access), so require a real tracker, not just a truthy value.
+  function tracker() {
+    const t = window.ideaflow;
+    return t && typeof t.track === 'function' ? t : null;
+  }
   window.hiTrack = function (name, properties = {}) {
     if (navigator.doNotTrack === '1' || navigator.doNotTrack === 'yes') return;
-    if (window.ideaflow) window.ideaflow.track(name, properties);
+    const t = tracker();
+    if (t) t.track(name, properties);
     else if (pending.length < 30) pending.push([name, properties]);
   };
   // The shared wrapper loads async, so it may arrive after DOMContentLoaded: flush on both.
   function flush() {
-    if (window.ideaflow) pending.splice(0).forEach(([name, props]) => window.ideaflow.track(name, props));
+    const t = tracker();
+    if (t) pending.splice(0).forEach(([name, props]) => t.track(name, props));
   }
   window.hiAnalyticsFlush = flush;
   document.addEventListener('DOMContentLoaded', flush);
@@ -914,7 +922,7 @@ const MAIN_HTML = `<!DOCTYPE html>
   <div style="text-align:right">
     <a href="https://www.notion.so/jacobblog/Humanity-3-0-and-Dharmic-blueprint-314fda9cff6380bfae57ff843cce32dd" target="_blank" rel="noopener">Blueprint (Notion)</a> ·
     <a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" target="_blank" rel="noopener">Master doc</a><br/>
-    <span class="ver">v0.6.1 · 2026-11-18</span>
+    <span class="ver">v0.6.2 · 2026-11-18</span>
   </div>
 </div>
   <!-- Design versions + legacy -->
