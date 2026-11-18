@@ -138,20 +138,29 @@
   .tag.build{background:rgba(244,184,96,.13);color:var(--accent-warm);border:1px solid rgba(244,184,96,.3)}
   .tag.idea{background:rgba(122,162,255,.13);color:var(--accent-2);border:1px solid rgba(122,162,255,.3)}
 
-  /* Compact listings; progressive enhancement leaves full text available without JS. */
-  #tools .grid,#connect-people .grid{align-items:start}
-  .card-link{display:block;color:inherit}
-  .card-link:hover{text-decoration:none}
-  .card-description.is-clamped{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
-  .card-expand{font:inherit;font-size:.82rem;font-weight:600;color:var(--accent-2);background:none;border:0;padding:4px 0;margin-top:4px;cursor:pointer;text-align:left}
-  .card-expand[hidden]{display:none}
-  .card-expand:focus-visible,.editor-note summary:focus-visible,.card-link:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:3px}
-  .editor-note{margin-top:12px;font-size:.88rem;color:var(--muted)}
-  .editor-note summary{cursor:pointer;color:var(--text);font-weight:600;list-style:none}
-  .editor-note summary::-webkit-details-marker{display:none}
-  .editor-note summary::after{content:" ▸"}
-  .editor-note[open] summary::after{content:" ▾"}
+  /* Listing rows keep an aligned overview; full details expand on demand. */
+  .resource-list{border-top:1px solid var(--border-strong)}
+  .card.resource-row{display:flex;gap:16px;align-items:flex-start;padding:0;border:0;border-bottom:1px solid var(--border);border-radius:0;background:transparent;box-shadow:none;transform:none}
+  .resource-details{flex:1;min-width:0}
+  .resource-details>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:16px;padding:20px 0}
+  .resource-details>summary::-webkit-details-marker{display:none}
+  .resource-details>summary::after{content:"+";font-size:1.2rem;color:var(--accent);flex:none}
+  .resource-details[open]>summary::after{content:"−"}
+  .resource-overview{display:grid;grid-template-columns:minmax(140px,.8fr) minmax(0,1.5fr) minmax(160px,1fr);gap:16px;align-items:baseline;flex:1;min-width:0}
+  .row-status{display:inline-block;margin:4px 0 0 8px;padding:2px 7px;border:1px solid var(--border-strong);border-radius:999px;font-size:.64rem;font-weight:700;color:var(--accent-warm);vertical-align:middle}
+  .resource-title{font-size:1.02rem;font-weight:700;color:var(--text)}
+  .resource-pitch{font-size:.9rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .resource-url{font-size:.8rem;overflow-wrap:anywhere}
+  .resource-body{padding:0 0 22px;max-width:760px}
+  .resource-body>p{margin:0 0 12px}
+  .resource-actions:empty{display:none}
+  .resource-actions{flex:0 0 180px;max-width:180px;padding:16px 0}
+  .resource-actions .signal-actions{margin-top:0}
+  .resource-details>summary:focus-visible,.resource-url:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:3px}
+  .editor-note{margin-top:14px;font-size:.88rem;color:var(--muted)}
+  .editor-note h4{color:var(--text);font-size:.88rem;margin:0 0 8px}
   .editor-note .why{margin-top:8px}
+  @media(max-width:800px){.card.resource-row{display:block}.resource-actions{max-width:none;padding:0 0 16px}.resource-overview{grid-template-columns:minmax(0,1fr);gap:4px}.resource-details>summary{padding:16px 0}.resource-pitch{max-width:100%}}
 
   /* build list */
   .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
@@ -327,76 +336,118 @@
   </div>
 </div></section>
 
+<section id="attention"><div class="wrap"><div class="section-head"><div class="kicker">Attention</div><h2>Tools to protect our attention</h2></div><div class="resource-list">
+    <article class="card resource-row" id="xfeed-paradise" data-interest-item="xfeed-paradise" data-interest-title="Xfeed Paradise">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">Xfeed Paradise</span><span class="resource-pitch">Filter outrage-bait from your feed.</span><a class="resource-url" href="https://github.com/opentoolshub/xfeedparadise" target="_blank" rel="noopener">github.com/opentoolshub/xfeedparadise</a></span></summary>
+        <div class="resource-body"><p>Filter outrage-bait from your X feed and make room for what helps you thrive.</p><p>A Chrome extension with hide, dim and collapse modes. Install from the public source repository. Fresh installs use built-in remote AI scoring by default, without a personal API key: post text is sent to the Xfeed Paradise scoring service and its AI provider. You can configure your own provider. Local keyword scoring is the fallback when remote scoring is unavailable or the built-in daily limit is reached.</p><ul class="badges"><li>Source: opentoolshub contributors</li><li>License: MIT (project README)</li></ul></div>
+      </details>
+      <div class="resource-actions"></div>
+    </article>
+    <article class="card resource-row" id="flow-tools-directory" data-interest-item="flow-tools-directory" data-interest-title="Keeping a state of flow">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">Keeping a state of flow</span><span class="resource-pitch">A directory of tools for flow.</span><a class="resource-url" href="https://flowtools.directory/" target="_blank" rel="noopener">flowtools.directory</a></span></summary>
+        <div class="resource-body"><p>Keeping a state of flow: a directory of tools for flow. Browse a curated collection of tools for productivity, design, development, writing and research.</p><ul class="badges"><li>By Jacob Cole</li><li>Content license: not stated</li></ul></div>
+      </details><div class="resource-actions"></div>
+    </article>
+</div></div></section>
+
 <section id="tools"><div class="wrap">
   <div class="section-head">
     <div class="kicker">Tools</div>
     <h2>Pieces of the infrastructure that already exist</h2>
-    <p>Find tools for practical needs, from offline knowledge to shared civic work. Free to use. Open where possible. Featured listings show license, platform and maker. <a href="#submit">Suggest a resource →</a></p>
+    <p>Browse by what you need. Expand any row for details and editor’s notes. Free to use. Open where possible. Featured listings show license, platform and maker. <a href="#submit">Suggest a resource →</a></p>
   </div>
-  <div class="grid">
-    <article class="card featured" id="lastbook" data-interest-item="lastbook">
-      <span class="tag live">Featured</span>
-      <div class="top"><span class="emoji">📖</span><div><h3><a href="https://lastbook.org" target="_blank" rel="noopener">Lastbook</a></h3><div class="url">lastbook.org</div></div></div>
-      <p class="needline"><span class="need-label">Need</span> Knowledge that survives when the internet doesn't</p>
-      <p class="card-description">A free, open-source offline library of practical manuals, videos and maps, with optional local AI. Knowledge for preparedness and rebuilding, available after setup without an internet connection.</p>
-      <ul class="badges"><li class="open">Open source · MIT</li><li>Mac · Windows · Linux</li><li>By farbood &amp; contributors</li></ul>
-      <details class="editor-note"><summary>Editor's note</summary><p class="why">when the network goes down, the knowledge shouldn't. A library you can hand to a neighbour on a drive.</p></details>
+  <div class="resource-list">
+    <article class="card resource-row" id="lastbook" data-interest-item="lastbook" data-interest-title="Lastbook">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">Lastbook</span><span class="resource-pitch">Offline knowledge for preparedness and rebuilding.</span><a class="resource-url" href="https://lastbook.org" target="_blank" rel="noopener">lastbook.org</a></span></summary>
+        <div class="resource-body"><p>A free, open-source offline library of practical manuals, videos and maps, with optional local AI. Knowledge for preparedness and rebuilding, available after setup without an internet connection.</p><p class="needline"><span class="need-label">Need</span> Knowledge that survives when the internet doesn't</p><ul class="badges"><li class="open">Open source · MIT</li><li>Mac · Windows · Linux</li><li>By farbood &amp; contributors</li></ul><div class="editor-note"><h4>Editor's note</h4><p class="why">when the network goes down, the knowledge shouldn't. A library you can hand to a neighbour on a drive.</p></div></div>
+      </details>
+      <div class="resource-actions"></div>
     </article>
-    <article class="card" id="unlinked" data-interest-item="unlinked">
-      <h3><a href="https://www.unlinked.ai" target="_blank" rel="noopener">Unlinked</a></h3>
-
-      <p class="card-description">Explore your professional network and find the people who can help you move an idea forward.</p>
+    <article class="card resource-row" id="unlinked" data-interest-item="unlinked" data-interest-title="Unlinked">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">Unlinked</span><span class="resource-pitch">Own your network: open source, agent-friendly, grassroots LinkedIn alternative.</span><a class="resource-url" href="https://www.unlinked.ai" target="_blank" rel="noopener">www.unlinked.ai</a></span></summary>
+        <div class="resource-body"><p>Own your network: open source, agent-friendly, grassroots LinkedIn alternative.</p></div>
+      </details>
+      <div class="resource-actions"></div>
     </article>
-    <article class="card" id="nvc-translator" data-interest-item="nvc-translator">
-      <span class="tag live">Live</span>
-      <a class="card-link" href="https://nvctranslator.com" target="_blank" rel="noopener"><div class="top"><span class="emoji">🕊️</span><div><h3>NVC Translator</h3><div class="url">nvctranslator.com</div></div></div></a>
-      <p class="card-description">Translate any text into Marshall Rosenberg's Nonviolent Communication — observations, feelings, needs, requests. How can AI make us more compassionate?</p>
+    <article class="card resource-row" id="nvc-translator" data-interest-item="nvc-translator" data-interest-title="NVC Translator">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">NVC Translator</span><span class="resource-pitch">Turn difficult messages into compassionate communication.</span><a class="resource-url" href="https://nvctranslator.com" target="_blank" rel="noopener">nvctranslator.com</a></span></summary>
+        <div class="resource-body"><p>Translate any text into Marshall Rosenberg's Nonviolent Communication — observations, feelings, needs, requests. How can AI make us more compassionate?</p></div>
+      </details>
+      <div class="resource-actions"></div>
     </article>
-    <article class="card" id="noos" data-interest-item="noos">
-      <span class="tag live">Live</span>
-      <a class="card-link" href="https://globalbr.ai" target="_blank" rel="noopener"><div class="top"><span class="emoji">🧠</span><div><h3>Noos</h3><div class="url">globalbr.ai</div></div></div></a>
-      <p class="card-description">A universal knowledge graph — the "codex" backend. Capture, connect, and query human know-how with per-node privacy.</p>
+    <article class="card resource-row" id="noos" data-interest-item="noos" data-interest-title="Noos">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">Noos</span><span class="resource-pitch">Capture, connect and query human know-how.</span><a class="resource-url" href="https://globalbr.ai" target="_blank" rel="noopener">globalbr.ai</a></span></summary>
+        <div class="resource-body"><p>A universal knowledge graph — the "codex" backend. Capture, connect, and query human know-how with per-node privacy.</p></div>
+      </details>
+      <div class="resource-actions"></div>
     </article>
-    <article class="card" id="wikihub" data-interest-item="wikihub">
-      <span class="tag live">Live</span>
-      <a class="card-link" href="https://wikihub.md" target="_blank" rel="noopener"><div class="top"><span class="emoji">📚</span><div><h3>WikiHub</h3><div class="url">wikihub.md</div></div></div></a>
-      <p class="card-description">GitHub for LLM wikis. Hosting for open, agent-native markdown knowledge bases — forkable, shareable, version-controlled.</p>
+    <article class="card resource-row" id="wikihub" data-interest-item="wikihub" data-interest-title="WikiHub">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">WikiHub</span><span class="resource-pitch">Publish and fork agent-native knowledge bases.</span><a class="resource-url" href="https://wikihub.md" target="_blank" rel="noopener">wikihub.md</a></span></summary>
+        <div class="resource-body"><p>GitHub for LLM wikis. Hosting for open, agent-native markdown knowledge bases — forkable, shareable, version-controlled.</p></div>
+      </details>
+      <div class="resource-actions"></div>
     </article>
-    <article class="card" id="world-issue-tracker" data-interest-item="world-issue-tracker">
-      <span class="tag live">Live</span>
-      <a class="card-link" href="https://worldissuetracker.com" target="_blank" rel="noopener"><div class="top"><span class="emoji">🌐</span><div><h3>World Issue Tracker</h3><div class="url">worldissuetracker.com</div></div></div></a>
-      <p class="card-description">A public issue tracker for civic and shared problems — a bottom-up list of what's broken, and who's fixing it.</p>
+    <article class="card resource-row" id="world-issue-tracker" data-interest-item="world-issue-tracker" data-interest-title="World Issue Tracker">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">World Issue Tracker</span><span class="resource-pitch">Coordinate on civic problems in public.</span><a class="resource-url" href="https://worldissuetracker.com" target="_blank" rel="noopener">worldissuetracker.com</a></span></summary>
+        <div class="resource-body"><p>A public issue tracker for civic and shared problems — a bottom-up list of what's broken, and who's fixing it.</p></div>
+      </details>
+      <div class="resource-actions"></div>
     </article>
-    <article class="card" id="idea-list" data-interest-item="idea-list">
-      <span class="tag live">Live</span>
-      <a class="card-link" href="https://tmad4000.github.io/brainstorms/" target="_blank" rel="noopener"><div class="top"><span class="emoji">💡</span><div><h3>Idea List</h3><div class="url">tmad4000.github.io/brainstorms</div></div></div></a>
-      <p class="card-description">An open idea bank — projects, hackathon ideas, and easily-solvable world problems, free for anyone to take and build.</p>
+    <article class="card resource-row" id="signudoc" data-interest-item="signudoc" data-interest-title="SignuDoc">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">SignuDoc</span><span class="resource-pitch">Open-source document signing without per-seat fees.</span><a class="resource-url" href="https://github.com/NYLLON-SOFTWARE/SignuDoc" target="_blank" rel="noopener">github.com/NYLLON-SOFTWARE/SignuDoc</a></span></summary>
+        <div class="resource-body"><p>Open-source e-signatures. Send, sign and seal documents from your own cloud at $0 per seat, with audit trails and tamper-evident seals.</p><p class="needline"><span class="need-label">Need</span> Open document signing infrastructure</p><ul class="badges"><li class="open">Open source · MIT</li><li>Self-hosted on your Vercel account</li><li>By Kevin Rose / NYLLON</li></ul><div class="editor-note"><h4>Editor's note</h4><p class="why">agreeing on things is basic civic plumbing. Signing a PDF shouldn't need a per-seat licence or someone else's cloud.</p></div></div>
+      </details>
+      <div class="resource-actions"></div>
     </article>
-    <article class="card featured" id="signudoc" data-interest-item="signudoc">
-      <span class="tag live">Featured</span>
-      <div class="top"><span class="emoji">✍️</span><div><h3><a href="https://github.com/NYLLON-SOFTWARE/SignuDoc" target="_blank" rel="noopener">SignuDoc</a></h3><div class="url">github.com/NYLLON-SOFTWARE/SignuDoc</div></div></div>
-      <p class="needline"><span class="need-label">Need</span> Open document signing infrastructure</p>
-      <p class="card-description">Open-source e-signatures. Send, sign and seal documents from your own cloud at $0 per seat, with audit trails and tamper-evident seals.</p>
-      <ul class="badges"><li class="open">Open source · MIT</li><li>Self-hosted on your Vercel account</li><li>By Kevin Rose / NYLLON</li></ul>
-      <details class="editor-note"><summary>Editor's note</summary><p class="why">agreeing on things is basic civic plumbing. Signing a PDF shouldn't need a per-seat licence or someone else's cloud.</p></details>
+    <article class="card resource-row" id="paxi" data-interest-item="paxi" data-interest-title="Paxi">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">Paxi</span><span class="resource-pitch">Choose the best ride service for each trip.</span><a class="resource-url" href="https://paxi.fyi" target="_blank" rel="noopener">paxi.fyi</a></span></summary>
+        <div class="resource-body"><p>Compares live ride prices and times across Uber, Lyft, Waymo, Tesla, Zoox, Curb and more, then books the one you choose. Your logins stay on your phone.</p><p class="needline"><span class="need-label">Need</span> Use the best service for each task, without interface lock-in</p><ul class="badges"><li>Free · closed source</li><li>iPhone (iOS 17+)</li><li>By Doug Feigelson, a friend of the maintainer</li></ul><div class="editor-note"><h4>Editor's note</h4><p class="why">every app wants to be the only door. You should be able to compare providers, choose the best one for each job and switch freely. <a href="https://github.com/tmad4000/humanity-infrastructure/issues/2" target="_blank" rel="noopener">Community submission #2</a>.</p></div></div>
+      </details>
+      <div class="resource-actions"></div>
     </article>
-    <article class="card featured" id="paxi" data-interest-item="paxi">
-      <span class="tag live">Featured</span>
-      <div class="top"><span class="emoji">🚕</span><div><h3><a href="https://paxi.fyi" target="_blank" rel="noopener">Paxi</a></h3><div class="url">paxi.fyi</div></div></div>
-      <p class="needline"><span class="need-label">Need</span> Use the best service for each task, without interface lock-in</p>
-      <p class="card-description">Compares live ride prices and times across Uber, Lyft, Waymo, Tesla, Zoox, Curb and more, then books the one you choose. Your logins stay on your phone.</p>
-      <ul class="badges"><li>Free · closed source</li><li>iPhone (iOS 17+)</li><li>By Doug Feigelson, a friend of the maintainer</li></ul>
-      <details class="editor-note"><summary>Editor's note</summary><p class="why">every app wants to be the only door. You should be able to compare providers, choose the best one for each job and switch freely. <a href="https://github.com/tmad4000/humanity-infrastructure/issues/2" target="_blank" rel="noopener">Community submission #2</a>.</p></details>
+    <article class="card resource-row" id="idea-list" data-interest-item="idea-list" data-interest-title="Idea List">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">Idea List</span><span class="resource-pitch">Find an idea worth building.</span><a class="resource-url" href="https://tmad4000.github.io/brainstorms/" target="_blank" rel="noopener">tmad4000.github.io/brainstorms</a></span></summary>
+        <div class="resource-body"><p>An open idea bank — projects, hackathon ideas, and easily-solvable world problems, free for anyone to take and build.</p></div>
+      </details>
+      <div class="resource-actions"></div>
     </article>
-    <article class="card" id="vibe-coding-guide" data-interest-item="vibe-coding-guide">
-      <span class="tag live">Live</span>
-      <a class="card-link" href="https://github.com/tmad4000/vibe-coding-guide" target="_blank" rel="noopener"><div class="top"><span class="emoji">⚡</span><div><h3>Vibe Coding Guide</h3><div class="url">github.com/tmad4000/vibe-coding-guide</div></div></div></a>
-      <p class="card-description">Open guide to AI-assisted coding — making the craftsmanship of software buildable by everyone.</p>
+    <article class="card resource-row" id="global-idea-bank" data-interest-item="global-idea-bank" data-interest-title="Global Idea Bank">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">Global Idea Bank</span><span class="resource-pitch">Share and build on ideas for a better world.</span><a class="resource-url" href="https://worldissuetracker.com/global-idea-bank" target="_blank" rel="noopener">worldissuetracker.com/global-idea-bank</a></span></summary>
+        <div class="resource-body"><p>Share ideas that could improve the world, and help the best ones find collaborators.</p><ul class="badges"><li>Hosted by World Issue Tracker</li><li>Content license: not stated</li></ul></div>
+      </details>
+      <div class="resource-actions"></div>
     </article>
-    <article class="card" id="claude-mind" data-interest-item="claude-mind">
-      <span class="tag live">Live</span>
-      <a class="card-link" href="https://github.com/tmad4000/claude-mind" target="_blank" rel="noopener"><div class="top"><span class="emoji">🔬</span><div><h3>Claude Mind</h3><div class="url">github.com/tmad4000/claude-mind</div></div></div></a>
-      <p class="card-description">Collaborative AI–human exploration of open problems — research rabbits and guilds working the quests, Polymath-style.</p>
+    <article class="card resource-row" id="directory-of-the-internet" data-interest-item="directory-of-the-internet" data-interest-title="Directory of the Internet">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">Directory of the Internet</span><span class="resource-pitch">Explore Jacob’s curated outline of shared resources.</span><a class="resource-url" href="https://social.ideaflow.app/directory?curation=5380&amp;view=outline" target="_blank" rel="noopener">social.ideaflow.app/directory</a></span></summary>
+        <div class="resource-body"><p>A public directory of connected resources, people and ideas, opened in the outline view of Jacob’s curation. Individual entries retain their source attribution.</p><ul class="badges"><li>Curated by Jacob Cole</li><li>Content license: not stated</li></ul></div>
+      </details><div class="resource-actions"></div>
+    </article>
+    <article class="card resource-row" id="vibe-coding-guide" data-interest-item="vibe-coding-guide" data-interest-title="Vibe Coding Guide">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">Vibe Coding Guide</span><span class="resource-pitch">Build software with AI assistance.</span><a class="resource-url" href="https://github.com/tmad4000/vibe-coding-guide" target="_blank" rel="noopener">github.com/tmad4000/vibe-coding-guide</a></span></summary>
+        <div class="resource-body"><p>Open guide to AI-assisted coding — making the craftsmanship of software buildable by everyone.</p></div>
+      </details>
+      <div class="resource-actions"></div>
+    </article>
+    <article class="card resource-row" id="claude-mind" data-interest-item="claude-mind" data-interest-title="Claude Mind">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">Claude Mind</span><span class="resource-pitch">Explore open problems with people and AI.</span><a class="resource-url" href="https://github.com/tmad4000/claude-mind" target="_blank" rel="noopener">github.com/tmad4000/claude-mind</a></span></summary>
+        <div class="resource-body"><p>Collaborative AI–human exploration of open problems — research rabbits and guilds working the quests, Polymath-style.</p></div>
+      </details>
+      <div class="resource-actions"></div>
     </article>
   </div>
 </div></section>
@@ -407,33 +458,90 @@
     <h2>Connect people</h2>
     <p>Find collaborators, build relationships and carry shared ideas forward. These projects are part of the Ideaflow ecosystem; access varies by tool.</p>
   </div>
-  <div class="grid">
-    <article class="card" id="superconnector" data-interest-item="superconnector">
-      <h3><a href="https://superconnector.network" target="_blank" rel="noopener">Superconnector</a></h3>
+  <div class="resource-list">
+    <article class="card resource-row" id="superconnector" data-interest-item="superconnector" data-interest-title="Superconnector">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">Superconnector</span><span class="resource-pitch">Meet the right people in your community.</span><a class="resource-url" href="https://superconnector.network" target="_blank" rel="noopener">superconnector.network</a></span></summary>
+        <div class="resource-body"><p>Discover who to meet in your community or at your next event.</p></div>
+      </details>
+      <div class="resource-actions"></div>
+    </article>
+    <article class="card resource-row" id="openchat" data-interest-item="openchat" data-interest-title="OpenChat">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">OpenChat</span><span class="resource-pitch">Shared conversations for people and their agents.</span><a class="resource-url" href="https://chat.ideaflow.app" target="_blank" rel="noopener">chat.ideaflow.app</a></span></summary>
+        <div class="resource-body"><p>Bring people and their AI agents into the same real-time conversations.</p><p class="needline">Public beta</p></div>
+      </details>
+      <div class="resource-actions"></div>
+    </article>
+    <article class="card resource-row" id="bookshelves" data-interest-item="bookshelves" data-interest-title="Bookshelves">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">Bookshelves</span><span class="resource-pitch">Meet people through the books you read.</span><a class="resource-url" href="https://bookshelves.ai" target="_blank" rel="noopener">bookshelves.ai</a></span></summary>
+        <div class="resource-body"><p>Photograph your bookshelf and meet people who read what you read.</p></div>
+      </details>
+      <div class="resource-actions"></div>
+    </article>
 
-      <p class="card-description">Discover who to meet in your community or at your next event.</p>
+    <article class="card resource-row" id="ideaflow-index" data-interest-item="ideaflow-index" data-interest-title="Ideaflow apps index">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">Ideaflow apps index</span><span class="resource-pitch">Explore tools built on the shared knowledge graph.</span><a class="resource-url" href="https://index.ideaflow.app" target="_blank" rel="noopener">index.ideaflow.app</a></span></summary>
+        <div class="resource-body"><p>Built on the shared knowledge graph.</p></div>
+      </details>
+      <div class="resource-actions"></div>
     </article>
-    <article class="card" id="openchat" data-interest-item="openchat">
-      <h3><a href="https://chat.ideaflow.app" target="_blank" rel="noopener">OpenChat</a></h3>
-      <p class="needline">Public beta</p>
-      <p class="card-description">Bring people and their AI agents into the same real-time conversations.</p>
-    </article>
-    <article class="card" id="bookshelves" data-interest-item="bookshelves">
-      <h3><a href="https://bookshelves.ai" target="_blank" rel="noopener">Bookshelves</a></h3>
-      <p class="card-description">Photograph your bookshelf and meet people who read what you read.</p>
-    </article>
-    <article class="card" id="ideaflow-index" data-interest-item="ideaflow-index">
-      <h3><a href="https://index.ideaflow.app" target="_blank" rel="noopener">Ideaflow apps index</a></h3>
-
-      <p class="card-description">Built on the shared knowledge graph.</p>
-    </article>
-    <article class="card" id="open-recordings" data-interest-item="open-recordings">
-      <h3><a href="https://index.ideaflow.app" target="_blank" rel="noopener">Open Recordings</a></h3>
-      <p class="needline">Alpha</p>
-      <p class="card-description">Record and revisit conversations and highlights, so shared insights stay useful.</p>
+    <article class="card resource-row" id="open-recordings" data-interest-item="open-recordings" data-interest-title="Open Recordings">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">Open Recordings</span><span class="resource-pitch">Revisit conversations and their highlights.</span><a class="resource-url" href="https://index.ideaflow.app" target="_blank" rel="noopener">index.ideaflow.app</a></span></summary>
+        <div class="resource-body"><p>Record and revisit conversations and highlights, so shared insights stay useful.</p><p class="needline">Alpha</p></div>
+      </details>
+      <div class="resource-actions"></div>
     </article>
   </div>
 </div></section>
+
+<section id="agent-infrastructure"><div class="wrap">
+  <div class="section-head"><div class="kicker">Build and control</div><h2>Open agent &amp; coding infrastructure</h2><p>Capture your thoughts and work with the agents you choose. Public tools and source repositories are linked below; unfinished work is marked.</p></div>
+  <div class="resource-list">
+    <article class="card resource-row" id="ideaflow" data-interest-item="ideaflow" data-interest-title="Ideaflow">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">Ideaflow</span><span class="resource-pitch">Frictionless thought capture.</span><a class="resource-url" href="https://ideaflow.app" target="_blank" rel="noopener">ideaflow.app</a></span></summary>
+        <div class="resource-body"><p>Frictionless thought capture.</p></div>
+      </details>
+      <div class="resource-actions"></div>
+    </article>
+    <article class="card resource-row" id="ideaflow-local-only" data-interest-item="ideaflow-local-only" data-interest-title="Ideaflow Local-only">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span><span class="resource-title" role="heading" aria-level="3">Ideaflow Local-only</span><span class="row-status">Featured</span></span><span class="resource-pitch">Frictionless thought capture, entirely offline on your Mac.</span><a class="resource-url" href="https://apps.apple.com/us/app/ideaflow-local-only/id6751647522?mt=12" target="_blank" rel="noopener">apps.apple.com · Mac App Store</a></span></summary>
+        <div class="resource-body"><p>A macOS notebook built for local, offline use. View the public App Store listing for availability and requirements.</p></div>
+      </details><div class="resource-actions"></div>
+    </article>
+    <article class="card resource-row" id="open-voice-assistant" data-interest-item="open-voice-assistant" data-interest-title="Open voice assistant">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span><span class="resource-title" role="heading" aria-level="3">Open voice assistant</span><span class="row-status">WORK IN PROGRESS</span></span><span class="resource-pitch">An open voice-first way to work with your assistant.</span><a class="resource-url" href="https://github.com/tmad4000/va3-selfhost" target="_blank" rel="noopener">github.com/tmad4000/va3-selfhost</a></span></summary>
+        <div class="resource-body"><p>Work in progress. The public VA3 self-host kit provides server source and setup instructions. Its license permits personal use; other rights are reserved. The broader open voice assistant remains in development.</p></div>
+      </details><div class="resource-actions"></div>
+    </article>
+    <article class="card resource-row" id="paseo" data-interest-item="paseo" data-interest-title="Paseo">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span><span class="resource-title" role="heading" aria-level="3">Paseo</span></span><span class="resource-pitch">Control your coding agents remotely.</span><a class="resource-url" href="https://paseo.sh" target="_blank" rel="noopener">paseo.sh</a></span></summary>
+        <div class="resource-body"><p>An open-source interface for managing coding agents across desktop and mobile.</p></div>
+      </details><div class="resource-actions"></div>
+    </article>
+    <article class="card resource-row" id="paseo-ideaflow" data-interest-item="paseo-ideaflow" data-interest-title="Paseo · Jacob’s fork">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span><span class="resource-title" role="heading" aria-level="3">Paseo · Jacob’s fork</span></span><span class="resource-pitch">Control your coding agents remotely.</span><a class="resource-url" href="https://github.com/tmad4000/paseo" target="_blank" rel="noopener">github.com/tmad4000/paseo</a></span></summary>
+        <div class="resource-body"><p>Jacob’s public Paseo fork, with his work on agent orchestration and the remote workflow. This is a development fork; use its repository for source and release information.</p></div>
+      </details><div class="resource-actions"></div>
+    </article>
+    <article class="card resource-row" id="buzz-ideaflow" data-interest-item="buzz-ideaflow" data-interest-title="Buzz Ideaflow">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span><span class="resource-title" role="heading" aria-level="3">Buzz Ideaflow</span><span class="row-status">Development fork</span></span><span class="resource-pitch">Control your agents remotely, from chat.</span><a class="resource-url" href="https://github.com/tmad4000/buzz" target="_blank" rel="noopener">github.com/tmad4000/buzz</a></span></summary>
+        <div class="resource-body"><p>Jacob’s public fork of Buzz for working with agents through chat. This links to development source, rather than a hosted service.</p></div>
+      </details><div class="resource-actions"></div>
+    </article>
+  </div>
+</div></section>
+
+
 
 <section><div class="wrap">
   <blockquote>
@@ -505,6 +613,7 @@
 
 <section id="submit"><div class="wrap">
   <h2>What else should be featured?</h2>
+  <p>Explore the <a href="https://social.ideaflow.app/directory?curation=5380&amp;view=outline">Directory of the Internet</a> for more tools and shared knowledge.</p>
   <p>Help grow Humanity Infrastructure. Suggest useful tools, open knowledge, practical guides or projects that help people flourish. You do not need to be a developer.</p>
   <p>Send the name, link, a short description and who it helps. Include access or licensing details and any affiliation. We review suggestions before featuring them.</p>
   <div style="display:flex;flex-wrap:wrap;gap:12px;margin:24px 0">
@@ -544,7 +653,7 @@
   <div style="text-align:right">
     <a href="https://www.notion.so/jacobblog/Humanity-3-0-and-Dharmic-blueprint-314fda9cff6380bfae57ff843cce32dd" target="_blank" rel="noopener">Blueprint (Notion)</a> ·
     <a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" target="_blank" rel="noopener">Master doc</a><br/>
-    <span class="ver">v0.5.6 · 2026-11-18</span>
+    <span class="ver">v0.6.0 · 2026-11-18</span>
   </div>
 </div>
   <!-- Design versions + legacy -->
@@ -865,22 +974,6 @@ signupForm.addEventListener('submit', async function(event) {
     }});
   })();
 
-
-  // Expand descriptions independently, without a button inside a card link.
-  (function(){
-    document.querySelectorAll('.card-description').forEach(function(text,index){
-      var card=text.closest('.card'),name=card.querySelector('h3').textContent.trim();
-      text.id='card-description-'+index;
-      text.classList.add('is-clamped');
-      var button=document.createElement('button');button.type='button';button.className='card-expand';
-      button.setAttribute('aria-expanded','false');button.setAttribute('aria-controls',text.id);
-      function label(expanded){button.textContent=expanded?'Show less':'Show more';button.setAttribute('aria-label',(expanded?'Show less about ':'Show more about ')+name);}
-      label(false);text.after(button);
-      function measure(){if(button.getAttribute('aria-expanded')==='false')button.hidden=text.scrollHeight<=text.clientHeight+1;}
-      button.addEventListener('click',function(){var expanded=button.getAttribute('aria-expanded')!=='true';button.setAttribute('aria-expanded',String(expanded));text.classList.toggle('is-clamped',!expanded);label(expanded);if(!expanded)measure();});
-      measure();if(typeof ResizeObserver!=='undefined')new ResizeObserver(measure).observe(text);else window.addEventListener('resize',measure);
-    });
-  })();
 
   // ---- Contribute modal ----
   var mResult = null;
