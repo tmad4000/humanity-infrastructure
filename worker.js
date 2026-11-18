@@ -22,11 +22,21 @@ const MAIN_HTML = `<!DOCTYPE html>
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Humanity³ — The Codex · Basic Infrastructure for Human Flourishing</title>
+<title>Humanity Infrastructure — tools and knowledge for human flourishing</title>
 <meta name="description" content="A codex of human know-how as a public resource to humanity. Free, open-source tools and knowledge to coordinate human activity — and bring flourishing into every person's reach. This is how we coordinate as a superorganism." />
-<meta property="og:title" content="Humanity³ — The Codex" />
-<meta property="og:description" content="Knowledge as a birthright. Open tools for human flourishing. This is how we coordinate as a superorganism." />
+<meta property="og:title" content="Humanity Infrastructure — tools and knowledge for human flourishing" />
+<meta property="og:description" content="Knowledge is a birthright. So are the tools to use it. A free, open directory of tools and knowledge for human flourishing. Suggest what belongs." />
 <meta property="og:type" content="website" />
+<meta property="og:site_name" content="Humanity Infrastructure" />
+<meta property="og:url" content="https://humanityinfrastructure.com/" />
+<meta property="og:image" content="https://raw.githubusercontent.com/tmad4000/humanity-infrastructure/main/og-card.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Humanity Infrastructure: Knowledge is a birthright. So are the tools to use it." />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Humanity Infrastructure — tools and knowledge for human flourishing" />
+<meta name="twitter:description" content="A free, open directory of tools and knowledge for human flourishing. Suggest what belongs." />
+<meta name="twitter:image" content="https://raw.githubusercontent.com/tmad4000/humanity-infrastructure/main/og-card.png" />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>" />
 <style>
   :root{
@@ -136,6 +146,23 @@ const MAIN_HTML = `<!DOCTYPE html>
   .claim-head p{color:var(--muted);max-width:640px;margin:0 auto;font-size:.98rem}
   .livedot{width:10px;height:10px;border-radius:50%;background:#ef5f5f;display:inline-block;box-shadow:0 0 0 0 rgba(239,95,95,.5);animation:pulse 2s infinite}
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(239,95,95,.5)}70%{box-shadow:0 0 0 8px rgba(239,95,95,0)}100%{box-shadow:0 0 0 0 rgba(239,95,95,0)}}
+  .shelves{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-bottom:44px}
+  .shelf{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:12px}
+  .shelf .need{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-warm);font-weight:700;margin:0}
+  .shelf .needline{font-size:1.12rem;font-weight:750;color:var(--text);letter-spacing:-.01em;margin:0;line-height:1.35}
+  .shelf .item{border-top:1px solid var(--border);padding-top:12px}
+  .shelf .item h3{margin:0 0 4px;font-size:1.02rem}
+  .shelf .item h3 a{color:var(--text)}
+  .shelf .item p{margin:0;color:var(--muted);font-size:.92rem}
+  .badges{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0;padding:0;list-style:none}
+  .badges li{font-size:.7rem;font-weight:650;padding:3px 8px;border-radius:999px;border:1px solid var(--border-strong);color:var(--muted)}
+  .badges li.open{color:var(--accent);border-color:rgba(95,211,168,.35)}
+  .why{font-size:.88rem;color:var(--muted);border-left:2px solid var(--accent-2);padding-left:10px;margin:0}
+  .why b{color:var(--text);font-weight:650}
+  .seemore{font-size:.86rem;font-weight:600;margin-top:auto}
+  .direct{display:block;font-size:.78rem;color:var(--faint);margin-top:4px}
+  .direct a{color:var(--faint);text-decoration:underline}
+  .maint{font-size:.68rem;color:var(--faint);font-weight:600;letter-spacing:.04em}
   .witloading{color:var(--faint);padding:30px;grid-column:1/-1;text-align:center}
   .bcard .votes{font-size:.8rem;color:var(--faint);font-weight:600}
   .bcard .claimedby{font-size:.82rem;color:var(--accent-warm);font-weight:700}
@@ -206,7 +233,7 @@ const MAIN_HTML = `<!DOCTYPE html>
 </head>
 <body>
 <nav><div class="wrap">
-  <a class="brand" href="#top"><span class="logo">🌍</span> Humanity³ <span style="color:var(--faint);font-weight:500">· The Codex</span></a>
+  <a class="brand" href="#top"><span class="logo">🌍</span> Humanity Infrastructure <span style="color:var(--faint);font-weight:500">· The Codex</span></a>
   <div class="nav-links">
     <a href="#manifesto">Manifesto</a>
     <a href="#tools">Tools</a>
@@ -214,6 +241,7 @@ const MAIN_HTML = `<!DOCTYPE html>
     <a href="#vision">The Vision</a>
     <a href="#submit">Submit a resource</a>
     <a href="#join">Join</a>
+    <a href="https://github.com/tmad4000/humanity-infrastructure" target="_blank" rel="noopener" aria-label="Humanity Infrastructure on GitHub">GitHub ↗</a>
     <button class="theme-btn" id="themeBtn" title="Toggle light/dark" aria-label="Toggle theme">☀️</button>
   </div>
 </div></nav>
@@ -246,16 +274,46 @@ const MAIN_HTML = `<!DOCTYPE html>
 
 <section id="tools"><div class="wrap">
   <div class="section-head">
-    <div class="kicker">Working Tools</div>
+    <div class="kicker">Open Tools</div>
     <h2>Pieces of the infrastructure that already exist</h2>
-    <p>Free and open. Use them today — and help build the rest. <a href="#submit">Suggest a resource →</a></p>
+    <p>Each shelf starts with a need, then the best tool we know for it. Free to use. Open where possible. Every listing shows its license. <a href="#submit">Suggest a resource →</a></p>
+  </div>
+  <div class="shelves">
+    <article class="shelf" id="lastbook">
+      <p class="need">The need</p>
+      <p class="needline">Knowledge that survives when the internet doesn't</p>
+      <div class="item">
+        <h3><a href="https://lastbook.org" target="_blank" rel="noopener">Lastbook</a> <span class="maint">· featured</span></h3>
+        <p>A free, open-source offline library of practical manuals, videos and maps, with optional local AI. Knowledge for preparedness and rebuilding, available after setup without an internet connection.</p>
+        <ul class="badges"><li class="open">Open source · MIT</li><li>Mac · Windows · Linux</li><li>By farbood &amp; contributors</li></ul>
+      </div>
+      <p class="why"><b>Why it's here:</b> when the network goes down, the knowledge shouldn't. A library you can hand to a neighbour on a drive.</p>
+      <a class="seemore" href="https://directory.globalbr.ai" target="_blank" rel="noopener">See more in the Directory of the Internet →</a>
+    </article>
+    <article class="shelf" id="signudoc">
+      <p class="need">The need</p>
+      <p class="needline">Open document signing infrastructure</p>
+      <div class="item">
+        <h3><a href="https://github.com/NYLLON-SOFTWARE/SignuDoc" target="_blank" rel="noopener">SignuDoc</a> <span class="maint">· featured</span></h3>
+        <p>Open-source e-signatures. Send, sign and seal documents from your own cloud at $0 per seat, with audit trails and tamper-evident seals.</p>
+        <ul class="badges"><li class="open">Open source · MIT</li><li>Self-hosted on your Vercel account</li><li>By Kevin Rose / NYLLON</li></ul>
+      </div>
+      <p class="why"><b>Why it's here:</b> agreeing on things is basic civic plumbing. Signing a PDF shouldn't need a per-seat licence or someone else's cloud.</p>
+      <a class="seemore" href="https://directory.globalbr.ai" target="_blank" rel="noopener">See more in the Directory of the Internet →</a>
+    </article>
+    <article class="shelf" id="paxi">
+      <p class="need">The need</p>
+      <p class="needline">Use the best service for each task, without interface lock-in</p>
+      <div class="item">
+        <h3><a href="https://paxi.fyi" target="_blank" rel="noopener">Paxi</a> <span class="maint">· featured</span></h3>
+        <p>Compares live ride prices and times across Uber, Lyft, Waymo, Tesla, Zoox, Curb and more, then books the one you choose. Your logins stay on your phone.</p>
+        <ul class="badges"><li>Free · closed source</li><li>iPhone (iOS 17+)</li><li>By Doug Feigelson, a friend of the maintainer</li></ul>
+      </div>
+      <p class="why"><b>Why it's here:</b> every app wants to be the only door. You should be able to compare providers, choose the best one for each job and switch freely. <a href="https://github.com/tmad4000/humanity-infrastructure/issues/2" target="_blank" rel="noopener">Community submission #2</a>.</p>
+      <a class="seemore" href="https://directory.globalbr.ai" target="_blank" rel="noopener">See more in the Directory of the Internet →</a>
+    </article>
   </div>
   <div class="grid">
-    <a id="lastbook" class="card" href="https://lastbook.org" target="_blank" rel="noopener">
-      <span class="tag live">Featured</span>
-      <div class="top"><span class="emoji">📖</span><div><h3>Lastbook</h3><div class="url">lastbook.org</div></div></div>
-      <p>A free, open-source offline library of practical manuals, videos and maps, with optional local AI. Knowledge for preparedness and rebuilding, available after setup without an internet connection.</p>
-    </a>
     <a class="card" href="https://nvctranslator.com" target="_blank" rel="noopener">
       <span class="tag live">Live</span>
       <div class="top"><span class="emoji">🕊️</span><div><h3>NVC Translator</h3><div class="url">nvctranslator.com</div></div></div>
@@ -270,11 +328,6 @@ const MAIN_HTML = `<!DOCTYPE html>
       <span class="tag live">Live</span>
       <div class="top"><span class="emoji">📚</span><div><h3>WikiHub</h3><div class="url">wikihub.md</div></div></div>
       <p>GitHub for LLM wikis. Hosting for open, agent-native markdown knowledge bases — forkable, shareable, version-controlled.</p>
-    </a>
-    <a class="card" href="https://listhub.globalbr.ai" target="_blank" rel="noopener">
-      <span class="tag live">Live</span>
-      <div class="top"><span class="emoji">📝</span><div><h3>ListHub</h3><div class="url">listhub.globalbr.ai</div></div></div>
-      <p>Open list & note publishing with a REST API and two-way git sync. The home for the open-lists movement.</p>
     </a>
     <a class="card" href="https://worldissuetracker.com" target="_blank" rel="noopener">
       <span class="tag live">Live</span>
@@ -341,27 +394,27 @@ const MAIN_HTML = `<!DOCTYPE html>
         <li><a href="https://www.notion.so/jacobblog/Humanity-3-0-and-Dharmic-blueprint-314fda9cff6380bfae57ff843cce32dd" target="_blank" rel="noopener">Humanity 3.0 &amp; the Dharmic blueprint (Notion)</a></li>
         <li><a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" target="_blank" rel="noopener">The Codex — master doc (Google Docs)</a></li>
         <li><a href="https://plausible-text-76b.notion.site/Cody-s-Healing-List-v4-b05b097d529c4c54b5d62f87f55b1f6f" target="_blank" rel="noopener">Healing Resources — "Cody Codex" (Notion)</a></li>
-        <li><a href="http://worldquestguild.connectordocs.com/" target="_blank" rel="noopener">World Quest Guild — add yourself</a></li>
+        <li><a href="https://quests.world" target="_blank" rel="noopener">World Quest Guild — add yourself</a><span class="direct">If that doesn’t load: <a href="https://docs.google.com/document/d/1OggVeoEN4zAafRAox3yjFYtNwmYFJQHovXLviWI69zY/edit" target="_blank" rel="noopener">open the guild doc directly</a></span></li>
       </ul>
     </div>
     <div class="lcol">
       <h4>🧭 Movements within</h4>
       <ul>
-        <li><a href="http://opensource.jacobcole.net" target="_blank" rel="noopener">Open Source dashboard</a></li>
-        <li><a href="http://openlists.jacobcole.net" target="_blank" rel="noopener">Open Lists movement</a></li>
-        <li><a href="http://fixingtheinternet.jacobcole.net/" target="_blank" rel="noopener">Fixing the Internet</a></li>
-        <li><a href="http://favorverse.jacobcole.net/" target="_blank" rel="noopener">Favorverse — volunteerism</a></li>
-        <li><a href="http://thunderpledge.jacobcole.net" target="_blank" rel="noopener">ThunderPledge — collective action</a></li>
+        <li><a href="https://opensource.jacobcole.net" target="_blank" rel="noopener">Open Source dashboard</a></li>
+        <li><a href="https://openlists.jacobcole.net" target="_blank" rel="noopener">Open Lists movement</a></li>
+        <li><a href="https://fixingtheinternet.jacobcole.net/" target="_blank" rel="noopener">Fixing the Internet</a></li>
+        <li><a href="https://favorverse.jacobcole.net/" target="_blank" rel="noopener">Favorverse — volunteerism</a></li>
+        <li><a href="https://thunderpledge.jacobcole.net" target="_blank" rel="noopener">ThunderPledge — collective action</a></li>
       </ul>
     </div>
     <div class="lcol">
       <h4>🌿 Knowledge &amp; flourishing</h4>
       <ul>
-        <li><a href="http://meditation.jacobcole.net/" target="_blank" rel="noopener">Open meditation curricula</a></li>
-        <li><a href="http://chronicpain.jacobcole.net/" target="_blank" rel="noopener">Treating chronic pain</a></li>
-        <li><a href="http://foodslist.jacobcole.net/" target="_blank" rel="noopener">How to eat well</a></li>
-        <li><a href="http://supplements.jacobcole.net/" target="_blank" rel="noopener">Supplement stacks</a></li>
-        <li><a href="http://bodymasters.jacobcole.net" target="_blank" rel="noopener">Body Masters</a></li>
+        <li><a href="https://meditation.jacobcole.net/" target="_blank" rel="noopener">Open meditation curricula</a></li>
+        <li><a href="https://chronicpain.jacobcole.net/" target="_blank" rel="noopener">Treating chronic pain</a></li>
+        <li><a href="https://foodslist.jacobcole.net/" target="_blank" rel="noopener">How to eat well</a></li>
+        <li><a href="https://supplements.jacobcole.net/" target="_blank" rel="noopener">Supplement stacks</a></li>
+        <li><a href="https://bodymasters.jacobcole.net" target="_blank" rel="noopener">Body Masters</a></li>
       </ul>
     </div>
   </div>
@@ -376,7 +429,7 @@ const MAIN_HTML = `<!DOCTYPE html>
     <a class="btn ghost" href="mailto:jacob@ideaflow.io?subject=Humanity%20Infrastructure%20resource%20suggestion&amp;body=Name%3A%0ALink%3A%0AWho%20it%20helps%3A%0AAccess%20or%20license%3A%0AMy%20affiliation%3A">Suggest by email</a>
     <a class="btn ghost" href="https://github.com/tmad4000/humanity-infrastructure/blob/main/CONTRIBUTING.md">Contribute a pull request →</a>
   </div>
-  <p><a href="https://github.com/tmad4000/humanity-infrastructure">Browse the website source on GitHub</a> · <a href="https://worldissuetracker.com/tracker/lastbook">Lastbook community feedback and fixes</a></p>
+  <p><a href="https://github.com/tmad4000/humanity-infrastructure">Browse the website source on GitHub</a> · <a href="https://index.ideaflow.app/build" target="_blank" rel="noopener">Build on Ideaflow</a> · <a href="https://index.ideaflow.app" target="_blank" rel="noopener">Ideaflow apps index</a> · <a href="https://worldissuetracker.com/tracker/lastbook">Lastbook community feedback and fixes</a></p>
 </div></section>
 
 <section id="join"><div class="wrap">
@@ -385,20 +438,21 @@ const MAIN_HTML = `<!DOCTYPE html>
     <p>We're building the more general, not-just-engineering equivalent of the open-source movement. There's an enormous amount of low-hanging fruit — and we're looking for designers, engineers, writers, healers, and well-intended humans of every kind.</p>
     <div class="btns" style="justify-content:center">
       <a class="btn primary" href="mailto:jacob@ideaflow.io?subject=Joining%20the%20Codex%20%2F%20Humanity%20Infrastructure">Get involved →</a>
-      <a class="btn ghost" href="http://worldquestguild.connectordocs.com/" target="_blank" rel="noopener">Join a guild</a>
+      <a class="btn ghost" href="https://quests.world" target="_blank" rel="noopener">Join a guild</a>
     </div>
+    <span class="direct">Guild link not loading? <a href="https://docs.google.com/document/d/1OggVeoEN4zAafRAox3yjFYtNwmYFJQHovXLviWI69zY/edit" target="_blank" rel="noopener">Open the World Quest Guild doc directly</a></span>
   </div>
 </div></section>
 
 <footer><div class="wrap">
   <div>
-    <strong style="color:var(--text)">Humanity³ · The Codex</strong> — basic infrastructure for human flourishing.<br/>
-    Free &amp; open source. Contact <a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a>
+    <strong style="color:var(--text)">Humanity Infrastructure · The Codex</strong> — basic infrastructure for human flourishing.<br/>
+    Free to use. Open where possible. Every listing shows its license. <a href="https://github.com/tmad4000/humanity-infrastructure">Source on GitHub</a> · Contact <a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a>
   </div>
   <div style="text-align:right">
     <a href="https://www.notion.so/jacobblog/Humanity-3-0-and-Dharmic-blueprint-314fda9cff6380bfae57ff843cce32dd" target="_blank" rel="noopener">Blueprint (Notion)</a> ·
     <a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" target="_blank" rel="noopener">Master doc</a><br/>
-    <span class="ver">v0.4.0 · 2026-11-17</span>
+    <span class="ver">v0.5.0 · 2026-11-18</span>
   </div>
 </div>
   <!-- Design versions + legacy -->
@@ -450,34 +504,34 @@ const MAIN_HTML = `<!DOCTYPE html>
 <script>
   // ---- Open Build List data (lifted from the Codex master doc) ----
   var BUILD=[
-    {c:"Collective Action",t:"ThunderPledge",s:"idea",u:"http://thunderpledge.jacobcole.net",d:"Kickstarter for collective action: pledge to go vegetarian, vote, or boycott — but only once a critical mass also commits. Variants: ThunderVote, ThunderBoycott ('Kickstopper')."},
+    {c:"Collective Action",t:"ThunderPledge",s:"idea",u:"https://thunderpledge.jacobcole.net",d:"Kickstarter for collective action: pledge to go vegetarian, vote, or boycott — but only once a critical mass also commits. Variants: ThunderVote, ThunderBoycott ('Kickstopper')."},
     {c:"Collective Action",t:"Zero-Sum Redirect",s:"idea",d:"A clearinghouse for opposing political donations — matched contributions cancel out and the saved money goes to charity instead."},
     {c:"Collective Action",t:"Government Suggestion Box",s:"idea",d:"A suggestion-box platform for governments, including the ability to donate toward implementing specific suggestions."},
     {c:"Collective Action",t:"Everyone-a-Philanthropist",s:"idea",d:"Infrastructure so communities can pool resources to fill missing government functions — help a neighbor afford insurance, get a kid a laptop."},
-    {c:"Collective Action",t:"Resource-Sharing Platform",s:"idea",u:"http://favorverse.jacobcole.net/",d:"Let people share what they can lend — tools, a U-Haul, time. Related: Favorverse & VolunteerForce."},
+    {c:"Collective Action",t:"Resource-Sharing Platform",s:"idea",u:"https://favorverse.jacobcole.net/",d:"Let people share what they can lend — tools, a U-Haul, time. Related: Favorverse & VolunteerForce."},
     {c:"Reputation & Trust",t:"Open Reputation System",s:"idea",d:"A portable, open reputation layer — the missing primitive for trust in online coordination."},
-    {c:"Reputation & Trust",t:"Trust Layer / Meta-Brands",s:"idea",u:"http://fixingtheinternet.jacobcole.net/",d:"A trust layer for the web — 'meta-brands' that vouch for quality and integrity."},
-    {c:"Reputation & Trust",t:"Fact-Check Extension",s:"idea",u:"http://factcheck.jacobcole.net/",d:"A browser extension surfacing fact-checks and provenance inline."},
+    {c:"Reputation & Trust",t:"Trust Layer / Meta-Brands",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A trust layer for the web — 'meta-brands' that vouch for quality and integrity."},
+    {c:"Reputation & Trust",t:"Fact-Check Extension",s:"idea",u:"https://factcheck.jacobcole.net/",d:"A browser extension surfacing fact-checks and provenance inline."},
     {c:"Fixing the Internet",t:"Open Forum Software",s:"building",u:"https://github.com/gulkily/pollyanna",d:"Forum software that is transparent, consensual, and open-source (Pollyanna)."},
-    {c:"Fixing the Internet",t:"Minimalist Homepages",s:"idea",u:"http://minimalisthomepages.com/",d:"A better way to make calm, minimalist personal homepages."},
-    {c:"Fixing the Internet",t:"ThoughtfulWeb",s:"idea",u:"http://thoughtfulweb.jacobcole.net",d:"A directory of places on the web that are thoughtful, artful, and mindful — an oasis of good taste."},
+    {c:"Fixing the Internet",t:"Minimalist Homepages",s:"idea",u:"https://worldissuetracker.com/tracker/missing-civ-infrastructure",d:"A better way to make calm, minimalist personal homepages."},
+    {c:"Fixing the Internet",t:"ThoughtfulWeb",s:"idea",u:"https://thoughtfulweb.jacobcole.net",d:"A directory of places on the web that are thoughtful, artful, and mindful — an oasis of good taste."},
     {c:"Personal Leverage",t:"'Camel's Eye' Email Agent",s:"idea",d:"An agent that filters and triages email on your behalf (from Permutation City). Reclaim your attention."},
     {c:"Personal Leverage",t:"Shortcut / Macro Coach",s:"idea",d:"Watches your actions and occasionally suggests a shortcut, auto-writing the macro for you."},
     {c:"Personal Leverage",t:"Open Automation Tools",s:"idea",d:"Great open-source macro & browser-automation frameworks (Browserflow-style) for everyone."},
     {c:"Personal Leverage",t:"Shopping Coach",s:"idea",d:"A service that shops on your behalf — finds the best, most ethical option so you don't have to."},
-    {c:"Open Knowledge",t:"Open Meditation Curricula",s:"building",u:"http://meditation.jacobcole.net/",d:"Basic open curricula for meditation and working with your body. Lists exist; needs a real course."},
-    {c:"Open Knowledge",t:"Open Medical Knowledge",s:"building",u:"http://chronicpain.jacobcole.net/",d:"How to treat chronic pain, RSI, and more — patient-first medical know-how. Lists started."},
+    {c:"Open Knowledge",t:"Open Meditation Curricula",s:"building",u:"https://meditation.jacobcole.net/",d:"Basic open curricula for meditation and working with your body. Lists exist; needs a real course."},
+    {c:"Open Knowledge",t:"Open Medical Knowledge",s:"building",u:"https://chronicpain.jacobcole.net/",d:"How to treat chronic pain, RSI, and more — patient-first medical know-how. Lists started."},
     {c:"Open Knowledge",t:"Open Academic Education",s:"idea",d:"University-level math, an open algorithms tutor, and interactive self-teaching programming resources."},
     {c:"Open Knowledge",t:"Open Work Templates",s:"idea",d:"Open templates for every kind of work — invoices, gantt charts, proposals."},
-    {c:"Open Knowledge",t:"Role-Model Casting",s:"idea",u:"http://foodslist.jacobcole.net/",d:"For people without good role models — emulate the routines of healthy, effective people (e.g. foods lists)."},
-    {c:"Open Knowledge",t:"Motivation Database",s:"idea",u:"http://whyisitawesome.jacobcole.net/",d:"A wiki of why all the awesome things in the world are awesome — fuel for motivation."},
-    {c:"Open Knowledge",t:"'Books to Grow Up On'",s:"idea",u:"http://kidactivities.jacobcole.net",d:"An open list of literature that builds good mental models — plus kids' games & activities."},
+    {c:"Open Knowledge",t:"Role-Model Casting",s:"idea",u:"https://foodslist.jacobcole.net/",d:"For people without good role models — emulate the routines of healthy, effective people (e.g. foods lists)."},
+    {c:"Open Knowledge",t:"Motivation Database",s:"idea",u:"https://whyisitawesome.jacobcole.net/",d:"A wiki of why all the awesome things in the world are awesome — fuel for motivation."},
+    {c:"Open Knowledge",t:"'Books to Grow Up On'",s:"idea",u:"https://kidactivities.jacobcole.net",d:"An open list of literature that builds good mental models — plus kids' games & activities."},
     {c:"Assistive Tech",t:"Hands-Free Voice Interfaces",s:"idea",d:"Good hands-free voice-recognition hooks into common sites (Gmail, etc.) for quadriplegics and others. Lots of low-hanging fruit."},
     {c:"Assistive Tech",t:"Cueing App for Brain Injuries",s:"idea",d:"A cueing/reminder app for people recovering from brain injuries."},
     {c:"Assistive Tech",t:"Better Foot Mouse",s:"idea",d:"A better foot-operated mouse for people who can't use their hands."},
     {c:"Coordination Infra",t:"On-the-Fly Knowledge Capture",s:"building",u:"https://globalbr.ai",d:"Frictionless personal knowledge capture + a graph query engine. Being built as Noos."},
     {c:"Coordination Infra",t:"Global Idea Bank",s:"building",u:"https://tmad4000.github.io/brainstorms/",d:"An open bank of ideas & hackathon projects anyone can take and build. Live as the Idea List."},
-    {c:"Coordination Infra",t:"Open Research Repository",s:"idea",u:"http://openresearch.connekt.site",d:"A global, open repository for research — make the world's findings freely usable."},
+    {c:"Coordination Infra",t:"Open Research Repository",s:"idea",u:"https://worldissuetracker.com/tracker/missing-civ-infrastructure",d:"A global, open repository for research — make the world's findings freely usable."},
     {c:"Care & Society",t:"Adult 'Foster' Support Network",s:"idea",d:"Ubiquitous support — 'extra parents' — for adults facing challenges so no one falls through the cracks."},
     {c:"Care & Society",t:"Non-Emergency Help Button",s:"idea",d:"A button to request non-emergency help: a compassionate responder for mental-health crises, a care coordinator, a 'life figure-outer'."},
     {c:"Care & Society",t:"Database of Survival Guides",s:"idea",d:"'How to survive/thrive' guides across many contexts — including for highly sensitive people on a budget."},
@@ -485,30 +539,30 @@ const MAIN_HTML = `<!DOCTYPE html>
     {c:"Done",t:"OpenLibrary",s:"done",u:"https://openlibrary.org",d:"Open, universal catalog of books. Exists — and it's wonderful."},
     {c:"Done",t:"Internet Archive",s:"done",u:"https://archive.org",d:"Humanity's library and memory. Exists — support it."},
     {c:"Done",t:"Concentration Music",s:"done",d:"Open 'music for concentration' playlists everyone can access. Largely solved."},
-    {c:"Fixing the Internet",t:"Cross-Site Hashtag Search",s:"idea",u:"http://fixingtheinternet.jacobcole.net/",d:"Search a hashtag uniformly across every social platform and website at once."},
-    {c:"Fixing the Internet",t:"Universal Comments Layer",s:"idea",u:"http://fixingtheinternet.jacobcole.net/",d:"Attach comment threads to any webpage, email, or chat, viewable by anyone."},
-    {c:"Fixing the Internet",t:"Universal Web Annotations",s:"idea",u:"http://fixingtheinternet.jacobcole.net/",d:"A shared highlight-and-note layer that pins annotations onto any page across the web."},
-    {c:"Open Knowledge",t:"Canonical Debate Lab",s:"idea",u:"http://fixingtheinternet.jacobcole.net/",d:"A structured platform that organizes contested claims and their arguments toward resolution."},
-    {c:"Open Knowledge",t:"Scientific Assertions Database",s:"idea",u:"http://fixingtheinternet.jacobcole.net/",d:"A machine-readable repository of scientific claims with their dependencies and evidence mapped."},
-    {c:"Open Knowledge",t:"Collaborative Theorem Prover",s:"idea",u:"http://fixingtheinternet.jacobcole.net/",d:"A shared workspace where mathematicians jointly build and verify formal proofs."},
-    {c:"Open Knowledge",t:"Negative Results Repository",s:"idea",u:"http://fixingtheinternet.jacobcole.net/",d:"An archive of failed experiments and null results so research isn't needlessly duplicated."},
-    {c:"Open Knowledge",t:"Argument Repository",s:"idea",u:"http://fixingtheinternet.jacobcole.net/",d:"A searchable database of debate outlines and reusable argumentative frameworks."},
-    {c:"Coordination Infra",t:"Policy & Science Simulator",s:"idea",u:"http://fixingtheinternet.jacobcole.net/",d:"A sandbox for safely testing policy changes and hypotheses before real-world rollout."},
-    {c:"Personal Leverage",t:"Unified Feed Control",s:"idea",u:"http://fixingtheinternet.jacobcole.net/",d:"A single interface managing emails, texts, calls, and feeds with user-defined routing rules."},
-    {c:"Fixing the Internet",t:"Soundbite Propagation Tracker",s:"idea",u:"http://fixingtheinternet.jacobcole.net/",d:"Audio-fingerprinting that traces how a specific quote or claim spreads across media."},
-    {c:"Civic & Government",t:"Global Goals Dashboard",s:"idea",u:"http://fixingtheinternet.jacobcole.net/",d:"A public dashboard visualizing humanity's measured progress on major shared objectives."},
-    {c:"Collective Action",t:"Conditional Voting Pledge",s:"idea",u:"http://hackathonprojects.jacobcole.net/",d:"Citizens commit to vote only if enough peers in their district also pledge, then all activate together."},
-    {c:"Care & Society",t:"Favor-Matching Network",s:"idea",u:"http://hackathonprojects.jacobcole.net/",d:"Maps friends' skills so people can request and exchange favors locally."},
-    {c:"Health & Body",t:"ICU & Ventilator Tracker",s:"idea",u:"http://hackathonprojects.jacobcole.net/",d:"A real-time map of available ventilators and ICU beds across hospitals during a crisis."},
-    {c:"Care & Society",t:"Proximity Hangout Suggester",s:"idea",u:"http://hackathonprojects.jacobcole.net/",d:"Alerts you to nearby friends and suggests a meetup without persistent location tracking."},
-    {c:"Fixing the Internet",t:"Political Bias Classifier",s:"idea",u:"http://hackathonprojects.jacobcole.net/",d:"An ML tool that detects and labels politically biased content in social feeds."},
-    {c:"Climate & Sustainability",t:"Wildfire Satellite Detection",s:"idea",u:"http://hackathonprojects.jacobcole.net/",d:"A model that flags forest fires early from satellite imagery."},
-    {c:"Personal Leverage",t:"Ingredient Recipe Finder",s:"idea",u:"http://hackathonprojects.jacobcole.net/",d:"Recommends recipes from what's in your kitchen and pairs you with a cooking partner."},
-    {c:"Reputation & Trust",t:"Used-Car History Database",s:"idea",u:"http://hackathonprojects.jacobcole.net/",d:"A verified repository of repair and inspection histories for used vehicles."},
-    {c:"Open Knowledge",t:"Idea Graph IDE",s:"idea",u:"http://hackathonprojects.jacobcole.net/",d:"A graph workspace that links hackathon and startup ideas by relationship."},
-    {c:"Open Knowledge",t:"Curiosity Thread Maps",s:"idea",u:"http://hackathonprojects.jacobcole.net/",d:"A platform charting question-to-question sequences that lead from curiosity to expertise."},
-    {c:"Open Knowledge",t:"Best-in-Class Tool Registry",s:"idea",u:"http://fixingtheinternet.jacobcole.net/",d:"A curated directory of the top tool for each purpose, organized by use case."},
-    {c:"Coordination Infra",t:"Curated List Publishing",s:"idea",u:"http://fixingtheinternet.jacobcole.net/",d:"Lets curators easily publish and distribute thematic lists and recommendations."},
+    {c:"Fixing the Internet",t:"Cross-Site Hashtag Search",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"Search a hashtag uniformly across every social platform and website at once."},
+    {c:"Fixing the Internet",t:"Universal Comments Layer",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"Attach comment threads to any webpage, email, or chat, viewable by anyone."},
+    {c:"Fixing the Internet",t:"Universal Web Annotations",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A shared highlight-and-note layer that pins annotations onto any page across the web."},
+    {c:"Open Knowledge",t:"Canonical Debate Lab",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A structured platform that organizes contested claims and their arguments toward resolution."},
+    {c:"Open Knowledge",t:"Scientific Assertions Database",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A machine-readable repository of scientific claims with their dependencies and evidence mapped."},
+    {c:"Open Knowledge",t:"Collaborative Theorem Prover",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A shared workspace where mathematicians jointly build and verify formal proofs."},
+    {c:"Open Knowledge",t:"Negative Results Repository",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"An archive of failed experiments and null results so research isn't needlessly duplicated."},
+    {c:"Open Knowledge",t:"Argument Repository",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A searchable database of debate outlines and reusable argumentative frameworks."},
+    {c:"Coordination Infra",t:"Policy & Science Simulator",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A sandbox for safely testing policy changes and hypotheses before real-world rollout."},
+    {c:"Personal Leverage",t:"Unified Feed Control",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A single interface managing emails, texts, calls, and feeds with user-defined routing rules."},
+    {c:"Fixing the Internet",t:"Soundbite Propagation Tracker",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"Audio-fingerprinting that traces how a specific quote or claim spreads across media."},
+    {c:"Civic & Government",t:"Global Goals Dashboard",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A public dashboard visualizing humanity's measured progress on major shared objectives."},
+    {c:"Collective Action",t:"Conditional Voting Pledge",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"Citizens commit to vote only if enough peers in their district also pledge, then all activate together."},
+    {c:"Care & Society",t:"Favor-Matching Network",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"Maps friends' skills so people can request and exchange favors locally."},
+    {c:"Health & Body",t:"ICU & Ventilator Tracker",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"A real-time map of available ventilators and ICU beds across hospitals during a crisis."},
+    {c:"Care & Society",t:"Proximity Hangout Suggester",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"Alerts you to nearby friends and suggests a meetup without persistent location tracking."},
+    {c:"Fixing the Internet",t:"Political Bias Classifier",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"An ML tool that detects and labels politically biased content in social feeds."},
+    {c:"Climate & Sustainability",t:"Wildfire Satellite Detection",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"A model that flags forest fires early from satellite imagery."},
+    {c:"Personal Leverage",t:"Ingredient Recipe Finder",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"Recommends recipes from what's in your kitchen and pairs you with a cooking partner."},
+    {c:"Reputation & Trust",t:"Used-Car History Database",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"A verified repository of repair and inspection histories for used vehicles."},
+    {c:"Open Knowledge",t:"Idea Graph IDE",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"A graph workspace that links hackathon and startup ideas by relationship."},
+    {c:"Open Knowledge",t:"Curiosity Thread Maps",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"A platform charting question-to-question sequences that lead from curiosity to expertise."},
+    {c:"Open Knowledge",t:"Best-in-Class Tool Registry",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A curated directory of the top tool for each purpose, organized by use case."},
+    {c:"Coordination Infra",t:"Curated List Publishing",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"Lets curators easily publish and distribute thematic lists and recommendations."},
     {c:"Personal Leverage",t:"Context Engineering Prize",s:"idea",u:"https://jacobcole.ai/brainstorms/",d:"A competition to get small models to frontier-level performance through better context."}
   ];
   (function(){
@@ -538,7 +592,7 @@ const MAIN_HTML = `<!DOCTYPE html>
 
   // ---- Live WIT-backed claim grid ----
   (function(){
-    var WIT="https://sthqnyjniclvnflfkyio.supabase.co/functions/v1/get-issues?tracker_slug=missing-civ-infrastructure&label=humanity3&limit=100";
+    var WIT="https://api.worldissuetracker.com/functions/v1/get-issues?tracker_slug=missing-civ-infrastructure&label=humanity3&limit=100";
     var grid=document.getElementById('witgrid');
     function esc(s){return (s||'').replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
     function issueUrl(i){return i.canonical_issue_url || ('https://worldissuetracker.com/issue/'+i.slug)}
@@ -639,6 +693,14 @@ const MAIN_HTML = `<!DOCTYPE html>
     }).join('');
   }
 
+  function mSaveFallback(ok){
+    var r=mResult||{};var title='Contributor profile: '+(r.name||document.getElementById('m-twitter').value.trim()||'new contributor');
+    var body='## About me\\n'+(r.summary||'')+'\\n\\n## Role\\n'+(r.top_role||'')+'\\n\\n(Posted from humanityinfrastructure.com because saving to the tracker failed.)';
+    var gh='https://github.com/tmad4000/humanity-infrastructure/issues/new?title='+encodeURIComponent(title)+'&body='+encodeURIComponent(body);
+    var mail='mailto:jacob@ideaflow.io?subject='+encodeURIComponent(title)+'&body='+encodeURIComponent(body);
+    ok.innerHTML='Couldn’t save to the tracker right now. Your profile isn’t lost: <a href="'+gh+'" target="_blank" rel="noopener">post it as a GitHub issue</a> or <a href="'+mail+'">email it to us</a>.';
+    ok.classList.add('show');
+  }
   async function mSave(){
     var btn=document.getElementById('m-saveBtn');
     var ok=document.getElementById('m-saveOk');
@@ -651,8 +713,8 @@ const MAIN_HTML = `<!DOCTYPE html>
       });
       var data=await res.json();
       if(data.success){btn.style.display='none';ok.textContent='✓ Saved! View at worldissuetracker.com/tracker/hi-contributors';ok.classList.add('show');}
-      else{btn.textContent='Save failed — try again';btn.disabled=false;}
-    }catch(e){btn.textContent='Save failed — try again';btn.disabled=false;}
+      else{btn.textContent='Try saving again';btn.disabled=false;mSaveFallback(ok);}
+    }catch(e){btn.textContent='Try saving again';btn.disabled=false;mSaveFallback(ok);}
   }
 </script>
 </body>
@@ -1026,6 +1088,7 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
     </div>
   </a>
   <div class="nav-links">
+    <a href="https://github.com/tmad4000/humanity-infrastructure" target="_blank" rel="noopener">GitHub ↗</a>
     <a href="#mission">Mission</a>
     <a href="#tools">Tools</a>
     <a href="#buildlist">Build List</a>
@@ -1079,12 +1142,25 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
 <section id="tools"><div class="wrap">
   <div class="sect-label">Working Infrastructure</div>
   <h2 class="sect-h">Pieces that <em>already exist.</em></h2>
-  <p class="sect-p">Free and open. Use them today — and help build the rest. <a href="#submit">Suggest a resource →</a></p>
+  <p class="sect-p">Each listing starts with a need. Free to use. Open where possible. Every listing shows its license. <a href="#submit">Suggest a resource →</a></p>
   <div class="grid reveal">
     <a id="lastbook" class="tcard" href="https://lastbook.org" target="_blank" rel="noopener">
       <div class="tcard-top"><div class="tcard-icon">📖</div><span class="tag live">Featured</span></div>
       <h3>Lastbook</h3><span class="url">lastbook.org</span>
       <p>A free, open-source offline library of practical manuals, videos and maps, with optional local AI. Knowledge for preparedness and rebuilding, available after setup without an internet connection.</p>
+      <p><strong>Need:</strong> knowledge that survives when the internet doesn't. Open source (MIT) · Mac, Windows, Linux.</p>
+    </a>
+    <a id="signudoc" class="tcard" href="https://github.com/NYLLON-SOFTWARE/SignuDoc" target="_blank" rel="noopener">
+      <div class="tcard-top"><div class="tcard-icon">✍️</div><span class="tag live">Featured</span></div>
+      <h3>SignuDoc</h3><span class="url">github.com/NYLLON-SOFTWARE/SignuDoc</span>
+      <p>Open-source e-signatures. Send, sign and seal documents from your own cloud at $0 per seat, with audit trails and tamper-evident seals.</p>
+      <p><strong>Need:</strong> open document signing infrastructure. Open source (MIT) · self-hosted on Vercel · by Kevin Rose / NYLLON.</p>
+    </a>
+    <a id="paxi" class="tcard" href="https://paxi.fyi" target="_blank" rel="noopener">
+      <div class="tcard-top"><div class="tcard-icon">🚕</div><span class="tag live">Featured</span></div>
+      <h3>Paxi</h3><span class="url">paxi.fyi</span>
+      <p>Compares live ride prices and times across Uber, Lyft, Waymo, Tesla, Zoox, Curb and more, then books the one you choose.</p>
+      <p><strong>Need:</strong> use the best service for each task, without interface lock-in. Free · closed source · iPhone · by Doug Feigelson, a friend of the maintainer.</p>
     </a>
     <a class="tcard" href="https://nvctranslator.com" target="_blank" rel="noopener">
       <div class="tcard-top"><div class="tcard-icon">🕊️</div><span class="tag live">Live</span></div>
@@ -1103,12 +1179,6 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
       <h3>WikiHub</h3>
       <span class="url">wikihub.md</span>
       <p>GitHub for LLM wikis. Hosting for open, agent-native markdown knowledge bases — forkable, shareable, version-controlled.</p>
-    </a>
-    <a class="tcard" href="https://listhub.globalbr.ai" target="_blank" rel="noopener">
-      <div class="tcard-top"><div class="tcard-icon">📝</div><span class="tag live">Live</span></div>
-      <h3>ListHub</h3>
-      <span class="url">listhub.globalbr.ai</span>
-      <p>Open list & note publishing with a REST API and two-way git sync. Home of the open-lists movement.</p>
     </a>
     <a class="tcard" href="https://worldissuetracker.com" target="_blank" rel="noopener">
       <div class="tcard-top"><div class="tcard-icon">🌐</div><span class="tag live">Live</span></div>
@@ -1179,28 +1249,28 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
         <li><a href="https://www.notion.so/jacobblog/Humanity-3-0-and-Dharmic-blueprint-314fda9cff6380bfae57ff843cce32dd" target="_blank" rel="noopener">Humanity 3.0 &amp; the Dharmic blueprint</a></li>
         <li><a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" target="_blank" rel="noopener">The Codex — master doc (Google Docs)</a></li>
         <li><a href="https://plausible-text-76b.notion.site/Cody-s-Healing-List-v4-b05b097d529c4c54b5d62f87f55b1f6f" target="_blank" rel="noopener">Healing Resources — "Cody Codex"</a></li>
-        <li><a href="http://worldquestguild.connectordocs.com/" target="_blank" rel="noopener">World Quest Guild — add yourself</a></li>
+        <li><a href="https://quests.world" target="_blank" rel="noopener">World Quest Guild — add yourself</a><br/><small>If that doesn’t load: <a href="https://docs.google.com/document/d/1OggVeoEN4zAafRAox3yjFYtNwmYFJQHovXLviWI69zY/edit" target="_blank" rel="noopener">open the guild doc directly</a></small></li>
       </ul>
     </div>
     <div class="lcol">
       <h4>🧭 Movements within</h4>
       <ul>
-        <li><a href="http://opensource.jacobcole.net" target="_blank" rel="noopener">Open Source dashboard</a></li>
-        <li><a href="http://openlists.jacobcole.net" target="_blank" rel="noopener">Open Lists movement</a></li>
-        <li><a href="http://fixingtheinternet.jacobcole.net/" target="_blank" rel="noopener">Fixing the Internet</a></li>
-        <li><a href="http://favorverse.jacobcole.net/" target="_blank" rel="noopener">Favorverse — volunteerism</a></li>
-        <li><a href="http://thunderpledge.jacobcole.net" target="_blank" rel="noopener">ThunderPledge — collective action</a></li>
+        <li><a href="https://opensource.jacobcole.net" target="_blank" rel="noopener">Open Source dashboard</a></li>
+        <li><a href="https://openlists.jacobcole.net" target="_blank" rel="noopener">Open Lists movement</a></li>
+        <li><a href="https://fixingtheinternet.jacobcole.net/" target="_blank" rel="noopener">Fixing the Internet</a></li>
+        <li><a href="https://favorverse.jacobcole.net/" target="_blank" rel="noopener">Favorverse — volunteerism</a></li>
+        <li><a href="https://thunderpledge.jacobcole.net" target="_blank" rel="noopener">ThunderPledge — collective action</a></li>
       </ul>
     </div>
     <div class="lcol">
       <h4>🌿 Knowledge &amp; flourishing</h4>
       <ul>
-        <li><a href="http://meditation.jacobcole.net/" target="_blank" rel="noopener">Open meditation curricula</a></li>
-        <li><a href="http://chronicpain.jacobcole.net/" target="_blank" rel="noopener">Treating chronic pain</a></li>
-        <li><a href="http://foodslist.jacobcole.net/" target="_blank" rel="noopener">How to eat well</a></li>
-        <li><a href="http://supplements.jacobcole.net/" target="_blank" rel="noopener">Supplement stacks</a></li>
-        <li><a href="http://bodymasters.jacobcole.net" target="_blank" rel="noopener">Body Masters</a></li>
-        <li><a href="http://education.jacobcole.net" target="_blank" rel="noopener">Education resources</a></li>
+        <li><a href="https://meditation.jacobcole.net/" target="_blank" rel="noopener">Open meditation curricula</a></li>
+        <li><a href="https://chronicpain.jacobcole.net/" target="_blank" rel="noopener">Treating chronic pain</a></li>
+        <li><a href="https://foodslist.jacobcole.net/" target="_blank" rel="noopener">How to eat well</a></li>
+        <li><a href="https://supplements.jacobcole.net/" target="_blank" rel="noopener">Supplement stacks</a></li>
+        <li><a href="https://bodymasters.jacobcole.net" target="_blank" rel="noopener">Body Masters</a></li>
+        <li><a href="https://education.jacobcole.net" target="_blank" rel="noopener">Education resources</a></li>
       </ul>
     </div>
   </div>
@@ -1295,11 +1365,11 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 const BUILD_ITEMS = [
   { cat:'knowledge', title:'Universal survival guide', desc:'From food & shelter to emotional regulation — the knowledge every human needs, in every language.', status:'idea' },
   { cat:'coordination', title:'Open reputation system', desc:'Portable, cross-platform reputation that travels with you — not locked to one silo.', status:'idea' },
-  { cat:'health', title:'Open chronic-pain protocol', desc:'Aggregated evidence-based treatments for common chronic conditions, freely editable.', status:'building', url:'http://chronicpain.jacobcole.net/' },
+  { cat:'health', title:'Open chronic-pain protocol', desc:'Aggregated evidence-based treatments for common chronic conditions, freely editable.', status:'building', url:'https://chronicpain.jacobcole.net/' },
   { cat:'coordination', title:'Volunteerism marketplace', desc:'Match people who want to help with tasks that need doing — a Craigslist for good deeds.', status:'idea' },
-  { cat:'knowledge', title:'Open meditation curricula', desc:'Secular, evidence-based meditation courses — from beginner to advanced, free forever.', status:'done', url:'http://meditation.jacobcole.net/' },
-  { cat:'tools', title:'Collective action toolkit', desc:'Lower the barrier to coordinating groups around shared goals — pledges, commitments, accountability.', status:'building', url:'http://thunderpledge.jacobcole.net' },
-  { cat:'knowledge', title:'How to eat well (open guide)', desc:'Evidence-based nutrition guide with community editing and regional adaptations.', status:'done', url:'http://foodslist.jacobcole.net/' },
+  { cat:'knowledge', title:'Open meditation curricula', desc:'Secular, evidence-based meditation courses — from beginner to advanced, free forever.', status:'done', url:'https://meditation.jacobcole.net/' },
+  { cat:'tools', title:'Collective action toolkit', desc:'Lower the barrier to coordinating groups around shared goals — pledges, commitments, accountability.', status:'building', url:'https://thunderpledge.jacobcole.net' },
+  { cat:'knowledge', title:'How to eat well (open guide)', desc:'Evidence-based nutrition guide with community editing and regional adaptations.', status:'done', url:'https://foodslist.jacobcole.net/' },
   { cat:'tools', title:'Personal knowledge graph for everyone', desc:'Noos but for non-technical users — a simple interface for connected notes and learning.', status:'building', url:'https://globalbr.ai' },
   { cat:'coordination', title:'Open skill-matching', desc:'Connect people who need help with people who have the skill — like LinkedIn but free and open.', status:'idea' },
   { cat:'tools', title:'NVC Translator for teams', desc:'Extend NVC Translator to async team contexts — Slack/email de-escalation at scale.', status:'idea' },
@@ -1339,14 +1409,17 @@ renderBuildList();
 async function loadWIT() {
   const grid = document.getElementById('witgrid');
   try {
-    const res = await fetch('https://api.worldissuetracker.com/api/v1/issues?tracker=missing-civ-infrastructure&status=open&limit=6');
+    const res = await fetch('https://api.worldissuetracker.com/functions/v1/get-issues?tracker_slug=missing-civ-infrastructure&label=humanity3&limit=100');
     if (!res.ok) throw new Error();
     const data = await res.json();
-    const issues = data.issues || data.data || data || [];
+    const esc = s => String(s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    const issues = (data.issues || data.data || []).filter(i => !i.deleted_at && i.status !== 'closed')
+      .sort((a,b) => (b.votes||0) - (a.votes||0)).slice(0, 6)
+      .map(i => ({ ...i, title: esc(i.title), description: esc((i.description||'').split(' Part of the Humanity')[0]), url: i.canonical_issue_url || ('https://worldissuetracker.com/issue/' + i.slug), id: '' }));
     if (!issues.length) { grid.innerHTML = '<div class="witloading">No open quests right now — check back soon.</div>'; return; }
     grid.innerHTML = issues.map(i => \`
       <div class="bcard">
-        <div class="cat">Open quest · #\${i.id || i.number || ''}</div>
+        <div class="cat">Open quest</div>
         <h3>\${i.title}</h3>
         \${i.description ? \`<p>\${i.description.slice(0,180)}\${i.description.length>180?'…':''}</p>\` : ''}
         <div class="row">
@@ -1731,6 +1804,7 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
     </div>
   </a>
   <div class="nav-links">
+    <a href="https://github.com/tmad4000/humanity-infrastructure" target="_blank" rel="noopener">GitHub ↗</a>
     <a href="#mission">Mission</a>
     <a href="#tools">Tools</a>
     <a href="#buildlist">Build List</a>
@@ -1784,12 +1858,25 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
 <section id="tools"><div class="wrap">
   <div class="sect-label">Working Infrastructure</div>
   <h2 class="sect-h">Pieces that <em>already exist.</em></h2>
-  <p class="sect-p">Free and open. Use them today — and help build the rest. <a href="#submit">Suggest a resource →</a></p>
+  <p class="sect-p">Each listing starts with a need. Free to use. Open where possible. Every listing shows its license. <a href="#submit">Suggest a resource →</a></p>
   <div class="grid reveal">
     <a id="lastbook" class="tcard" href="https://lastbook.org" target="_blank" rel="noopener">
       <div class="tcard-top"><div class="tcard-icon">📖</div><span class="tag live">Featured</span></div>
       <h3>Lastbook</h3><span class="url">lastbook.org</span>
       <p>A free, open-source offline library of practical manuals, videos and maps, with optional local AI. Knowledge for preparedness and rebuilding, available after setup without an internet connection.</p>
+      <p><strong>Need:</strong> knowledge that survives when the internet doesn't. Open source (MIT) · Mac, Windows, Linux.</p>
+    </a>
+    <a id="signudoc" class="tcard" href="https://github.com/NYLLON-SOFTWARE/SignuDoc" target="_blank" rel="noopener">
+      <div class="tcard-top"><div class="tcard-icon">✍️</div><span class="tag live">Featured</span></div>
+      <h3>SignuDoc</h3><span class="url">github.com/NYLLON-SOFTWARE/SignuDoc</span>
+      <p>Open-source e-signatures. Send, sign and seal documents from your own cloud at $0 per seat, with audit trails and tamper-evident seals.</p>
+      <p><strong>Need:</strong> open document signing infrastructure. Open source (MIT) · self-hosted on Vercel · by Kevin Rose / NYLLON.</p>
+    </a>
+    <a id="paxi" class="tcard" href="https://paxi.fyi" target="_blank" rel="noopener">
+      <div class="tcard-top"><div class="tcard-icon">🚕</div><span class="tag live">Featured</span></div>
+      <h3>Paxi</h3><span class="url">paxi.fyi</span>
+      <p>Compares live ride prices and times across Uber, Lyft, Waymo, Tesla, Zoox, Curb and more, then books the one you choose.</p>
+      <p><strong>Need:</strong> use the best service for each task, without interface lock-in. Free · closed source · iPhone · by Doug Feigelson, a friend of the maintainer.</p>
     </a>
     <a class="tcard" href="https://nvctranslator.com" target="_blank" rel="noopener">
       <div class="tcard-top"><div class="tcard-icon">🕊️</div><span class="tag live">Live</span></div>
@@ -1808,12 +1895,6 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
       <h3>WikiHub</h3>
       <span class="url">wikihub.md</span>
       <p>GitHub for LLM wikis. Hosting for open, agent-native markdown knowledge bases — forkable, shareable, version-controlled.</p>
-    </a>
-    <a class="tcard" href="https://listhub.globalbr.ai" target="_blank" rel="noopener">
-      <div class="tcard-top"><div class="tcard-icon">📝</div><span class="tag live">Live</span></div>
-      <h3>ListHub</h3>
-      <span class="url">listhub.globalbr.ai</span>
-      <p>Open list & note publishing with a REST API and two-way git sync. Home of the open-lists movement.</p>
     </a>
     <a class="tcard" href="https://worldissuetracker.com" target="_blank" rel="noopener">
       <div class="tcard-top"><div class="tcard-icon">🌐</div><span class="tag live">Live</span></div>
@@ -1884,28 +1965,28 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
         <li><a href="https://www.notion.so/jacobblog/Humanity-3-0-and-Dharmic-blueprint-314fda9cff6380bfae57ff843cce32dd" target="_blank" rel="noopener">Humanity 3.0 &amp; the Dharmic blueprint</a></li>
         <li><a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" target="_blank" rel="noopener">The Codex — master doc (Google Docs)</a></li>
         <li><a href="https://plausible-text-76b.notion.site/Cody-s-Healing-List-v4-b05b097d529c4c54b5d62f87f55b1f6f" target="_blank" rel="noopener">Healing Resources — "Cody Codex"</a></li>
-        <li><a href="http://worldquestguild.connectordocs.com/" target="_blank" rel="noopener">World Quest Guild — add yourself</a></li>
+        <li><a href="https://quests.world" target="_blank" rel="noopener">World Quest Guild — add yourself</a><br/><small>If that doesn’t load: <a href="https://docs.google.com/document/d/1OggVeoEN4zAafRAox3yjFYtNwmYFJQHovXLviWI69zY/edit" target="_blank" rel="noopener">open the guild doc directly</a></small></li>
       </ul>
     </div>
     <div class="lcol">
       <h4>🧭 Movements within</h4>
       <ul>
-        <li><a href="http://opensource.jacobcole.net" target="_blank" rel="noopener">Open Source dashboard</a></li>
-        <li><a href="http://openlists.jacobcole.net" target="_blank" rel="noopener">Open Lists movement</a></li>
-        <li><a href="http://fixingtheinternet.jacobcole.net/" target="_blank" rel="noopener">Fixing the Internet</a></li>
-        <li><a href="http://favorverse.jacobcole.net/" target="_blank" rel="noopener">Favorverse — volunteerism</a></li>
-        <li><a href="http://thunderpledge.jacobcole.net" target="_blank" rel="noopener">ThunderPledge — collective action</a></li>
+        <li><a href="https://opensource.jacobcole.net" target="_blank" rel="noopener">Open Source dashboard</a></li>
+        <li><a href="https://openlists.jacobcole.net" target="_blank" rel="noopener">Open Lists movement</a></li>
+        <li><a href="https://fixingtheinternet.jacobcole.net/" target="_blank" rel="noopener">Fixing the Internet</a></li>
+        <li><a href="https://favorverse.jacobcole.net/" target="_blank" rel="noopener">Favorverse — volunteerism</a></li>
+        <li><a href="https://thunderpledge.jacobcole.net" target="_blank" rel="noopener">ThunderPledge — collective action</a></li>
       </ul>
     </div>
     <div class="lcol">
       <h4>🌿 Knowledge &amp; flourishing</h4>
       <ul>
-        <li><a href="http://meditation.jacobcole.net/" target="_blank" rel="noopener">Open meditation curricula</a></li>
-        <li><a href="http://chronicpain.jacobcole.net/" target="_blank" rel="noopener">Treating chronic pain</a></li>
-        <li><a href="http://foodslist.jacobcole.net/" target="_blank" rel="noopener">How to eat well</a></li>
-        <li><a href="http://supplements.jacobcole.net/" target="_blank" rel="noopener">Supplement stacks</a></li>
-        <li><a href="http://bodymasters.jacobcole.net" target="_blank" rel="noopener">Body Masters</a></li>
-        <li><a href="http://education.jacobcole.net" target="_blank" rel="noopener">Education resources</a></li>
+        <li><a href="https://meditation.jacobcole.net/" target="_blank" rel="noopener">Open meditation curricula</a></li>
+        <li><a href="https://chronicpain.jacobcole.net/" target="_blank" rel="noopener">Treating chronic pain</a></li>
+        <li><a href="https://foodslist.jacobcole.net/" target="_blank" rel="noopener">How to eat well</a></li>
+        <li><a href="https://supplements.jacobcole.net/" target="_blank" rel="noopener">Supplement stacks</a></li>
+        <li><a href="https://bodymasters.jacobcole.net" target="_blank" rel="noopener">Body Masters</a></li>
+        <li><a href="https://education.jacobcole.net" target="_blank" rel="noopener">Education resources</a></li>
       </ul>
     </div>
   </div>
@@ -1999,11 +2080,11 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 const BUILD_ITEMS = [
   { cat:'knowledge', title:'Universal survival guide', desc:'From food & shelter to emotional regulation — the knowledge every human needs, in every language.', status:'idea' },
   { cat:'coordination', title:'Open reputation system', desc:'Portable, cross-platform reputation that travels with you — not locked to one silo.', status:'idea' },
-  { cat:'health', title:'Open chronic-pain protocol', desc:'Aggregated evidence-based treatments for common chronic conditions, freely editable.', status:'building', url:'http://chronicpain.jacobcole.net/' },
+  { cat:'health', title:'Open chronic-pain protocol', desc:'Aggregated evidence-based treatments for common chronic conditions, freely editable.', status:'building', url:'https://chronicpain.jacobcole.net/' },
   { cat:'coordination', title:'Volunteerism marketplace', desc:'Match people who want to help with tasks that need doing — a Craigslist for good deeds.', status:'idea' },
-  { cat:'knowledge', title:'Open meditation curricula', desc:'Secular, evidence-based meditation courses — from beginner to advanced, free forever.', status:'done', url:'http://meditation.jacobcole.net/' },
-  { cat:'tools', title:'Collective action toolkit', desc:'Lower the barrier to coordinating groups around shared goals — pledges, commitments, accountability.', status:'building', url:'http://thunderpledge.jacobcole.net' },
-  { cat:'knowledge', title:'How to eat well (open guide)', desc:'Evidence-based nutrition guide with community editing and regional adaptations.', status:'done', url:'http://foodslist.jacobcole.net/' },
+  { cat:'knowledge', title:'Open meditation curricula', desc:'Secular, evidence-based meditation courses — from beginner to advanced, free forever.', status:'done', url:'https://meditation.jacobcole.net/' },
+  { cat:'tools', title:'Collective action toolkit', desc:'Lower the barrier to coordinating groups around shared goals — pledges, commitments, accountability.', status:'building', url:'https://thunderpledge.jacobcole.net' },
+  { cat:'knowledge', title:'How to eat well (open guide)', desc:'Evidence-based nutrition guide with community editing and regional adaptations.', status:'done', url:'https://foodslist.jacobcole.net/' },
   { cat:'tools', title:'Personal knowledge graph for everyone', desc:'Noos but for non-technical users — a simple interface for connected notes and learning.', status:'building', url:'https://globalbr.ai' },
   { cat:'coordination', title:'Open skill-matching', desc:'Connect people who need help with people who have the skill — like LinkedIn but free and open.', status:'idea' },
   { cat:'tools', title:'NVC Translator for teams', desc:'Extend NVC Translator to async team contexts — Slack/email de-escalation at scale.', status:'idea' },
@@ -2043,14 +2124,17 @@ renderBuildList();
 async function loadWIT() {
   const grid = document.getElementById('witgrid');
   try {
-    const res = await fetch('https://api.worldissuetracker.com/api/v1/issues?tracker=missing-civ-infrastructure&status=open&limit=6');
+    const res = await fetch('https://api.worldissuetracker.com/functions/v1/get-issues?tracker_slug=missing-civ-infrastructure&label=humanity3&limit=100');
     if (!res.ok) throw new Error();
     const data = await res.json();
-    const issues = data.issues || data.data || data || [];
+    const esc = s => String(s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    const issues = (data.issues || data.data || []).filter(i => !i.deleted_at && i.status !== 'closed')
+      .sort((a,b) => (b.votes||0) - (a.votes||0)).slice(0, 6)
+      .map(i => ({ ...i, title: esc(i.title), description: esc((i.description||'').split(' Part of the Humanity')[0]), url: i.canonical_issue_url || ('https://worldissuetracker.com/issue/' + i.slug), id: '' }));
     if (!issues.length) { grid.innerHTML = '<div class="witloading">No open quests right now — check back soon.</div>'; return; }
     grid.innerHTML = issues.map(i => \`
       <div class="bcard">
-        <div class="cat">Open quest · #\${i.id || i.number || ''}</div>
+        <div class="cat">Open quest</div>
         <h3>\${i.title}</h3>
         \${i.description ? \`<p>\${i.description.slice(0,180)}\${i.description.length>180?'…':''}</p>\` : ''}
         <div class="row">

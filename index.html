@@ -674,6 +674,14 @@
     }).join('');
   }
 
+  function mSaveFallback(ok){
+    var r=mResult||{};var title='Contributor profile: '+(r.name||document.getElementById('m-twitter').value.trim()||'new contributor');
+    var body='## About me\n'+(r.summary||'')+'\n\n## Role\n'+(r.top_role||'')+'\n\n(Posted from humanityinfrastructure.com because saving to the tracker failed.)';
+    var gh='https://github.com/tmad4000/humanity-infrastructure/issues/new?title='+encodeURIComponent(title)+'&body='+encodeURIComponent(body);
+    var mail='mailto:jacob@ideaflow.io?subject='+encodeURIComponent(title)+'&body='+encodeURIComponent(body);
+    ok.innerHTML='Couldn’t save to the tracker right now. Your profile isn’t lost: <a href="'+gh+'" target="_blank" rel="noopener">post it as a GitHub issue</a> or <a href="'+mail+'">email it to us</a>.';
+    ok.classList.add('show');
+  }
   async function mSave(){
     var btn=document.getElementById('m-saveBtn');
     var ok=document.getElementById('m-saveOk');
@@ -686,8 +694,8 @@
       });
       var data=await res.json();
       if(data.success){btn.style.display='none';ok.textContent='✓ Saved! View at worldissuetracker.com/tracker/hi-contributors';ok.classList.add('show');}
-      else{btn.textContent='Save failed — try again';btn.disabled=false;}
-    }catch(e){btn.textContent='Save failed — try again';btn.disabled=false;}
+      else{btn.textContent='Try saving again';btn.disabled=false;mSaveFallback(ok);}
+    }catch(e){btn.textContent='Try saving again';btn.disabled=false;mSaveFallback(ok);}
   }
 </script>
 </body>
