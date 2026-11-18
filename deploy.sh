@@ -14,6 +14,8 @@ def escape_js(s):
 with open('index.html') as f: main = f.read()
 with open('v2.html') as f: v2 = f.read()
 with open('v3.html') as f: v3 = f.read()
+import base64
+with open('og-card.png','rb') as f: og_b64 = base64.b64encode(f.read()).decode()
 
 worker = f"""addEventListener('fetch', event => {{
   event.respondWith(handleRequest(event.request))
@@ -22,6 +24,9 @@ worker = f"""addEventListener('fetch', event => {{
 async function handleRequest(request) {{
   const url = new URL(request.url)
   const path = url.pathname
+  if (path === '/og-card.png') {{
+    return new Response(OG_PNG, {{ headers: {{ 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=86400' }} }})
+  }}
   if (path === '/v2' || path.startsWith('/v2/')) {{
     return new Response(V2_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8' }} }})
   }}
@@ -37,6 +42,7 @@ async function handleRequest(request) {{
 const MAIN_HTML = `{escape_js(main)}`
 const V2_HTML = `{escape_js(v2)}`
 const V3_HTML = `{escape_js(v3)}`
+const OG_PNG = Uint8Array.from(atob('{og_b64}'), c => c.charCodeAt(0))
 """
 
 with open('worker.js', 'w') as f:
