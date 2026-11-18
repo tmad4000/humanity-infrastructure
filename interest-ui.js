@@ -21,8 +21,8 @@
   const form=dialog.querySelector('form'), thanks=dialog.querySelector('#signal-thanks'), status=dialog.querySelector('.status');
   function showCounts(){document.querySelectorAll('[data-interest-count]').forEach(el=>{const count=counts[el.dataset.interestCount];const text=count>=3?count+' want signals':'Be the first';if(el.textContent!==text)el.textContent=text;});}
   async function loadCounts(){try{const response=await fetch('/api/interest/counts');if(response.ok){counts=(await response.json()).counts || {};showCounts();}}catch{/* Signals remain usable without a count response. */}}
-  function mount(){document.querySelectorAll('[data-interest-item]').forEach(card=>{
-    const key=card.dataset.interestItem;if(!Object.hasOwn(items,key) || card.querySelector('.signal-actions'))return;
+  function mount(){document.querySelectorAll('[data-interest-item], .card[id]').forEach(card=>{
+    const key=card.dataset.interestItem || card.id;if(!Object.hasOwn(items,key) || card.querySelector('.signal-actions'))return;
     const actions=document.createElement('div');actions.className='signal-actions';
     for(const [kind,label] of [['want','I want this'],['building',"I'm building this"]]){const button=document.createElement('button');button.type='button';button.className='btn ghost';button.dataset.signalKind=kind;button.dataset.signalItem=key;button.textContent=label;button.setAttribute('aria-label',label+': '+items[key]);actions.append(button);}
     const count=document.createElement('span');count.className='signal-count';count.dataset.interestCount=key;actions.append(count);card.append(actions);
