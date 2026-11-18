@@ -1,10 +1,88 @@
-addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request))
-})
+// Private signup routes. No personal data is published to WIT or public APIs.
+const PRIVATE_HEADERS = { 'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer', 'X-Content-Type-Options': 'nosniff' };
+function signupResponse(body, status = 200, extra = {}) {
+  return new Response(JSON.stringify(body), { status, headers: { ...PRIVATE_HEADERS, 'Content-Type': 'application/json', ...extra } });
+}
+function signupCsv(value) {
+  const text = String(value ?? '');
+  return '"' + (/^[\s]*[=+@\-]/.test(text) ? "'" : '') + text.replaceAll('"', '""') + '"';
+}
+async function signupHash(value) {
+  return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value))), b => b.toString(16).padStart(2, '0')).join('');
+}
+async function handleSignup(request, env) {
+  const url = new URL(request.url);
+  if (!['/api/signup', '/unsubscribe', '/admin/signups.csv'].includes(url.pathname)) return null;
+  try {
+    if (url.pathname === '/admin/signups.csv') {
+      if (request.method !== 'GET') return signupResponse({ error: 'Method not allowed' }, 405);
+      const supplied = request.headers.get('Authorization') || '';
+      if (!env.ADMIN_EXPORT_TOKEN || await signupHash(supplied) !== await signupHash('Bearer ' + env.ADMIN_EXPORT_TOKEN)) return signupResponse({ error: 'Unauthorized' }, 401);
+      const rows = await env.SIGNUPS.prepare('SELECT * FROM signups ORDER BY consent_at').all();
+      const columns = ['id','email','interest','handle','public_opt_in','consent_at','source_page','utm','referrer','unsubscribed_at','unsubscribe_url'];
+      const csv = [columns.join(','), ...rows.results.map(row => columns.map(key => signupCsv(key === 'unsubscribe_url' ? url.origin + '/unsubscribe?t=' + row.unsubscribe_token : row[key])).join(','))].join('\r\n');
+      return new Response(csv, { headers: { ...PRIVATE_HEADERS, 'Content-Type': 'text/csv;charset=UTF-8', 'Content-Disposition': 'attachment; filename="hi-signups.csv"' } });
+    }
+    if (url.pathname === '/unsubscribe') {
+      if (request.method !== 'GET') return signupResponse({ error: 'Method not allowed' }, 405);
+      const token = url.searchParams.get('t') || '';
+      if (!/^[a-f0-9]{64}$/.test(token)) return signupResponse({ error: 'Invalid unsubscribe link' }, 400);
+      const result = await env.SIGNUPS.prepare('UPDATE signups SET unsubscribed_at = COALESCE(unsubscribed_at, ?) WHERE unsubscribe_token = ?').bind(new Date().toISOString(), token).run();
+      return new Response(result.meta.changes ? 'You are unsubscribed. You will receive no more letters.' : 'This unsubscribe link is not valid.', { status: result.meta.changes ? 200 : 404, headers: { ...PRIVATE_HEADERS, 'Content-Type': 'text/plain;charset=UTF-8' } });
+    }
+    if (request.method !== 'POST') return signupResponse({ error: 'Method not allowed' }, 405);
+    if (request.headers.get('Origin') && request.headers.get('Origin') !== url.origin) return signupResponse({ error: 'Please sign up from this site.' }, 403);
+    if (!env.SIGNUPS || !env.RATE_LIMIT_SALT) return signupResponse({ error: 'Signup temporarily unavailable. Please try again later.' }, 503);
+    if (!(request.headers.get('Content-Type') || '').startsWith('application/json')) return signupResponse({ error: 'Expected JSON' }, 415);
+    if (Number(request.headers.get('Content-Length')) > 4096) return signupResponse({ error: 'Submission too large' }, 413);
+    const reader = request.body?.getReader();
+    if (!reader) return signupResponse({ error: 'Empty submission' }, 400);
+    let bytes = 0, chunks = [];
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      bytes += value.length;
+      if (bytes > 4096) { await reader.cancel(); return signupResponse({ error: 'Submission too large' }, 413); }
+      chunks.push(value);
+    }
+    let data;
+    try { data = JSON.parse(await new Blob(chunks).text()); } catch { return signupResponse({ error: 'Invalid submission' }, 400); }
+    if (!data || typeof data !== 'object' || Array.isArray(data)) return signupResponse({ error: 'Invalid submission' }, 400);
+    if (data.website) return signupResponse({ ok: true });
+    const ip = request.headers.get('CF-Connecting-IP');
+    if (!ip) return signupResponse({ error: 'Signup temporarily unavailable.' }, 503);
+    const hash = await signupHash(env.RATE_LIMIT_SALT + ':' + ip);
+    const window = Math.floor(Date.now() / 3600000);
+    const rate = await env.SIGNUPS.prepare('INSERT INTO signup_rate_limits (ip_hash, window, attempts) VALUES (?, ?, 1) ON CONFLICT(ip_hash) DO UPDATE SET attempts = CASE WHEN window = excluded.window THEN attempts + 1 ELSE 1 END, window = excluded.window RETURNING attempts').bind(hash, window).first();
+    if (rate.attempts > 5) return signupResponse({ error: 'Too many attempts. Please try again in an hour.' }, 429, { 'Retry-After': '3600' });
+    await env.SIGNUPS.prepare('DELETE FROM signup_rate_limits WHERE window < ?').bind(window - 24).run();
+    const email = typeof data.email === 'string' ? data.email.trim().toLowerCase() : '';
+    const interest = typeof data.interest === 'string' ? data.interest.trim() : '';
+    const handle = typeof data.handle === 'string' ? data.handle.trim().replace(/^@/, '') : '';
+    if (email.length > 254 || !/^[^\s@,;<>]+@[^\s@,;<>]+\.[^\s@,;<>]+$/.test(email)) return signupResponse({ error: 'Please enter a valid email address.' }, 400);
+    if (interest.length > 200 || (handle && !/^[A-Za-z0-9_]{1,15}$/.test(handle))) return signupResponse({ error: 'Use at most 200 characters for your interest and a valid X handle.' }, 400);
+    const source = typeof data.source_page === 'string' ? data.source_page.slice(0, 300) : '/';
+    const utm = JSON.stringify(Object.fromEntries(Object.entries(data.utm || {}).filter(([k,v]) => /^utm_(source|medium|campaign|term|content)$/.test(k) && typeof v === 'string').map(([k,v]) => [k,v.slice(0,200)])));
+    const referrer = typeof data.referrer === 'string' ? data.referrer.slice(0,500) : '';
+    const token = crypto.randomUUID().replaceAll('-', '') + crypto.randomUUID().replaceAll('-', '');
+    // Duplicates leave existing consent and opt-out intact; never expose another subscriber's token.
+    const result = await env.SIGNUPS.prepare('INSERT INTO signups (id,email,interest,handle,public_opt_in,consent_at,source_page,utm,referrer,unsubscribe_token) VALUES (?,?,?,?,?,?,?,?,?,?) ON CONFLICT(email) DO NOTHING').bind(crypto.randomUUID(),email,interest,handle,handle && data.public_opt_in === true ? 1 : 0,new Date().toISOString(),source,utm,referrer,token).run();
+    return signupResponse({ ok: true, ...(result.meta.changes ? { unsubscribe_url: url.origin + '/unsubscribe?t=' + token } : {}) });
+  } catch {
+    // Never log submitted fields or tokens.
+    return signupResponse({ error: 'Signup temporarily unavailable. Please try again later.' }, 503);
+  }
+}
 
-async function handleRequest(request) {
+export default {
+  async fetch(request, env) { return handleRequest(request, env) }
+}
+
+async function handleRequest(request, env) {
   const url = new URL(request.url)
   const path = url.pathname
+  const signup = await handleSignup(request, env)
+  if (signup) return signup
   if (path === '/og-card.png') {
     return new Response(OG_PNG, { headers: { 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=86400' } })
   }
@@ -229,6 +307,13 @@ const MAIN_HTML = `<!DOCTYPE html>
   .m-save-note{font-size:.78rem;color:var(--faint);flex:1}
   .m-save-ok{font-family:monospace;font-size:.78rem;color:var(--accent);display:none}
   .m-save-ok.show{display:block}
+
+  .letter{max-width:680px;width:100%;padding:26px;border:1px solid var(--border-strong);border-radius:14px;background:var(--bg-soft);text-align:left;margin:24px auto}
+  .letter h2{font-size:1.3rem;margin:0 0 8px}.letter p{color:var(--muted);margin:8px 0 18px}
+  .letter label{display:block;margin:12px 0 5px;color:var(--text);font-size:.9rem}
+  .letter input:not([type=checkbox]),.letter textarea{width:100%;font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--border-strong);border-radius:7px;padding:10px}
+  .letter textarea{resize:vertical}.letter .consent{display:flex;align-items:center;gap:8px}.letter button{margin-top:16px;cursor:pointer;font:inherit}
+  .letter .trap{position:absolute;left:-10000px}.letter .status{margin-top:12px}.letter small{display:block;color:var(--muted);margin-top:14px}
 </style>
 </head>
 <body>
@@ -256,6 +341,7 @@ const MAIN_HTML = `<!DOCTYPE html>
     <a class="btn primary" href="#tools">Explore the tools →</a>
     <button class="btn ghost" onclick="openContribute()" style="cursor:pointer;font-size:inherit">Find your contribution →</button>
   </div>
+  <p class="sub" style="margin-top:24px">A short, occasional letter about tools for human flourishing. No spam; unsubscribe any time. <a href="#letter">I’m interested →</a></p>
 </div></header>
 
 <section id="manifesto"><div class="wrap">
@@ -433,7 +519,18 @@ const MAIN_HTML = `<!DOCTYPE html>
   </div>
 </div></section>
 
-<footer><div class="wrap">
+<footer><div class="wrap"><section class="letter" id="letter"><h2>A letter from Humanity Infrastructure</h2>
+<p>A short, occasional letter about tools for human flourishing. No spam; unsubscribe any time.</p>
+<form id="letter-form">
+<label for="letter-email">Email <span aria-hidden="true">*</span></label><input id="letter-email" name="email" type="email" maxlength="254" autocomplete="email" required>
+<label for="letter-interest">What are you interested in / building? <span>(optional, 200 characters)</span></label><textarea id="letter-interest" name="interest" maxlength="200" rows="2"></textarea>
+<label for="letter-handle">X handle <span>(optional)</span></label><input id="letter-handle" name="handle" maxlength="16" placeholder="@yourhandle" autocomplete="off">
+<label class="consent"><input name="public_opt_in" type="checkbox"> Show my handle publicly</label>
+<div class="trap" aria-hidden="true"><label for="letter-website">Website</label><input id="letter-website" name="website" tabindex="-1" autocomplete="off"></div>
+<button class="btn primary" type="submit">I'm interested →</button><div class="status" role="status" aria-live="polite"></div>
+<small>By signing up, you agree to receive this occasional letter. Your email and interest stay private. Your handle stays private unless you opt in. Unsubscribe with one click in any letter.</small>
+</form></section>
+<p style="width:100%;color:var(--muted)">Privacy: signup details are stored privately for this letter, never in the public issue tracker. Contact <a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a> to request deletion.</p>
   <div>
     <strong style="color:var(--text)">Humanity Infrastructure · The Codex</strong> — basic infrastructure for human flourishing.<br/>
     Free to use. Open where possible. Featured listings show their license. <a href="https://github.com/tmad4000/humanity-infrastructure">Source on GitHub</a> · Contact <a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a>
@@ -491,6 +588,24 @@ const MAIN_HTML = `<!DOCTYPE html>
 </div>
 
 <script>
+
+document.getElementById('letter-form').addEventListener('submit', async function(event) {
+  event.preventDefault();
+  const form = event.currentTarget, button = form.querySelector('button'), status = form.querySelector('.status');
+  button.disabled = true; status.textContent = 'Saving…';
+  const fields = new FormData(form), params = new URLSearchParams(location.search), utm = {};
+  ['source','medium','campaign','term','content'].forEach(key => { if (params.has('utm_' + key)) utm['utm_' + key] = params.get('utm_' + key); });
+  try {
+    const response = await fetch('/api/signup', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email:fields.get('email'),interest:fields.get('interest'),handle:fields.get('handle'),public_opt_in:fields.has('public_opt_in'),website:fields.get('website'),source_page:location.pathname,utm,referrer:document.referrer}) });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'Please try again later.');
+    status.textContent = 'Thank you. If this email is new, you’re on the list.';
+    if (data.unsubscribe_url) { const link = document.createElement('a'); link.href = data.unsubscribe_url; link.textContent = ' Unsubscribe'; status.append(link); }
+    form.reset();
+  } catch(error) { status.textContent = error.message || 'Could not connect. Please try again.'; }
+  finally { button.disabled = false; }
+});
+
   // ---- Open Build List data (lifted from the Codex master doc) ----
   var BUILD=[
     {c:"Collective Action",t:"ThunderPledge",s:"idea",u:"https://thunderpledge.jacobcole.net",d:"Kickstarter for collective action: pledge to go vegetarian, vote, or boycott — but only once a critical mass also commits. Variants: ThunderVote, ThunderBoycott ('Kickstopper')."},
