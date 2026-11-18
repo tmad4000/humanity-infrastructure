@@ -697,7 +697,7 @@ signupForm.addEventListener('submit', async function(event) {
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || 'Please try again later.');
     if (submittedStep === 1) {
-      window.hiTrack('newsletter_signup', {placement: 'letter', method: 'email'});
+      try { if (typeof window.hiTrack === 'function') window.hiTrack('newsletter_signup', {placement: 'letter', method: 'email'}); } catch { /* Optional analytics never blocks signup. */ }
       signupSavedEmail = email; signupStep = 2;
       document.getElementById('letter-email-step').hidden = true; signupEmail.disabled = true;
       signupDetails.hidden = false;
