@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head><meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Humanity Infrastructure — tools and knowledge for human flourishing</title>
+<meta name="description" content="Humanity Infrastructure: a free directory of tools and knowledge for human flourishing. Find tools for practical needs, from offline knowledge to shared civic work. Suggest what belongs." />
+<meta property="og:title" content="Humanity Infrastructure — tools and knowledge for human flourishing" />
+<meta property="og:description" content="Knowledge is a birthright. So are the tools to use it. A free, open directory of tools and knowledge for human flourishing. Suggest what belongs." />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Humanity Infrastructure" />
+<meta property="og:url" content="https://humanityinfrastructure.com/" />
+<meta property="og:image" content="https://humanityinfrastructure.com/og-card.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Humanity Infrastructure: Knowledge is a birthright. So are the tools to use it." />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Humanity Infrastructure — tools and knowledge for human flourishing" />
+<meta name="twitter:description" content="A free, open directory of tools and knowledge for human flourishing. Suggest what belongs." />
+<meta name="twitter:image" content="https://humanityinfrastructure.com/og-card.png" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>" />
+<style>
+  :root{
+    --bg:#0c0f14; --bg-soft:#12161f; --card:#161b26; --card-hover:#1c2230;
+    --text:#e8edf6; --muted:#97a1b3; --faint:#5d6678;
+    --accent:#5fd3a8; --accent-2:#7aa2ff; --accent-warm:#f4b860;
+    --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.16);
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 30px rgba(0,0,0,.35);
+    --max:1080px;
+  }
+  [data-theme="light"]{
+    --bg:#f7f8fa; --bg-soft:#eef1f6; --card:#ffffff; --card-hover:#f3f6fb;
+    --text:#16202e; --muted:#566074; --faint:#8a93a6;
+    --accent:#0f9d72; --accent-2:#3a64d8; --accent-warm:#c98415;
+    --border:rgba(10,20,40,.10); --border-strong:rgba(10,20,40,.18);
+    --shadow:0 1px 2px rgba(20,30,50,.06),0 10px 34px rgba(20,30,50,.10);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:80px}
+  body{
+    margin:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(900px 500px at 80% -10%,rgba(122,162,255,.10),transparent 60%),radial-gradient(800px 500px at 0% 0%,rgba(95,211,168,.08),transparent 55%);
+  }
+  a{color:var(--accent-2);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:20;backdrop-filter:saturate(140%) blur(12px);
+    background:color-mix(in srgb,var(--bg) 82%,transparent);border-bottom:1px solid var(--border)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px;gap:16px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.01em;font-size:1.05rem;color:var(--text)}
+  .brand span.logo{font-size:1.3rem}
+  .nav-links{display:flex;gap:22px;align-items:center}
+  .nav-links a{color:var(--muted);font-size:.92rem;font-weight:500;white-space:nowrap}
+  .nav-links a:hover{color:var(--text);text-decoration:none}
+  .theme-btn{background:var(--card);border:1px solid var(--border-strong);color:var(--text);
+    width:36px;height:36px;border-radius:10px;cursor:pointer;font-size:1rem;display:grid;place-items:center}
+  .theme-btn:hover{background:var(--card-hover)}
+  @media(max-width:1040px){.nav-links a:not(.cta):not(.gh){display:none}}
+
+  /* hero */
+  header.hero{padding:88px 0 56px;text-align:center}
+  .eyebrow{display:inline-block;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--accent);font-weight:700;border:1px solid var(--border-strong);
+    padding:6px 14px;border-radius:999px;margin-bottom:26px;background:var(--bg-soft)}
+  h1{font-size:clamp(2.4rem,6vw,4.3rem);line-height:1.04;letter-spacing:-.03em;margin:0 0 22px;font-weight:800}
+  h1 .grad{background:linear-gradient(110deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{font-size:clamp(1.1rem,2.4vw,1.4rem);color:var(--muted);max-width:720px;margin:0 auto 18px}
+  .sub{font-size:1.02rem;color:var(--faint);max-width:680px;margin:0 auto 36px;font-style:italic}
+  .btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:9px;padding:13px 24px;border-radius:12px;
+    font-weight:600;font-size:1rem;border:1px solid transparent;cursor:pointer;transition:transform .12s ease}
+  .btn:hover{text-decoration:none;transform:translateY(-2px)}
+  .btn.primary{background:linear-gradient(110deg,var(--accent),var(--accent-2));color:#06120d}
+  .btn.ghost{background:var(--card);border-color:var(--border-strong);color:var(--text)}
+  .btn.ghost:hover{background:var(--card-hover)}
+
+  section{padding:64px 0;border-top:1px solid var(--border)}
+  .section-head{margin-bottom:36px;max-width:760px}
+  .section-head h2{font-size:clamp(1.6rem,3.4vw,2.3rem);letter-spacing:-.02em;margin:0 0 12px;font-weight:800}
+  .section-head p{color:var(--muted);font-size:1.06rem;margin:0}
+  .kicker{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-warm);font-weight:700;margin-bottom:10px}
+
+  /* manifesto pillars */
+  .pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+  .pillar{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px}
+  .pillar .ico{font-size:1.7rem;margin-bottom:12px}
+  .pillar h3{margin:0 0 8px;font-size:1.12rem;letter-spacing:-.01em}
+  .pillar p{margin:0;color:var(--muted);font-size:.96rem}
+
+  /* tools grid */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+  .card{display:block;background:var(--card);border:1px solid var(--border);border-radius:16px;
+    padding:22px;transition:transform .14s ease,border-color .14s ease,background .14s ease;position:relative}
+  .card:hover{transform:translateY(-4px);border-color:var(--border-strong);background:var(--card-hover);text-decoration:none;box-shadow:var(--shadow)}
+  .card .top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+  .card .emoji{font-size:1.5rem;width:42px;height:42px;border-radius:11px;background:var(--bg-soft);display:grid;place-items:center;flex:none}
+  .card h3{margin:0;font-size:1.1rem;color:var(--text);letter-spacing:-.01em}
+  .card .url{font-size:.8rem;color:var(--accent);font-weight:600}
+  .card p{margin:0;color:var(--muted);font-size:.93rem}
+  .tag{position:absolute;top:16px;right:16px;font-size:.66rem;font-weight:700;letter-spacing:.06em;
+    text-transform:uppercase;padding:4px 9px;border-radius:999px}
+  .tag.live{background:rgba(95,211,168,.14);color:var(--accent);border:1px solid rgba(95,211,168,.3)}
+  .tag.build{background:rgba(244,184,96,.13);color:var(--accent-warm);border:1px solid rgba(244,184,96,.3)}
+  .tag.idea{background:rgba(122,162,255,.13);color:var(--accent-2);border:1px solid rgba(122,162,255,.3)}
+
+  /* build list */
+  .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+  .chip{background:var(--card);border:1px solid var(--border-strong);color:var(--muted);
+    padding:8px 16px;border-radius:999px;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .12s ease}
+  .chip:hover{background:var(--card-hover);color:var(--text)}
+  .chip.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+  .bcard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 20px;
+    display:flex;flex-direction:column;gap:8px;position:relative}
+  .bcard .cat{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:700}
+  .bcard h3{margin:0;font-size:1.04rem;letter-spacing:-.01em;padding-right:74px}
+  .bcard p{margin:0;color:var(--muted);font-size:.9rem;flex:1}
+  .bcard .row{display:flex;align-items:center;gap:14px;margin-top:4px}
+  .bcard .claim{font-size:.84rem;font-weight:700;color:var(--accent)}
+  .bcard a.ext{font-size:.82rem;color:var(--faint)}
+  .buildnote{margin-top:26px;color:var(--faint);font-size:.92rem;text-align:center}
+  .claim-head{margin:48px 0 22px;text-align:center}
+  .claim-head h3{font-size:1.5rem;letter-spacing:-.02em;margin:0 0 8px;display:inline-flex;align-items:center;gap:10px}
+  .claim-head p{color:var(--muted);max-width:640px;margin:0 auto;font-size:.98rem}
+  .livedot{width:10px;height:10px;border-radius:50%;background:#ef5f5f;display:inline-block;box-shadow:0 0 0 0 rgba(239,95,95,.5);animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(239,95,95,.5)}70%{box-shadow:0 0 0 8px rgba(239,95,95,0)}100%{box-shadow:0 0 0 0 rgba(239,95,95,0)}}
+  .card.featured .needline{margin-bottom:8px;color:var(--muted);font-size:.84rem;line-height:1.5}
+  .need-label{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--accent-warm);margin-right:5px}
+  .card.featured .why{margin-top:12px;font-size:.88rem}
+  .card.featured .top>div{min-width:0}
+  .card.featured h3{padding-right:72px}
+  .card.featured h3 a{color:inherit}
+  .card.featured .url{overflow-wrap:anywhere}
+  .badges{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0;padding:0;list-style:none}
+  .badges li{font-size:.7rem;font-weight:650;padding:3px 8px;border-radius:999px;border:1px solid var(--border-strong);color:var(--muted)}
+  .badges li.open{color:var(--accent);border-color:rgba(95,211,168,.35)}
+  .why{font-size:.88rem;color:var(--muted);border-left:2px solid var(--accent-2);padding-left:10px;margin:0}
+  .why b{color:var(--text);font-weight:650}
+  .seemore{font-size:.86rem;font-weight:600;margin-top:auto}
+  .direct{display:block;font-size:.78rem;color:var(--muted);margin-top:4px}
+  .direct a{color:var(--muted);text-decoration:underline}
+  .witloading{color:var(--faint);padding:30px;grid-column:1/-1;text-align:center}
+  .bcard .votes{font-size:.8rem;color:var(--faint);font-weight:600}
+  .bcard .claimedby{font-size:.82rem;color:var(--accent-warm);font-weight:700}
+
+  /* quote */
+  blockquote{margin:0;background:var(--bg-soft);border:1px solid var(--border);border-left:4px solid var(--accent);
+    border-radius:14px;padding:26px 30px;font-size:1.12rem;color:var(--text)}
+  blockquote cite{display:block;margin-top:14px;font-size:.92rem;color:var(--faint);font-style:normal}
+
+  /* lists row */
+  .links-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .lcol{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px}
+  .lcol h4{margin:0 0 12px;font-size:.95rem;color:var(--text)}
+  .lcol ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+  .lcol li a{color:var(--muted);font-size:.9rem}
+  .lcol li a:hover{color:var(--accent-2)}
+
+  /* CTA */
+  .cta-band{background:linear-gradient(120deg,rgba(95,211,168,.10),rgba(122,162,255,.10));
+    border:1px solid var(--border-strong);border-radius:22px;padding:48px;text-align:center}
+  .cta-band h2{font-size:clamp(1.6rem,3.4vw,2.2rem);margin:0 0 12px;letter-spacing:-.02em}
+  .cta-band p{color:var(--muted);max-width:620px;margin:0 auto 26px;font-size:1.05rem}
+
+  footer{padding:48px 0 60px;border-top:1px solid var(--border);color:var(--faint);font-size:.88rem}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:18px;align-items:center}
+  footer a{color:var(--muted)}
+  .ver{font-variant-numeric:tabular-nums;opacity:.7}
+
+  /* Contribute modal */
+  .modal-overlay{display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);overflow-y:auto;padding:24px 16px}
+  .modal-overlay.open{display:flex;align-items:flex-start;justify-content:center}
+  .modal-box{background:var(--bg-soft);border:1px solid var(--border-strong);border-radius:16px;width:100%;max-width:640px;margin:auto;padding:32px;position:relative;box-shadow:0 24px 80px rgba(0,0,0,.7)}
+  .modal-close{position:absolute;top:16px;right:16px;background:var(--card);border:1px solid var(--border-strong);color:var(--text);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:1.1rem;display:grid;place-items:center;line-height:1}
+  .modal-close:hover{background:var(--card-hover)}
+  .modal-eyebrow{font-family:-apple-system,BlinkMacSystemFont,monospace;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;font-weight:600}
+  .modal-title{font-size:1.55rem;font-weight:600;letter-spacing:-.02em;margin-bottom:6px}
+  .modal-sub{color:var(--muted);font-size:.92rem;margin-bottom:24px;line-height:1.5}
+  .m-field{margin-bottom:16px}
+  .m-field label{display:block;font-size:.8rem;color:var(--muted);font-family:monospace;margin-bottom:6px;letter-spacing:.04em}
+  .m-field label span{color:var(--faint)}
+  .m-field input,.m-field textarea{width:100%;background:var(--card);border:1px solid var(--border-strong);border-radius:8px;color:var(--text);font-family:inherit;font-size:.93rem;padding:10px 14px;outline:none;transition:border-color .15s}
+  .m-field input:focus,.m-field textarea:focus{border-color:var(--accent-2)}
+  .m-field input::placeholder,.m-field textarea::placeholder{color:var(--faint)}
+  .m-field textarea{resize:vertical;min-height:80px;line-height:1.5}
+  .m-submit{display:block;width:100%;padding:13px;background:linear-gradient(110deg,var(--accent),var(--accent-2));color:#06120d;font-family:inherit;font-size:.9rem;font-weight:700;border:none;border-radius:8px;cursor:pointer;letter-spacing:.03em;transition:opacity .15s;margin-top:4px}
+  .m-submit:hover{opacity:.9}
+  .m-submit:disabled{opacity:.38;cursor:not-allowed}
+  .m-status{font-family:monospace;font-size:.78rem;color:var(--muted);margin-top:12px;text-align:center;min-height:18px}
+  .m-results{margin-top:24px;display:none}
+  .m-results.show{display:block}
+  .m-profile{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:18px}
+  .m-profile-name{font-size:1.1rem;font-weight:600;margin-bottom:2px}
+  .m-profile-role{font-size:.75rem;color:var(--accent-warm);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-family:monospace}
+  .m-profile-bio{color:var(--muted);font-size:.88rem;line-height:1.6}
+  .m-match{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:10px;transition:border-color .15s}
+  .m-match:hover{border-color:var(--border-strong)}
+  .m-match-name{font-size:.85rem;font-weight:600;color:var(--accent-2);margin-bottom:4px}
+  .m-match-fit{font-size:.87rem;color:var(--text);margin-bottom:8px;line-height:1.5}
+  .m-match-quest{font-size:.78rem;color:var(--accent);border-left:2px solid var(--accent);padding-left:10px;line-height:1.45}
+  .m-match-link{display:inline-block;margin-top:8px;font-family:monospace;font-size:.72rem;color:var(--faint)}
+  .m-save-row{margin-top:20px;padding-top:18px;border-top:1px solid var(--border);display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .m-save-btn{padding:9px 20px;background:transparent;border:1px solid var(--accent-2);color:var(--accent-2);font-family:inherit;font-size:.8rem;font-weight:600;border-radius:8px;cursor:pointer;transition:all .15s;white-space:nowrap}
+  .m-save-btn:hover{background:var(--accent-2);color:var(--bg)}
+  .m-save-note{font-size:.78rem;color:var(--faint);flex:1}
+  .m-save-ok{font-family:monospace;font-size:.78rem;color:var(--accent);display:none}
+  .m-save-ok.show{display:block}
+
+  .letter{max-width:680px;width:100%;padding:26px;border:1px solid var(--border-strong);border-radius:14px;background:var(--bg-soft);text-align:left;margin:24px auto}
+  .letter h2{color:var(--text);font-size:1.3rem;margin:0 0 8px}.letter p{color:var(--muted);margin:8px 0 18px}
+  .letter label{display:block;margin:12px 0 5px;color:var(--text);font-size:.9rem}
+  .letter input:not([type=checkbox]),.letter textarea{width:100%;font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--border-strong);border-radius:7px;padding:10px}
+  .letter textarea{resize:vertical}.letter .consent{display:flex;align-items:center;gap:8px}.letter button{margin-top:16px;cursor:pointer;font:inherit}
+  .letter .trap{position:absolute;left:-10000px}.letter .status{margin-top:12px}.letter small{display:block;color:var(--muted);margin-top:14px}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="brand" href="#top"><span class="logo">🌍</span> Humanity Infrastructure <span style="color:var(--faint);font-weight:500">· The Codex</span></a>
+  <div class="nav-links">
+    <a href="#manifesto">Manifesto</a>
+    <a href="#tools">Tools</a>
+    <a href="#buildlist">Build List</a>
+    <a href="#vision">The Vision</a>
+    <a href="#submit">Submit a resource</a>
+    <a href="#join">Join</a>
+    <a class="gh" href="https://github.com/tmad4000/humanity-infrastructure" target="_blank" rel="noopener" aria-label="Humanity Infrastructure on GitHub">GitHub ↗</a>
+    <button class="theme-btn" id="themeBtn" title="Toggle light/dark" aria-label="Toggle theme">☀️</button>
+  </div>
+</div></nav>
+
+<a id="top"></a>
+<header class="hero"><div class="wrap">
+  <span class="eyebrow">Basic Infrastructure for Human Flourishing</span>
+  <h1>Knowledge is a <span class="grad">birthright</span>.<br/>So are the tools to use it.</h1>
+  <p class="lede">A codex of human know-how as a public resource to humanity — plus the open-source software to coordinate human activity around it. The not-just-engineering equivalent of the open-source movement.</p>
+  <p class="sub">“Building tools for the well-intended.” This is how we coordinate as a superorganism.</p>
+  <div class="btns">
+    <a class="btn primary" href="#tools">Explore the tools →</a>
+    <button class="btn ghost" style="cursor:pointer;font-size:inherit">Find your contribution →</button>
+  </div>
+  <p class="sub" style="margin-top:24px">A short, occasional letter about tools for human flourishing. No spam; unsubscribe any time. <a href="#letter">I’m interested →</a></p>
+</div></header>
+
+<section id="manifesto"><div class="wrap">
+  <div class="section-head">
+    <div class="kicker">The Premise</div>
+    <h2>Imagine it were everyone's birthright to access the sum-total of human know-how.</h2>
+    <p>The Codex is a hub of knowledge resources and open-source infrastructure — built to bring human flourishing into every person's reach. We envision something most of the developed world eventually becomes part of, to a greater or lesser degree.</p>
+  </div>
+  <div class="pillars">
+    <div class="pillar"><div class="ico">📖</div><h3>Knowledge as a public good</h3><p>Survival and thriving guides, medical know-how, open curricula, role-model casting, the craftsmanship that is all software. Shouldn't software from 10 years ago be free by now?</p></div>
+    <div class="pillar"><div class="ico">🛠️</div><h3>Tools that make people independent</h3><p>Open reputation systems, collective-action tools, personal-leverage automation, assistive tech. Hacked-together infrastructure that helps people help themselves.</p></div>
+    <div class="pillar"><div class="ico">🤝</div><h3>Coordinate as a superorganism</h3><p>Guilds taking on epic quests. Global sense-making. Volunteerism, philanthropy for everyone, and ways to pitch in on the problems that matter — together.</p></div>
+    <div class="pillar"><div class="ico">🌱</div><h3>Flourishing in reach for all</h3><p>From "how to thrive as a highly sensitive person on a budget" to "how to rebuild society from scratch." Compassionate, practical, and free.</p></div>
+  </div>
+</div></section>
+
+<section id="tools"><div class="wrap">
+  <div class="section-head">
+    <div class="kicker">Tools</div>
+    <h2>Pieces of the infrastructure that already exist</h2>
+    <p>Find tools for practical needs, from offline knowledge to shared civic work. Free to use. Open where possible. Featured listings show license, platform and maker. <a href="#submit">Suggest a resource →</a></p>
+  </div>
+  <div class="grid">
+    <article class="card featured" id="lastbook">
+      <span class="tag live">Featured</span>
+      <div class="top"><span class="emoji">📖</span><div><h3><a href="https://lastbook.org" target="_blank" rel="noopener">Lastbook</a></h3><div class="url">lastbook.org</div></div></div>
+      <p class="needline"><span class="need-label">Need</span> Knowledge that survives when the internet doesn't</p>
+      <p>A free, open-source offline library of practical manuals, videos and maps, with optional local AI. Knowledge for preparedness and rebuilding, available after setup without an internet connection.</p>
+      <ul class="badges"><li class="open">Open source · MIT</li><li>Mac · Windows · Linux</li><li>By farbood &amp; contributors</li></ul>
+      <p class="why"><b>Editor's Note:</b> when the network goes down, the knowledge shouldn't. A library you can hand to a neighbour on a drive.</p>
+    </article>
+    <a class="card" href="https://nvctranslator.com" target="_blank" rel="noopener">
+      <span class="tag live">Live</span>
+      <div class="top"><span class="emoji">🕊️</span><div><h3>NVC Translator</h3><div class="url">nvctranslator.com</div></div></div>
+      <p>Translate any text into Marshall Rosenberg's Nonviolent Communication — observations, feelings, needs, requests. How can AI make us more compassionate?</p>
+    </a>
+    <a class="card" href="https://globalbr.ai" target="_blank" rel="noopener">
+      <span class="tag live">Live</span>
+      <div class="top"><span class="emoji">🧠</span><div><h3>Noos</h3><div class="url">globalbr.ai</div></div></div>
+      <p>A universal knowledge graph — the "codex" backend. Capture, connect, and query human know-how with per-node privacy.</p>
+    </a>
+    <a class="card" href="https://wikihub.md" target="_blank" rel="noopener">
+      <span class="tag live">Live</span>
+      <div class="top"><span class="emoji">📚</span><div><h3>WikiHub</h3><div class="url">wikihub.md</div></div></div>
+      <p>GitHub for LLM wikis. Hosting for open, agent-native markdown knowledge bases — forkable, shareable, version-controlled.</p>
+    </a>
+    <a class="card" href="https://worldissuetracker.com" target="_blank" rel="noopener">
+      <span class="tag live">Live</span>
+      <div class="top"><span class="emoji">🌐</span><div><h3>World Issue Tracker</h3><div class="url">worldissuetracker.com</div></div></div>
+      <p>A public issue tracker for civic and shared problems — a bottom-up list of what's broken, and who's fixing it.</p>
+    </a>
+    <a class="card" href="https://tmad4000.github.io/brainstorms/" target="_blank" rel="noopener">
+      <span class="tag live">Live</span>
+      <div class="top"><span class="emoji">💡</span><div><h3>Idea List</h3><div class="url">tmad4000.github.io/brainstorms</div></div></div>
+      <p>An open idea bank — projects, hackathon ideas, and easily-solvable world problems, free for anyone to take and build.</p>
+    </a>
+    <a class="card" href="https://github.com/tmad4000/claude-mind" target="_blank" rel="noopener">
+      <span class="tag live">Live</span>
+      <div class="top"><span class="emoji">🔬</span><div><h3>Claude Mind</h3><div class="url">github.com/tmad4000/claude-mind</div></div></div>
+      <p>Collaborative AI–human exploration of open problems — research rabbits and guilds working the quests, Polymath-style.</p>
+    </a>
+    <a class="card" href="https://github.com/tmad4000/vibe-coding-guide" target="_blank" rel="noopener">
+      <span class="tag live">Live</span>
+      <div class="top"><span class="emoji">⚡</span><div><h3>Vibe Coding Guide</h3><div class="url">github.com/tmad4000/vibe-coding-guide</div></div></div>
+      <p>Open guide to AI-assisted coding — making the craftsmanship of software buildable by everyone.</p>
+    </a>
+    <article class="card featured" id="signudoc">
+      <span class="tag live">Featured</span>
+      <div class="top"><span class="emoji">✍️</span><div><h3><a href="https://github.com/NYLLON-SOFTWARE/SignuDoc" target="_blank" rel="noopener">SignuDoc</a></h3><div class="url">github.com/NYLLON-SOFTWARE/SignuDoc</div></div></div>
+      <p class="needline"><span class="need-label">Need</span> Open document signing infrastructure</p>
+      <p>Open-source e-signatures. Send, sign and seal documents from your own cloud at $0 per seat, with audit trails and tamper-evident seals.</p>
+      <ul class="badges"><li class="open">Open source · MIT</li><li>Self-hosted on your Vercel account</li><li>By Kevin Rose / NYLLON</li></ul>
+      <p class="why"><b>Editor's Note:</b> agreeing on things is basic civic plumbing. Signing a PDF shouldn't need a per-seat licence or someone else's cloud.</p>
+    </article>
+    <article class="card featured" id="paxi">
+      <span class="tag live">Featured</span>
+      <div class="top"><span class="emoji">🚕</span><div><h3><a href="https://paxi.fyi" target="_blank" rel="noopener">Paxi</a></h3><div class="url">paxi.fyi</div></div></div>
+      <p class="needline"><span class="need-label">Need</span> Use the best service for each task, without interface lock-in</p>
+      <p>Compares live ride prices and times across Uber, Lyft, Waymo, Tesla, Zoox, Curb and more, then books the one you choose. Your logins stay on your phone.</p>
+      <ul class="badges"><li>Free · closed source</li><li>iPhone (iOS 17+)</li><li>By Doug Feigelson, a friend of the maintainer</li></ul>
+      <p class="why"><b>Editor's Note:</b> every app wants to be the only door. You should be able to compare providers, choose the best one for each job and switch freely. <a href="https://github.com/tmad4000/humanity-infrastructure/issues/2" target="_blank" rel="noopener">Community submission #2</a>.</p>
+    </article>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <blockquote>
+    “We need these tools, all of them, and to be honest with you, they need to be in the hands of everybody… When humans come into guilds to do epic quests, they're problem-solving, they're inventing a solution. That's how this planet's going to get fixed.”
+    <cite>— Jack Park, on guilds &amp; global sense-making</cite>
+  </blockquote>
+</div></section>
+
+<section id="buildlist"><div class="wrap">
+  <div class="section-head">
+    <div class="kicker">The Open Build List</div>
+    <h2>What still needs to be built</h2>
+    <p>The infrastructure for human flourishing is mostly <em>not built yet</em>. Below is the running list — ideas, works-in-progress, and what's done. Lifted from the Codex master doc; we'll keep pulling in more from across the lists. See one you want to build? <strong>Claim it.</strong></p>
+  </div>
+  <div class="filters" id="filters">
+    <button class="chip active" data-f="all">All</button>
+    <button class="chip" data-f="idea">💡 Ideas</button>
+    <button class="chip" data-f="building">🔨 In progress</button>
+    <button class="chip" data-f="done">✅ Done</button>
+  </div>
+  <div class="grid" id="buildgrid"></div>
+  <p class="buildnote">This list is open. Add an idea or claim one on the <a href="https://missing-civ-infrastructure.worldissuetracker.com/" target="_blank" rel="noopener">Missing Civilization Infrastructure</a> board — or email <a href="mailto:jacob@ideaflow.io?subject=Open%20Build%20List">jacob@ideaflow.io</a>.</p>
+
+  <div class="claim-head">
+    <h3><span class="livedot"></span> Claim a quest — live from the tracker</h3>
+    <p>These ideas are filed as real, public issues on the <a href="https://missing-civ-infrastructure.worldissuetracker.com/" target="_blank" rel="noopener">World Issue Tracker</a>. Vote, discuss, or claim one to build — updates here in real time.</p>
+  </div>
+  <div class="grid" id="witgrid"><div class="witloading">Static preview — <a href="https://worldissuetracker.com/tracker/missing-civ-infrastructure">explore open quests on the tracker →</a></div></div>
+</div></section>
+
+<section id="vision"><div class="wrap">
+  <div class="section-head">
+    <div class="kicker">The Living Document</div>
+    <h2>The full vision — and where to add to it</h2>
+    <p>The Codex is an open, growing document. These are the canonical sources behind this page. Add yourself, add a project, add a resource.</p>
+  </div>
+  <div class="links-cols">
+    <div class="lcol">
+      <h4>📜 Read the source</h4>
+      <ul>
+        <li><a href="https://www.notion.so/jacobblog/Humanity-3-0-and-Dharmic-blueprint-314fda9cff6380bfae57ff843cce32dd" target="_blank" rel="noopener">Humanity 3.0 &amp; the Dharmic blueprint (Notion)</a></li>
+        <li><a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" target="_blank" rel="noopener">The Codex — master doc (Google Docs)</a></li>
+        <li><a href="https://plausible-text-76b.notion.site/Cody-s-Healing-List-v4-b05b097d529c4c54b5d62f87f55b1f6f" target="_blank" rel="noopener">Healing Resources — "Cody Codex" (Notion)</a></li>
+        <li><a href="https://docs.google.com/document/d/1OggVeoEN4zAafRAox3yjFYtNwmYFJQHovXLviWI69zY/edit" target="_blank" rel="noopener">World Quest Guild — add yourself</a><span class="direct">Short link: <a href="https://quests.world" target="_blank" rel="noopener">quests.world</a> (being repaired)</span></li>
+      </ul>
+    </div>
+    <div class="lcol">
+      <h4>🧭 Movements within</h4>
+      <ul>
+        <li><a href="https://opensource.jacobcole.net" target="_blank" rel="noopener">Open Source dashboard</a></li>
+        <li><a href="https://openlists.jacobcole.net" target="_blank" rel="noopener">Open Lists movement</a></li>
+        <li><a href="https://fixingtheinternet.jacobcole.net/" target="_blank" rel="noopener">Fixing the Internet</a></li>
+        <li><a href="https://favorverse.jacobcole.net/" target="_blank" rel="noopener">Favorverse — volunteerism</a></li>
+        <li><a href="https://thunderpledge.jacobcole.net" target="_blank" rel="noopener">ThunderPledge — collective action</a></li>
+      </ul>
+    </div>
+    <div class="lcol">
+      <h4>🌿 Knowledge &amp; flourishing</h4>
+      <ul>
+        <li><a href="https://meditation.jacobcole.net/" target="_blank" rel="noopener">Open meditation curricula</a></li>
+        <li><a href="https://chronicpain.jacobcole.net/" target="_blank" rel="noopener">Treating chronic pain</a></li>
+        <li><a href="https://foodslist.jacobcole.net/" target="_blank" rel="noopener">How to eat well</a></li>
+        <li><a href="https://supplements.jacobcole.net/" target="_blank" rel="noopener">Supplement stacks</a></li>
+        <li><a href="https://bodymasters.jacobcole.net" target="_blank" rel="noopener">Body Masters</a></li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<section id="submit"><div class="wrap">
+  <h2>What else should be featured?</h2>
+  <p>Help grow Humanity Infrastructure. Suggest useful tools, open knowledge, practical guides or projects that help people flourish. You do not need to be a developer.</p>
+  <p>Send the name, link, a short description and who it helps. Include access or licensing details and any affiliation. We review suggestions before featuring them.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:12px;margin:24px 0">
+    <a class="btn primary" href="https://github.com/tmad4000/humanity-infrastructure/issues/new?template=suggest-resource.yml">Suggest a resource on GitHub →</a>
+    <a class="btn ghost" href="mailto:jacob@ideaflow.io?subject=Humanity%20Infrastructure%20resource%20suggestion&amp;body=Name%3A%0ALink%3A%0AWho%20it%20helps%3A%0AAccess%20or%20license%3A%0AMy%20affiliation%3A">Suggest by email</a>
+    <a class="btn ghost" href="https://github.com/tmad4000/humanity-infrastructure/blob/main/CONTRIBUTING.md">Contribute a pull request →</a>
+  </div>
+  <p><a href="https://github.com/tmad4000/humanity-infrastructure">Browse the website source on GitHub</a> · <a href="https://index.ideaflow.app/build" target="_blank" rel="noopener">Build on Ideaflow</a> · <a href="https://index.ideaflow.app" target="_blank" rel="noopener">Ideaflow apps index</a> · <a href="https://worldissuetracker.com/tracker/lastbook">Lastbook community feedback and fixes</a></p>
+</div></section>
+
+<section id="join"><div class="wrap">
+  <div class="cta-band">
+    <h2>If you're not part of this, what are you doing with your life?</h2>
+    <p>We're building the more general, not-just-engineering equivalent of the open-source movement. There's an enormous amount of low-hanging fruit — and we're looking for designers, engineers, writers, healers, and well-intended humans of every kind.</p>
+    <div class="btns" style="justify-content:center">
+      <a class="btn primary" href="mailto:jacob@ideaflow.io?subject=Joining%20the%20Codex%20%2F%20Humanity%20Infrastructure">Get involved →</a>
+      <a class="btn ghost" href="https://docs.google.com/document/d/1OggVeoEN4zAafRAox3yjFYtNwmYFJQHovXLviWI69zY/edit" target="_blank" rel="noopener">Join a guild</a>
+    </div>
+    <span class="direct">World Quest Guild · short link <a href="https://quests.world" target="_blank" rel="noopener">quests.world</a> (being repaired)</span>
+  </div>
+</div></section>
+
+<footer><div class="wrap"><section class="letter" id="letter"><h2>A letter from Humanity Infrastructure</h2>
+<p>A short, occasional letter about tools for human flourishing. No spam; unsubscribe any time.</p>
+<div role="group" aria-label="Newsletter preview">
+<label for="letter-email">Email <span aria-hidden="true">*</span></label><input id="letter-email" name="email" type="email" maxlength="254" autocomplete="email" required>
+<label for="letter-interest">What are you interested in / building? <span>(optional, 200 characters)</span></label><textarea id="letter-interest" name="interest" maxlength="200" rows="2"></textarea>
+<label for="letter-handle">X handle <span>(optional)</span></label><input id="letter-handle" name="handle" maxlength="16" placeholder="@yourhandle" autocomplete="off">
+<label class="consent"><input name="public_opt_in" type="checkbox"> Show my handle publicly</label>
+<div class="trap" aria-hidden="true"><label for="letter-website">Website</label><input id="letter-website" name="website" tabindex="-1" autocomplete="off"></div>
+<button class="btn primary" type="button" disabled>Preview signup</button><p>Static preview only. No email is sent or saved.</p><div class="status" role="status" aria-live="polite"></div>
+<small>By signing up, you agree to receive this occasional letter. Your email and interest stay private. Your handle stays private unless you opt in. Unsubscribe with one click in any letter.</small>
+</div></section>
+<p style="width:100%;color:var(--muted)">Privacy: signup details are stored privately for this letter, never in the public issue tracker. Contact <a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a> to request deletion.</p>
+  <div>
+    <strong style="color:var(--text)">Humanity Infrastructure · The Codex</strong> — basic infrastructure for human flourishing.<br/>
+    Free to use. Open where possible. Featured listings show their license. <a href="https://github.com/tmad4000/humanity-infrastructure">Source on GitHub</a> · Contact <a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a>
+  </div>
+  <div style="text-align:right">
+    <a href="https://www.notion.so/jacobblog/Humanity-3-0-and-Dharmic-blueprint-314fda9cff6380bfae57ff843cce32dd" target="_blank" rel="noopener">Blueprint (Notion)</a> ·
+    <a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" target="_blank" rel="noopener">Master doc</a><br/>
+    <span class="ver">v0.5.2 · 2026-11-18</span>
+  </div>
+</div>
+  <!-- Design versions + legacy -->
+  <div style="border-top:1px solid var(--border);margin-top:48px;padding-top:24px;display:flex;flex-wrap:wrap;gap:6px 20px;align-items:baseline;opacity:.5;font-size:.78rem;">
+    <span style="font-family:monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">Design versions →</span>
+    <a href="/" style="color:var(--accent-2);">v1 — Original / Dark (current)</a>
+    <a href="/v2" style="color:var(--accent-2);">v2 — Editorial / Red</a>
+    <a href="/v3" style="color:var(--accent-2);">v3 — Dark Blueprint</a>
+    <a href="/v4" style="color:var(--accent-2);">v4 — Archived format</a>
+    <a href="/classic" style="color:var(--accent-2);">Classic — Original layout</a>
+    <a href="https://github.com/tmad4000/humanity-infrastructure/blob/main/VERSION_LOG.md" style="color:var(--accent-2);">Version log &amp; screenshots</a>
+  </div>
+</footer>
+
+<!-- Contribute modal -->
+<div class="modal-overlay" id="contributeModal">
+  <div class="modal-box">
+    <button class="modal-close" aria-label="Close">✕</button>
+    <div class="modal-eyebrow">Find your quest</div>
+    <div class="modal-title">How can you contribute?</div>
+    <div class="modal-sub">Share a bit about yourself and we'll match you to the open infrastructure projects where you'd have the most impact.</div>
+    <div class="m-field">
+      <label for="m-twitter">X / Twitter handle <span>(optional)</span></label>
+      <input id="m-twitter" type="text" placeholder="@handle or x.com/handle"/>
+    </div>
+    <div class="m-field">
+      <label for="m-linkedin">LinkedIn URL <span>(optional)</span></label>
+      <input id="m-linkedin" type="url" placeholder="linkedin.com/in/yourname"/>
+    </div>
+    <div class="m-field">
+      <label for="m-homepage">Personal website or portfolio <span>(optional)</span></label>
+      <input id="m-homepage" type="url" placeholder="https://yoursite.com"/>
+    </div>
+    <div class="m-field">
+      <label for="m-about">About you <span>(work, interests, what you want to build)</span></label>
+      <textarea id="m-about" placeholder="e.g. I'm a therapist who's been thinking about AI and nonviolent communication…"></textarea>
+    </div>
+    <button class="m-submit" id="m-analyzeBtn">Find my contribution →</button>
+    <div class="m-status" id="m-status"></div>
+    <div class="m-results" id="m-results">
+      <div class="m-profile" id="m-profile"></div>
+      <div id="m-matches"></div>
+      <div class="m-save-row">
+        <button class="m-save-btn" id="m-saveBtn">Save to World Issue Tracker →</button>
+        <span class="m-save-note">Creates a public profile in the HI Contributors tracker</span>
+        <span class="m-save-ok" id="m-saveOk"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<p style="padding:24px;text-align:center">Original layout, improved — static snapshot of HI PR #6. Preview only; forms do not send or save data.</p></body>
+</html>

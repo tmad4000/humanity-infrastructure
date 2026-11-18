@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="en">
+<head><meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Humanity Infrastructure — tools and knowledge for human flourishing</title>
+<meta name="description" content="A directory of tools and knowledge for human flourishing. Free to use. Open where possible. Every listing shows its license.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%23f5f1e7'/%3E%3Ccircle cx='12' cy='10.5' r='6.5' fill='%23ad3a1c'/%3E%3Cpath d='M3 20.5h18' stroke='%231b1814' stroke-width='1.8'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body id="top">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-arrow" viewBox="0 0 16 16"><path d="M2.5 8h11M9.5 4l4 4-4 4"/></symbol>
+  <symbol id="i-down" viewBox="0 0 16 16"><path d="M8 2.5v11M4 9.5l4 4 4-4"/></symbol>
+  <symbol id="i-out" viewBox="0 0 16 16"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></symbol>
+  <symbol id="i-gh" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></symbol>
+</svg>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="running-head">
+  <div class="wrap">
+    <p>Access to tools and knowledge</p>
+    <p class="policy-line">Free to use · Open where possible · Every listing shows its license</p>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="wordmark" href="#top">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle class="sun" cx="12" cy="10.5" r="6.5"/><path class="horizon" d="M2 20.5h20" fill="none"/></svg>
+      Humanity Infrastructure
+    </a>
+    <nav class="nav" aria-label="Sections">
+      <ul>
+        <li><a href="#shelves">Shelves</a></li>
+        <li><a href="#policy">Reading a listing</a></li>
+        <li><a href="#build-list">Build List</a></li>
+        <li><a href="#take-part">Take part</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn--small" href="https://github.com/tmad4000/humanity-infrastructure" rel="noopener">
+      <svg class="i i--fill"><use href="#i-gh"/></svg>GitHub
+    </a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- Hero -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap grid">
+      <div class="hero-main">
+        <h1 id="hero-title">Knowledge is a birthright. <em>So are the tools to use it.</em></h1>
+        <p class="lede">A directory of tools and knowledge for human flourishing.</p>
+        <p class="how">Every shelf starts with a need, then shows one tool that answers it, with its license, platform and maker in plain view.</p>
+        <div class="actions">
+          <a class="btn btn--primary" href="#shelves">Browse the shelves <svg class="i"><use href="#i-down"/></svg></a>
+          <a class="btn" href="https://github.com/tmad4000/humanity-infrastructure/issues/new?template=suggest-resource.yml" rel="noopener">Suggest a resource <svg class="i"><use href="#i-out"/></svg></a>
+        </div>
+      </div>
+
+      <nav class="contents" aria-labelledby="contents-title">
+        <div class="contents-head">
+          <p class="label" id="contents-title">Contents</p>
+          <p class="label">Need / item</p>
+        </div>
+        <ol>
+          <li><a href="#offline-knowledge"><span class="no">01</span><span class="need">Knowledge that survives when the internet doesn't</span><span class="item">Lastbook</span></a></li>
+          <li><a href="#document-signing"><span class="no">02</span><span class="need">Open document signing infrastructure</span><span class="item">SignuDoc</span></a></li>
+          <li><a href="#best-service"><span class="no">03</span><span class="need">Use the best service for each task, without interface lock-in</span><span class="item">Paxi</span></a></li>
+          <li><a href="#compassionate-communication"><span class="no">04</span><span class="need">Tools that help people understand each other</span><span class="item">NVC Translator</span></a></li>
+          <li><a href="#public-problems"><span class="no">05</span><span class="need">A shared, public list of what's broken and who's fixing it</span><span class="item">World Issue Tracker</span></a></li>
+          <li><a href="#shared-knowledge"><span class="no">06</span><span class="need">Knowledge that people and agents can build on together</span><span class="item">WikiHub, Noos</span></a></li>
+          <li class="aux"><a href="#build-list"><span class="no">B</span><span class="need">The Build List: what still needs building</span></a></li>
+          <li class="aux"><a href="#take-part"><span class="no">P</span><span class="need">Take part: six ways in</span></a></li>
+        </ol>
+      </nav>
+    </div>
+  </section>
+
+  <!-- Policy -->
+  <section class="policy" id="policy" aria-labelledby="policy-title">
+    <div class="wrap grid">
+      <div class="statement">
+        <h2 class="label" id="policy-title">Listing policy</h2>
+        <p class="lines"><span>Free to use.</span> <span>Open where possible.</span> <span>Every listing shows its license.</span></p>
+        <p class="fine">The same labels apply to every listing, including the maintainer's own projects and projects by friends.</p>
+      </div>
+      <div class="legend">
+        <h3 class="label">How to read a listing</h3>
+        <dl>
+          <div class="row"><dt><span class="badge badge--open">Open source</span></dt><dd>The code is public, under the license named on the badge.</dd></div>
+          <div class="row"><dt><span class="badge badge--closed">Closed source</span></dt><dd>Free to use, but the code is not public. Always labeled.</dd></div>
+          <div class="row"><dt><span class="badge badge--unverified">License unverified</span></dt><dd>The license has not been confirmed yet.</dd></div>
+          <div class="row"><dt><span class="badge badge--disclosure">Built by the maintainer</span></dt><dd>A project by the person who maintains this directory.</dd></div>
+          <div class="row"><dt><span class="badge badge--disclosure">Maker is a friend of the maintainer</span></dt><dd>A personal connection, disclosed on the listing.</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- Shelves -->
+  <section class="section" id="shelves" aria-labelledby="shelves-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="label">The catalog</p>
+        <h2 id="shelves-title">Six shelves, each one a need and a tool that answers it.</h2>
+        <p class="blurb">Editor's notes sit in the margin. They are drafts, labeled as such, until the editor signs off on the wording.</p>
+      </div>
+
+      <!-- Shelf 01 -->
+      <article class="shelf grid" id="offline-knowledge" aria-labelledby="need-01">
+        <div class="shelf-no"><span class="label">Shelf</span><span class="numeral">01</span></div>
+        <header class="shelf-need">
+          <p class="label">The need</p>
+          <h3 id="need-01">Knowledge that survives when the internet doesn't</h3>
+          <p class="need-detail">Practical manuals, maps and how-to videos that keep working offline, so people can care for each other through outages and rebuild after them.</p>
+        </header>
+
+        <figure class="plate" aria-hidden="true">
+          <figcaption class="label">Fig. 01</figcaption>
+          <svg viewBox="0 0 200 150">
+            <path d="M8 132h184" stroke-width="1.75"/>
+            <rect x="30" y="54" width="18" height="78"/>
+            <path d="M30 66h18M30 120h18"/>
+            <rect x="48" y="40" width="24" height="92"/>
+            <path d="M48 54h24M48 60h24M56 78v30M64 78v30"/>
+            <rect class="hot-fill" x="72" y="64" width="14" height="68"/>
+            <rect x="86" y="46" width="20" height="86"/>
+            <path d="M86 58h20M86 118h20M86 124h20"/>
+            <rect x="106" y="58" width="16" height="74"/>
+            <path d="M106 70h16"/>
+            <g transform="rotate(-12 137.3 132)">
+              <rect x="137.3" y="50" width="18" height="82"/>
+              <path d="M137.3 62h18M137.3 118h18"/>
+            </g>
+          </svg>
+        </figure>
+
+        <div class="listing">
+          <p class="label">Featured item · No. 01</p>
+          <div class="listing-head">
+            <h4><a href="https://lastbook.org" rel="noopener">Lastbook</a></h4>
+            <span class="host">lastbook.org</span>
+          </div>
+          <p class="summary">A free, open-source offline library of practical manuals, videos and maps, with optional local AI.</p>
+          <dl class="specs">
+            <div class="row"><dt class="label">License</dt><dd><ul class="badges"><li class="badge badge--open">MIT · Open source</li></ul></dd></div>
+            <div class="row"><dt class="label">Runs on</dt><dd><ul class="badges"><li class="badge">Mac</li><li class="badge">Windows</li><li class="badge">Linux</li></ul></dd></div>
+            <div class="row"><dt class="label">Maker</dt><dd><ul class="badges"><li class="badge">farbood and the Lastbook contributors</li></ul></dd></div>
+            <div class="row"><dt class="label">Source</dt><dd class="plain"><a class="host" href="https://github.com/Immortal-Protocols/lastbook" rel="noopener">github.com/Immortal-Protocols/lastbook</a></dd></div>
+          </dl>
+          <div class="listing-links">
+            <a class="btn btn--small btn--primary" href="https://lastbook.org" rel="noopener">Visit lastbook.org <svg class="i"><use href="#i-out"/></svg></a>
+            <a class="btn btn--small" href="https://github.com/Immortal-Protocols/lastbook" rel="noopener"><svg class="i i--fill"><use href="#i-gh"/></svg>Source on GitHub</a>
+          </div>
+          <p class="more"><a href="#directory">See more in the Directory of the Internet <svg class="i"><use href="#i-arrow"/></svg></a></p>
+        </div>
+
+        <aside class="note" aria-label="Editor's note, draft">
+          <p class="note-label"><span class="label">Editor's note</span><span class="draft-tag">Draft</span></p>
+          <p class="note-text">When the network goes down, the knowledge shouldn't. Lastbook is a library you can hand to a neighbour on a drive.</p>
+          <p class="note-foot">Why this matters. Draft wording, not yet the editor's own.</p>
+        </aside>
+      </article>
+
+      <!-- Shelf 02 -->
+      <article class="shelf grid" id="document-signing" aria-labelledby="need-02">
+        <div class="shelf-no"><span class="label">Shelf</span><span class="numeral">02</span></div>
+        <header class="shelf-need">
+          <p class="label">The need</p>
+          <h3 id="need-02">Open document signing infrastructure</h3>
+          <p class="need-detail">Agreeing on things is basic civic plumbing. Signing a PDF shouldn't require a per-seat licence or handing your agreements to someone else's cloud.</p>
+        </header>
+
+        <figure class="plate" aria-hidden="true">
+          <figcaption class="label">Fig. 02</figcaption>
+          <svg viewBox="0 0 200 150">
+            <path d="M52 14h66l28 28v94H52z"/>
+            <path d="M118 14v28h28"/>
+            <path d="M68 58h62M68 70h62M68 82h40"/>
+            <path d="M68 116h46"/>
+            <path class="hot" stroke-width="1.6" d="M70 111c5-13 9-15 10-5s5 7 8-1 6-6 7-1 6 5 12-4"/>
+            <circle cx="130" cy="110" r="12"/>
+            <circle cx="130" cy="110" r="7.5"/>
+            <path d="M126.5 110l2.5 2.5 4.5-5"/>
+          </svg>
+        </figure>
+
+        <div class="listing">
+          <p class="label">Featured item · No. 02</p>
+          <div class="listing-head">
+            <h4><a href="https://github.com/NYLLON-SOFTWARE/SignuDoc" rel="noopener">SignuDoc</a></h4>
+            <span class="host">github.com/NYLLON-SOFTWARE/SignuDoc</span>
+          </div>
+          <p class="summary">Open-source e-signatures: send, sign and seal documents from your own cloud, $0 per seat, with audit trails and tamper-evident seals.</p>
+          <dl class="specs">
+            <div class="row"><dt class="label">License</dt><dd><ul class="badges"><li class="badge badge--open">MIT · Open source</li></ul></dd></div>
+            <div class="row"><dt class="label">Runs on</dt><dd><ul class="badges"><li class="badge">Self-hosted on your own Vercel account</li></ul></dd></div>
+            <div class="row"><dt class="label">Maker</dt><dd><ul class="badges"><li class="badge">Kevin Rose / NYLLON</li></ul></dd></div>
+            <div class="row"><dt class="label">Source</dt><dd class="plain"><a class="host" href="https://github.com/NYLLON-SOFTWARE/SignuDoc" rel="noopener">github.com/NYLLON-SOFTWARE/SignuDoc</a></dd></div>
+          </dl>
+          <div class="listing-links">
+            <a class="btn btn--small btn--primary" href="https://github.com/NYLLON-SOFTWARE/SignuDoc" rel="noopener"><svg class="i i--fill"><use href="#i-gh"/></svg>View SignuDoc on GitHub</a>
+          </div>
+          <p class="more"><a href="#directory">See more in the Directory of the Internet <svg class="i"><use href="#i-arrow"/></svg></a></p>
+        </div>
+
+        <aside class="note" aria-label="Editor's note, draft">
+          <p class="note-label"><span class="label">Editor's note</span><span class="draft-tag">Draft</span></p>
+          <p class="note-text">A small team was quoted $8,100 a year to sign PDFs. Infrastructure this basic should belong to the people using it.</p>
+          <p class="note-foot">Why this matters. Draft wording, not yet the editor's own.</p>
+        </aside>
+      </article>
+
+      <!-- Shelf 03 -->
+      <article class="shelf grid" id="best-service" aria-labelledby="need-03">
+        <div class="shelf-no"><span class="label">Shelf</span><span class="numeral">03</span></div>
+        <header class="shelf-need">
+          <p class="label">The need</p>
+          <h3 id="need-03">Use the best service for each task, without interface lock-in</h3>
+          <p class="need-detail">Every app wants to be the only door. People should be able to compare and choose the best provider for each job, and switch freely.</p>
+        </header>
+
+        <figure class="plate" aria-hidden="true">
+          <figcaption class="label">Fig. 03</figcaption>
+          <svg viewBox="0 0 200 150">
+            <circle cx="36" cy="26" r="5"/><path d="M54 26h100"/>
+            <circle cx="36" cy="50" r="5"/><path d="M54 50h72"/>
+            <circle class="hot-fill" cx="36" cy="74" r="5"/><path class="hot" stroke-width="2.25" d="M54 74h46"/>
+            <path class="hot" d="M112 74l4 4 8-9"/>
+            <circle cx="36" cy="98" r="5"/><path d="M54 98h118"/>
+            <circle cx="36" cy="122" r="5"/><path d="M54 122h84"/>
+          </svg>
+        </figure>
+
+        <div class="listing">
+          <p class="label">Featured item · No. 03</p>
+          <div class="listing-head">
+            <h4><a href="https://paxi.fyi" rel="noopener">Paxi</a></h4>
+            <span class="host">paxi.fyi</span>
+          </div>
+          <p class="summary">Compares live ride prices and times across Uber, Lyft, Waymo, Tesla, Zoox, Curb and more, then books the one you choose. Logins stay on your phone.</p>
+          <dl class="specs">
+            <div class="row"><dt class="label">License</dt><dd><ul class="badges"><li class="badge">Free to use</li><li class="badge badge--closed">Closed source</li></ul></dd></div>
+            <div class="row"><dt class="label">Runs on</dt><dd><ul class="badges"><li class="badge">iPhone (iOS 17+)</li></ul></dd></div>
+            <div class="row"><dt class="label">Maker</dt><dd><ul class="badges"><li class="badge">Doug Feigelson (Passenger Labs)</li><li class="badge badge--disclosure">Maker is a friend of the maintainer</li></ul></dd></div>
+            <div class="row"><dt class="label">Source</dt><dd class="plain">No public repository.</dd></div>
+            <div class="row"><dt class="label">Listed via</dt><dd class="plain"><a href="https://github.com/tmad4000/humanity-infrastructure/issues/2" rel="noopener">Community submission, issue #2</a></dd></div>
+          </dl>
+          <div class="listing-links">
+            <a class="btn btn--small btn--primary" href="https://paxi.fyi" rel="noopener">Visit paxi.fyi <svg class="i"><use href="#i-out"/></svg></a>
+          </div>
+          <p class="more"><a href="#directory">See more in the Directory of the Internet <svg class="i"><use href="#i-arrow"/></svg></a></p>
+        </div>
+
+        <aside class="note" aria-label="Editor's note, draft">
+          <p class="note-label"><span class="label">Editor's note</span><span class="draft-tag">Draft</span></p>
+          <p class="note-text">One fare board instead of five apps. This is the pattern I want everywhere: you choose the service, the interface works for you.</p>
+          <p class="note-foot">Why this matters. Draft wording, not yet the editor's own.</p>
+        </aside>
+      </article>
+
+      <!-- Shelves 04–06 -->
+      <div class="shelf-row">
+        <article class="mini" id="compassionate-communication" aria-labelledby="need-04">
+          <p class="mini-no"><span class="numeral">04</span><span class="label">Shelf · the need</span></p>
+          <h3 id="need-04">Tools that help people understand each other</h3>
+          <div class="entry">
+            <p class="label">Featured item · No. 04</p>
+            <div class="listing-head">
+              <h4><a href="https://nvctranslator.com" rel="noopener">NVC Translator</a></h4>
+              <span class="host">nvctranslator.com</span>
+            </div>
+            <p class="summary">Translate any text into Nonviolent Communication: observations, feelings, needs, requests.</p>
+            <ul class="badges"><li class="badge badge--unverified">License unverified</li></ul>
+          </div>
+          <p class="note-pending label">Editor's note: to come</p>
+          <p class="more"><a href="#directory">See more in the Directory of the Internet <svg class="i"><use href="#i-arrow"/></svg></a></p>
+        </article>
+
+        <article class="mini" id="public-problems" aria-labelledby="need-05">
+          <p class="mini-no"><span class="numeral">05</span><span class="label">Shelf · the need</span></p>
+          <h3 id="need-05">A shared, public list of what's broken and who's fixing it</h3>
+          <div class="entry">
+            <p class="label">Featured item · No. 05</p>
+            <div class="listing-head">
+              <h4><a href="https://worldissuetracker.com" rel="noopener">World Issue Tracker</a></h4>
+              <span class="host">worldissuetracker.com</span>
+            </div>
+            <p class="summary">Public issue tracking for society. Tag @worldissuetrack with 'file this' on X to capture a problem.</p>
+            <ul class="badges"><li class="badge badge--disclosure">Built by the maintainer</li><li class="badge badge--unverified">License not yet listed</li></ul>
+          </div>
+          <p class="note-pending label">Editor's note: to come</p>
+          <p class="more"><a href="#directory">See more in the Directory of the Internet <svg class="i"><use href="#i-arrow"/></svg></a></p>
+        </article>
+
+        <article class="mini" id="shared-knowledge" aria-labelledby="need-06">
+          <p class="mini-no"><span class="numeral">06</span><span class="label">Shelf · the need</span></p>
+          <h3 id="need-06">Knowledge that people and agents can build on together</h3>
+          <div class="entry">
+            <p class="label">Featured item · No. 06</p>
+            <div class="listing-head">
+              <h4><a href="https://wikihub.md" rel="noopener">WikiHub</a></h4>
+              <span class="host">wikihub.md</span>
+            </div>
+            <p class="summary">Publish and share markdown wikis that people and agents can work with.</p>
+            <ul class="badges"><li class="badge badge--disclosure">Built by the maintainer</li><li class="badge badge--unverified">License not yet listed</li></ul>
+          </div>
+          <div class="entry">
+            <p class="label">Also on this shelf</p>
+            <div class="listing-head">
+              <h4><a href="https://globalbr.ai" rel="noopener">Noos</a></h4>
+              <span class="host">globalbr.ai</span>
+            </div>
+            <p class="summary">A universal knowledge graph with per-node privacy.</p>
+            <ul class="badges"><li class="badge badge--disclosure">Built by the maintainer</li><li class="badge badge--unverified">License not yet listed</li></ul>
+          </div>
+          <p class="note-pending label">Editor's note: to come</p>
+          <p class="more"><a href="#directory">See more in the Directory of the Internet <svg class="i"><use href="#i-arrow"/></svg></a></p>
+        </article>
+      </div>
+
+      <!-- Maintainer index -->
+      <section class="index grid" aria-labelledby="index-title">
+        <div class="index-head">
+          <h3 class="label" id="index-title">Also from the maintainer</h3>
+          <span class="badge badge--disclosure">Built by the maintainer</span>
+        </div>
+        <ul class="index-list">
+          <li><a class="name" href="https://tmad4000.github.io/brainstorms" rel="noopener">Idea List</a><span class="host">tmad4000.github.io/brainstorms</span><span class="status">Not yet shelved</span></li>
+          <li><a class="name" href="https://github.com/tmad4000/claude-mind" rel="noopener">Claude Mind</a><span class="host">github.com/tmad4000/claude-mind</span><span class="status">Not yet shelved</span></li>
+          <li><a class="name" href="https://github.com/tmad4000/vibe-coding-guide" rel="noopener">Vibe Coding Guide</a><span class="host">github.com/tmad4000/vibe-coding-guide</span><span class="status">Not yet shelved</span></li>
+          <li class="retired"><span class="name">ListHub</span><span class="host">retired</span><span class="status">Superseded by WikiHub</span></li>
+        </ul>
+      </section>
+    </div>
+  </section>
+
+  <!-- Build List -->
+  <section class="build" id="build-list" aria-labelledby="build-title">
+    <div class="wrap grid">
+      <div class="build-intro">
+        <p class="label">The Build List · quests</p>
+        <h2 id="build-title">What still needs building.</h2>
+        <p class="lead">The shelves show what exists. Most of the infrastructure for human flourishing is not built yet.</p>
+        <p>The Build List is the running list of what is missing, kept in public as quests anyone can claim.</p>
+        <p class="static">Quests are not loaded live on this page. The board is the source of truth, so follow the links for the current list.</p>
+      </div>
+
+      <ol class="build-list">
+        <li class="build-item">
+          <span class="no">B.1</span>
+          <div>
+            <h3>The Build List board</h3>
+            <p>The open board of missing infrastructure, kept on the World Issue Tracker. Find something worth building and claim it.</p>
+            <div class="go">
+              <a class="btn btn--small" href="https://worldissuetracker.com/tracker/missing-civ-infrastructure" rel="noopener">Open the board <svg class="i"><use href="#i-out"/></svg></a>
+              <span class="host">worldissuetracker.com/tracker/missing-civ-infrastructure</span>
+            </div>
+          </div>
+        </li>
+        <li class="build-item">
+          <span class="no">B.2</span>
+          <div>
+            <h3>World Quest Guild</h3>
+            <p>A guild for people who want to take on quests together.</p>
+            <div class="go">
+              <a class="btn btn--small" href="https://quests.world" rel="noopener">Visit quests.world <svg class="i"><use href="#i-out"/></svg></a>
+              <span class="host">quests.world</span>
+            </div>
+            <p class="fallback">If the link above doesn't load: <a href="https://docs.google.com/document/d/1OggVeoEN4zAafRAox3yjFYtNwmYFJQHovXLviWI69zY/edit" rel="noopener">open the guild doc directly</a> (Google Doc).</p>
+          </div>
+        </li>
+        <li class="build-item">
+          <span class="no">B.3</span>
+          <div>
+            <h3>The master doc</h3>
+            <p>The longer working document behind the list.</p>
+            <div class="go">
+              <a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" rel="noopener">Read the master doc</a>
+              <span class="host">Google Doc</span>
+            </div>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Participation ladder -->
+  <section class="section" id="take-part" aria-labelledby="part-title">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="label">Take part</p>
+        <h2 id="part-title">Six ways in. Start with whichever one is easy.</h2>
+        <p class="blurb">Everyone is invited. The first rung takes two minutes and no code.</p>
+      </div>
+
+      <div class="grid">
+        <ol class="ladder">
+          <li class="rung">
+            <span class="no" aria-hidden="true">1</span>
+            <div><h3>Suggest a resource</h3><p>A short form. No coding.</p></div>
+            <a class="act" href="https://github.com/tmad4000/humanity-infrastructure/issues/new?template=suggest-resource.yml" rel="noopener">Open the form <svg class="i"><use href="#i-out"/></svg></a>
+          </li>
+          <li class="rung">
+            <span class="no" aria-hidden="true">2</span>
+            <div><h3>Open a pull request</h3><p>The directory is a public repository. The contribution guide shows how.</p></div>
+            <a class="act" href="https://github.com/tmad4000/humanity-infrastructure/blob/main/CONTRIBUTING.md" rel="noopener">Contribution guide <svg class="i"><use href="#i-out"/></svg></a>
+          </li>
+          <li class="rung">
+            <span class="no" aria-hidden="true">3</span>
+            <div><h3>Claim a quest on the Build List</h3><p>Pick something that is missing and make it yours.</p></div>
+            <a class="act" href="https://worldissuetracker.com/tracker/missing-civ-infrastructure" rel="noopener">Open the board <svg class="i"><use href="#i-out"/></svg></a>
+          </li>
+          <li class="rung">
+            <span class="no" aria-hidden="true">4</span>
+            <div><h3>Join the World Quest Guild</h3><p>Work on quests alongside other people.</p></div>
+            <a class="act" href="https://quests.world" rel="noopener">quests.world <svg class="i"><use href="#i-out"/></svg></a>
+          </li>
+          <li class="rung rung--soon">
+            <span class="no" aria-hidden="true">5</span>
+            <div><h3>Join Humanity Infrastructure Builders</h3><p>A planned group on Unlinked for the people building this.</p></div>
+            <span class="soon">Coming soon</span>
+          </li>
+          <li class="rung">
+            <span class="no" aria-hidden="true">6</span>
+            <div><h3>Get the occasional letter</h3><p>A low-volume newsletter. Planned.</p></div>
+            <a class="act" href="#letter">Leave an email <svg class="i"><use href="#i-arrow"/></svg></a>
+          </li>
+        </ol>
+
+        <div class="letter" id="letter">
+          <div class="letter-top">
+            <p class="label">Rung 6 · the letter</p>
+            <span class="soon">Planned</span>
+          </div>
+          <h3>Get the occasional letter</h3>
+          <p class="pitch">A short, occasional letter. No spam.</p>
+          <form id="letter-form" method="dialog" aria-describedby="letter-note">
+            <label class="label" for="letter-email">Email address</label>
+            <div class="field">
+              <input id="letter-email" name="email" type="email" autocomplete="email" placeholder="you@example.org" required>
+              <button class="btn btn--primary" type="submit">Sign up</button>
+            </div>
+            <p class="form-note" id="letter-note" role="status">Prototype form. Nothing is sent or stored.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ecosystem -->
+  <section class="eco" id="ecosystem" aria-labelledby="eco-title">
+    <div class="wrap">
+      <div class="eco-head">
+        <h2 class="label" id="eco-title">Neighbouring projects</h2>
+        <p>Related work from the maintainer's wider ecosystem, listed for context.</p>
+      </div>
+      <ul class="eco-list">
+        <li>
+          <a class="name" href="https://index.ideaflow.app" rel="noopener">Ideaflow Index</a>
+          <span class="host">index.ideaflow.app</span>
+        </li>
+        <li>
+          <a class="name" href="https://index.ideaflow.app/build" rel="noopener">Build on Ideaflow</a>
+          <span class="host">index.ideaflow.app/build</span>
+        </li>
+        <li>
+          <a class="name" href="https://worldissuetracker.com" rel="noopener">World Issue Tracker</a>
+          <span class="host">worldissuetracker.com</span>
+          <p class="desc">Public issue tracking for society.</p>
+        </li>
+        <li id="directory">
+          <span class="name">Directory of the Internet</span>
+          <span class="soon">Link pending</span>
+          <p class="desc">Where each shelf's "See more" link will lead.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap grid">
+    <div class="footer-brand">
+      <a class="wordmark" href="#top">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle class="sun" cx="12" cy="10.5" r="6.5"/><path class="horizon" d="M2 20.5h20" fill="none"/></svg>
+        Humanity Infrastructure
+      </a>
+      <p class="line">Knowledge is a birthright. So are the tools to use it.</p>
+    </div>
+
+    <div class="footer-col footer-col--first">
+      <h2 class="label">Repository</h2>
+      <ul>
+        <li><a class="gh-link" href="https://github.com/tmad4000/humanity-infrastructure" rel="noopener"><svg class="i i--fill"><use href="#i-gh"/></svg>GitHub</a></li>
+        <li><a href="https://github.com/tmad4000/humanity-infrastructure/blob/main/CONTRIBUTING.md" rel="noopener">Contribution guide</a></li>
+        <li><a href="https://github.com/tmad4000/humanity-infrastructure/issues/new?template=suggest-resource.yml" rel="noopener">Suggest a resource</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h2 class="label">Contact</h2>
+      <ul>
+        <li><a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a></li>
+      </ul>
+      <h2 class="label">Version</h2>
+      <p><span>Design prototype</span><span>18 Nov 2026</span><span>Follows site v0.4.0</span></p>
+    </div>
+
+    <div class="footer-col footer-col--wide">
+      <h2 class="label">License policy</h2>
+      <p>Free to use. Open where possible. Every listing shows its license.</p>
+      <p><a href="#policy">How to read a listing</a></p>
+    </div>
+
+    <div class="colophon">
+      <p>Set in Newsreader and IBM Plex, served from this folder. No trackers, no cookies.</p>
+      <p>With a nod to the Whole Earth Catalog: access to tools.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var form = document.getElementById('letter-form');
+    var note = document.getElementById('letter-note');
+    if (!form || !note) return;
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      note.innerHTML = '<strong>Thanks. This is a prototype, so nothing was sent or stored.</strong> The letter is planned, not live yet.';
+    });
+  })();
+</script>
+</body>
+</html>
