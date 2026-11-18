@@ -174,6 +174,7 @@ const MAIN_HTML = `<!DOCTYPE html>
     --border:rgba(10,20,40,.10); --border-strong:rgba(10,20,40,.18);
     --shadow:0 1px 2px rgba(20,30,50,.06),0 10px 34px rgba(20,30,50,.10);
   }
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
   *{box-sizing:border-box}
   html{scroll-behavior:smooth;scroll-padding-top:80px}
   body{
@@ -469,6 +470,46 @@ const MAIN_HTML = `<!DOCTYPE html>
   </div>
 </div></section>
 
+<section id="connect-people"><div class="wrap">
+  <div class="section-head">
+    <div class="kicker">Connection</div>
+    <h2>Connect people</h2>
+    <p>Find collaborators, build relationships and carry shared ideas forward. These projects are part of the Ideaflow ecosystem; access varies by tool.</p>
+  </div>
+  <div class="grid">
+    <article class="card" id="unlinked">
+      <h3><a href="https://www.unlinked.ai" target="_blank" rel="noopener">Unlinked</a></h3>
+
+      <p>Explore your professional network and find the people who can help you move an idea forward.</p>
+      <p style="margin-top:16px"><a href="/?interest=unlinked#letter">Express interest / request access →<span class="sr-only"> Unlinked</span></a></p>
+    </article>
+    <article class="card" id="superconnector">
+      <h3><a href="https://superconnector.network" target="_blank" rel="noopener">Superconnector</a></h3>
+
+      <p>Discover who to meet in your community or at your next event.</p>
+      <p style="margin-top:16px"><a href="/?interest=superconnector#letter">Express interest / request access →<span class="sr-only"> Superconnector</span></a></p>
+    </article>
+    <article class="card" id="openchat">
+      <h3><a href="https://chat.ideaflow.app" target="_blank" rel="noopener">OpenChat</a></h3>
+      <p class="needline">Public beta</p>
+      <p>Bring people and their AI agents into the same real-time conversations.</p>
+      <p style="margin-top:16px"><a href="/?interest=openchat#letter">Express interest / request access →<span class="sr-only"> OpenChat</span></a></p>
+    </article>
+    <article class="card" id="ideaflow-index">
+      <h3><a href="https://index.ideaflow.app" target="_blank" rel="noopener">Ideaflow apps index</a></h3>
+
+      <p>Find the Ideaflow tools for thinking, connecting, recording and building together.</p>
+      <p style="margin-top:16px"><a href="/?interest=ideaflow-index#letter">Express interest / request access →<span class="sr-only"> Ideaflow apps index</span></a></p>
+    </article>
+    <article class="card" id="open-recordings">
+      <h3><a href="https://index.ideaflow.app" target="_blank" rel="noopener">Open Recordings</a></h3>
+      <p class="needline">Alpha</p>
+      <p>Record and revisit conversations and highlights, so shared insights stay useful.</p>
+      <p style="margin-top:16px"><a href="/?interest=open-recordings#letter">Express interest / request access →<span class="sr-only"> Open Recordings</span></a></p>
+    </article>
+  </div>
+</div></section>
+
 <section><div class="wrap">
   <blockquote>
     “We need these tools, all of them, and to be honest with you, they need to be in the hands of everybody… When humans come into guilds to do epic quests, they're problem-solving, they're inventing a solution. That's how this planet's going to get fixed.”
@@ -561,6 +602,13 @@ const MAIN_HTML = `<!DOCTYPE html>
   </div>
 </div></section>
 
+<section id="supporters"><div class="wrap">
+  <div class="section-head">
+    <h2>Supporters</h2>
+    <p>Supported by <a href="https://www.ideaflow.io">Ideaflow</a>, the maintainer’s company. Explore the <a href="https://index.ideaflow.app">Ideaflow apps index</a>.</p>
+  </div>
+</div></section>
+
 <footer><div class="wrap"><section class="letter" id="letter"><h2>A letter from Humanity Infrastructure</h2>
 <p>A short, occasional letter about tools for human flourishing. No spam; unsubscribe any time.</p>
 <form id="letter-form">
@@ -580,7 +628,7 @@ const MAIN_HTML = `<!DOCTYPE html>
   <div style="text-align:right">
     <a href="https://www.notion.so/jacobblog/Humanity-3-0-and-Dharmic-blueprint-314fda9cff6380bfae57ff843cce32dd" target="_blank" rel="noopener">Blueprint (Notion)</a> ·
     <a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" target="_blank" rel="noopener">Master doc</a><br/>
-    <span class="ver">v0.5.2 · 2026-11-18</span>
+    <span class="ver">v0.5.3 · 2026-11-18</span>
   </div>
 </div>
   <!-- Design versions + legacy -->
