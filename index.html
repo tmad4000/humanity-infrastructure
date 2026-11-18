@@ -257,6 +257,8 @@
   .letter [hidden]{display:none!important}.letter :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
   .letter-invite{width:100%;margin:8px 0}.letter-invite button,.signup-link{background:none;border:0;padding:0;color:var(--accent);font:inherit;text-decoration:underline;text-underline-offset:4px;cursor:pointer}
 </style>
+<script src="/analytics.js"></script>
+<script defer src="https://analytics.ideaflow.app/ideaflow.js" data-product="humanity-infrastructure" data-respect-dnt="true" data-before-send="hiAnalyticsBeforeSend"></script>
 </head>
 <body>
 <nav><div class="wrap">
@@ -667,6 +669,7 @@ signupForm.addEventListener('submit', async function(event) {
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || 'Please try again later.');
     if (submittedStep === 1) {
+      window.hiTrack('newsletter_signup', {placement: 'letter', method: 'email'});
       signupSavedEmail = email; signupStep = 2;
       document.getElementById('letter-email-step').hidden = true; signupEmail.disabled = true;
       signupDetails.hidden = false;

@@ -30,6 +30,7 @@ async function handleRequest(request, env) {{
   const path = url.pathname
   const signup = await handleSignup(request, env)
   if (signup) return signup
+  if (path === '/analytics.js') return new Response(ANALYTICS_JS, {{ headers: {{ 'Content-Type': 'application/javascript;charset=UTF-8', 'Cache-Control': 'public, max-age=300' }} }})
   if (path === '/designs') return Response.redirect(url.origin + '/designs/', 302)
   if (path.startsWith('/designs/')) {{
     const key = path.endsWith('/') ? path + 'index.html' : path
@@ -49,23 +50,24 @@ async function handleRequest(request, env) {{
     return new Response(OG_PNG, {{ headers: {{ 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=86400' }} }})
   }}
   if (path === '/classic' || path.startsWith('/classic/')) {{
-    return new Response(CLASSIC_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8' }} }})
+    return new Response(CLASSIC_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Content-Security-Policy': "script-src 'self' 'unsafe-inline' https://analytics.ideaflow.app; connect-src 'self' https://api.worldissuetracker.com https://analytics.ideaflow.app; object-src 'none'; base-uri 'self'" }} }})
   }}
   if (path === '/v4' || path.startsWith('/v4/')) {{
-    return new Response(ARCHIVE_V4_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8' }} }})
+    return new Response(ARCHIVE_V4_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Content-Security-Policy': "script-src 'self' 'unsafe-inline' https://analytics.ideaflow.app; connect-src 'self' https://api.worldissuetracker.com https://analytics.ideaflow.app; object-src 'none'; base-uri 'self'" }} }})
   }}
   if (path === '/v2' || path.startsWith('/v2/')) {{
-    return new Response(V2_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8' }} }})
+    return new Response(V2_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Content-Security-Policy': "script-src 'self' 'unsafe-inline' https://analytics.ideaflow.app; connect-src 'self' https://api.worldissuetracker.com https://analytics.ideaflow.app; object-src 'none'; base-uri 'self'" }} }})
   }}
   if (path === '/v3' || path.startsWith('/v3/')) {{
-    return new Response(V3_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8' }} }})
+    return new Response(V3_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Content-Security-Policy': "script-src 'self' 'unsafe-inline' https://analytics.ideaflow.app; connect-src 'self' https://api.worldissuetracker.com https://analytics.ideaflow.app; object-src 'none'; base-uri 'self'" }} }})
   }}
   if (path === '/v1' || path.startsWith('/v1/')) {{
     return Response.redirect('https://humanityinfrastructure.com/', 301)
   }}
-  return new Response(MAIN_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8' }} }})
+  return new Response(MAIN_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Content-Security-Policy': "script-src 'self' 'unsafe-inline' https://analytics.ideaflow.app; connect-src 'self' https://api.worldissuetracker.com https://analytics.ideaflow.app; object-src 'none'; base-uri 'self'" }} }})
 }}
 
+const ANALYTICS_JS = `{escape_js(Path('analytics.js').read_text())}`
 const DESIGN_ASSETS = {json.dumps(designs)}
 const MAIN_HTML = `{escape_js(main)}`
 const V2_HTML = `{escape_js(v2)}`
