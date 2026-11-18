@@ -154,14 +154,15 @@
   .resource-body{padding:0 0 22px;max-width:760px}
   .resource-body>p{margin:0 0 12px}
   .resource-actions:empty{display:none}
-  .resource-actions{flex:none;padding:16px 0}
+  .resource-actions{flex:0 0 180px;max-width:180px;padding:16px 0}
+  .resource-actions .signal-actions{margin-top:0}
   .resource-details>summary:focus-visible,.resource-url:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:3px}
   .editor-note{margin-top:14px;font-size:.88rem;color:var(--muted)}
   .editor-note h4{color:var(--text);font-size:.88rem;margin:0 0 8px}
   .editor-note .why{margin-top:8px}
   .conversation{padding:20px 0 32px}
   .conversation .tweet-card{max-width:420px;margin-left:auto}
-  @media(max-width:800px){.resource-overview{grid-template-columns:minmax(0,1fr);gap:4px}.resource-details>summary{padding:16px 0}.resource-pitch{max-width:100%}.conversation .tweet-card{margin:0}}
+  @media(max-width:800px){.card.resource-row{display:block}.resource-actions{max-width:none;padding:0 0 16px}.resource-overview{grid-template-columns:minmax(0,1fr);gap:4px}.resource-details>summary{padding:16px 0}.resource-pitch{max-width:100%}.conversation .tweet-card{margin:0}}
 
   /* build list */
   .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
@@ -341,14 +342,14 @@
     <article class="card resource-row" id="xfeed-paradise" data-interest-item="xfeed-paradise" data-interest-title="Xfeed Paradise">
       <details class="resource-details">
         <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">Xfeed Paradise</span><span class="resource-pitch">Filter outrage-bait from your feed.</span><a class="resource-url" href="https://github.com/opentoolshub/xfeedparadise" target="_blank" rel="noopener">github.com/opentoolshub/xfeedparadise</a></span></summary>
-        <div class="resource-body"><p>Filter outrage-bait from your X feed and make room for what helps you thrive.</p><p>A Chrome extension with hide, dim and collapse modes. Install from the public source repository. Local keyword filtering works without an API key; optional AI scoring sends scoring text to your chosen provider.</p></div>
+        <div class="resource-body"><p>Filter outrage-bait from your X feed and make room for what helps you thrive.</p><p>A Chrome extension with hide, dim and collapse modes. Install from the public source repository. Local keyword filtering works without an API key; optional AI scoring sends scoring text to your chosen provider.</p><ul class="badges"><li>Source: opentoolshub contributors</li><li>License: MIT (project README)</li></ul></div>
       </details>
       <div class="resource-actions"></div>
     </article>
     <article class="card resource-row" id="flow-tools-directory" data-interest-item="flow-tools-directory" data-interest-title="Keeping a state of flow">
       <details class="resource-details">
         <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">Keeping a state of flow</span><span class="resource-pitch">A directory of tools for flow.</span><a class="resource-url" href="https://flowtools.directory/" target="_blank" rel="noopener">flowtools.directory</a></span></summary>
-        <div class="resource-body"><p>Keeping a state of flow: a directory of tools for flow. Browse a curated collection of tools for productivity, design, development, writing and research.</p></div>
+        <div class="resource-body"><p>Keeping a state of flow: a directory of tools for flow. Browse a curated collection of tools for productivity, design, development, writing and research.</p><ul class="badges"><li>By Jacob Cole</li><li>Content license: not stated</li></ul></div>
       </details><div class="resource-actions"></div>
     </article>
 </div></div></section>
@@ -426,9 +427,15 @@
     <article class="card resource-row" id="global-idea-bank" data-interest-item="global-idea-bank" data-interest-title="Global Idea Bank">
       <details class="resource-details">
         <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">Global Idea Bank</span><span class="resource-pitch">Share and build on ideas for a better world.</span><a class="resource-url" href="https://worldissuetracker.com/global-idea-bank" target="_blank" rel="noopener">worldissuetracker.com/global-idea-bank</a></span></summary>
-        <div class="resource-body"><p>Share ideas that could improve the world, and help the best ones find collaborators.</p></div>
+        <div class="resource-body"><p>Share ideas that could improve the world, and help the best ones find collaborators.</p><ul class="badges"><li>Hosted by World Issue Tracker</li><li>Content license: not stated</li></ul></div>
       </details>
       <div class="resource-actions"></div>
+    </article>
+    <article class="card resource-row" id="directory-of-the-internet" data-interest-item="directory-of-the-internet" data-interest-title="Directory of the Internet">
+      <details class="resource-details">
+        <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">Directory of the Internet</span><span class="resource-pitch">Explore Jacob’s curated outline of shared resources.</span><a class="resource-url" href="https://social.ideaflow.app/directory?curation=5380&amp;view=outline" target="_blank" rel="noopener">social.ideaflow.app/directory</a></span></summary>
+        <div class="resource-body"><p>A public directory of connected resources, people and ideas, opened in the outline view of Jacob’s curation. Individual entries retain their source attribution.</p><ul class="badges"><li>Curated by Jacob Cole</li><li>Content license: not stated</li></ul></div>
+      </details><div class="resource-actions"></div>
     </article>
     <article class="card resource-row" id="vibe-coding-guide" data-interest-item="vibe-coding-guide" data-interest-title="Vibe Coding Guide">
       <details class="resource-details">
