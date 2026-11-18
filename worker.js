@@ -318,6 +318,7 @@ const MAIN_HTML = `<!DOCTYPE html>
   .tweet-copy[open] .tweet-excerpt,.tweet-copy[open] .tweet-more{display:none}.tweet-copy[open] .tweet-less{display:inline}
   .tweet-copy blockquote{margin:8px 0 0;padding:0;border:0;border-radius:0;background:none;font-size:.9rem;line-height:1.5}
   .tweet-metrics{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;margin:10px 0 0;font-size:.85rem;line-height:1.4}
+  .tweet-metric-icon{width:14px;height:14px;vertical-align:-2px;margin-right:3px}
   .tweet-metrics strong{font-variant-numeric:tabular-nums}.tweet-snapshot{color:var(--muted);font-size:.72rem}
   .tweet-copy summary:focus-visible,.tweet-permalink:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
   @media(max-width:480px){.conversation .tweet-card{padding:14px}.tweet-byline{gap:8px}.tweet-meta{font-size:.68rem}.tweet-permalink{font-size:.72rem}.tweet-snapshot{display:block;flex-basis:100%}}
@@ -577,7 +578,7 @@ const MAIN_HTML = `<!DOCTYPE html>
       <summary><span class="tweet-excerpt">We featured Lastbook on humanityinfrastructure.com — a directory of tools and knowledge for human flourishing.</span><span class="tweet-toggle"><span class="tweet-more">More</span><span class="tweet-less">Less</span></span></summary>
       <blockquote cite="https://x.com/jacobcole4000/status/2122608959236493761">@farbood We featured Lastbook on humanityinfrastructure.com — a directory of tools and knowledge for human flourishing. What else belongs? Everyone’s invited to suggest resources or submit a GitHub PR via the site. Thanks for building this, @farbood!</blockquote>
     </details>
-    <p class="tweet-metrics"><span><span aria-hidden="true">👁</span> <strong>About 130K views</strong></span><span class="tweet-snapshot">Historical snapshot · reported by Jacob, Nov 17, 2026</span></p>
+    <p class="tweet-metrics"><span><svg class="tweet-metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg> <strong>About 130K views</strong></span><span class="tweet-snapshot">Historical snapshot · reported by Jacob, Nov 17, 2026</span></p>
   </figure>
 </aside>
 
