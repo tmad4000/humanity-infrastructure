@@ -2,7 +2,7 @@
 
 **Knowledge is a birthright. So are the tools to use it.**
 
-[humanityinfrastructure.com](https://humanityinfrastructure.com) is an open directory of tools and knowledge for human flourishing. Each shelf starts with a **need** (knowledge that survives offline, open document signing, using the best service for each task without lock-in…) and then names the best tool we know for it. Featured listings show their license, and anyone can suggest what belongs.
+[humanityinfrastructure.com](https://humanityinfrastructure.com) is an open directory of tools and knowledge for human flourishing. Featured listings explain the practical need each tool serves and show its license. Anyone can suggest what belongs.
 
 ⭐ **If this resonates, star the repo** so more builders find it, then add the tool you wish everyone knew about.
 
@@ -18,9 +18,9 @@
 | The need | Featured tool | License |
 |---|---|---|
 | Knowledge that survives when the internet doesn't | [Lastbook](https://lastbook.org): offline library of manuals, maps and videos, with optional local AI | Open source (MIT) |
-| Open document signing infrastructure | [SignuDoc](https://github.com/NYLLON-SOFTWARE/SignuDoc): e-signatures on your own cloud, $0 per seat | Open source (MIT) |
 | Use the best service for each task, without interface lock-in | [Paxi](https://paxi.fyi): compares every ride service and books the one you choose | Free, closed source (maker is a friend of the maintainer) |
 | A shared, public list of what's broken and who's fixing it | [World Issue Tracker](https://worldissuetracker.com) | Built by the maintainer |
+| Open document signing infrastructure | [SignuDoc](https://github.com/NYLLON-SOFTWARE/SignuDoc): e-signatures on your own cloud, $0 per seat | Open source (MIT) |
 
 See the full list, the open Build List and the vision on [the site](https://humanityinfrastructure.com).
 
