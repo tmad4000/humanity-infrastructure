@@ -129,6 +129,21 @@
   .tag.build{background:rgba(244,184,96,.13);color:var(--accent-warm);border:1px solid rgba(244,184,96,.3)}
   .tag.idea{background:rgba(122,162,255,.13);color:var(--accent-2);border:1px solid rgba(122,162,255,.3)}
 
+  /* Compact listings; progressive enhancement leaves full text available without JS. */
+  #tools .grid,#connect-people .grid{align-items:start}
+  .card-link{display:block;color:inherit}
+  .card-link:hover{text-decoration:none}
+  .card-description.is-clamped{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+  .card-expand{font:inherit;font-size:.82rem;font-weight:600;color:var(--accent-2);background:none;border:0;padding:4px 0;margin-top:4px;cursor:pointer;text-align:left}
+  .card-expand[hidden]{display:none}
+  .card-expand:focus-visible,.editor-note summary:focus-visible,.card-link:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:3px}
+  .editor-note{margin-top:12px;font-size:.88rem;color:var(--muted)}
+  .editor-note summary{cursor:pointer;color:var(--text);font-weight:600;list-style:none}
+  .editor-note summary::-webkit-details-marker{display:none}
+  .editor-note summary::after{content:" ▸"}
+  .editor-note[open] summary::after{content:" ▾"}
+  .editor-note .why{margin-top:8px}
+
   /* build list */
   .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
   .chip{background:var(--card);border:1px solid var(--border-strong);color:var(--muted);
@@ -296,65 +311,71 @@
       <span class="tag live">Featured</span>
       <div class="top"><span class="emoji">📖</span><div><h3><a href="https://lastbook.org" target="_blank" rel="noopener">Lastbook</a></h3><div class="url">lastbook.org</div></div></div>
       <p class="needline"><span class="need-label">Need</span> Knowledge that survives when the internet doesn't</p>
-      <p>A free, open-source offline library of practical manuals, videos and maps, with optional local AI. Knowledge for preparedness and rebuilding, available after setup without an internet connection.</p>
+      <p class="card-description">A free, open-source offline library of practical manuals, videos and maps, with optional local AI. Knowledge for preparedness and rebuilding, available after setup without an internet connection.</p>
       <ul class="badges"><li class="open">Open source · MIT</li><li>Mac · Windows · Linux</li><li>By farbood &amp; contributors</li></ul>
-      <p class="why"><b>Editor's Note:</b> when the network goes down, the knowledge shouldn't. A library you can hand to a neighbour on a drive.</p>
+      <details class="editor-note"><summary>Editor's note</summary><p class="why">when the network goes down, the knowledge shouldn't. A library you can hand to a neighbour on a drive.</p></details>
     </article>
     <figure class="card tweet-card" id="lastbook-conversation" aria-label="Jacob Cole’s post about Lastbook">
       <figcaption><span class="tweet-kicker">From the conversation</span><br><strong>Jacob Cole</strong> <span class="tweet-meta">@jacobCole4000</span></figcaption>
       <blockquote cite="https://x.com/jacobcole4000/status/2122608959236493761">@farbood We featured Lastbook on humanityinfrastructure.com — a directory of tools and knowledge for human flourishing. What else belongs? Everyone’s invited to suggest resources or submit a GitHub PR via the site. Thanks for building this, @farbood!</blockquote>
       <div class="tweet-source"><time datetime="2026-11-17T08:33:06Z">November 17, 2026</time><a href="https://x.com/jacobcole4000/status/2122608959236493761" target="_blank" rel="noopener noreferrer">View on X ↗</a></div>
     </figure>
-    <a class="card" href="https://nvctranslator.com" target="_blank" rel="noopener">
+    <article class="card" id="unlinked">
+      <h3><a href="https://www.unlinked.ai" target="_blank" rel="noopener">Unlinked</a></h3>
+
+      <p class="card-description">Explore your professional network and find the people who can help you move an idea forward.</p>
+      <p style="margin-top:16px"><a href="/?interest=unlinked#letter">Express interest / request access →<span class="sr-only"> Unlinked</span></a></p>
+    </article>
+    <article class="card">
       <span class="tag live">Live</span>
-      <div class="top"><span class="emoji">🕊️</span><div><h3>NVC Translator</h3><div class="url">nvctranslator.com</div></div></div>
-      <p>Translate any text into Marshall Rosenberg's Nonviolent Communication — observations, feelings, needs, requests. How can AI make us more compassionate?</p>
-    </a>
-    <a class="card" href="https://globalbr.ai" target="_blank" rel="noopener">
+      <a class="card-link" href="https://nvctranslator.com" target="_blank" rel="noopener"><div class="top"><span class="emoji">🕊️</span><div><h3>NVC Translator</h3><div class="url">nvctranslator.com</div></div></div></a>
+      <p class="card-description">Translate any text into Marshall Rosenberg's Nonviolent Communication — observations, feelings, needs, requests. How can AI make us more compassionate?</p>
+    </article>
+    <article class="card">
       <span class="tag live">Live</span>
-      <div class="top"><span class="emoji">🧠</span><div><h3>Noos</h3><div class="url">globalbr.ai</div></div></div>
-      <p>A universal knowledge graph — the "codex" backend. Capture, connect, and query human know-how with per-node privacy.</p>
-    </a>
-    <a class="card" href="https://wikihub.md" target="_blank" rel="noopener">
+      <a class="card-link" href="https://globalbr.ai" target="_blank" rel="noopener"><div class="top"><span class="emoji">🧠</span><div><h3>Noos</h3><div class="url">globalbr.ai</div></div></div></a>
+      <p class="card-description">A universal knowledge graph — the "codex" backend. Capture, connect, and query human know-how with per-node privacy.</p>
+    </article>
+    <article class="card">
       <span class="tag live">Live</span>
-      <div class="top"><span class="emoji">📚</span><div><h3>WikiHub</h3><div class="url">wikihub.md</div></div></div>
-      <p>GitHub for LLM wikis. Hosting for open, agent-native markdown knowledge bases — forkable, shareable, version-controlled.</p>
-    </a>
-    <a class="card" href="https://worldissuetracker.com" target="_blank" rel="noopener">
+      <a class="card-link" href="https://wikihub.md" target="_blank" rel="noopener"><div class="top"><span class="emoji">📚</span><div><h3>WikiHub</h3><div class="url">wikihub.md</div></div></div></a>
+      <p class="card-description">GitHub for LLM wikis. Hosting for open, agent-native markdown knowledge bases — forkable, shareable, version-controlled.</p>
+    </article>
+    <article class="card">
       <span class="tag live">Live</span>
-      <div class="top"><span class="emoji">🌐</span><div><h3>World Issue Tracker</h3><div class="url">worldissuetracker.com</div></div></div>
-      <p>A public issue tracker for civic and shared problems — a bottom-up list of what's broken, and who's fixing it.</p>
-    </a>
-    <a class="card" href="https://tmad4000.github.io/brainstorms/" target="_blank" rel="noopener">
+      <a class="card-link" href="https://worldissuetracker.com" target="_blank" rel="noopener"><div class="top"><span class="emoji">🌐</span><div><h3>World Issue Tracker</h3><div class="url">worldissuetracker.com</div></div></div></a>
+      <p class="card-description">A public issue tracker for civic and shared problems — a bottom-up list of what's broken, and who's fixing it.</p>
+    </article>
+    <article class="card">
       <span class="tag live">Live</span>
-      <div class="top"><span class="emoji">💡</span><div><h3>Idea List</h3><div class="url">tmad4000.github.io/brainstorms</div></div></div>
-      <p>An open idea bank — projects, hackathon ideas, and easily-solvable world problems, free for anyone to take and build.</p>
-    </a>
-    <a class="card" href="https://github.com/tmad4000/claude-mind" target="_blank" rel="noopener">
-      <span class="tag live">Live</span>
-      <div class="top"><span class="emoji">🔬</span><div><h3>Claude Mind</h3><div class="url">github.com/tmad4000/claude-mind</div></div></div>
-      <p>Collaborative AI–human exploration of open problems — research rabbits and guilds working the quests, Polymath-style.</p>
-    </a>
-    <a class="card" href="https://github.com/tmad4000/vibe-coding-guide" target="_blank" rel="noopener">
-      <span class="tag live">Live</span>
-      <div class="top"><span class="emoji">⚡</span><div><h3>Vibe Coding Guide</h3><div class="url">github.com/tmad4000/vibe-coding-guide</div></div></div>
-      <p>Open guide to AI-assisted coding — making the craftsmanship of software buildable by everyone.</p>
-    </a>
+      <a class="card-link" href="https://tmad4000.github.io/brainstorms/" target="_blank" rel="noopener"><div class="top"><span class="emoji">💡</span><div><h3>Idea List</h3><div class="url">tmad4000.github.io/brainstorms</div></div></div></a>
+      <p class="card-description">An open idea bank — projects, hackathon ideas, and easily-solvable world problems, free for anyone to take and build.</p>
+    </article>
     <article class="card featured" id="signudoc">
       <span class="tag live">Featured</span>
       <div class="top"><span class="emoji">✍️</span><div><h3><a href="https://github.com/NYLLON-SOFTWARE/SignuDoc" target="_blank" rel="noopener">SignuDoc</a></h3><div class="url">github.com/NYLLON-SOFTWARE/SignuDoc</div></div></div>
       <p class="needline"><span class="need-label">Need</span> Open document signing infrastructure</p>
-      <p>Open-source e-signatures. Send, sign and seal documents from your own cloud at $0 per seat, with audit trails and tamper-evident seals.</p>
+      <p class="card-description">Open-source e-signatures. Send, sign and seal documents from your own cloud at $0 per seat, with audit trails and tamper-evident seals.</p>
       <ul class="badges"><li class="open">Open source · MIT</li><li>Self-hosted on your Vercel account</li><li>By Kevin Rose / NYLLON</li></ul>
-      <p class="why"><b>Editor's Note:</b> agreeing on things is basic civic plumbing. Signing a PDF shouldn't need a per-seat licence or someone else's cloud.</p>
+      <details class="editor-note"><summary>Editor's note</summary><p class="why">agreeing on things is basic civic plumbing. Signing a PDF shouldn't need a per-seat licence or someone else's cloud.</p></details>
     </article>
     <article class="card featured" id="paxi">
       <span class="tag live">Featured</span>
       <div class="top"><span class="emoji">🚕</span><div><h3><a href="https://paxi.fyi" target="_blank" rel="noopener">Paxi</a></h3><div class="url">paxi.fyi</div></div></div>
       <p class="needline"><span class="need-label">Need</span> Use the best service for each task, without interface lock-in</p>
-      <p>Compares live ride prices and times across Uber, Lyft, Waymo, Tesla, Zoox, Curb and more, then books the one you choose. Your logins stay on your phone.</p>
+      <p class="card-description">Compares live ride prices and times across Uber, Lyft, Waymo, Tesla, Zoox, Curb and more, then books the one you choose. Your logins stay on your phone.</p>
       <ul class="badges"><li>Free · closed source</li><li>iPhone (iOS 17+)</li><li>By Doug Feigelson, a friend of the maintainer</li></ul>
-      <p class="why"><b>Editor's Note:</b> every app wants to be the only door. You should be able to compare providers, choose the best one for each job and switch freely. <a href="https://github.com/tmad4000/humanity-infrastructure/issues/2" target="_blank" rel="noopener">Community submission #2</a>.</p>
+      <details class="editor-note"><summary>Editor's note</summary><p class="why">every app wants to be the only door. You should be able to compare providers, choose the best one for each job and switch freely. <a href="https://github.com/tmad4000/humanity-infrastructure/issues/2" target="_blank" rel="noopener">Community submission #2</a>.</p></details>
+    </article>
+    <article class="card">
+      <span class="tag live">Live</span>
+      <a class="card-link" href="https://github.com/tmad4000/vibe-coding-guide" target="_blank" rel="noopener"><div class="top"><span class="emoji">⚡</span><div><h3>Vibe Coding Guide</h3><div class="url">github.com/tmad4000/vibe-coding-guide</div></div></div></a>
+      <p class="card-description">Open guide to AI-assisted coding — making the craftsmanship of software buildable by everyone.</p>
+    </article>
+    <article class="card">
+      <span class="tag live">Live</span>
+      <a class="card-link" href="https://github.com/tmad4000/claude-mind" target="_blank" rel="noopener"><div class="top"><span class="emoji">🔬</span><div><h3>Claude Mind</h3><div class="url">github.com/tmad4000/claude-mind</div></div></div></a>
+      <p class="card-description">Collaborative AI–human exploration of open problems — research rabbits and guilds working the quests, Polymath-style.</p>
     </article>
   </div>
 </div></section>
@@ -366,39 +387,33 @@
     <p>Find collaborators, build relationships and carry shared ideas forward. These projects are part of the Ideaflow ecosystem; access varies by tool.</p>
   </div>
   <div class="grid">
-    <article class="card" id="unlinked">
-      <h3><a href="https://www.unlinked.ai" target="_blank" rel="noopener">Unlinked</a></h3>
-
-      <p>Explore your professional network and find the people who can help you move an idea forward.</p>
-      <p style="margin-top:16px"><a href="/?interest=unlinked#letter">Express interest / request access →<span class="sr-only"> Unlinked</span></a></p>
-    </article>
     <article class="card" id="superconnector">
       <h3><a href="https://superconnector.network" target="_blank" rel="noopener">Superconnector</a></h3>
 
-      <p>Discover who to meet in your community or at your next event.</p>
+      <p class="card-description">Discover who to meet in your community or at your next event.</p>
       <p style="margin-top:16px"><a href="/?interest=superconnector#letter">Express interest / request access →<span class="sr-only"> Superconnector</span></a></p>
     </article>
     <article class="card" id="openchat">
       <h3><a href="https://chat.ideaflow.app" target="_blank" rel="noopener">OpenChat</a></h3>
       <p class="needline">Public beta</p>
-      <p>Bring people and their AI agents into the same real-time conversations.</p>
+      <p class="card-description">Bring people and their AI agents into the same real-time conversations.</p>
       <p style="margin-top:16px"><a href="/?interest=openchat#letter">Express interest / request access →<span class="sr-only"> OpenChat</span></a></p>
     </article>
     <article class="card" id="bookshelves">
       <h3><a href="https://bookshelves.ai" target="_blank" rel="noopener">Bookshelves</a></h3>
-      <p>Photograph your bookshelf and meet people who read what you read.</p>
+      <p class="card-description">Photograph your bookshelf and meet people who read what you read.</p>
       <p style="margin-top:16px"><a href="/?interest=bookshelves#letter">Express interest / request access →<span class="sr-only"> Bookshelves</span></a></p>
     </article>
     <article class="card" id="ideaflow-index">
       <h3><a href="https://index.ideaflow.app" target="_blank" rel="noopener">Ideaflow apps index</a></h3>
 
-      <p>Built on the shared knowledge graph.</p>
+      <p class="card-description">Built on the shared knowledge graph.</p>
       <p style="margin-top:16px"><a href="/?interest=ideaflow-index#letter">Express interest / request access →<span class="sr-only"> Ideaflow apps index</span></a></p>
     </article>
     <article class="card" id="open-recordings">
       <h3><a href="https://index.ideaflow.app" target="_blank" rel="noopener">Open Recordings</a></h3>
       <p class="needline">Alpha</p>
-      <p>Record and revisit conversations and highlights, so shared insights stay useful.</p>
+      <p class="card-description">Record and revisit conversations and highlights, so shared insights stay useful.</p>
       <p style="margin-top:16px"><a href="/?interest=open-recordings#letter">Express interest / request access →<span class="sr-only"> Open Recordings</span></a></p>
     </article>
   </div>
@@ -795,6 +810,23 @@ signupForm.addEventListener('submit', async function(event) {
       var choice=['auto','light','dark'].includes(event.newValue)?event.newValue:'auto';
       window.hiTheme.set(choice);select.value=choice;
     }});
+  })();
+
+
+  // Expand descriptions independently, without a button inside a card link.
+  (function(){
+    document.querySelectorAll('.card-description').forEach(function(text,index){
+      var card=text.closest('.card'),name=card.querySelector('h3').textContent.trim();
+      text.id='card-description-'+index;
+      text.classList.add('is-clamped');
+      var button=document.createElement('button');button.type='button';button.className='card-expand';
+      button.setAttribute('aria-expanded','false');button.setAttribute('aria-controls',text.id);
+      function label(expanded){button.textContent=expanded?'Show less':'Show more';button.setAttribute('aria-label',(expanded?'Show less about ':'Show more about ')+name);}
+      label(false);text.after(button);
+      function measure(){if(button.getAttribute('aria-expanded')==='false')button.hidden=text.scrollHeight<=text.clientHeight+1;}
+      button.addEventListener('click',function(){var expanded=button.getAttribute('aria-expanded')!=='true';button.setAttribute('aria-expanded',String(expanded));text.classList.toggle('is-clamped',!expanded);label(expanded);if(!expanded)measure();});
+      measure();if(typeof ResizeObserver!=='undefined')new ResizeObserver(measure).observe(text);else window.addEventListener('resize',measure);
+    });
   })();
 
   // ---- Contribute modal ----
