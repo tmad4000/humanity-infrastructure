@@ -59,3 +59,13 @@ test('tweet-card X link is an X event without listing ID; SignuDoc stays a resou
  assert.equal(c.calls[1][0],'resource_outbound_click');
  assert.equal(c.calls[1][1].listing_id,'signudoc');
 });
+
+test('signup success never depends on the analytics tracker (absent or throwing)',()=>{
+ const html=fs.readFileSync('index.html','utf8');
+ assert.equal((html.match(/window\.hiTrack\(/g)||[]).length,1,'only the guarded helper may call window.hiTrack directly');
+ const helper=html.match(/function hiSafeTrack\([\s\S]*?\n/)[0];
+ for (const tracker of [undefined, ()=>{throw new Error('blocked');}]) {
+  const context={window:{hiTrack:tracker}}; vm.runInNewContext(helper+'hiSafeTrack("newsletter_signup",{placement:"letter"}); ok=true;',context);
+  assert.equal(context.ok,true);
+ }
+});

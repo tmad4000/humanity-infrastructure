@@ -713,7 +713,7 @@ const MAIN_HTML = `<!DOCTYPE html>
   <div style="text-align:right">
     <a href="https://www.notion.so/jacobblog/Humanity-3-0-and-Dharmic-blueprint-314fda9cff6380bfae57ff843cce32dd" target="_blank" rel="noopener">Blueprint (Notion)</a> ·
     <a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" target="_blank" rel="noopener">Master doc</a><br/>
-    <span class="ver">v0.5.4 · 2026-11-18</span>
+    <span class="ver">v0.5.5 · 2026-11-18</span>
   </div>
 </div>
   <!-- Design versions + legacy -->
@@ -790,6 +790,8 @@ const MAIN_HTML = `<!DOCTYPE html>
 </div>
 
 <script>
+// Analytics is optional: a missing or failing tracker must never break signup.
+function hiSafeTrack(name, properties) { try { if (typeof window.hiTrack === 'function') window.hiTrack(name, properties); } catch (error) { /* ignore tracker failures */ } }
 
 // Shelf links use /?interest=<approved-key>#letter.
 const signupInterestLabels = {
@@ -853,7 +855,7 @@ signupForm.addEventListener('submit', async function(event) {
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || 'Please try again later.');
     if (submittedStep === 1) {
-      window.hiTrack('newsletter_signup', {placement: 'letter', method: 'email'});
+      hiSafeTrack('newsletter_signup', {placement: 'letter', method: 'email'});
       signupSavedEmail = email; signupStep = 2;
       document.getElementById('letter-email-step').hidden = true; signupEmail.disabled = true;
       signupDetails.hidden = false;
