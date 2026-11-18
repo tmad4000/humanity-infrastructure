@@ -6,7 +6,8 @@ const [,, workerPath, pwPath] = process.argv;
 const { chromium } = await import(pwPath);
 const worker = (await import('file://' + workerPath)).default;
 const env = { SIGNUPS: { prepare() { return { bind() { return this; }, async first() { return null; }, async all() { return { results: [] }; }, async run() { return {}; } }; }, async batch() { return []; } } };
-const browser = await chromium.launch();
+// Chrome sandbox stays ON: system Chrome (setuid sandbox) because bundled Chromium has no AppArmor userns profile here.
+const browser = await chromium.launch({ chromiumSandbox: true, executablePath: process.env.CHROME_BIN || '/opt/google/chrome/chrome' });
 const results = [];
 for (const path of ['/', '/classic', '/v2', '/v3', '/v4', '/join', '/#letter']) {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
