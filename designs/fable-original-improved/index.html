@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head><meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Humanity Infrastructure — tools and knowledge for human flourishing · Prototype (original layout, improved)</title>
+<meta name="description" content="Humanity Infrastructure: a free directory of tools and knowledge for human flourishing. Free to use. Open where possible. Featured listings show their license. Suggest what belongs.">
+<meta name="robots" content="noindex">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0c0f14">
+<meta property="og:title" content="Humanity Infrastructure — tools and knowledge for human flourishing">
+<meta property="og:description" content="Knowledge is a birthright. So are the tools to use it. A free directory of tools and knowledge for human flourishing. Suggest what belongs.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Humanity Infrastructure">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%230c0f14'/%3E%3Cg fill='none' stroke='%235fd3a8' stroke-width='1.6' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='7.5'/%3E%3Cpath d='M4.500 12h15M12 4.500c2.200 2.200 3.200 4.700 3.200 7.500s-1 5.300-3.200 7.500c-2.200-2.200-3.200-4.700-3.200-7.500s1-5.300 3.200-7.500z'/%3E%3C/g%3E%3C/svg%3E">
+<script>
+  /* Apply a saved theme before first paint (same storage key as the original). */
+  try{var t=localStorage.getItem('h3-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}
+</script>
+<style>
+  /* ------------------------------------------------------------------
+     Tokens. Colours are the original palette; only --faint (and the
+     light theme's text accents) moved, to reach AA contrast.
+     ------------------------------------------------------------------ */
+  :root{
+    --bg:#0c0f14; --bg-soft:#12161f; --card:#161b26; --card-hover:#1c2230;
+    --text:#e8edf6; --muted:#97a1b3; --faint:#8791a5;
+    --accent:#5fd3a8; --accent-2:#7aa2ff; --accent-warm:#f4b860;
+    --grad-a:#5fd3a8; --grad-b:#7aa2ff; --on-accent:#06120d;
+    --live:#ef5f5f;
+    --border:rgba(255,255,255,.08); --border-strong:rgba(255,255,255,.16);
+    --field-border:#74809a; --focus:#a9c4ff;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 30px rgba(0,0,0,.35);
+    --glow-a:rgba(122,162,255,.10); --glow-b:rgba(95,211,168,.08);
+    --max:1080px; --gutter:24px;
+
+    /* Type scale: seven fixed steps plus three fluid display sizes. */
+    --fs-12:.75rem; --fs-13:.8125rem; --fs-14:.875rem; --fs-15:.9375rem;
+    --fs-16:1rem; --fs-18:1.125rem; --fs-24:1.5rem;
+    --fs-lede:clamp(1.125rem,1rem + .6vw,1.375rem);
+    --fs-h2:clamp(1.625rem,1.2rem + 1.9vw,2.25rem);
+    --fs-h1:clamp(2.375rem,1.2rem + 5.4vw,4.25rem);
+
+    /* Spacing rhythm: multiples of 4px. */
+    --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px; --s8:64px;
+    --section:clamp(3.5rem,2.5rem + 3vw,4.5rem);
+    --radius:16px; --radius-sm:10px;
+  }
+  [data-theme="light"]{
+    --bg:#f7f8fa; --bg-soft:#eef1f6; --card:#ffffff; --card-hover:#f3f6fb;
+    --text:#16202e; --muted:#4f596d; --faint:#5c667a;
+    --accent:#0a7151; --accent-2:#2f58c8; --accent-warm:#855600;
+    --grad-a:#0b7a59; --grad-b:#3a64d8; --on-accent:#ffffff;
+    --live:#c93636;
+    --border:rgba(10,20,40,.10); --border-strong:rgba(10,20,40,.18);
+    --field-border:#76819a; --focus:#2f58c8;
+    --shadow:0 1px 2px rgba(20,30,50,.06),0 10px 34px rgba(20,30,50,.10);
+    --glow-a:rgba(58,100,216,.08); --glow-b:rgba(15,157,114,.07);
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:84px;-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    font-size:var(--fs-16);line-height:1.6;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(900px 500px at 80% -10%,var(--glow-a),transparent 60%),radial-gradient(800px 500px at 0% 0%,var(--glow-b),transparent 55%);
+    background-repeat:no-repeat;
+    overflow-wrap:break-word;
+  }
+  h1,h2,h3,h4,p,ul,figure,blockquote{margin:0}
+  ul{padding:0;list-style:none}
+  a{color:var(--accent-2);text-decoration:none}
+  a:hover{text-decoration:underline}
+  /* Links inside running text are underlined, so colour is never the only cue. */
+  p a,.direct a,.foot a{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em}
+  button,input,textarea{font:inherit;color:inherit}
+  svg.ic{width:1.25em;height:1.25em;flex:none;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+  svg.ic.solid{fill:currentColor;stroke:none}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+  .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+  :focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:6px}
+  .skip{position:absolute;left:var(--s4);top:-80px;z-index:50;background:var(--text);color:var(--bg);
+    padding:10px 16px;border-radius:var(--radius-sm);font-weight:600;font-size:var(--fs-14)}
+  .skip:focus{top:var(--s3)}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:20;backdrop-filter:saturate(140%) blur(12px);-webkit-backdrop-filter:saturate(140%) blur(12px);
+    background:color-mix(in srgb,var(--bg) 82%,transparent);border-bottom:1px solid var(--border)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:var(--s3)}
+  .brand{display:flex;align-items:center;gap:10px;min-width:0;font-weight:700;letter-spacing:-.01em;font-size:var(--fs-16);color:var(--text);white-space:nowrap}
+  .brand:hover{text-decoration:none}
+  .brand .ic{width:22px;height:22px;color:var(--accent)}
+  .brand-name{overflow:hidden;text-overflow:ellipsis}
+  .brand-sub{color:var(--faint);font-weight:500}
+  .nav-links{display:flex;align-items:center;gap:2px;flex:none}
+  .nav-links a{color:var(--muted);font-size:var(--fs-14);font-weight:500;padding:8px 10px;border-radius:8px;white-space:nowrap}
+  .nav-links a:hover{color:var(--text);text-decoration:none}
+  .nav-links a.gh{display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 12px;margin-left:var(--s2);
+    color:var(--text);background:var(--card);border:1px solid var(--border-strong);border-radius:var(--radius-sm);font-weight:600}
+  .nav-links a.gh:hover{background:var(--card-hover)}
+  .nav-links a.gh .ic{width:17px;height:17px}
+  .theme-btn{background:var(--card);border:1px solid var(--border-strong);color:var(--text);margin-left:var(--s2);
+    width:36px;height:36px;border-radius:var(--radius-sm);cursor:pointer;display:grid;place-items:center;padding:0}
+  .theme-btn:hover{background:var(--card-hover)}
+  .theme-btn .ic{width:18px;height:18px}
+  [data-theme="dark"] .theme-btn .i-moon,[data-theme="light"] .theme-btn .i-sun{display:none}
+  @media(max-width:1099px){.nav-links a.opt,.brand-sub{display:none}}
+  @media(max-width:779px){.nav-links a:not(.gh){display:none}}
+  @media(max-width:479px){.brand{font-size:var(--fs-15);gap:8px}.brand .ic{width:20px;height:20px}
+    .nav-links a.gh{padding:0 10px;gap:6px;margin-left:0}.theme-btn{margin-left:6px}}
+  @media(max-width:389px){.nav-links a.gh{width:36px;padding:0;justify-content:center}.nav-links a.gh .lbl{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}}
+  @media(max-width:339px){.brand{font-size:var(--fs-14)}}
+
+  /* hero */
+  header.hero{padding:clamp(4rem,3rem + 5vw,6rem) 0 var(--s8);text-align:center}
+  .eyebrow{display:inline-block;font-size:var(--fs-12);letter-spacing:.16em;text-transform:uppercase;line-height:1.5;
+    color:var(--accent);font-weight:700;border:1px solid var(--border-strong);
+    padding:6px 16px;border-radius:999px;margin-bottom:var(--s5);background:var(--bg-soft);text-wrap:balance}
+  h1{font-size:var(--fs-h1);line-height:1.05;letter-spacing:-.03em;margin:0 0 var(--s5);font-weight:800;text-wrap:balance}
+  h1 .line{display:block}
+  h1 .grad{background:linear-gradient(110deg,var(--grad-a),var(--grad-b));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{font-size:var(--fs-lede);line-height:1.55;color:var(--muted);max-width:44rem;margin:0 auto var(--s4);text-wrap:pretty}
+  .sub{font-size:var(--fs-16);color:var(--faint);max-width:40rem;margin:0 auto var(--s6);font-style:italic}
+  .btns{display:flex;gap:var(--s3);justify-content:center;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:12px 22px;border-radius:12px;
+    font-weight:600;font-size:var(--fs-16);line-height:1.25;border:1px solid transparent;cursor:pointer;text-align:center;
+    transition:transform .12s ease,background-color .12s ease}
+  .btn:hover{text-decoration:none;transform:translateY(-2px)}
+  .btn.primary{background:linear-gradient(110deg,var(--grad-a),var(--grad-b));color:var(--on-accent)}
+  .btn.ghost{background:var(--card);border-color:var(--border-strong);color:var(--text)}
+  .btn.ghost:hover{background:var(--card-hover)}
+
+  section{padding:var(--section) 0;border-top:1px solid var(--border)}
+  .section-head{margin-bottom:var(--s6);max-width:760px}
+  h2{font-size:var(--fs-h2);line-height:1.15;letter-spacing:-.02em;font-weight:800;text-wrap:balance}
+  .section-head h2{margin-bottom:var(--s3)}
+  .section-head p{color:var(--muted);font-size:var(--fs-18);line-height:1.6;max-width:38rem;text-wrap:pretty}
+  .section-head p + p{margin-top:var(--s3)}
+  .kicker{font-size:var(--fs-12);letter-spacing:.14em;text-transform:uppercase;color:var(--accent-warm);font-weight:700;margin-bottom:var(--s3)}
+  h3{font-size:var(--fs-18);line-height:1.3;letter-spacing:-.01em;font-weight:700}
+
+  /* icon tile shared by pillars and tool cards */
+  .ico{width:40px;height:40px;border-radius:var(--radius-sm);background:var(--bg-soft);border:1px solid var(--border);
+    display:grid;place-items:center;flex:none;color:var(--accent)}
+  .ico .ic{width:20px;height:20px}
+
+  /* manifesto pillars */
+  .pillars{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--s4)}
+  .pillar{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:var(--s5)}
+  .pillar .ico{margin-bottom:var(--s4)}
+  .pillar h3{margin-bottom:var(--s2)}
+  .pillar p{color:var(--muted);font-size:var(--fs-15);line-height:1.6}
+  @media(max-width:999px){.pillars{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:559px){.pillars{grid-template-columns:minmax(0,1fr)}}
+
+  /* tools grid */
+  .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s4)}
+  @media(max-width:979px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:639px){.grid{grid-template-columns:minmax(0,1fr)}}
+  .card{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+    padding:var(--s5);transition:transform .14s ease,border-color .14s ease,background-color .14s ease;position:relative}
+  .card:hover{transform:translateY(-3px);border-color:var(--border-strong);background:var(--card-hover);box-shadow:var(--shadow)}
+  .card .top{display:grid;grid-template-columns:auto minmax(0,1fr) auto;column-gap:10px;row-gap:2px;align-items:start;align-content:start;margin-bottom:var(--s3)}
+  .card .top .ico{grid-row:1 / span 2}
+  .card .top h3{grid-column:2;grid-row:1}
+  .card .top .tag{grid-column:3;grid-row:1}
+  .card .top .url{grid-column:2 / -1;grid-row:2}
+  .card h3 a{color:var(--text)}
+  .card h3 a:hover{text-decoration:none}
+  /* The title link stretches over the whole card, so the card is one click target with a short accessible name. */
+  .card-link::after{content:"";position:absolute;inset:0;border-radius:var(--radius)}
+  .card-link:focus-visible{outline:none}
+  .card-link:focus-visible::after{outline:2px solid var(--focus);outline-offset:3px}
+  .card .url{font-size:var(--fs-13);line-height:1.4;color:var(--accent);font-weight:600}
+  .card > p{color:var(--muted);font-size:var(--fs-15);line-height:1.6}
+  .tag{display:inline-flex;align-items:center;gap:6px;flex:none;font-size:var(--fs-12);line-height:1;font-weight:700;letter-spacing:.05em;
+    text-transform:uppercase;padding:5px 9px;border-radius:999px;white-space:nowrap;border:1px solid transparent}
+  .bcard .tag::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+  .tag.live,.tag.done{background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent);border-color:color-mix(in srgb,var(--accent) 32%,transparent)}
+  .tag.build{background:color-mix(in srgb,var(--accent-warm) 13%,transparent);color:var(--accent-warm);border-color:color-mix(in srgb,var(--accent-warm) 32%,transparent)}
+  .tag.idea{background:color-mix(in srgb,var(--accent-2) 13%,transparent);color:var(--accent-2);border-color:color-mix(in srgb,var(--accent-2) 32%,transparent)}
+
+  /* featured listings: access badges + editor's note */
+  .meta{margin-top:var(--s4)}
+  .badges{display:flex;flex-wrap:wrap;gap:6px}
+  .badges li{font-size:var(--fs-13);line-height:1.35;font-weight:600;padding:4px 9px;border-radius:8px;border:1px solid var(--border-strong);color:var(--muted)}
+  .badges li.open{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 40%,transparent)}
+  .badges li.closed{color:var(--accent-warm);border-color:color-mix(in srgb,var(--accent-warm) 40%,transparent)}
+  .maker{margin-top:var(--s2);font-size:var(--fs-13);line-height:1.5;color:var(--muted)}
+  .maker a{position:relative;z-index:1;color:var(--muted)}
+  .ednote{margin-top:auto;padding-top:var(--s5)}
+  /* Three featured cards share one row on wide screens: align their parts row by row. */
+  @supports (grid-template-rows:subgrid){
+    @media(min-width:980px){
+      .card.featured{display:grid;grid-template-rows:subgrid;grid-row:span 4;row-gap:0}
+      .card.featured .ednote{margin-top:0}
+    }
+  }
+  .ednote-box{border-left:2px solid var(--accent-warm);padding:2px 0 2px var(--s3)}
+  .ednote-head{display:flex;align-items:center;gap:var(--s2);margin-bottom:6px}
+  .ednote-label{font-size:var(--fs-12);letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--text)}
+  .draft{font-size:var(--fs-12);line-height:1;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-warm);
+    border:1px dashed color-mix(in srgb,var(--accent-warm) 70%,transparent);border-radius:6px;padding:3px 7px}
+  .ednote-text{color:var(--text);font-size:var(--fs-15);line-height:1.55;font-style:italic}
+  .ednote-foot{color:var(--faint);font-size:var(--fs-13);line-height:1.4;margin-top:6px}
+
+  .card.suggest{grid-column:span 2;border-style:dashed;border-color:var(--border-strong);background:transparent;justify-content:center;gap:var(--s2)}
+  .card.suggest:hover{background:var(--card)}
+  .card.suggest p{max-width:34rem}
+  .card.suggest .go{color:var(--accent-2);font-weight:600;font-size:var(--fs-15);margin-top:var(--s2)}
+  @media(max-width:639px){.card.suggest{grid-column:auto}}
+  .gridnote{margin-top:var(--s5);color:var(--faint);font-size:var(--fs-14);line-height:1.6;max-width:44rem}
+
+  /* quote */
+  .quote{background:var(--bg-soft);border:1px solid var(--border);border-left:4px solid var(--accent);
+    border-radius:14px;padding:var(--s6) clamp(var(--s5),4vw,var(--s7))}
+  .quote blockquote{font-size:var(--fs-lede);line-height:1.55;color:var(--text);max-width:46rem;text-wrap:pretty}
+  .quote figcaption{margin-top:var(--s4);font-size:var(--fs-14);color:var(--faint)}
+
+  /* build list */
+  .filters{display:flex;gap:var(--s2);flex-wrap:wrap;margin-bottom:var(--s5)}
+  .chip{display:inline-flex;align-items:center;gap:8px;min-height:40px;background:var(--card);border:1px solid var(--border-strong);color:var(--muted);
+    padding:8px 16px;border-radius:999px;font-size:var(--fs-14);font-weight:600;cursor:pointer;transition:background-color .12s ease,color .12s ease}
+  .chip::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--dot,transparent)}
+  .chip[data-f="all"]::before{display:none}
+  .chip[data-f="idea"]{--dot:var(--accent-2)} .chip[data-f="building"]{--dot:var(--accent-warm)} .chip[data-f="done"]{--dot:var(--accent)}
+  .chip .n{font-weight:500;font-variant-numeric:tabular-nums}
+  .chip:hover{background:var(--card-hover);color:var(--text)}
+  .chip[aria-pressed="true"]{background:var(--text);color:var(--bg);border-color:var(--text)}
+  .chip[aria-pressed="true"]::before{background:currentColor}
+  .bcard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;
+    display:flex;flex-direction:column;gap:var(--s2);min-width:0}
+  .bhead{display:flex;align-items:center;justify-content:space-between;gap:var(--s2);min-height:24px}
+  .bhead .tag{margin-left:auto}
+  .bcard .cat{font-size:var(--fs-12);letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:700;line-height:1.3}
+  .bcard h3,.bcard h4{margin:0;font-size:var(--fs-16);line-height:1.35;letter-spacing:-.01em;font-weight:700}
+  .bcard h4 a{color:inherit}
+  .bcard p{color:var(--muted);font-size:var(--fs-14);line-height:1.55;flex:1}
+  .bcard p.clamp{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden;flex:none}
+  .bcard .row{display:flex;align-items:center;flex-wrap:wrap;gap:var(--s1) var(--s4);margin-top:auto;padding-top:var(--s1)}
+  .bcard .row a,.bcard .row span{display:inline-flex;align-items:center;gap:5px;min-height:28px}
+  .bcard .claim{font-size:var(--fs-14);font-weight:700;color:var(--accent)}
+  .bcard a.ext{font-size:var(--fs-13);color:var(--faint);font-weight:500}
+  .bcard a.ext .ic{width:13px;height:13px}
+  .bcard .votes{font-size:var(--fs-13);color:var(--faint);font-weight:600;font-variant-numeric:tabular-nums}
+  .bcard .claimedby{font-size:var(--fs-13);color:var(--accent-warm);font-weight:700}
+  .buildnote{margin:var(--s6) auto 0;color:var(--faint);font-size:var(--fs-14);text-align:center;max-width:40rem}
+  .claim-head{margin:var(--s8) 0 var(--s5);text-align:center}
+  .claim-head h3{font-size:var(--fs-24);line-height:1.2;letter-spacing:-.02em;margin-bottom:var(--s2);display:inline-flex;align-items:center;gap:10px;text-wrap:balance}
+  .claim-head p{color:var(--muted);max-width:38rem;margin:0 auto;font-size:var(--fs-16)}
+  .livedot{width:10px;height:10px;border-radius:50%;background:var(--live);display:inline-block;flex:none;animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(239,95,95,.5)}70%{box-shadow:0 0 0 8px rgba(239,95,95,0)}100%{box-shadow:0 0 0 0 rgba(239,95,95,0)}}
+  .witloading{color:var(--muted);padding:var(--s6) var(--s4);grid-column:1/-1;text-align:center;font-size:var(--fs-15)}
+  .witmeta{margin-top:var(--s4);color:var(--faint);font-size:var(--fs-13);text-align:center}
+
+  /* living document link columns */
+  .links-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s4)}
+  @media(max-width:859px){.links-cols{grid-template-columns:minmax(0,1fr)}}
+  .lcol{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:var(--s5)}
+  .lcol h3{display:flex;align-items:center;gap:var(--s2);margin-bottom:var(--s3);font-size:var(--fs-16)}
+  .lcol h3 .ic{width:18px;height:18px;color:var(--accent)}
+  .lcol ul{display:flex;flex-direction:column;gap:2px}
+  .lcol li > a{display:block;padding:5px 0;color:var(--muted);font-size:var(--fs-15);line-height:1.45}
+  .lcol li > a:hover{color:var(--accent-2)}
+  .direct{display:block;font-size:var(--fs-13);color:var(--faint);line-height:1.5}
+  .direct a{color:var(--muted)}
+
+  /* submit */
+  .submit-actions{display:flex;flex-wrap:wrap;gap:var(--s3);margin-bottom:var(--s5)}
+  .submit-more{color:var(--muted);font-size:var(--fs-15)}
+  .submit-more .sep{color:var(--faint);margin:0 6px}
+
+  /* CTA + letter */
+  .cta-band{background:linear-gradient(120deg,rgba(95,211,168,.10),rgba(122,162,255,.10));
+    border:1px solid var(--border-strong);border-radius:22px;padding:clamp(var(--s6),6vw,var(--s8)) clamp(var(--s5),5vw,var(--s7));text-align:center}
+  .cta-band h2{max-width:36rem;margin:0 auto var(--s3)}
+  .cta-band > p{color:var(--muted);max-width:38rem;margin:0 auto var(--s5);font-size:var(--fs-18);line-height:1.6;text-wrap:pretty}
+  .cta-band .direct{margin-top:var(--s4);color:var(--muted)}
+  .letter{margin-top:var(--s4);background:var(--card);border:1px solid var(--border);border-radius:22px;
+    padding:var(--s6) clamp(var(--s5),5vw,var(--s7));display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--s5) var(--s7);align-items:center}
+  @media(max-width:799px){.letter{grid-template-columns:minmax(0,1fr)}}
+  .letter h3{display:flex;align-items:center;gap:10px;font-size:var(--fs-24);line-height:1.2;letter-spacing:-.02em;margin-bottom:var(--s2)}
+  .letter h3 .ic{width:22px;height:22px;color:var(--accent)}
+  .letter-copy p{color:var(--muted);font-size:var(--fs-16);max-width:30rem}
+  .letter label{display:block;font-size:var(--fs-13);font-weight:600;color:var(--muted);margin-bottom:6px}
+  .field-row{display:flex;gap:var(--s2);flex-wrap:wrap}
+  .field-row input{flex:1 1 200px;min-width:0;min-height:48px;background:var(--bg-soft);border:1px solid var(--field-border);border-radius:12px;padding:10px 14px;font-size:var(--fs-16)}
+  .field-row input::placeholder{color:var(--faint);opacity:1}
+  .field-row .btn{flex:0 0 auto}
+  .mocknote{display:flex;align-items:baseline;gap:var(--s2);margin-top:var(--s3);font-size:var(--fs-13);line-height:1.5;color:var(--faint)}
+  .formstatus{margin-top:var(--s2);font-size:var(--fs-14);color:var(--accent);font-weight:600;min-height:1.6em}
+  .formstatus:empty{min-height:0;margin:0}
+
+  footer{padding:var(--s7) 0 var(--s8);border-top:1px solid var(--border);color:var(--faint);font-size:var(--fs-14);line-height:1.7}
+  .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--s5) var(--s7);align-items:flex-start}
+  .foot > div{max-width:36rem}
+  .foot a{color:var(--muted)}
+  .foot strong{color:var(--text)}
+  .foot-right{text-align:right}
+  .foot-links{display:flex;flex-wrap:wrap;gap:4px 16px;justify-content:flex-end;align-items:center}
+  .foot-links a{display:inline-flex;align-items:center;gap:6px;min-height:28px}
+  .foot-links .ic{width:15px;height:15px}
+  .ver{font-variant-numeric:tabular-nums}
+  .versions{border-top:1px solid var(--border);margin-top:var(--s7);padding-top:var(--s5);display:flex;flex-wrap:wrap;gap:6px 20px;align-items:baseline;font-size:var(--fs-13)}
+  .versions .lbl{letter-spacing:.1em;text-transform:uppercase;font-weight:600;font-size:var(--fs-12)}
+  .versions a{color:var(--muted)}
+  @media(max-width:699px){.foot-right{text-align:left}.foot-links{justify-content:flex-start}}
+
+  /* Contribute dialog (native <dialog>: focus trap, Escape and inert page come for free) */
+  dialog.modal{border:1px solid var(--border-strong);border-radius:var(--radius);background:var(--bg-soft);color:var(--text);
+    width:calc(100% - 32px);max-width:640px;max-height:calc(100dvh - 32px);padding:var(--s6);box-shadow:0 24px 80px rgba(0,0,0,.7);overflow-y:auto}
+  dialog.modal::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(6px)}
+  html:has(dialog[open]){overflow:hidden}
+  .modal-close{position:absolute;top:var(--s4);right:var(--s4);background:var(--card);border:1px solid var(--border-strong);color:var(--text);
+    width:36px;height:36px;border-radius:8px;cursor:pointer;display:grid;place-items:center;padding:0}
+  .modal-close:hover{background:var(--card-hover)}
+  .modal-close .ic{width:16px;height:16px}
+  .modal-eyebrow{font-size:var(--fs-12);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:var(--s3);font-weight:700}
+  .modal-title{font-size:var(--fs-24);font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:var(--s2);padding-right:var(--s7)}
+  .modal-sub{color:var(--muted);font-size:var(--fs-15);margin-bottom:var(--s5);line-height:1.55}
+  .m-field{margin-bottom:var(--s4)}
+  .m-field label{display:block;font-size:var(--fs-13);font-weight:600;color:var(--muted);margin-bottom:6px}
+  .m-field label span{color:var(--faint);font-weight:400}
+  .m-field input,.m-field textarea{width:100%;background:var(--card);border:1px solid var(--field-border);border-radius:8px;font-size:var(--fs-16);padding:10px 14px}
+  .m-field input::placeholder,.m-field textarea::placeholder{color:var(--faint);opacity:1}
+  .m-field textarea{resize:vertical;min-height:88px;line-height:1.5}
+  .m-submit{width:100%;margin-top:var(--s1)}
+  .m-status{font-size:var(--fs-14);color:var(--muted);margin-top:var(--s3);text-align:center;min-height:1.6em}
+
+  @media(max-width:639px){.section-head p,.cta-band > p{font-size:var(--fs-16)}}
+  @media(max-width:480px){
+    :root{--gutter:20px}
+    .eyebrow{max-width:17.5rem;border-radius:18px;letter-spacing:.14em}
+    .btns .btn,.submit-actions .btn{flex:1 1 100%}
+    .field-row .btn{flex:1 1 100%}
+    dialog.modal{padding:var(--s5)}
+  }
+  @media(max-width:359px){:root{--gutter:16px}}
+
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    .btn:hover,.card:hover{transform:none}
+  }
+</style>
+</head>
+<body id="top">
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- Icon sprite: simple inline SVG replaces every emoji (emoji fonts are not guaranteed on every device). -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.500 2.700 3.800 5.700 3.800 9s-1.300 6.300-3.800 9c-2.500-2.700-3.800-5.700-3.800-9s1.300-6.300 3.800-9z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.500v2M12 19.500v2M5.300 5.300l1.400 1.400M17.300 17.300l1.400 1.400M2.500 12h2M19.500 12h2M5.300 18.700l1.400-1.400M17.300 6.700l1.400-1.400"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.500 14.500A8.500 8.500 0 0 1 9.500 3.500a8.500 8.500 0 1 0 11 11z"/></symbol>
+    <symbol id="i-github" viewBox="0 0 16 16"><path d="M8 0C3.580 0 0 3.580 0 8c0 3.540 2.290 6.530 5.470 7.590.4.070.55-.17.55-.38 0-.19-.010-.82-.010-1.490-2.010.37-2.530-.49-2.690-.94-.090-.23-.48-.94-.82-1.130-.28-.15-.68-.52-.010-.53.63-.010 1.080.58 1.230.82.72 1.210 1.870.87 2.330.66.070-.52.28-.87.51-1.070-1.780-.2-3.640-.89-3.640-3.950 0-.87.31-1.590.82-2.150-.080-.2-.36-1.020.080-2.120 0 0 .67-.21 2.200.82.64-.18 1.320-.27 2-.27s1.360.090 2 .27c1.530-1.040 2.200-.82 2.200-.82.44 1.100.16 1.920.080 2.120.51.56.82 1.270.82 2.150 0 3.070-1.870 3.750-3.650 3.950.29.25.54.73.54 1.480 0 1.070-.010 1.930-.010 2.200 0 .21.15.46.55.38A8.010 8.010 0 0 0 16 8c0-4.420-3.580-8-8-8z"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6.500C10.300 5.200 8 4.500 4 4.500v13c4 0 6.300.7 8 2 1.700-1.300 4-2 8-2v-13c-4 0-6.300.7-8 2z"/><path d="M12 6.500v13"/></symbol>
+    <symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.700 6.300a1 1 0 0 0 0 1.400l1.600 1.600a1 1 0 0 0 1.400 0l3.770-3.770a6 6 0 0 1-7.940 7.940l-6.910 6.910a2.120 2.120 0 0 1-3-3l6.910-6.910a6 6 0 0 1 7.940-7.940l-3.760 3.760z"/></symbol>
+    <symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.250"/><path d="M2.750 19.500c.4-3.300 3-5.250 6.250-5.250s5.850 1.950 6.250 5.250"/><circle cx="17.250" cy="9" r="2.500"/><path d="M17.750 14.300c2 .3 3.300 1.800 3.600 4.200"/></symbol>
+    <symbol id="i-sprout" viewBox="0 0 24 24"><path d="M12 20.500v-9"/><path d="M12 11.500c0-3.600-2.500-6-6.500-6 0 3.800 2.500 6 6.500 6z"/><path d="M12 14.500c0-3 2.300-5.200 6.500-5.200 0 3.300-2.300 5.200-6.500 5.200z"/><path d="M7.500 20.500h9"/></symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l1-4L16.500 4.500a2.120 2.120 0 0 1 3 3L8 19l-4 1z"/><path d="M14.500 6.500l3 3"/><path d="M13 20h7"/></symbol>
+    <symbol id="i-car" viewBox="0 0 24 24"><path d="M5 17H4a1 1 0 0 1-1-1v-3.200a2 2 0 0 1 .3-1L5.600 7.600A2 2 0 0 1 7.400 6.500h9.200a2 2 0 0 1 1.800 1.100l2.300 4.200a2 2 0 0 1 .3 1V16a1 1 0 0 1-1 1h-1"/><path d="M9 17h6"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M3.500 11.500h17"/></symbol>
+    <symbol id="i-message" viewBox="0 0 24 24"><path d="M20 11.500a7.500 7.500 0 0 1-11 6.600L4 19.500l1.400-4.500A7.500 7.500 0 1 1 20 11.500z"/><path d="M9 10.500h6M9 13.500h3.500"/></symbol>
+    <symbol id="i-graph" viewBox="0 0 24 24"><circle cx="6" cy="7" r="2.250"/><circle cx="18" cy="6" r="2.250"/><circle cx="12" cy="17.500" r="2.250"/><path d="M8.200 6.800l7.600-.6M7.100 9l3.800 6.500M16.900 8l-3.800 7.500"/></symbol>
+    <symbol id="i-library" viewBox="0 0 24 24"><path d="M4 4v16M8 8v12M12 6v14M16 6l4 14"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M3.500 6.500l1.500 1.500 2.500-3M3.500 12.500l1.500 1.500 2.500-3M3.500 18.500l1.500 1.500 2.500-3"/><path d="M11 7h9.500M11 13h9.500M11 19h9.500"/></symbol>
+    <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.500 10.900c.6.5 1 1.200 1 2v.1h5v-.1c0-.8.4-1.500 1-2A6 6 0 0 0 12 3z"/></symbol>
+    <symbol id="i-flask" viewBox="0 0 24 24"><path d="M9.500 3h5"/><path d="M10 3v6.200L4.800 18a2 2 0 0 0 1.700 3h11a2 2 0 0 0 1.700-3L14 9.200V3"/><path d="M7.500 15h9"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="M8.500 7.500L4 12l4.500 4.500M15.500 7.500L20 12l-4.500 4.500M13.500 5l-3 14"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M7 3h7l4 4v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v4h4"/><path d="M9 12h6M9 16h6"/></symbol>
+    <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.500 8.500l-2 5-5 2 2-5 5-2z"/></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19C5 10 10 5 20 5c0 10-5 15-13 14"/><path d="M5 19c2-4 5-7 9-9"/></symbol>
+    <symbol id="i-ext" viewBox="0 0 24 24"><path d="M9 6h9v9"/><path d="M18 6L7 17"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.500 7.500l8.500 6 8.500-6"/></symbol>
+  </defs>
+</svg>
+
+<nav aria-label="Primary"><div class="wrap">
+  <a class="brand" href="#top"><svg class="ic" aria-hidden="true"><use href="#i-globe"/></svg><span class="brand-name">Humanity Infrastructure</span><span class="brand-sub">· The Codex</span></a>
+  <div class="nav-links">
+    <a class="opt" href="#manifesto">Manifesto</a>
+    <a href="#tools">Tools</a>
+    <a href="#buildlist">Build List</a>
+    <a class="opt" href="#vision">The Vision</a>
+    <a href="#submit">Submit a resource</a>
+    <a class="opt" href="#join">Join</a>
+    <a class="gh" href="https://github.com/tmad4000/humanity-infrastructure" target="_blank" rel="noopener" aria-label="GitHub: Humanity Infrastructure source"><svg class="ic solid" aria-hidden="true"><use href="#i-github"/></svg><span class="lbl">GitHub</span></a>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Switch to light theme"><svg class="ic i-sun" aria-hidden="true"><use href="#i-sun"/></svg><svg class="ic i-moon" aria-hidden="true"><use href="#i-moon"/></svg></button>
+  </div>
+</div></nav>
+
+<main id="main">
+<header class="hero"><div class="wrap">
+  <span class="eyebrow">Basic Infrastructure for Human Flourishing</span>
+  <h1><span class="line">Knowledge is a <span class="grad">birthright</span>.</span> <span class="line">So are the tools to use it.</span></h1>
+  <p class="lede">A codex of human know-how as a public resource to humanity — plus the open-source software to coordinate human activity around it. The not-just-engineering equivalent of the open-source movement.</p>
+  <p class="sub">“Building tools for the well-intended.” This is how we coordinate as a superorganism.</p>
+  <div class="btns">
+    <a class="btn primary" href="#tools">Explore the tools →</a>
+    <button class="btn ghost" type="button" id="openContribute" aria-haspopup="dialog">Find your contribution →</button>
+  </div>
+</div></header>
+
+<section id="manifesto" aria-labelledby="h-manifesto"><div class="wrap">
+  <div class="section-head">
+    <div class="kicker">The Premise</div>
+    <h2 id="h-manifesto">Imagine it were everyone's birthright to access the sum-total of human know-how.</h2>
+    <p>The Codex is a hub of knowledge resources and open-source infrastructure — built to bring human flourishing into every person's reach. We envision something most of the developed world eventually becomes part of, to a greater or lesser degree.</p>
+  </div>
+  <div class="pillars">
+    <div class="pillar"><div class="ico"><svg class="ic" aria-hidden="true"><use href="#i-book"/></svg></div><h3>Knowledge as a public good</h3><p>Survival and thriving guides, medical know-how, open curricula, role-model casting, the craftsmanship that is all software. Shouldn't software from 10 years ago be free by now?</p></div>
+    <div class="pillar"><div class="ico"><svg class="ic" aria-hidden="true"><use href="#i-wrench"/></svg></div><h3>Tools that make people independent</h3><p>Open reputation systems, collective-action tools, personal-leverage automation, assistive tech. Hacked-together infrastructure that helps people help themselves.</p></div>
+    <div class="pillar"><div class="ico"><svg class="ic" aria-hidden="true"><use href="#i-people"/></svg></div><h3>Coordinate as a superorganism</h3><p>Guilds taking on epic quests. Global sense-making. Volunteerism, philanthropy for everyone, and ways to pitch in on the problems that matter — together.</p></div>
+    <div class="pillar"><div class="ico"><svg class="ic" aria-hidden="true"><use href="#i-sprout"/></svg></div><h3>Flourishing in reach for all</h3><p>From "how to thrive as a highly sensitive person on a budget" to "how to rebuild society from scratch." Compassionate, practical, and free.</p></div>
+  </div>
+</div></section>
+
+<section id="tools" aria-labelledby="h-tools"><div class="wrap">
+  <div class="section-head">
+    <div class="kicker">Working Tools</div>
+    <h2 id="h-tools">Pieces of the infrastructure that already exist</h2>
+    <p>Free to use. Open where possible. Featured listings show their license. Use them today — and help build the rest. <a href="#submit">Suggest a resource →</a></p>
+  </div>
+  <div class="grid">
+    <article id="lastbook" class="card featured">
+      <div class="top">
+        <span class="ico"><svg class="ic" aria-hidden="true"><use href="#i-book"/></svg></span>
+        <h3><a class="card-link" href="https://lastbook.org" target="_blank" rel="noopener">Lastbook</a></h3>
+        <span class="tag live">Featured</span>
+        <div class="url">lastbook.org</div>
+      </div>
+      <p>A free, open-source offline library of practical manuals, videos and maps, with optional local AI. Knowledge for preparedness and rebuilding, available after setup without an internet connection.</p>
+      <div class="meta">
+        <ul class="badges" aria-label="License and platform">
+          <li class="open">Free · Open source (MIT)</li>
+          <li>Mac · Windows · Linux</li>
+        </ul>
+        <p class="maker">By farbood &amp; contributors</p>
+      </div>
+      <div class="ednote"><div class="ednote-box">
+        <div class="ednote-head"><span class="ednote-label">Editor's note</span><span class="draft">Draft</span></div>
+        <p class="ednote-text">When the network goes down, the knowledge shouldn't. Lastbook is a library you can hand to a neighbour on a drive.</p>
+        <p class="ednote-foot">Placeholder. Jacob hasn't written this yet.</p>
+      </div></div>
+    </article>
+    <article id="signudoc" class="card featured">
+      <div class="top">
+        <span class="ico"><svg class="ic" aria-hidden="true"><use href="#i-pen"/></svg></span>
+        <h3><a class="card-link" href="https://github.com/NYLLON-SOFTWARE/SignuDoc" target="_blank" rel="noopener">SignuDoc</a></h3>
+        <span class="tag live">Featured</span>
+        <div class="url">github.com/<wbr>NYLLON-SOFTWARE/<wbr>SignuDoc</div>
+      </div>
+      <p>Open-source e-signatures. Send, sign and seal documents from your own cloud at $0 per seat, with audit trails and tamper-evident seals.</p>
+      <div class="meta">
+        <ul class="badges" aria-label="License and platform">
+          <li class="open">Open source (MIT)</li>
+          <li>Self-hosted on your Vercel account</li>
+        </ul>
+        <p class="maker">By Kevin Rose / NYLLON</p>
+      </div>
+      <div class="ednote"><div class="ednote-box">
+        <div class="ednote-head"><span class="ednote-label">Editor's note</span><span class="draft">Draft</span></div>
+        <p class="ednote-text">A small team was quoted $8,100 a year to sign PDFs. Infrastructure this basic should belong to the people using it.</p>
+        <p class="ednote-foot">Placeholder. Jacob hasn't written this yet.</p>
+      </div></div>
+    </article>
+    <article id="paxi" class="card featured">
+      <div class="top">
+        <span class="ico"><svg class="ic" aria-hidden="true"><use href="#i-car"/></svg></span>
+        <h3><a class="card-link" href="https://paxi.fyi" target="_blank" rel="noopener">Paxi</a></h3>
+        <span class="tag live">Featured</span>
+        <div class="url">paxi.fyi</div>
+      </div>
+      <p>Compares live ride prices and times across Uber, Lyft, Waymo, Tesla, Zoox, Curb and more, then books the one you choose. Your logins stay on your phone.</p>
+      <div class="meta">
+        <ul class="badges" aria-label="License and platform">
+          <li class="closed">Free · Closed source · iPhone</li>
+        </ul>
+        <p class="maker">By Doug Feigelson, a friend of the maintainer · <a href="https://github.com/tmad4000/humanity-infrastructure/issues/2" target="_blank" rel="noopener">Community submission #2</a></p>
+      </div>
+      <div class="ednote"><div class="ednote-box">
+        <div class="ednote-head"><span class="ednote-label">Editor's note</span><span class="draft">Draft</span></div>
+        <p class="ednote-text">One fare board instead of five apps. This is the pattern I want everywhere: you choose the service, the interface works for you.</p>
+        <p class="ednote-foot">Placeholder. Jacob hasn't written this yet.</p>
+      </div></div>
+    </article>
+
+    <article class="card">
+      <div class="top">
+        <span class="ico"><svg class="ic" aria-hidden="true"><use href="#i-message"/></svg></span>
+        <h3><a class="card-link" href="https://nvctranslator.com" target="_blank" rel="noopener">NVC Translator</a></h3>
+        <span class="tag live">Live</span>
+        <div class="url">nvctranslator.com</div>
+      </div>
+      <p>Translate any text into Marshall Rosenberg's Nonviolent Communication — observations, feelings, needs, requests. How can AI make us more compassionate?</p>
+    </article>
+    <article class="card">
+      <div class="top">
+        <span class="ico"><svg class="ic" aria-hidden="true"><use href="#i-graph"/></svg></span>
+        <h3><a class="card-link" href="https://globalbr.ai" target="_blank" rel="noopener">Noos</a></h3>
+        <span class="tag live">Live</span>
+        <div class="url">globalbr.ai</div>
+      </div>
+      <p>A universal knowledge graph — the "codex" backend. Capture, connect, and query human know-how with per-node privacy.</p>
+    </article>
+    <article class="card">
+      <div class="top">
+        <span class="ico"><svg class="ic" aria-hidden="true"><use href="#i-library"/></svg></span>
+        <h3><a class="card-link" href="https://wikihub.md" target="_blank" rel="noopener">WikiHub</a></h3>
+        <span class="tag live">Live</span>
+        <div class="url">wikihub.md</div>
+      </div>
+      <p>GitHub for LLM wikis. Hosting for open, agent-native markdown knowledge bases — forkable, shareable, version-controlled.</p>
+    </article>
+    <article class="card">
+      <div class="top">
+        <span class="ico"><svg class="ic" aria-hidden="true"><use href="#i-list"/></svg></span>
+        <h3><a class="card-link" href="https://worldissuetracker.com" target="_blank" rel="noopener">World Issue Tracker</a></h3>
+        <span class="tag live">Live</span>
+        <div class="url">worldissuetracker.com</div>
+      </div>
+      <p>A public issue tracker for civic and shared problems — a bottom-up list of what's broken, and who's fixing it.</p>
+    </article>
+    <article class="card">
+      <div class="top">
+        <span class="ico"><svg class="ic" aria-hidden="true"><use href="#i-bulb"/></svg></span>
+        <h3><a class="card-link" href="https://tmad4000.github.io/brainstorms/" target="_blank" rel="noopener">Idea List</a></h3>
+        <span class="tag live">Live</span>
+        <div class="url">tmad4000.github.io/<wbr>brainstorms</div>
+      </div>
+      <p>An open idea bank — projects, hackathon ideas, and easily-solvable world problems, free for anyone to take and build.</p>
+    </article>
+    <article class="card">
+      <div class="top">
+        <span class="ico"><svg class="ic" aria-hidden="true"><use href="#i-flask"/></svg></span>
+        <h3><a class="card-link" href="https://github.com/tmad4000/claude-mind" target="_blank" rel="noopener">Claude Mind</a></h3>
+        <span class="tag live">Live</span>
+        <div class="url">github.com/<wbr>tmad4000/<wbr>claude-mind</div>
+      </div>
+      <p>Collaborative AI–human exploration of open problems — research rabbits and guilds working the quests, Polymath-style.</p>
+    </article>
+    <article class="card">
+      <div class="top">
+        <span class="ico"><svg class="ic" aria-hidden="true"><use href="#i-code"/></svg></span>
+        <h3><a class="card-link" href="https://github.com/tmad4000/vibe-coding-guide" target="_blank" rel="noopener">Vibe Coding Guide</a></h3>
+        <span class="tag live">Live</span>
+        <div class="url">github.com/<wbr>tmad4000/<wbr>vibe-coding-guide</div>
+      </div>
+      <p>Open guide to AI-assisted coding — making the craftsmanship of software buildable by everyone.</p>
+    </article>
+    <article class="card suggest">
+      <h3><a class="card-link" href="#submit">What else should be featured?</a></h3>
+      <p>Suggest useful tools, open knowledge, practical guides or projects that help people flourish. You do not need to be a developer.</p>
+      <span class="go" aria-hidden="true">Suggest a resource →</span>
+    </article>
+  </div>
+  <p class="gridnote">ListHub has been retired. WikiHub supersedes it.</p>
+</div></section>
+
+<section aria-label="A word from Jack Park"><div class="wrap">
+  <figure class="quote">
+    <blockquote>“We need these tools, all of them, and to be honest with you, they need to be in the hands of everybody… When humans come into guilds to do epic quests, they're problem-solving, they're inventing a solution. That's how this planet's going to get fixed.”</blockquote>
+    <figcaption>— Jack Park, on guilds &amp; global sense-making</figcaption>
+  </figure>
+</div></section>
+
+<section id="buildlist" aria-labelledby="h-buildlist"><div class="wrap">
+  <div class="section-head">
+    <div class="kicker">The Open Build List</div>
+    <h2 id="h-buildlist">What still needs to be built</h2>
+    <p>The infrastructure for human flourishing is mostly <em>not built yet</em>. Below is the running list — ideas, works-in-progress, and what's done. Lifted from the Codex master doc; we'll keep pulling in more from across the lists. See one you want to build? <strong>Claim it.</strong></p>
+  </div>
+  <div class="filters" id="filters" role="group" aria-label="Filter the build list by status">
+    <button class="chip" type="button" data-f="all" aria-pressed="true">All</button>
+    <button class="chip" type="button" data-f="idea" aria-pressed="false">Ideas</button>
+    <button class="chip" type="button" data-f="building" aria-pressed="false">In progress</button>
+    <button class="chip" type="button" data-f="done" aria-pressed="false">Done</button>
+  </div>
+  <p class="sr-only" id="buildstatus" role="status" aria-live="polite"></p>
+  <div class="grid" id="buildgrid"><noscript><div class="witloading">The build list needs JavaScript. <a href="https://worldissuetracker.com/tracker/missing-civ-infrastructure">Open the board directly →</a></div></noscript></div>
+  <p class="buildnote">This list is open. Add an idea or claim one on the <a href="https://worldissuetracker.com/tracker/missing-civ-infrastructure" target="_blank" rel="noopener">Missing Civilization Infrastructure</a> board — or email <a href="mailto:jacob@ideaflow.io?subject=Open%20Build%20List">jacob@ideaflow.io</a>.</p>
+
+  <div class="claim-head">
+    <h3><span class="livedot" aria-hidden="true"></span> Claim a quest — live from the tracker</h3>
+    <p>These ideas are filed as real, public issues on the <a href="https://worldissuetracker.com/tracker/missing-civ-infrastructure" target="_blank" rel="noopener">World Issue Tracker</a>. Vote, discuss, or claim one to build — this list loads from the tracker each time you open the page.</p>
+  </div>
+  <div class="grid" id="witgrid" aria-busy="true" data-state="loading"><div class="witloading" role="status">Loading open quests from the tracker…</div></div>
+  <p class="witmeta" id="witmeta" hidden></p>
+</div></section>
+
+<section id="vision" aria-labelledby="h-vision"><div class="wrap">
+  <div class="section-head">
+    <div class="kicker">The Living Document</div>
+    <h2 id="h-vision">The full vision — and where to add to it</h2>
+    <p>The Codex is an open, growing document. These are the canonical sources behind this page. Add yourself, add a project, add a resource.</p>
+  </div>
+  <div class="links-cols">
+    <div class="lcol">
+      <h3><svg class="ic" aria-hidden="true"><use href="#i-doc"/></svg>Read the source</h3>
+      <ul>
+        <li><a href="https://www.notion.so/jacobblog/Humanity-3-0-and-Dharmic-blueprint-314fda9cff6380bfae57ff843cce32dd" target="_blank" rel="noopener">Humanity 3.0 &amp; the Dharmic blueprint (Notion)</a></li>
+        <li><a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" target="_blank" rel="noopener">The Codex — master doc (Google Docs)</a></li>
+        <li><a href="https://plausible-text-76b.notion.site/Cody-s-Healing-List-v4-b05b097d529c4c54b5d62f87f55b1f6f" target="_blank" rel="noopener">Healing Resources — "Cody Codex" (Notion)</a></li>
+        <li><a href="https://docs.google.com/document/d/1OggVeoEN4zAafRAox3yjFYtNwmYFJQHovXLviWI69zY/edit" target="_blank" rel="noopener">World Quest Guild — add yourself (Google Docs)</a>
+          <span class="direct">Short link: <a href="https://quests.world" target="_blank" rel="noopener">quests.world</a> (being repaired)</span></li>
+      </ul>
+    </div>
+    <div class="lcol">
+      <h3><svg class="ic" aria-hidden="true"><use href="#i-compass"/></svg>Movements within</h3>
+      <ul>
+        <li><a href="https://opensource.jacobcole.net" target="_blank" rel="noopener">Open Source dashboard</a></li>
+        <li><a href="https://openlists.jacobcole.net" target="_blank" rel="noopener">Open Lists movement</a></li>
+        <li><a href="https://fixingtheinternet.jacobcole.net/" target="_blank" rel="noopener">Fixing the Internet</a></li>
+        <li><a href="https://favorverse.jacobcole.net/" target="_blank" rel="noopener">Favorverse — volunteerism</a></li>
+        <li><a href="https://thunderpledge.jacobcole.net" target="_blank" rel="noopener">ThunderPledge — collective action</a></li>
+      </ul>
+    </div>
+    <div class="lcol">
+      <h3><svg class="ic" aria-hidden="true"><use href="#i-leaf"/></svg>Knowledge &amp; flourishing</h3>
+      <ul>
+        <li><a href="https://meditation.jacobcole.net/" target="_blank" rel="noopener">Open meditation curricula</a></li>
+        <li><a href="https://chronicpain.jacobcole.net/" target="_blank" rel="noopener">Treating chronic pain</a></li>
+        <li><a href="https://foodslist.jacobcole.net/" target="_blank" rel="noopener">How to eat well</a></li>
+        <li><a href="https://supplements.jacobcole.net/" target="_blank" rel="noopener">Supplement stacks</a></li>
+        <li><a href="https://bodymasters.jacobcole.net" target="_blank" rel="noopener">Body Masters</a></li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<section id="submit" aria-labelledby="h-submit"><div class="wrap">
+  <div class="section-head">
+    <div class="kicker">Submit a resource</div>
+    <h2 id="h-submit">What else should be featured?</h2>
+    <p>Help grow Humanity Infrastructure. Suggest useful tools, open knowledge, practical guides or projects that help people flourish. You do not need to be a developer.</p>
+    <p>Send the name, link, a short description and who it helps. Include access or licensing details and any affiliation. We review suggestions before featuring them.</p>
+  </div>
+  <div class="submit-actions">
+    <a class="btn primary" href="https://github.com/tmad4000/humanity-infrastructure/issues/new?template=suggest-resource.yml" target="_blank" rel="noopener">Suggest a resource on GitHub →</a>
+    <a class="btn ghost" href="mailto:jacob@ideaflow.io?subject=Humanity%20Infrastructure%20resource%20suggestion&amp;body=Name%3A%0ALink%3A%0AWho%20it%20helps%3A%0AAccess%20or%20license%3A%0AMy%20affiliation%3A">Suggest by email</a>
+    <a class="btn ghost" href="https://github.com/tmad4000/humanity-infrastructure/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Contribute a pull request →</a>
+  </div>
+  <p class="submit-more"><a href="https://github.com/tmad4000/humanity-infrastructure" target="_blank" rel="noopener">Browse the website source on GitHub</a><span class="sep" aria-hidden="true">·</span><a href="https://worldissuetracker.com/tracker/lastbook" target="_blank" rel="noopener">Lastbook community feedback and fixes</a></p>
+</div></section>
+
+<section id="join" aria-labelledby="h-join"><div class="wrap">
+  <div class="cta-band">
+    <h2 id="h-join">If you're not part of this, what are you doing with your life?</h2>
+    <p>We're building the more general, not-just-engineering equivalent of the open-source movement. There's an enormous amount of low-hanging fruit — and we're looking for designers, engineers, writers, healers, and well-intended humans of every kind.</p>
+    <div class="btns">
+      <a class="btn primary" href="mailto:jacob@ideaflow.io?subject=Joining%20the%20Codex%20%2F%20Humanity%20Infrastructure">Get involved →</a>
+      <a class="btn ghost" href="https://docs.google.com/document/d/1OggVeoEN4zAafRAox3yjFYtNwmYFJQHovXLviWI69zY/edit" target="_blank" rel="noopener">Join a guild</a>
+    </div>
+    <span class="direct">World Quest Guild (Google Doc) · short link <a href="https://quests.world" target="_blank" rel="noopener">quests.world</a> (being repaired)</span>
+  </div>
+
+  <div class="letter" id="letter">
+    <div class="letter-copy">
+      <h3><svg class="ic" aria-hidden="true"><use href="#i-mail"/></svg>A short, occasional letter</h3>
+      <p>New listings and quests that need builders. Low volume.</p>
+    </div>
+    <form id="letterForm" novalidate>
+      <label for="letterEmail">Email address</label>
+      <div class="field-row">
+        <input id="letterEmail" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" aria-describedby="letterMock">
+        <button class="btn ghost" type="submit">Get the letter</button>
+      </div>
+      <p class="mocknote" id="letterMock"><span class="draft">Mock</span><span>This form is a mock-up. It does not send or save your address, and the letter does not exist yet.</span></p>
+      <p class="formstatus" id="letterStatus" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <div class="foot">
+    <div>
+      <strong>Humanity Infrastructure · The Codex</strong> — basic infrastructure for human flourishing.<br>
+      Free to use. Open where possible. Featured listings show their license.<br>
+      Contact <a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a>
+    </div>
+    <div class="foot-right">
+      <div class="foot-links">
+        <a href="https://github.com/tmad4000/humanity-infrastructure" target="_blank" rel="noopener"><svg class="ic solid" aria-hidden="true"><use href="#i-github"/></svg>Source on GitHub</a>
+        <a href="https://www.notion.so/jacobblog/Humanity-3-0-and-Dharmic-blueprint-314fda9cff6380bfae57ff843cce32dd" target="_blank" rel="noopener">Blueprint (Notion)</a>
+        <a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" target="_blank" rel="noopener">Master doc</a>
+      </div>
+      <span class="ver">Prototype · original layout, improved · 2026-11-18 · not deployed</span>
+    </div>
+  </div>
+  <div class="versions">
+    <span class="lbl">Design versions →</span>
+    <a href="https://humanityinfrastructure.com/">v1 — Original / Dark (current)</a>
+    <a href="https://humanityinfrastructure.com/v2">v2 — Editorial / Red</a>
+    <a href="https://humanityinfrastructure.com/v3">v3 — Dark Blueprint</a>
+  </div>
+</div></footer>
+
+<!-- Contribute dialog -->
+<dialog class="modal" id="contributeModal" aria-labelledby="m-title" aria-describedby="m-sub">
+  <button class="modal-close" type="button" id="closeContribute" aria-label="Close"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button>
+  <div class="modal-eyebrow">Find your quest</div>
+  <h2 class="modal-title" id="m-title">How can you contribute?</h2>
+  <p class="modal-sub" id="m-sub">Share a bit about yourself and we'll match you to the open infrastructure projects where you'd have the most impact.</p>
+  <form id="contributeForm" novalidate>
+    <div class="m-field">
+      <label for="m-twitter">X / Twitter handle <span>(optional)</span></label>
+      <input id="m-twitter" type="text" autocomplete="off" placeholder="@handle or x.com/handle">
+    </div>
+    <div class="m-field">
+      <label for="m-linkedin">LinkedIn URL <span>(optional)</span></label>
+      <input id="m-linkedin" type="url" autocomplete="off" placeholder="linkedin.com/in/yourname">
+    </div>
+    <div class="m-field">
+      <label for="m-homepage">Personal website or portfolio <span>(optional)</span></label>
+      <input id="m-homepage" type="url" autocomplete="url" placeholder="https://yoursite.com">
+    </div>
+    <div class="m-field">
+      <label for="m-about">About you <span>(work, interests, what you want to build)</span></label>
+      <textarea id="m-about" placeholder="e.g. I'm a therapist who's been thinking about AI and nonviolent communication…"></textarea>
+    </div>
+    <button class="btn primary m-submit" type="submit">Find my contribution →</button>
+    <p class="m-status" id="m-status" role="status" aria-live="polite">Static prototype: this form is not connected. Nothing you type is sent.</p>
+  </form>
+</dialog>
+
+<script>
+(function(){
+  'use strict';
+  var SVGNS='http://www.w3.org/2000/svg';
+  var BOARD='https://worldissuetracker.com/tracker/missing-civ-infrastructure';
+
+  /* Small DOM helpers: everything is built with textContent, never innerHTML. */
+  function el(tag,props,kids){
+    var n=document.createElement(tag),k;
+    for(k in (props||{})){ if(k==='text'){n.textContent=props[k]} else if(k==='class'){n.className=props[k]} else {n.setAttribute(k,props[k])} }
+    (kids||[]).forEach(function(c){ if(c){ n.appendChild(typeof c==='string'?document.createTextNode(c):c) } });
+    return n;
+  }
+  function icon(id){
+    var s=document.createElementNS(SVGNS,'svg'), u=document.createElementNS(SVGNS,'use');
+    s.setAttribute('class','ic'); s.setAttribute('aria-hidden','true'); s.setAttribute('focusable','false');
+    u.setAttribute('href','#'+id); s.appendChild(u); return s;
+  }
+  function arrow(){ return el('span',{'aria-hidden':'true',text:'→'}) }
+  function extLink(href,label,name){
+    return el('a',{class:'ext',href:href,target:'_blank',rel:'noopener','aria-label':label+': '+name},[label,icon('i-ext')]);
+  }
+
+  // ---- Open Build List data (lifted from the Codex master doc; links upgraded to https) ----
+  var BUILD=[
+    {c:"Collective Action",t:"ThunderPledge",s:"idea",u:"https://thunderpledge.jacobcole.net",d:"Kickstarter for collective action: pledge to go vegetarian, vote, or boycott — but only once a critical mass also commits. Variants: ThunderVote, ThunderBoycott ('Kickstopper')."},
+    {c:"Collective Action",t:"Zero-Sum Redirect",s:"idea",d:"A clearinghouse for opposing political donations — matched contributions cancel out and the saved money goes to charity instead."},
+    {c:"Collective Action",t:"Government Suggestion Box",s:"idea",d:"A suggestion-box platform for governments, including the ability to donate toward implementing specific suggestions."},
+    {c:"Collective Action",t:"Everyone-a-Philanthropist",s:"idea",d:"Infrastructure so communities can pool resources to fill missing government functions — help a neighbor afford insurance, get a kid a laptop."},
+    {c:"Collective Action",t:"Resource-Sharing Platform",s:"idea",u:"https://favorverse.jacobcole.net/",d:"Let people share what they can lend — tools, a U-Haul, time. Related: Favorverse & VolunteerForce."},
+    {c:"Reputation & Trust",t:"Open Reputation System",s:"idea",d:"A portable, open reputation layer — the missing primitive for trust in online coordination."},
+    {c:"Reputation & Trust",t:"Trust Layer / Meta-Brands",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A trust layer for the web — 'meta-brands' that vouch for quality and integrity."},
+    {c:"Reputation & Trust",t:"Fact-Check Extension",s:"idea",u:"https://factcheck.jacobcole.net/",d:"A browser extension surfacing fact-checks and provenance inline."},
+    {c:"Fixing the Internet",t:"Open Forum Software",s:"building",u:"https://github.com/gulkily/pollyanna",d:"Forum software that is transparent, consensual, and open-source (Pollyanna)."},
+    {c:"Fixing the Internet",t:"Minimalist Homepages",s:"idea",d:"A better way to make calm, minimalist personal homepages."},
+    {c:"Fixing the Internet",t:"ThoughtfulWeb",s:"idea",u:"https://thoughtfulweb.jacobcole.net",d:"A directory of places on the web that are thoughtful, artful, and mindful — an oasis of good taste."},
+    {c:"Personal Leverage",t:"'Camel's Eye' Email Agent",s:"idea",d:"An agent that filters and triages email on your behalf (from Permutation City). Reclaim your attention."},
+    {c:"Personal Leverage",t:"Shortcut / Macro Coach",s:"idea",d:"Watches your actions and occasionally suggests a shortcut, auto-writing the macro for you."},
+    {c:"Personal Leverage",t:"Open Automation Tools",s:"idea",d:"Great open-source macro & browser-automation frameworks (Browserflow-style) for everyone."},
+    {c:"Personal Leverage",t:"Shopping Coach",s:"idea",d:"A service that shops on your behalf — finds the best, most ethical option so you don't have to."},
+    {c:"Open Knowledge",t:"Open Meditation Curricula",s:"building",u:"https://meditation.jacobcole.net/",d:"Basic open curricula for meditation and working with your body. Lists exist; needs a real course."},
+    {c:"Open Knowledge",t:"Open Medical Knowledge",s:"building",u:"https://chronicpain.jacobcole.net/",d:"How to treat chronic pain, RSI, and more — patient-first medical know-how. Lists started."},
+    {c:"Open Knowledge",t:"Open Academic Education",s:"idea",d:"University-level math, an open algorithms tutor, and interactive self-teaching programming resources."},
+    {c:"Open Knowledge",t:"Open Work Templates",s:"idea",d:"Open templates for every kind of work — invoices, gantt charts, proposals."},
+    {c:"Open Knowledge",t:"Role-Model Casting",s:"idea",u:"https://foodslist.jacobcole.net/",d:"For people without good role models — emulate the routines of healthy, effective people (e.g. foods lists)."},
+    {c:"Open Knowledge",t:"Motivation Database",s:"idea",u:"https://whyisitawesome.jacobcole.net/",d:"A wiki of why all the awesome things in the world are awesome — fuel for motivation."},
+    {c:"Open Knowledge",t:"'Books to Grow Up On'",s:"idea",u:"https://kidactivities.jacobcole.net",d:"An open list of literature that builds good mental models — plus kids' games & activities."},
+    {c:"Assistive Tech",t:"Hands-Free Voice Interfaces",s:"idea",d:"Good hands-free voice-recognition hooks into common sites (Gmail, etc.) for quadriplegics and others. Lots of low-hanging fruit."},
+    {c:"Assistive Tech",t:"Cueing App for Brain Injuries",s:"idea",d:"A cueing/reminder app for people recovering from brain injuries."},
+    {c:"Assistive Tech",t:"Better Foot Mouse",s:"idea",d:"A better foot-operated mouse for people who can't use their hands."},
+    {c:"Coordination Infra",t:"On-the-Fly Knowledge Capture",s:"building",u:"https://globalbr.ai",d:"Frictionless personal knowledge capture + a graph query engine. Being built as Noos."},
+    {c:"Coordination Infra",t:"Global Idea Bank",s:"building",u:"https://tmad4000.github.io/brainstorms/",d:"An open bank of ideas & hackathon projects anyone can take and build. Live as the Idea List."},
+    {c:"Coordination Infra",t:"Open Research Repository",s:"idea",d:"A global, open repository for research — make the world's findings freely usable."},
+    {c:"Care & Society",t:"Adult 'Foster' Support Network",s:"idea",d:"Ubiquitous support — 'extra parents' — for adults facing challenges so no one falls through the cracks."},
+    {c:"Care & Society",t:"Non-Emergency Help Button",s:"idea",d:"A button to request non-emergency help: a compassionate responder for mental-health crises, a care coordinator, a 'life figure-outer'."},
+    {c:"Care & Society",t:"Database of Survival Guides",s:"idea",d:"'How to survive/thrive' guides across many contexts — including for highly sensitive people on a budget."},
+    {c:"Care & Society",t:"Database of Human Ideals",s:"idea",d:"Documenting the multiplicity of happy cultures and ways of being."},
+    {c:"Done",t:"OpenLibrary",s:"done",u:"https://openlibrary.org",d:"Open, universal catalog of books. Exists — and it's wonderful."},
+    {c:"Done",t:"Internet Archive",s:"done",u:"https://archive.org",d:"Humanity's library and memory. Exists — support it."},
+    {c:"Done",t:"Concentration Music",s:"done",d:"Open 'music for concentration' playlists everyone can access. Largely solved."},
+    {c:"Fixing the Internet",t:"Cross-Site Hashtag Search",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"Search a hashtag uniformly across every social platform and website at once."},
+    {c:"Fixing the Internet",t:"Universal Comments Layer",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"Attach comment threads to any webpage, email, or chat, viewable by anyone."},
+    {c:"Fixing the Internet",t:"Universal Web Annotations",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A shared highlight-and-note layer that pins annotations onto any page across the web."},
+    {c:"Open Knowledge",t:"Canonical Debate Lab",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A structured platform that organizes contested claims and their arguments toward resolution."},
+    {c:"Open Knowledge",t:"Scientific Assertions Database",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A machine-readable repository of scientific claims with their dependencies and evidence mapped."},
+    {c:"Open Knowledge",t:"Collaborative Theorem Prover",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A shared workspace where mathematicians jointly build and verify formal proofs."},
+    {c:"Open Knowledge",t:"Negative Results Repository",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"An archive of failed experiments and null results so research isn't needlessly duplicated."},
+    {c:"Open Knowledge",t:"Argument Repository",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A searchable database of debate outlines and reusable argumentative frameworks."},
+    {c:"Coordination Infra",t:"Policy & Science Simulator",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A sandbox for safely testing policy changes and hypotheses before real-world rollout."},
+    {c:"Personal Leverage",t:"Unified Feed Control",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A single interface managing emails, texts, calls, and feeds with user-defined routing rules."},
+    {c:"Fixing the Internet",t:"Soundbite Propagation Tracker",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"Audio-fingerprinting that traces how a specific quote or claim spreads across media."},
+    {c:"Civic & Government",t:"Global Goals Dashboard",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A public dashboard visualizing humanity's measured progress on major shared objectives."},
+    {c:"Collective Action",t:"Conditional Voting Pledge",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"Citizens commit to vote only if enough peers in their district also pledge, then all activate together."},
+    {c:"Care & Society",t:"Favor-Matching Network",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"Maps friends' skills so people can request and exchange favors locally."},
+    {c:"Health & Body",t:"ICU & Ventilator Tracker",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"A real-time map of available ventilators and ICU beds across hospitals during a crisis."},
+    {c:"Care & Society",t:"Proximity Hangout Suggester",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"Alerts you to nearby friends and suggests a meetup without persistent location tracking."},
+    {c:"Fixing the Internet",t:"Political Bias Classifier",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"An ML tool that detects and labels politically biased content in social feeds."},
+    {c:"Climate & Sustainability",t:"Wildfire Satellite Detection",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"A model that flags forest fires early from satellite imagery."},
+    {c:"Personal Leverage",t:"Ingredient Recipe Finder",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"Recommends recipes from what's in your kitchen and pairs you with a cooking partner."},
+    {c:"Reputation & Trust",t:"Used-Car History Database",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"A verified repository of repair and inspection histories for used vehicles."},
+    {c:"Open Knowledge",t:"Idea Graph IDE",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"A graph workspace that links hackathon and startup ideas by relationship."},
+    {c:"Open Knowledge",t:"Curiosity Thread Maps",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"A platform charting question-to-question sequences that lead from curiosity to expertise."},
+    {c:"Open Knowledge",t:"Best-in-Class Tool Registry",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A curated directory of the top tool for each purpose, organized by use case."},
+    {c:"Coordination Infra",t:"Curated List Publishing",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"Lets curators easily publish and distribute thematic lists and recommendations."},
+    {c:"Personal Leverage",t:"Context Engineering Prize",s:"idea",u:"https://jacobcole.ai/brainstorms/",d:"A competition to get small models to frontier-level performance through better context."}
+  ];
+
+  (function(){
+    var grid=document.getElementById('buildgrid'), filters=document.getElementById('filters'), status=document.getElementById('buildstatus');
+    var STATUS={idea:['idea','Idea'],building:['build','In progress'],done:['done','Done']};
+    var NAMES={all:'items',idea:'ideas',building:'in progress',done:'done'};
+    var chips=[].slice.call(filters.querySelectorAll('.chip'));
+    chips.forEach(function(c){
+      var f=c.getAttribute('data-f');
+      var n=BUILD.filter(function(b){return f==='all'||b.s===f}).length;
+      c.appendChild(el('span',{class:'n',text:String(n)}));
+    });
+    function card(b){
+      var st=STATUS[b.s]||STATUS.idea, row=el('div',{class:'row'});
+      if(b.s!=='done'){ row.appendChild(el('a',{class:'claim',href:BOARD,target:'_blank',rel:'noopener','aria-label':'Claim: '+b.t},['Claim ',arrow()])) }
+      if(b.u){ row.appendChild(extLink(b.u,b.s==='done'?'Visit':'Link',b.t)) }
+      return el('article',{class:'bcard'},[
+        el('div',{class:'bhead'},[el('span',{class:'cat',text:b.c}),el('span',{class:'tag '+st[0],text:st[1]})]),
+        el('h3',{text:b.t}),
+        el('p',{text:b.d}),
+        row.childNodes.length?row:null
+      ]);
+    }
+    function render(f,announce){
+      var list=BUILD.filter(function(b){return f==='all'||b.s===f});
+      grid.textContent='';
+      list.forEach(function(b){grid.appendChild(card(b))});
+      if(announce){ status.textContent='Showing '+list.length+' '+NAMES[f]+'.' }
+    }
+    filters.addEventListener('click',function(e){
+      var chip=e.target.closest('.chip'); if(!chip){return}
+      chips.forEach(function(c){c.setAttribute('aria-pressed',c===chip?'true':'false')});
+      render(chip.getAttribute('data-f'),true);
+    });
+    render('all',false);
+  })();
+
+  // ---- Live quests from the World Issue Tracker ----
+  (function(){
+    var WIT='https://api.worldissuetracker.com/functions/v1/get-issues?tracker_slug=missing-civ-infrastructure&label=humanity3&limit=100';
+    var grid=document.getElementById('witgrid'), meta=document.getElementById('witmeta');
+    /* The API returns relative paths (/issue/<slug>). Resolve them against the tracker, and never leave it. */
+    function issueUrl(i){
+      try{
+        var u=new URL(i.canonical_issue_url||('/issue/'+encodeURIComponent(i.slug||'')),'https://worldissuetracker.com');
+        if(u.protocol!=='https:'||!/(^|\.)worldissuetracker\.com$/.test(u.hostname)){return BOARD}
+        return u.href;
+      }catch(e){return BOARD}
+    }
+    function message(state,text,linkText){
+      grid.textContent='';
+      grid.setAttribute('data-state',state); grid.setAttribute('aria-busy','false');
+      grid.appendChild(el('div',{class:'witloading',role:'status'},[text+' ',el('a',{href:BOARD,target:'_blank',rel:'noopener'},[linkText+' ',arrow()])]));
+    }
+    function card(i){
+      var url=issueUrl(i), title=String(i.title||'Untitled quest'), assignee=i.assignee_display_name;
+      var votes=Number(i.votes), row=el('div',{class:'row'});
+      if(assignee){ row.appendChild(el('span',{class:'claimedby',text:'Claimed by '+assignee})) }
+      else { row.appendChild(el('a',{class:'claim',href:url,target:'_blank',rel:'noopener','aria-label':'Claim: '+title},['Claim ',arrow()])) }
+      if(isFinite(votes)&&i.votes!=null){ row.appendChild(el('span',{class:'votes'},[el('span',{'aria-hidden':'true',text:'▲ '}),String(votes),el('span',{class:'sr-only',text:votes===1?' vote':' votes'})])) }
+      row.appendChild(extLink(url,'Discuss',title));
+      var desc=String(i.description||'').split(' Part of the Humanity')[0];
+      return el('article',{class:'bcard'},[
+        el('div',{class:'bhead'},[i.category?el('span',{class:'cat',text:String(i.category)}):null,el('span',{class:'tag '+(assignee?'build':'idea'),text:assignee?'Claimed':'Open'})]),
+        el('h4',null,[el('a',{href:url,target:'_blank',rel:'noopener',text:title})]),
+        el('p',{class:'clamp',text:desc}),
+        row
+      ]);
+    }
+    var ctl=('AbortController' in window)?new AbortController():null;
+    var timer=setTimeout(function(){ if(ctl){ctl.abort()} },12000);
+    fetch(WIT,ctl?{signal:ctl.signal}:undefined).then(function(r){
+      if(!r.ok){throw new Error('HTTP '+r.status)}
+      return r.json();
+    }).then(function(d){
+      clearTimeout(timer);
+      var issues=(d.issues||d.data||[]).filter(function(i){return !i.deleted_at && i.status!=='closed'});
+      if(!issues.length){ message('empty','No open quests yet.','File the first one'); return }
+      issues.sort(function(a,b){return (Number(b.votes)||0)-(Number(a.votes)||0)});
+      grid.textContent='';
+      issues.forEach(function(i){grid.appendChild(card(i))});
+      grid.setAttribute('data-state','ready'); grid.setAttribute('aria-busy','false');
+      meta.textContent=issues.length+' open '+(issues.length===1?'quest':'quests')+', loaded from worldissuetracker.com when this page opened.';
+      meta.hidden=false;
+    }).catch(function(){
+      clearTimeout(timer);
+      message('error','Couldn’t load the live tracker.','Open it directly');
+    });
+  })();
+
+  // ---- Theme toggle (same storage key as the original) ----
+  (function(){
+    var root=document.documentElement, btn=document.getElementById('themeBtn');
+    function sync(){ btn.setAttribute('aria-label',root.getAttribute('data-theme')==='dark'?'Switch to light theme':'Switch to dark theme') }
+    sync();
+    btn.addEventListener('click',function(){
+      var next=root.getAttribute('data-theme')==='dark'?'light':'dark';
+      root.setAttribute('data-theme',next);
+      try{localStorage.setItem('h3-theme',next)}catch(e){}
+      sync();
+    });
+  })();
+
+  // ---- Contribute dialog (static in this prototype: no network calls) ----
+  (function(){
+    var dlg=document.getElementById('contributeModal'), opener=document.getElementById('openContribute');
+    opener.addEventListener('click',function(){ if(dlg.showModal){dlg.showModal()} else {dlg.setAttribute('open','')} });
+    document.getElementById('closeContribute').addEventListener('click',function(){dlg.close()});
+    dlg.addEventListener('click',function(e){ if(e.target===dlg){dlg.close()} });
+    dlg.addEventListener('close',function(){opener.focus()});
+    document.getElementById('contributeForm').addEventListener('submit',function(e){
+      e.preventDefault();
+      document.getElementById('m-status').textContent='Static prototype: matching is switched off here. Nothing was sent.';
+    });
+  })();
+
+  // ---- Letter sign-up: a mock. It never sends or stores anything. ----
+  (function(){
+    var form=document.getElementById('letterForm'), input=document.getElementById('letterEmail'), out=document.getElementById('letterStatus');
+    form.addEventListener('submit',function(e){
+      e.preventDefault();
+      var ok=/^\S+@\S+\.\S+$/.test(input.value.trim());
+      out.textContent=ok?'Mock only: nothing was sent or saved.':'Enter an email address to try the mock.';
+    });
+  })();
+})();
+</script>
+</body>
+</html>
