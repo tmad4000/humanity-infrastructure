@@ -7,8 +7,9 @@ vm.runInContext(fs.readFileSync('worker.js','utf8').replace('export default {','
 test('featured tweet is a dated static snapshot with native disclosure and no automatic X embed',async()=>{
  const response=await context.worker.fetch(new Request('https://example.test/'),{});
  const html=await response.text();
- assert.match(html,/Historical snapshot · reported by Jacob, Nov 17, 2026/);
- assert.match(html,/About 130K views/);
+ assert.match(html,/as of <time datetime="2026-11-17">Nov 17, 2026/);
+ assert.match(html,/130K<span class="sr-only"> views/);
+ assert.match(html,/aria-label="View on X"/);
  assert.match(html,/<details class="tweet-copy">/);
  assert.match(html,/<img class="tweet-avatar" src="data:image\/jpeg;base64,[^"]+"[^>]+loading="lazy"[^>]+referrerpolicy="no-referrer"/);
  assert.doesNotMatch(html,/<img[^>]+src="https:\/\/pbs\.twimg\.com/);
