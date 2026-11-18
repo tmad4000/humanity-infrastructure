@@ -33,7 +33,6 @@ async function handleRequest(request, env) {{
   if (path === '/analytics.js') return new Response(ANALYTICS_JS, {{ headers: {{ 'Content-Type': 'application/javascript;charset=UTF-8', 'Cache-Control': 'public, max-age=300' }} }})
   const interest = await handleInterest(request, env)
   if (interest) return interest
-  if (path === '/join' || path === '/join/') return new Response(MAIN_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8' }} }})
   if (path === '/interest-ui.js') return new Response(INTEREST_UI, {{ headers: {{ 'Content-Type': 'application/javascript;charset=UTF-8', 'Cache-Control': 'no-store' }} }})
   if (path === '/designs') return Response.redirect(url.origin + '/designs/', 302)
   if (path.startsWith('/designs/')) {{

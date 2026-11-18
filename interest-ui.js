@@ -1,10 +1,9 @@
 (() => {
-  const items = __INTEREST_ITEMS__, storageKey = 'hi-quest-likes-v1';
-  const isQuest = key => key.startsWith('quest-') || key.startsWith('build-');
+  const items = __INTEREST_ITEMS__, storageKey = 'hi-item-likes-v1';
   const placement = key => key.startsWith('quest-') ? 'quest_card' : key.startsWith('build-') ? 'build_list' : 'tool_card';
   function trackSignal(name, signal){try{if(typeof window.hiTrack==='function')window.hiTrack(name,{item_key:signal.item_key,placement:placement(signal.item_key)});}catch{/* Analytics never blocks a signal. */}}
   function liked(key){try{const saved=JSON.parse(localStorage.getItem(storageKey)||'{}');return Object.hasOwn(saved,key) && saved[key]===Math.floor(Date.now()/86400000);}catch{return false;}}
-  function rememberLike(key){try{const day=Math.floor(Date.now()/86400000),old=JSON.parse(localStorage.getItem(storageKey)||'{}');const saved=Object.fromEntries(Object.entries(old).filter(([key,value])=>Object.hasOwn(items,key) && isQuest(key) && value===day));saved[key]=day;localStorage.setItem(storageKey,JSON.stringify(saved));}catch{/* Server-side daily dedup remains active when storage is unavailable. */}}
+  function rememberLike(key){try{const day=Math.floor(Date.now()/86400000),old=JSON.parse(localStorage.getItem(storageKey)||'{}');const saved=Object.fromEntries(Object.entries(old).filter(([key,value])=>Object.hasOwn(items,key) && value===day));saved[key]=day;localStorage.setItem(storageKey,JSON.stringify(saved));}catch{/* Server-side daily dedup remains active when storage is unavailable. */}}
   let counts = {}, selected = null, trigger = null, busy = false, followedHash = false;
   const dialog = document.createElement('dialog');
   dialog.className = 'letter signal-dialog';
@@ -25,16 +24,16 @@
   const form=dialog.querySelector('form'), thanks=dialog.querySelector('#signal-thanks'), status=dialog.querySelector('.status');
   function showCounts(){
     document.querySelectorAll('[data-interest-count]').forEach(el=>{const count=counts[el.dataset.interestCount],text=count>=3?count+' want signals':'Be the first';if(el.textContent!==text)el.textContent=text;});
-    document.querySelectorAll('[data-signal-kind="want"]').forEach(button=>{if(!isQuest(button.dataset.signalItem))return;const saved=liked(button.dataset.signalItem),text=saved?'♥ Liked':'♥ Like';if(button.textContent!==text)button.textContent=text;button.setAttribute('aria-pressed',String(saved));});
+    document.querySelectorAll('[data-signal-kind="want"]').forEach(button=>{const saved=liked(button.dataset.signalItem),text=saved?'♥ Liked':'♥ Like';if(button.textContent!==text)button.textContent=text;button.setAttribute('aria-pressed',String(saved));});
   }
   async function loadCounts(){try{const response=await fetch('/api/interest/counts');if(response.ok){counts=(await response.json()).counts || {};showCounts();}}catch{/* Signals remain usable without counts. */}}
   function mount(){
     document.querySelectorAll('[data-interest-item], .card[id]').forEach(card=>{
       const key=card.dataset.interestItem || card.id;if(!Object.hasOwn(items,key) || card.querySelector('.signal-actions'))return;
       const actions=document.createElement('div');actions.className='signal-actions';
-      for(const [kind,label] of [['want',isQuest(key)?'♥ Like':'I want this'],['building',"I'm building this"]]){const button=document.createElement('button');button.type='button';button.className='btn ghost';button.dataset.signalKind=kind;button.dataset.signalItem=key;button.textContent=label;button.setAttribute('aria-label',label+': '+items[key]);actions.append(button);}
+      for(const [kind,label] of [['want','♥ Like'],['building',"I'm building this"]]){const button=document.createElement('button');button.type='button';button.className='btn ghost';button.dataset.signalKind=kind;button.dataset.signalItem=key;button.textContent=label;button.setAttribute('aria-label',label+': '+items[key]);actions.append(button);}
       const count=document.createElement('span');count.className='signal-count';count.dataset.interestCount=key;actions.append(count);
-      const feedback=document.createElement('span');feedback.className='signal-count';feedback.dataset.signalFeedback=key;feedback.setAttribute('role','status');actions.append(feedback);card.append(actions);
+      const feedback=document.createElement('span');feedback.className='signal-count';feedback.dataset.signalFeedback=key;feedback.setAttribute('role','status');actions.append(feedback);let host=card.querySelector(':scope > .resource-actions');if(!host){host=document.createElement('div');host.className='resource-actions';card.append(host);}host.append(actions);
     });showCounts();
     if(!followedHash){let key='';try{key=decodeURIComponent(location.hash.slice(1));}catch{}if(Object.hasOwn(items,key)){const card=document.getElementById(key);if(card){card.scrollIntoView({block:'start'});followedHash=true;}}}
   }
@@ -53,7 +52,7 @@
     if(card?.dataset.questUrl)links.unshift({label:'View this quest on World Issue Tracker ↗',href:card.dataset.questUrl});
     if(typeof openSignupWithInterest==='function')openSignupWithInterest(items[signal.item_key],'Updates for '+items[signal.item_key]+'. Email is optional; close this window to skip.',links);
   }
-  async function questLike(button,key){
+  async function itemLike(button,key){
     const signal={item_key:key,kind:'want'},card=button.closest('[data-interest-item],.card'),feedback=button.parentElement.querySelector('[data-signal-feedback]');
     if(liked(key)){button.focus();emailPopup(signal,card);return;}
     busy=true;button.disabled=true;feedback.textContent='Saving…';
@@ -64,7 +63,7 @@
   document.addEventListener('click',event=>{
     const button=event.target.closest('[data-signal-kind]');if(!button || busy || dialog.open)return;
     const key=button.dataset.signalItem;if(!Object.hasOwn(items,key))return;
-    if(button.dataset.signalKind==='want' && isQuest(key)){questLike(button,key);return;}
+    if(button.dataset.signalKind==='want'){itemLike(button,key);return;}
     selected={item_key:key,kind:button.dataset.signalKind};trigger=button;form.reset();form.hidden=false;thanks.hidden=true;status.textContent='';
     dialog.querySelector('#signal-title').textContent=(selected.kind==='want'?'I want this: ':"I'm building this: ")+items[key];
     dialog.querySelector('#signal-description').textContent=selected.kind==='building'?'Tell the maintainer privately. Your builder signal is not included in public counts.':'Add your interest signal. Contact details are optional.';

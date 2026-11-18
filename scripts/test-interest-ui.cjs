@@ -19,7 +19,7 @@ if (!origin) throw Error('Usage: node scripts/test-interest-ui.cjs <preview-orig
   try {
     const t=await send('Target.createTarget',{url:'about:blank'});sid=(await send('Target.attachToTarget',{targetId:t.result.targetId,flatten:true})).result.sessionId;
     const items=JSON.parse(fs.readFileSync('interest-items.json','utf8')),quest=Object.keys(items).find(key=>key.startsWith('quest-'));
-    const stub=`window.signalRequests=[];window.hiEvents=[];window.hiTrack=(name,props)=>hiEvents.push({name,props});window.signalFail=false;const realFetch=window.fetch;window.fetch=async(url,options)=>{if(url==='/api/interest/counts')return {ok:true,json:async()=>({counts:{lastbook:signalRequests.length?3:2,signudoc:3}})};if(url==='/api/interest'){signalRequests.push(JSON.parse(options.body));if(signalFail){signalFail=false;return {ok:false,json:async()=>({error:'Too many attempts. Please try again in an hour.'})}}return {ok:true,json:async()=>({ok:true})}}if(String(url).includes('get-issues'))return {json:async()=>({issues:[{slug:${JSON.stringify(quest.slice(6))},title:${JSON.stringify(items[quest])},description:'Browser fixture',status:'open',votes:0}]})};return realFetch(url,options);};`;
+    const stub=`window.cspViolations=[];document.addEventListener('securitypolicyviolation',event=>cspViolations.push({directive:event.effectiveDirective,blocked:event.blockedURI}));window.signalRequests=[];window.hiEvents=[];Object.defineProperty(window,'hiTrack',{get:()=>((name,props)=>hiEvents.push({name,props})),set:()=>{},configurable:true});window.signalFail=false;const realFetch=window.fetch;window.fetch=async(url,options)=>{if(url==='/api/interest/counts')return {ok:true,json:async()=>({counts:{lastbook:signalRequests.length?3:2,signudoc:3}})};if(url==='/api/interest'){signalRequests.push(JSON.parse(options.body));if(signalFail){signalFail=false;return {ok:false,json:async()=>({error:'Too many attempts. Please try again in an hour.'})}}return {ok:true,json:async()=>({ok:true})}}if(String(url).includes('get-issues'))return {json:async()=>({issues:[{slug:${JSON.stringify(quest.slice(6))},title:${JSON.stringify(items[quest])},description:'Browser fixture',status:'open',votes:0}]})};return realFetch(url,options);};`;
     await send('Page.enable',{},sid);
     await send('Page.addScriptToEvaluateOnNewDocument',{source:stub},sid);
     await send('Emulation.setDeviceMetricsOverride',{width:390,height:900,deviceScaleFactor:1,mobile:true},sid);
@@ -37,16 +37,19 @@ if (!origin) throw Error('Usage: node scripts/test-interest-ui.cjs <preview-orig
     assert.equal(await evaluate("(()=>{const ids=[...document.querySelectorAll('[data-interest-item]')].map(card=>card.id);return new Set(ids).size===ids.length})()"),true);
     assert.equal(await evaluate("document.querySelectorAll('a [data-signal-kind]').length"),0);
     assert.equal(await evaluate("document.querySelectorAll('#bookshelves [data-signal-kind]').length"),2);
-    await evaluate("document.querySelector('#lastbook [data-signal-kind=want]').click()");
-    assert.equal(await evaluate('document.activeElement.id'),'signal-email');
-    assert.equal(await evaluate("document.querySelector('#signal-form').elements.letter_opt_in.checked"),false);
-    await evaluate("document.getElementById('signal-form').requestSubmit()");await new Promise(r=>setTimeout(r,100));
-    assert.equal(await evaluate("document.getElementById('signal-thanks').hidden"),false);
-    await evaluate("document.getElementById('signal-tweet').addEventListener('click',event=>event.preventDefault(),{once:true});document.getElementById('signal-tweet').click()");
-    const anonymous=await evaluate('signalRequests[0]');assert.equal(anonymous.item_key,'lastbook');assert.equal(anonymous.kind,'want');assert.equal(anonymous.email,'');assert.equal(anonymous.letter_opt_in,false);assert.equal(anonymous.utm.utm_source,'ui-test');
-    const intent=new URL(await evaluate("document.getElementById('signal-tweet').href"));assert.equal(intent.hostname,'twitter.com');const shared=new URL(intent.searchParams.get('url'));assert.equal(shared.searchParams.get('ref'),'x-interest');assert.equal(shared.hash,'#lastbook');
+    // Simulate the layout owner's native row contract before testing the heart.
+    await evaluate("(()=>{const card=document.getElementById('lastbook'),details=document.createElement('details');details.className='resource-details';details.innerHTML='<summary>Lastbook</summary>';card.prepend(details)})()");
+    assert.equal(await evaluate("document.querySelectorAll('#lastbook > .resource-actions > .signal-actions').length"),1);
+    await evaluate("document.querySelector('#lastbook [data-signal-kind=want]').click()");await new Promise(r=>setTimeout(r,100));
+    assert.equal(await evaluate("document.querySelector('#lastbook .resource-details').open"),false);
+    assert.equal(await evaluate('document.activeElement.id'),'letter-email');
+    assert.equal(await evaluate("document.getElementById('letter-interest').value"),'Lastbook');
+    const anonymous=await evaluate('signalRequests[0]');assert.deepEqual(anonymous,{item_key:'lastbook',kind:'want',website:''});
+    await evaluate("document.querySelector('#letter-context-links a').addEventListener('click',event=>event.preventDefault(),{once:true});document.querySelector('#letter-context-links a').click()");
+    const intent=new URL(await evaluate("document.querySelector('#letter-context-links a').href"));assert.equal(intent.hostname,'twitter.com');const shared=new URL(intent.searchParams.get('url'));assert.equal(shared.searchParams.get('ref'),'x-interest');assert.equal(shared.hash,'#lastbook');
     assert.equal(await evaluate("document.querySelector('#lastbook [data-interest-count]').textContent"),'3 want signals');
-    await evaluate("document.getElementById('signal-updates').focus()");await key('Tab');assert.equal(await evaluate("document.activeElement.getAttribute('aria-label')"),'Close interest form');await key('Escape');
+    await key('Escape');
+    await evaluate("document.querySelector('#lastbook [data-signal-kind=want]').click()");await new Promise(r=>setTimeout(r,50));assert.equal(await evaluate('signalRequests.length'),1);await key('Escape');
     await evaluate("document.querySelector('#paxi [data-signal-kind=building]').click();document.getElementById('signal-email').value='builder@example.com';document.getElementById('signal-handle').value='@maker';document.getElementById('signal-form').elements.letter_opt_in.checked=true;window.signalFail=true;document.getElementById('signal-form').requestSubmit()");await new Promise(r=>setTimeout(r,100));
     assert.match(await evaluate("document.querySelector('.signal-dialog .status').textContent"),/Too many attempts/);
     await evaluate("document.getElementById('signal-form').requestSubmit()");await new Promise(r=>setTimeout(r,100));
@@ -72,13 +75,15 @@ if (!origin) throw Error('Usage: node scripts/test-interest-ui.cjs <preview-orig
     assert.equal(await evaluate("document.querySelector('#buildgrid [data-signal-kind=want]').getAttribute('aria-pressed')"),'true');
     await evaluate("document.querySelector('#witgrid [data-signal-kind=want]').click()");await new Promise(r=>setTimeout(r,100));
     assert.equal(await evaluate("!!document.querySelector('#letter-context-links a[href^=\"https://worldissuetracker.com/\"]')"),true);await key('Escape');
-    const events=await evaluate('hiEvents');assert.deepEqual(events.map(event=>event.name),['interest_want','interest_tweet_intent','interest_building','interest_want','interest_want']);
+    const events=await evaluate("hiEvents.filter(event=>event.name.startsWith('interest_'))");assert.deepEqual(events.map(event=>event.name),['interest_want','interest_tweet_intent','interest_building','interest_want','interest_want']);
     for(const event of events)assert.deepEqual(Object.keys(event.props).sort(),['item_key','placement']);
     assert.doesNotMatch(JSON.stringify(events),/builder@example|maker|letter_opt_in/);
     await send('Page.reload',{},sid);
     for(let i=0;i<100;i++){if(await evaluate("!!document.querySelector('#buildgrid [data-signal-kind=want]')"))break;await new Promise(r=>setTimeout(r,50));}
+    assert.equal(await evaluate("document.querySelector('#lastbook [data-signal-kind=want]').textContent"),'♥ Liked');
     assert.equal(await evaluate("document.querySelector('#buildgrid [data-signal-kind=want]').textContent"),'♥ Liked');
     await evaluate("document.querySelector('#buildgrid [data-signal-kind=want]').click()");await new Promise(r=>setTimeout(r,50));assert.equal(await evaluate('signalRequests.length'),0);assert.equal(await evaluate("document.getElementById('letter-dialog').open"),true);
+    assert.deepEqual(await evaluate('cspViolations'),[]);
     console.log('PASS interest UI: every static/local/allowlisted-quest card, anonymous/contact flow, count threshold, private builders, retry, focus/Escape, tweet intent/referral, email-modal handoff, filters and mobile/desktop; fetch stubbed, no posts or subscriber writes');
   } finally {
     try {await send('Browser.close');} catch {}
