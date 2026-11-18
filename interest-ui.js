@@ -1,5 +1,6 @@
 (() => {
   const items = __INTEREST_ITEMS__;
+  function trackSignal(name, signal){try{if(typeof window.hiTrack==='function')window.hiTrack(name,{item_key:signal.item_key,kind:signal.kind});}catch{/* Analytics never blocks a signal. */}}
   let counts = {}, selected = null, trigger = null, busy = false, followedHash = false;
   const dialog = document.createElement('dialog');
   dialog.className = 'letter signal-dialog';
@@ -33,7 +34,7 @@
     selected={item_key:key,kind:button.dataset.signalKind};trigger=button;form.reset();form.hidden=false;thanks.hidden=true;status.textContent='';
     dialog.querySelector('#signal-title').textContent=(selected.kind==='want'?'I want this: ':"I'm building this: ")+items[key];
     dialog.querySelector('#signal-description').textContent=selected.kind==='building'?'Tell the maintainer privately. Your builder signal is not included in public counts.':'Add your interest signal. Contact details are optional.';
-    dialog.showModal();form.elements.email.focus();
+    dialog.showModal();form.elements.email.focus();trackSignal('like_start',selected);
   });
   dialog.querySelector('[data-signal-close]').addEventListener('click',()=>dialog.close());
   dialog.addEventListener('close',()=>{if(trigger?.isConnected)trigger.focus();});
@@ -53,7 +54,8 @@
     const utm={},params=new URLSearchParams(location.search);for(const key of ['source','medium','campaign','term','content'])if(params.has('utm_'+key))utm['utm_'+key]=params.get('utm_'+key);
     try{
       const response=await fetch('/api/interest',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...submitted,email:form.elements.email.value,handle:form.elements.handle.value,letter_opt_in:form.elements.letter_opt_in.checked,website:form.elements.website.value,source_page:location.pathname,utm,referrer:document.referrer})});
-      const data=await response.json();if(!response.ok)throw Error(data.error || 'Please try again later.');
+      const data=await response.json();if(!response.ok || data.ok!==true)throw Error(data.error || 'Please try again later.');
+      trackSignal('like',submitted);
       await loadCounts();form.hidden=true;thanks.hidden=false;status.textContent='';
       const count=counts[submitted.item_key];dialog.querySelector('#signal-summary').textContent=submitted.kind==='building'?'Thanks. Builder signals are private; only the first signal for each item each day is saved.':'Thanks for your interest.'+(count>=3?' '+count+' want signals so far.':'');
       const share=new URL('https://humanityinfrastructure.com/');share.searchParams.set('ref','x-interest');share.hash=submitted.item_key;

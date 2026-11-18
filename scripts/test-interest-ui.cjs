@@ -19,7 +19,7 @@ if (!origin) throw Error('Usage: node scripts/test-interest-ui.cjs <preview-orig
   try {
     const t=await send('Target.createTarget',{url:'about:blank'});sid=(await send('Target.attachToTarget',{targetId:t.result.targetId,flatten:true})).result.sessionId;
     const items=JSON.parse(fs.readFileSync('interest-items.json','utf8')),quest=Object.keys(items).find(key=>key.startsWith('quest-'));
-    const stub=`window.signalRequests=[];window.signalFail=false;const realFetch=window.fetch;window.fetch=async(url,options)=>{if(url==='/api/interest/counts')return {ok:true,json:async()=>({counts:{lastbook:signalRequests.length?3:2,signudoc:3}})};if(url==='/api/interest'){signalRequests.push(JSON.parse(options.body));if(signalFail){signalFail=false;return {ok:false,json:async()=>({error:'Too many attempts. Please try again in an hour.'})}}return {ok:true,json:async()=>({ok:true})}}if(String(url).includes('get-issues'))return {json:async()=>({issues:[{slug:${JSON.stringify(quest.slice(6))},title:${JSON.stringify(items[quest])},description:'Browser fixture',status:'open',votes:0}]})};return realFetch(url,options);};`;
+    const stub=`window.signalRequests=[];window.hiEvents=[];window.hiTrack=(name,props)=>hiEvents.push({name,props});window.signalFail=false;const realFetch=window.fetch;window.fetch=async(url,options)=>{if(url==='/api/interest/counts')return {ok:true,json:async()=>({counts:{lastbook:signalRequests.length?3:2,signudoc:3}})};if(url==='/api/interest'){signalRequests.push(JSON.parse(options.body));if(signalFail){signalFail=false;return {ok:false,json:async()=>({error:'Too many attempts. Please try again in an hour.'})}}return {ok:true,json:async()=>({ok:true})}}if(String(url).includes('get-issues'))return {json:async()=>({issues:[{slug:${JSON.stringify(quest.slice(6))},title:${JSON.stringify(items[quest])},description:'Browser fixture',status:'open',votes:0}]})};return realFetch(url,options);};`;
     await send('Page.enable',{},sid);
     await send('Page.addScriptToEvaluateOnNewDocument',{source:stub},sid);
     await send('Emulation.setDeviceMetricsOverride',{width:390,height:900,deviceScaleFactor:1,mobile:true},sid);
@@ -52,6 +52,9 @@ if (!origin) throw Error('Usage: node scripts/test-interest-ui.cjs <preview-orig
     assert.equal(await evaluate("document.querySelectorAll('#witgrid [data-signal-kind]').length"),2);
     await send('Emulation.setDeviceMetricsOverride',{width:1280,height:900,deviceScaleFactor:1,mobile:false},sid);assert.equal(await evaluate("document.documentElement.scrollWidth > innerWidth"),false);
     assert.equal(await evaluate("!!document.querySelector('footer a[href=\"/classic\"]')"),true);
+    const events=await evaluate('hiEvents');assert.deepEqual(events.map(event=>event.name),['like_start','like','like_start','like']);
+    for(const event of events)assert.deepEqual(Object.keys(event.props).sort(),['item_key','kind']);
+    assert.doesNotMatch(JSON.stringify(events),/builder@example|maker|letter_opt_in/);
     console.log('PASS interest UI: every static/local/allowlisted-quest card, anonymous/contact flow, count threshold, private builders, retry, focus/Escape, tweet intent/referral, email-modal handoff, filters and mobile/desktop; fetch stubbed, no posts or subscriber writes');
   } finally {
     try {await send('Browser.close');} catch {}
