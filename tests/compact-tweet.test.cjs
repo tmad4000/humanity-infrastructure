@@ -10,6 +10,8 @@ test('featured tweet is a dated static snapshot with native disclosure and no au
  assert.match(html,/Historical snapshot · reported by Jacob, Nov 17, 2026/);
  assert.match(html,/About 130K views/);
  assert.match(html,/<details class="tweet-copy">/);
+ assert.match(html,/<img class="tweet-avatar" src="data:image\/jpeg;base64,[^"]+"[^>]+loading="lazy"[^>]+referrerpolicy="no-referrer"/);
+ assert.doesNotMatch(html,/<img[^>]+src="https:\/\/pbs\.twimg\.com/);
  assert.match(html,/Thanks for building this, @farbood!/);
  assert.doesNotMatch(html,/<script[^>]+(?:x-embed\.js|platform\.twitter\.com)/);
  assert.match(response.headers.get('cache-control'),/no-transform/);
