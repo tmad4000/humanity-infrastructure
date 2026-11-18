@@ -7,7 +7,7 @@ vm.runInContext(fs.readFileSync('signup.js','utf8') + '\nthis.route = handleSign
 function fixture() {
  const rows = [], rate = new Map();
  const db = { prepare(sql) { return { bind(...args) { this.args = args; return this; }, async first() {const k=this.args[0]; const attempts=(rate.get(k)||0)+1;rate.set(k,attempts);return {attempts};}, async run() {
-  if(sql.startsWith('INSERT INTO signups')) { const existing=rows.find(r=>r.email===this.args[1]);if(existing) {existing.interest=this.args[2];existing.consent_at=this.args[5];return {meta:{changes:1}};} rows.push(Object.fromEntries(['id','email','interest','handle','public_opt_in','consent_at','source_page','utm','referrer','unsubscribe_token'].map((k,i)=>[k,this.args[i]]))); return {meta:{changes:1}}; }
+  if(sql.startsWith('INSERT INTO signups')) { const existing=rows.find(r=>r.email===this.args[1]);if(existing) {if(this.args[10])existing.interest=this.args[2];if(this.args[11])existing.handle=this.args[3];if(this.args[12])existing.public_opt_in=this.args[4];existing.consent_at=this.args[5];return {meta:{changes:1}};} rows.push(Object.fromEntries(['id','email','interest','handle','public_opt_in','consent_at','source_page','utm','referrer','unsubscribe_token'].map((k,i)=>[k,this.args[i]]))); return {meta:{changes:1}}; }
   if(sql.startsWith('UPDATE signups')) {const row=rows.find(r=>r.unsubscribe_token===this.args[1]);if(row)row.unsubscribed_at=this.args[0];return {meta:{changes:row?1:0}};}
   return {meta:{changes:0}};
  }, async all() { return {results:rows}; } }; } };
@@ -47,8 +47,19 @@ test('CSV requires bearer secret, escapes formulas, includes opt-outs and unsubs
 
 test('query prefills only known own keys, ignores arbitrary and inherited properties',()=>{
  const html=fs.readFileSync('index.html','utf8');
- const snippet=html.slice(html.indexOf('const signupInterestLabels ='),html.indexOf("document.getElementById('letter-form').addEventListener"));
+ const snippet=html.slice(html.indexOf('const signupInterestLabels ='),html.indexOf("const signupDialog ="));
  for(const [key,expected] of Object.entries({'unlinked':'Unlinked','superconnector':'Superconnector','openchat':'OpenChat','ideaflow-index':'Ideaflow apps index','open-recordings':'Open Recordings','unknown':'','<script>':'','constructor':'','__proto__':'','toString':''}).concat([['__proto__','']])) {
   const field={value:''};vm.runInNewContext(snippet,{URLSearchParams,location:{search:'?interest='+encodeURIComponent(key)},document:{getElementById:()=>field}});assert.equal(field.value,expected,key);
  }
+});
+
+test('email-only then details stores X consent; retry email preserves details and opted-out status',async()=>{
+ const {rows,env}=fixture();
+ for(const data of [{email:'step@example.com'},{email:'step@example.com',interest:'building',handle:'@builder',public_opt_in:true},{email:'step@example.com'}]) {
+  const response=await context.route(request(data),env);assert.equal(await response.text(),'{"ok":true}');
+ }
+ assert.equal(rows.length,1);assert.equal(rows[0].interest,'building');assert.equal(rows[0].handle,'builder');assert.equal(rows[0].public_opt_in,1);
+ rows[0].unsubscribed_at='2020-01-01';
+ await context.route(request({email:'step@example.com',interest:'updated',handle:'',public_opt_in:false}),env);
+ assert.equal(rows[0].unsubscribed_at,'2020-01-01');assert.equal(rows[0].handle,'');assert.equal(rows[0].public_opt_in,0);
 });

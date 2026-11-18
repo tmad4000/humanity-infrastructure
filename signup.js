@@ -65,9 +65,9 @@ async function handleSignup(request, env) {
     const utm = JSON.stringify(Object.fromEntries(Object.entries(data.utm || {}).filter(([k,v]) => /^utm_(source|medium|campaign|term|content)$/.test(k) && typeof v === 'string').map(([k,v]) => [k,v.slice(0,200)])));
     const referrer = typeof data.referrer === 'string' ? data.referrer.slice(0,500) : '';
     const token = crypto.randomUUID().replaceAll('-', '') + crypto.randomUUID().replaceAll('-', '');
-    // Record the latest submitted interest and consent timestamp silently.
-    // Preserve unsubscribe state, handle publicity and the existing private token.
-    await env.SIGNUPS.prepare('INSERT INTO signups (id,email,interest,handle,public_opt_in,consent_at,source_page,utm,referrer,unsubscribe_token) VALUES (?,?,?,?,?,?,?,?,?,?) ON CONFLICT(email) DO UPDATE SET interest = excluded.interest, consent_at = excluded.consent_at').bind(crypto.randomUUID(),email,interest,handle,handle && data.public_opt_in === true ? 1 : 0,new Date().toISOString(),source,utm,referrer,token).run();
+    // Update only submitted optional fields, so the email-only step preserves saved details.
+    // Preserve unsubscribe state and the existing private token.
+    await env.SIGNUPS.prepare('INSERT INTO signups (id,email,interest,handle,public_opt_in,consent_at,source_page,utm,referrer,unsubscribe_token) VALUES (?,?,?,?,?,?,?,?,?,?) ON CONFLICT(email) DO UPDATE SET interest = CASE WHEN ? THEN excluded.interest ELSE signups.interest END, handle = CASE WHEN ? THEN excluded.handle ELSE signups.handle END, public_opt_in = CASE WHEN ? THEN excluded.public_opt_in ELSE signups.public_opt_in END, consent_at = excluded.consent_at').bind(crypto.randomUUID(),email,interest,handle,handle && data.public_opt_in === true ? 1 : 0,new Date().toISOString(),source,utm,referrer,token,typeof data.interest === 'string' ? 1 : 0,typeof data.handle === 'string' ? 1 : 0,typeof data.handle === 'string' ? 1 : 0).run();
     // Keep status, body and headers identical for new, duplicate and opted-out emails.
     // Unsubscribe URLs are available only to the owner export for inclusion in letters.
     return signupResponse({ ok: true });
