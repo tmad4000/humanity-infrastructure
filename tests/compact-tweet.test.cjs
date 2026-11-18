@@ -8,6 +8,8 @@ test('featured tweet is a dated static snapshot with native disclosure and no au
  const response=await context.worker.fetch(new Request('https://example.test/'),{});
  const html=await response.text();
  assert.match(html,/as of <time datetime="2026-11-17">Nov 17, 2026/);
+ assert.match(html,/4<span class="sr-only"> replies as of Nov 18, 2026/);
+ assert.match(html,/213<span class="sr-only"> likes as of Nov 18, 2026/);
  assert.match(html,/130K<span class="sr-only"> views/);
  assert.match(html,/aria-label="View on X"/);
  assert.match(html,/<details class="tweet-copy">/);

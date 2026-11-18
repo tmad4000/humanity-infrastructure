@@ -11,9 +11,13 @@
   "publicPageCaptureAttempt": "2026-11-18: normal public browser returned access failure; no authentication or access gate bypass attempted",
   "avatarSource": "https://pbs.twimg.com/profile_images/1749823070/jacob_yoyo_grad_night_normal.jpg",
   "unverifiedMetricsOmitted": [
-    "replies",
     "reposts",
-    "likes",
     "current views"
-  ]
+  ],
+  "engagement": {
+    "repliesInConversation": 4,
+    "likes": 213,
+    "capturedOn": "2026-11-18",
+    "source": "Official X syndication capture for post 2122608959236493761 (conversation_count and favorite_count)"
+  }
 }
