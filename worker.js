@@ -65,9 +65,9 @@ async function handleSignup(request, env) {
     const utm = JSON.stringify(Object.fromEntries(Object.entries(data.utm || {}).filter(([k,v]) => /^utm_(source|medium|campaign|term|content)$/.test(k) && typeof v === 'string').map(([k,v]) => [k,v.slice(0,200)])));
     const referrer = typeof data.referrer === 'string' ? data.referrer.slice(0,500) : '';
     const token = crypto.randomUUID().replaceAll('-', '') + crypto.randomUUID().replaceAll('-', '');
-    // Record the latest submitted interest and consent timestamp silently.
-    // Preserve unsubscribe state, handle publicity and the existing private token.
-    await env.SIGNUPS.prepare('INSERT INTO signups (id,email,interest,handle,public_opt_in,consent_at,source_page,utm,referrer,unsubscribe_token) VALUES (?,?,?,?,?,?,?,?,?,?) ON CONFLICT(email) DO UPDATE SET interest = excluded.interest, consent_at = excluded.consent_at').bind(crypto.randomUUID(),email,interest,handle,handle && data.public_opt_in === true ? 1 : 0,new Date().toISOString(),source,utm,referrer,token).run();
+    // Update only submitted optional fields, so the email-only step preserves saved details.
+    // Preserve unsubscribe state and the existing private token.
+    await env.SIGNUPS.prepare('INSERT INTO signups (id,email,interest,handle,public_opt_in,consent_at,source_page,utm,referrer,unsubscribe_token) VALUES (?,?,?,?,?,?,?,?,?,?) ON CONFLICT(email) DO UPDATE SET interest = CASE WHEN ? THEN excluded.interest ELSE signups.interest END, handle = CASE WHEN ? THEN excluded.handle ELSE signups.handle END, public_opt_in = CASE WHEN length(CASE WHEN ? THEN excluded.handle ELSE signups.handle END) = 0 THEN 0 WHEN ? THEN ? ELSE signups.public_opt_in END, consent_at = excluded.consent_at').bind(crypto.randomUUID(),email,interest,handle,handle && data.public_opt_in === true ? 1 : 0,new Date().toISOString(),source,utm,referrer,token,typeof data.interest === 'string' ? 1 : 0,typeof data.handle === 'string' ? 1 : 0,typeof data.handle === 'string' ? 1 : 0,typeof data.public_opt_in === 'boolean' ? 1 : 0,data.public_opt_in === true ? 1 : 0).run();
     // Keep status, body and headers identical for new, duplicate and opted-out emails.
     // Unsubscribe URLs are available only to the owner export for inclusion in letters.
     return signupResponse({ ok: true });
@@ -351,12 +351,16 @@ const MAIN_HTML = `<!DOCTYPE html>
   .m-save-ok{font-family:monospace;font-size:.78rem;color:var(--accent);display:none}
   .m-save-ok.show{display:block}
 
-  .letter{max-width:680px;width:100%;padding:26px;border:1px solid var(--border-strong);border-radius:14px;background:var(--bg-soft);text-align:left;margin:24px auto}
-  .letter h2{color:var(--text);font-size:1.3rem;margin:0 0 8px}.letter p{color:var(--muted);margin:8px 0 18px}
-  .letter label{display:block;margin:12px 0 5px;color:var(--text);font-size:.9rem}
-  .letter input:not([type=checkbox]),.letter textarea{width:100%;font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--border-strong);border-radius:7px;padding:10px}
-  .letter textarea{resize:vertical}.letter .consent{display:flex;align-items:center;gap:8px}.letter button{margin-top:16px;cursor:pointer;font:inherit}
-  .letter .trap{position:absolute;left:-10000px}.letter .status{margin-top:12px}.letter small{display:block;color:var(--muted);margin-top:14px}
+  .letter{width:min(520px,calc(100% - 32px));max-height:calc(100dvh - 32px);overflow:auto;padding:28px;border:1px solid var(--border-strong);border-radius:14px;background:var(--bg-soft);color:var(--text);box-shadow:var(--shadow)}
+  .letter::backdrop{background:rgba(0,0,0,.65)}
+  .letter h2{font-size:1.35rem;line-height:1.35;margin:0 32px 12px 0}.letter p{color:var(--muted);margin:8px 0 18px}
+  .letter label{display:block;margin:12px 0 5px;font-size:.9rem}
+  .letter input:not([type=checkbox]),.letter textarea{width:100%;font:inherit;font-size:16px;color:var(--text);background:var(--bg);border:1px solid var(--border-strong);border-radius:7px;padding:10px}
+  .letter textarea{resize:vertical}.letter .consent{display:flex;align-items:center;gap:8px}.letter button{cursor:pointer;font:inherit}
+  .letter .actions{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}.letter .trap{position:absolute;left:-10000px}.letter .status{margin-top:12px}
+  .letter small{display:block;color:var(--muted);margin-top:14px}.letter .close{position:absolute;right:14px;top:12px;border:0;background:none;color:var(--text);font-size:1.3rem;padding:4px 8px}
+  .letter [hidden]{display:none!important}.letter :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .letter-invite{width:100%;margin:8px 0}.letter-invite button,.signup-link{background:none;border:0;padding:0;color:var(--accent);font:inherit;text-decoration:underline;text-underline-offset:4px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -384,7 +388,7 @@ const MAIN_HTML = `<!DOCTYPE html>
     <a class="btn primary" href="#tools">Explore the tools →</a>
     <button class="btn ghost" onclick="openContribute()" style="cursor:pointer;font-size:inherit">Find your contribution →</button>
   </div>
-  <p class="sub" style="margin-top:24px">A short, occasional letter about tools for human flourishing. No spam; unsubscribe any time. <a href="#letter">I’m interested →</a></p>
+  <p class="sub" style="margin-top:24px"><button class="signup-link" type="button" data-signup-open>Sign up for the interest list</button></p>
 </div></header>
 
 <section id="manifesto"><div class="wrap">
@@ -609,17 +613,7 @@ const MAIN_HTML = `<!DOCTYPE html>
   </div>
 </div></section>
 
-<footer><div class="wrap"><section class="letter" id="letter"><h2>A letter from Humanity Infrastructure</h2>
-<p>A short, occasional letter about tools for human flourishing. No spam; unsubscribe any time.</p>
-<form id="letter-form">
-<label for="letter-email">Email <span aria-hidden="true">*</span></label><input id="letter-email" name="email" type="email" maxlength="254" autocomplete="email" required>
-<label for="letter-interest">What are you interested in / building? <span>(optional, 200 characters)</span></label><textarea id="letter-interest" name="interest" maxlength="200" rows="2"></textarea>
-<label for="letter-handle">X handle <span>(optional)</span></label><input id="letter-handle" name="handle" maxlength="16" placeholder="@yourhandle" autocomplete="off">
-<label class="consent"><input name="public_opt_in" type="checkbox"> Show my handle publicly</label>
-<div class="trap" aria-hidden="true"><label for="letter-website">Website</label><input id="letter-website" name="website" tabindex="-1" autocomplete="off"></div>
-<button class="btn primary" type="submit">I'm interested →</button><div class="status" role="status" aria-live="polite"></div>
-<small>By signing up, you agree to receive this occasional letter. Your email and interest stay private. Your handle stays private unless you opt in. Unsubscribe with one click in any letter.</small>
-</form></section>
+<footer><div class="wrap"><p class="letter-invite" id="letter"><button type="button" data-signup-open>Sign up for the interest list</button></p>
 <p style="width:100%;color:var(--muted)">Privacy: signup details are stored privately for this letter, never in the public issue tracker. Contact <a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a> to request deletion.</p>
   <div>
     <strong style="color:var(--text)">Humanity Infrastructure · The Codex</strong> — basic infrastructure for human flourishing.<br/>
@@ -643,6 +637,29 @@ const MAIN_HTML = `<!DOCTYPE html>
     <a href="https://github.com/tmad4000/humanity-infrastructure/blob/main/VERSION_LOG.md" style="color:var(--accent-2);">Version log &amp; screenshots</a>
   </div>
 </footer>
+
+
+<dialog class="letter" id="letter-dialog" aria-labelledby="letter-title" aria-describedby="letter-description">
+<button class="close" type="button" data-signup-close aria-label="Close signup">×</button>
+<h2 id="letter-title">Sign up for the interest list</h2>
+<p id="letter-description">A short, occasional letter about tools for human flourishing. No spam; unsubscribe any time.</p>
+<form id="letter-form">
+<div id="letter-email-step">
+<label for="letter-email">Email</label><input id="letter-email" name="email" type="email" maxlength="254" autocomplete="email" required autofocus>
+<small>By submitting, you agree to receive this occasional letter. Your email stays private. Every letter will include an unsubscribe link.</small>
+<div class="actions"><button class="btn primary" type="submit">Submit</button></div>
+</div>
+<div id="letter-details-step" hidden>
+<label for="letter-interest">What are you interested in / building? <span>(optional, 200 characters)</span></label><textarea id="letter-interest" name="interest" maxlength="200" rows="3" disabled></textarea>
+<label for="letter-handle">X handle <span>(optional)</span></label><input id="letter-handle" name="handle" maxlength="16" placeholder="@yourhandle" autocomplete="off" disabled>
+<label class="consent"><input name="public_opt_in" type="checkbox" disabled> Show my handle publicly</label>
+<small>Your interest stays private. Your handle stays private unless you opt in.</small>
+<div class="actions"><button class="btn primary" type="submit">Save</button><button class="btn ghost" type="button" data-signup-skip>Skip</button></div>
+</div>
+<div class="trap" aria-hidden="true"><label for="letter-website">Website</label><input id="letter-website" name="website" tabindex="-1" autocomplete="off"></div>
+<div class="status" role="status" aria-live="polite"></div>
+</form>
+</dialog>
 
 <!-- Contribute modal -->
 <div class="modal-overlay" id="contributeModal" onclick="closeContributeIfBg(event)">
@@ -683,7 +700,7 @@ const MAIN_HTML = `<!DOCTYPE html>
 
 <script>
 
-// Shelf links use /?interest=<key>#letter. Keep this independent of shelf markup.
+// Shelf links use /?interest=<approved-key>#letter.
 const signupInterestLabels = {
   'unlinked': 'Unlinked', 'superconnector': 'Superconnector', 'openchat': 'OpenChat',
   'ideaflow-index': 'Ideaflow apps index', 'open-recordings': 'Open Recordings'
@@ -691,20 +708,73 @@ const signupInterestLabels = {
 const signupInterestParam = new URLSearchParams(location.search).get('interest');
 if (Object.hasOwn(signupInterestLabels, signupInterestParam)) document.getElementById('letter-interest').value = signupInterestLabels[signupInterestParam];
 
-document.getElementById('letter-form').addEventListener('submit', async function(event) {
+const signupDialog = document.getElementById('letter-dialog');
+const signupForm = document.getElementById('letter-form');
+const signupEmail = document.getElementById('letter-email');
+const signupDetails = document.getElementById('letter-details-step');
+const signupStatus = signupForm.querySelector('.status');
+let signupStep = 1, signupSubmitting = false, signupTrigger = null, signupSavedEmail = '';
+function openSignup() {
+  if (signupDialog.open) return;
+  signupTrigger = document.activeElement;
+  signupDialog.showModal();
+  (signupStep === 1 ? signupEmail : document.getElementById('letter-interest')).focus();
+}
+function finishSignup() {
+  signupDialog.close(); signupStep = 1; signupSavedEmail = '';
+  signupForm.reset(); signupEmail.disabled = false;
+  document.getElementById('letter-email-step').hidden = false; signupDetails.hidden = true;
+  signupDetails.querySelectorAll('input,textarea').forEach(field => field.disabled = true);
+  if (Object.hasOwn(signupInterestLabels, signupInterestParam)) document.getElementById('letter-interest').value = signupInterestLabels[signupInterestParam];
+  document.getElementById('letter-title').textContent = 'Sign up for the interest list';
+  document.getElementById('letter-description').textContent = 'A short, occasional letter about tools for human flourishing. No spam; unsubscribe any time.';
+  signupStatus.textContent = '';
+}
+document.querySelector('[data-signup-skip]').addEventListener('click', finishSignup);
+document.querySelectorAll('[data-signup-open]').forEach(button => button.addEventListener('click', openSignup));
+document.querySelectorAll('[data-signup-close]').forEach(button => button.addEventListener('click', () => signupDialog.close()));
+signupDialog.addEventListener('close', () => { if (signupTrigger?.isConnected) signupTrigger.focus(); });
+signupDialog.addEventListener('keydown', event => {
+  if (event.key !== 'Tab') return;
+  const focusable = [...signupDialog.querySelectorAll('button,input,textarea,a[href]')].filter(el => !el.disabled && el.tabIndex >= 0 && el.getClientRects().length && !el.closest('[hidden],.trap'));
+  const first = focusable[0], last = focusable[focusable.length - 1];
+  if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+  else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+});
+// Native dialog provides modality and Escape-to-close. Hash links preserve shelf integration.
+window.addEventListener('hashchange', () => { if (location.hash === '#letter') openSignup(); });
+window.addEventListener('load', () => { if (location.hash === '#letter') setTimeout(openSignup, 0); });
+signupForm.addEventListener('submit', async function(event) {
   event.preventDefault();
-  const form = event.currentTarget, button = form.querySelector('button'), status = form.querySelector('.status');
-  button.disabled = true; status.textContent = 'Saving…';
-  const fields = new FormData(form), params = new URLSearchParams(location.search), utm = {};
+  if (signupSubmitting) return;
+  const submittedStep = signupStep;
+  if (!signupForm.reportValidity()) return;
+  const email = submittedStep === 1 ? signupEmail.value.trim() : signupSavedEmail;
+  const params = new URLSearchParams(location.search), utm = {};
   ['source','medium','campaign','term','content'].forEach(key => { if (params.has('utm_' + key)) utm['utm_' + key] = params.get('utm_' + key); });
+  const payload = {email,website:signupForm.elements.website.value,source_page:location.pathname,utm,referrer:document.referrer};
+  if (submittedStep === 2) Object.assign(payload, {interest:signupForm.elements.interest.value,handle:signupForm.elements.handle.value,public_opt_in:signupForm.elements.public_opt_in.checked});
+  signupSubmitting = true;
+  signupForm.querySelectorAll('button[type=submit]').forEach(button => button.disabled = true);
+  signupStatus.textContent = 'Saving…';
   try {
-    const response = await fetch('/api/signup', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email:fields.get('email'),interest:fields.get('interest'),handle:fields.get('handle'),public_opt_in:fields.has('public_opt_in'),website:fields.get('website'),source_page:location.pathname,utm,referrer:document.referrer}) });
+    const response = await fetch('/api/signup', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || 'Please try again later.');
-    status.textContent = 'Thank you. If this email is new, you’re on the list.';
-    form.reset();
-  } catch(error) { status.textContent = error.message || 'Could not connect. Please try again.'; }
-  finally { button.disabled = false; }
+    if (submittedStep === 1) {
+      signupSavedEmail = email; signupStep = 2;
+      document.getElementById('letter-email-step').hidden = true; signupEmail.disabled = true;
+      signupDetails.hidden = false;
+      signupDetails.querySelectorAll('input,textarea').forEach(field => field.disabled = false);
+      document.getElementById('letter-title').textContent = 'Thanks! Optionally, tell us what you’re interested in';
+      document.getElementById('letter-description').textContent = 'You can save these details or skip this step.';
+      signupStatus.textContent = '';
+      if (signupDialog.open) document.getElementById('letter-interest').focus();
+    } else {
+      finishSignup();
+    }
+  } catch (error) { signupStatus.textContent = error.message || 'Could not connect. Please try again.'; }
+  finally { signupSubmitting = false; signupForm.querySelectorAll('button[type=submit]').forEach(button => button.disabled = false); }
 });
 
   // ---- Open Build List data (lifted from the Codex master doc) ----
