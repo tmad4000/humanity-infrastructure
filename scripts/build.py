@@ -49,6 +49,7 @@ async function handleRequest(request, env) {{
     headers['Content-Type'] = asset[0] + (asset[0].startsWith('text/') ? ';charset=UTF-8' : '')
     return new Response(Uint8Array.from(atob(asset[1]), c => c.charCodeAt(0)), {{headers}})
   }}
+  if (path === '/x-embed.js') return new Response(X_EMBED_JS, {{headers: {{'Content-Type': 'application/javascript;charset=UTF-8'}}}})
   if (path === '/og-card.png') {{
     return new Response(OG_PNG, {{ headers: {{ 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=86400' }} }})
   }}
@@ -67,10 +68,11 @@ async function handleRequest(request, env) {{
   if (path === '/v1' || path.startsWith('/v1/')) {{
     return Response.redirect('https://humanityinfrastructure.com/', 301)
   }}
-  return new Response(MAIN_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Content-Security-Policy': "script-src 'self' 'unsafe-inline' https://analytics.ideaflow.app; connect-src 'self' https://api.worldissuetracker.com https://analytics.ideaflow.app; object-src 'none'; base-uri 'self'" }} }})
+  return new Response(MAIN_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Content-Security-Policy': "script-src 'self' 'unsafe-inline' https://analytics.ideaflow.app https://platform.twitter.com; connect-src 'self' https://api.worldissuetracker.com https://analytics.ideaflow.app https://syndication.twitter.com https://cdn.syndication.twimg.com; frame-src https://platform.twitter.com; object-src 'none'; base-uri 'self'" }} }})
 }}
 
 const ANALYTICS_JS = `{escape_js(Path('analytics.js').read_text())}`
+const X_EMBED_JS = `{escape_js(Path('scripts/x-embed.js').read_text())}`
 const DESIGN_ASSETS = {json.dumps(designs)}
 const MAIN_HTML = `{escape_js(main)}`
 const V2_HTML = `{escape_js(v2)}`
