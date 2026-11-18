@@ -643,7 +643,7 @@ const MAIN_HTML = `<!DOCTYPE html>
     <article class="card resource-row" id="xfeed-paradise" data-interest-item="xfeed-paradise" data-interest-title="Xfeed Paradise">
       <details class="resource-details">
         <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">Xfeed Paradise</span><span class="resource-pitch">Filter outrage-bait from your feed.</span><a class="resource-url" href="https://github.com/opentoolshub/xfeedparadise" target="_blank" rel="noopener">github.com/opentoolshub/xfeedparadise</a></span></summary>
-        <div class="resource-body"><p>Filter outrage-bait from your X feed and make room for what helps you thrive.</p><p>A Chrome extension with hide, dim and collapse modes. Install from the public source repository. Local keyword filtering works without an API key; optional AI scoring sends scoring text to your chosen provider.</p><ul class="badges"><li>Source: opentoolshub contributors</li><li>License: MIT (project README)</li></ul></div>
+        <div class="resource-body"><p>Filter outrage-bait from your X feed and make room for what helps you thrive.</p><p>A Chrome extension with hide, dim and collapse modes. Install from the public source repository. Fresh installs use built-in remote AI scoring by default, without a personal API key: post text is sent to the Xfeed Paradise scoring service and its AI provider. You can configure your own provider. Local keyword scoring is the fallback when remote scoring is unavailable or the built-in daily limit is reached.</p><ul class="badges"><li>Source: opentoolshub contributors</li><li>License: MIT (project README)</li></ul></div>
       </details>
       <div class="resource-actions"></div>
     </article>
