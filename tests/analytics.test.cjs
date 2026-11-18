@@ -24,3 +24,14 @@ test('early interactions queue without predefining wrapper, then flush once',()=
  const c=load();delete c.window.ideaflow;c.window.hiTrack('github_click',{placement:'header'});assert.equal(c.window.ideaflow,undefined);
  c.window.ideaflow={track:(...args)=>c.calls.push(args)};c.callbacks.DOMContentLoaded();c.callbacks.DOMContentLoaded();assert.equal(c.calls.length,1);
 });
+
+test('feature-owned interest links do not produce a second generic outbound event',()=>{
+ const c=load();
+ const link={closest:selector=>selector==='#signal-thanks, #letter-context-links'?{}:null};
+ c.callbacks.click({target:{closest:()=>link}});
+ assert.equal(c.calls.length,0);
+ c.window.hiTrack('interest_tweet_intent',{item_key:'lastbook',placement:'tool_card'});
+ assert.equal(c.calls.length,1);
+ assert.equal(c.calls[0][0],'interest_tweet_intent');
+ assert.deepEqual(c.calls[0][1],{item_key:'lastbook',placement:'tool_card'});
+});

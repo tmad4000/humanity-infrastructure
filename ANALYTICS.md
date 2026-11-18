@@ -12,7 +12,7 @@ Automatic pageviews are enabled on /, /classic, /v2, /v3 and /v4. Private signup
 unsubscribe, export, and design gallery routes have no tracker. DNT is respected;
 no cookies, identify calls, form values, query tokens, referrer paths, or arbitrary
 page titles are collected. UTM source/ref values are restricted to x, twitter,
-buzz, hi_newsletter, github and lastbook; medium to social/community/email/referral;
+buzz, hi_newsletter, github, lastbook and x-interest; medium to social/community/email/referral;
 campaign to hi_launch_YYYYMM; content to reply_farbood_NN, reply_kevinrose_NN,
 launch_post_NN, or issue_YYYYMMDD_primary. Other query fields are removed before
 sending. Events contain only destination host, fixed placement, Lastbook listing
@@ -28,8 +28,13 @@ allowed UTM/referrer retained, query PII removed, outbound events once, signup
 success only after success, DNT produces no ingestion, then read counts/events
 back from Umami. Preserve signup bindings and secrets; deploy through coordinator.
 
-Reserved interest events: `interest_want`, `interest_building`, and
-`interest_tweet_intent`, with only public item_key and fixed placement. The
-interest feature owns confirmed-success emission; never infer success from clicks.
+The interest feature owns `interest_want` and `interest_building`, emitted only
+after HTTP success with `{ok:true}`. Success means an accepted submission,
+including daily duplicates, not a guaranteed new vote. It owns
+`interest_tweet_intent`, emitted only when the user clicks its intent link.
+These events contain exactly `{item_key, placement}`; placement is `tool_card`,
+`build_list`, or `quest_card`. No `like_start` or `like` events are emitted.
+PR19 adds no generic interest click/submit listeners and excludes feature-owned
+thanks/context links from generic outbound tracking to avoid duplicate events.
 Resource clicks carry the shelf listing_id; guide/suggest and legacy quest-claim
 intent use distinct events. `ref=x-interest` is an approved share attribution.

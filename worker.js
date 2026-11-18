@@ -164,7 +164,7 @@ const ANALYTICS_JS = `// Anonymous, cookieless analytics. Never pass form values
   });
   document.addEventListener('click', function (event) {
     const target = event.target.closest('a[href], [data-signup-open]');
-    if (!target) return;
+    if (!target || target.closest('#signal-thanks, #letter-context-links')) return;
     const placement = target.closest('footer') ? 'footer' : target.closest('header,nav') ? 'header' : 'body';
     if (target.matches('[data-signup-open]')) return window.hiTrack('newsletter_signup_start', {placement});
     const url = new URL(target.href, location.origin);
