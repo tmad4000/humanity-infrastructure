@@ -86,3 +86,35 @@ test('omitted, empty, whitespace and replacement interests preserve the first no
  await context.route(request({email:'fill@example.com',interest:'  first useful interest  '}),empty.env);
  assert.equal(empty.rows[0].interest,'first useful interest');
 });
+
+test('Join-a-Quest free text is sanitized/capped, own-key only, and uses a text-only invite',()=>{
+ const html=fs.readFileSync('index.html','utf8');const snippet=html.slice(html.indexOf('const signupInterestLabels ='),html.indexOf('const signupDialog ='));
+ for(const [pathname,search] of [['/join','?quest=open-document-signing'],['/','?interest=world-quest-guild&quest=open-document-signing']]) {
+  const fields={'letter-interest':{value:''},'letter-description':{textContent:''}};
+  vm.runInNewContext(snippet,{URLSearchParams,location:{pathname,search},document:{getElementById:id=>fields[id]}});
+  assert.equal(fields['letter-interest'].value,'I want to join the quest: open document signing');assert.match(fields['letter-description'].textContent,/World Quest Guild welcomes/);
+ }
+ const fields={'letter-interest':{value:''},'letter-description':{textContent:''}};
+ vm.runInNewContext(snippet,{URLSearchParams,location:{pathname:'/join',search:'?quest='+encodeURIComponent('<img src=x onerror=alert(1)> '+ 'x'.repeat(300))},document:{getElementById:id=>fields[id]}});
+ assert.doesNotMatch(fields['letter-interest'].value,/[<>]/);assert.ok(fields['letter-interest'].value.length<=200);assert.ok(fields['letter-interest'].value.slice('I want to join the quest: '.length).length<=100);assert.ok(fields['letter-description'].textContent.length<300);
+ assert.match(html,/if \(submittedStep === 1 && signupContextInterest\) payload.interest = signupContextInterest/);
+});
+
+
+test('successful email submit advances when optional analytics is absent or throws',async()=>{
+ const html=fs.readFileSync('index.html','utf8');
+ const start=html.indexOf("signupForm.addEventListener('submit', async function(event) {");
+ const handler=html.slice(start,html.indexOf('\n});',start)+4);
+ for(const tracker of [undefined,()=>{throw Error('tracker unavailable');}]) {
+  let focused=false;
+  const fields={'letter-email-step':{hidden:false},'letter-title':{textContent:''},'letter-description':{textContent:''},'letter-interest':{focus(){focused=true;}}};
+  const button={disabled:false},detailField={disabled:true};let submit;
+  const state={URLSearchParams,location:{search:'',pathname:'/join'},document:{referrer:'',getElementById:id=>fields[id]},window:tracker?{hiTrack:tracker}:{},
+   signupStep:1,signupSavedEmail:'',signupSubmitting:false,signupContextInterest:'World Quest Guild',signupEmail:{value:'person@example.com',disabled:false},signupStatus:{textContent:''},signupDetails:{hidden:true,querySelectorAll:()=>[detailField]},signupDialog:{open:true},
+   signupForm:{reportValidity:()=>true,elements:{website:{value:''}},querySelectorAll:()=>[button],addEventListener(type,callback){submit=callback;}},
+   fetch:async()=>({ok:true,json:async()=>({ok:true})})};
+  vm.runInNewContext(handler,state);await submit({preventDefault(){}});
+  assert.equal(state.signupStep,2);assert.equal(state.signupSavedEmail,'person@example.com');assert.equal(state.signupStatus.textContent,'');
+  assert.equal(fields['letter-email-step'].hidden,true);assert.equal(state.signupDetails.hidden,false);assert.equal(detailField.disabled,false);assert.equal(button.disabled,false);assert.equal(state.signupSubmitting,false);assert.equal(focused,true);
+ }
+});

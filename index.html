@@ -256,6 +256,8 @@
   .letter small{display:block;color:var(--muted);margin-top:14px}.letter .close{position:absolute;right:14px;top:12px;border:0;background:none;color:var(--text);font-size:1.3rem;padding:4px 8px}
   .letter [hidden]{display:none!important}.letter :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
   .letter-invite{width:100%;margin:8px 0}.letter-invite button,.signup-link{background:none;border:0;padding:0;color:var(--accent);font:inherit;text-decoration:underline;text-underline-offset:4px;cursor:pointer}
+  #letter-context-links:empty{display:none}
+  .signal-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:18px}.signal-actions .btn{font-size:.8rem;padding:7px 10px;cursor:pointer;font-family:inherit}.signal-count{font-size:.78rem;color:var(--muted);width:100%}.signal-dialog[hidden]{display:none}
 </style>
 <script src="/analytics.js"></script>
 <script defer src="https://analytics.ideaflow.app/ideaflow.js" data-product="humanity-infrastructure" data-respect-dnt="true" data-before-send="hiAnalyticsBeforeSend"></script>
@@ -309,7 +311,7 @@
     <p>Find tools for practical needs, from offline knowledge to shared civic work. Free to use. Open where possible. Featured listings show license, platform and maker. <a href="#submit">Suggest a resource →</a></p>
   </div>
   <div class="grid">
-    <article class="card featured" id="lastbook">
+    <article class="card featured" id="lastbook" data-interest-item="lastbook">
       <span class="tag live">Featured</span>
       <div class="top"><span class="emoji">📖</span><div><h3><a href="https://lastbook.org" target="_blank" rel="noopener">Lastbook</a></h3><div class="url">lastbook.org</div></div></div>
       <p class="needline"><span class="need-label">Need</span> Knowledge that survives when the internet doesn't</p>
@@ -322,38 +324,37 @@
       <blockquote cite="https://x.com/jacobcole4000/status/2122608959236493761">@farbood We featured Lastbook on humanityinfrastructure.com — a directory of tools and knowledge for human flourishing. What else belongs? Everyone’s invited to suggest resources or submit a GitHub PR via the site. Thanks for building this, @farbood!</blockquote>
       <div class="tweet-source"><time datetime="2026-11-17T08:33:06Z">November 17, 2026</time><a href="https://x.com/jacobcole4000/status/2122608959236493761" target="_blank" rel="noopener noreferrer">View on X ↗</a></div>
     </figure>
-    <article class="card" id="unlinked">
+    <article class="card" id="unlinked" data-interest-item="unlinked">
       <h3><a href="https://www.unlinked.ai" target="_blank" rel="noopener">Unlinked</a></h3>
 
       <p class="card-description">Explore your professional network and find the people who can help you move an idea forward.</p>
-      <p style="margin-top:16px"><a href="/?interest=unlinked#letter">Express interest / request access →<span class="sr-only"> Unlinked</span></a></p>
     </article>
-    <article class="card">
+    <article class="card" id="nvc-translator" data-interest-item="nvc-translator">
       <span class="tag live">Live</span>
       <a class="card-link" href="https://nvctranslator.com" target="_blank" rel="noopener"><div class="top"><span class="emoji">🕊️</span><div><h3>NVC Translator</h3><div class="url">nvctranslator.com</div></div></div></a>
       <p class="card-description">Translate any text into Marshall Rosenberg's Nonviolent Communication — observations, feelings, needs, requests. How can AI make us more compassionate?</p>
     </article>
-    <article class="card">
+    <article class="card" id="noos" data-interest-item="noos">
       <span class="tag live">Live</span>
       <a class="card-link" href="https://globalbr.ai" target="_blank" rel="noopener"><div class="top"><span class="emoji">🧠</span><div><h3>Noos</h3><div class="url">globalbr.ai</div></div></div></a>
       <p class="card-description">A universal knowledge graph — the "codex" backend. Capture, connect, and query human know-how with per-node privacy.</p>
     </article>
-    <article class="card">
+    <article class="card" id="wikihub" data-interest-item="wikihub">
       <span class="tag live">Live</span>
       <a class="card-link" href="https://wikihub.md" target="_blank" rel="noopener"><div class="top"><span class="emoji">📚</span><div><h3>WikiHub</h3><div class="url">wikihub.md</div></div></div></a>
       <p class="card-description">GitHub for LLM wikis. Hosting for open, agent-native markdown knowledge bases — forkable, shareable, version-controlled.</p>
     </article>
-    <article class="card">
+    <article class="card" id="world-issue-tracker" data-interest-item="world-issue-tracker">
       <span class="tag live">Live</span>
       <a class="card-link" href="https://worldissuetracker.com" target="_blank" rel="noopener"><div class="top"><span class="emoji">🌐</span><div><h3>World Issue Tracker</h3><div class="url">worldissuetracker.com</div></div></div></a>
       <p class="card-description">A public issue tracker for civic and shared problems — a bottom-up list of what's broken, and who's fixing it.</p>
     </article>
-    <article class="card">
+    <article class="card" id="idea-list" data-interest-item="idea-list">
       <span class="tag live">Live</span>
       <a class="card-link" href="https://tmad4000.github.io/brainstorms/" target="_blank" rel="noopener"><div class="top"><span class="emoji">💡</span><div><h3>Idea List</h3><div class="url">tmad4000.github.io/brainstorms</div></div></div></a>
       <p class="card-description">An open idea bank — projects, hackathon ideas, and easily-solvable world problems, free for anyone to take and build.</p>
     </article>
-    <article class="card featured" id="signudoc">
+    <article class="card featured" id="signudoc" data-interest-item="signudoc">
       <span class="tag live">Featured</span>
       <div class="top"><span class="emoji">✍️</span><div><h3><a href="https://github.com/NYLLON-SOFTWARE/SignuDoc" target="_blank" rel="noopener">SignuDoc</a></h3><div class="url">github.com/NYLLON-SOFTWARE/SignuDoc</div></div></div>
       <p class="needline"><span class="need-label">Need</span> Open document signing infrastructure</p>
@@ -361,7 +362,7 @@
       <ul class="badges"><li class="open">Open source · MIT</li><li>Self-hosted on your Vercel account</li><li>By Kevin Rose / NYLLON</li></ul>
       <details class="editor-note"><summary>Editor's note</summary><p class="why">agreeing on things is basic civic plumbing. Signing a PDF shouldn't need a per-seat licence or someone else's cloud.</p></details>
     </article>
-    <article class="card featured" id="paxi">
+    <article class="card featured" id="paxi" data-interest-item="paxi">
       <span class="tag live">Featured</span>
       <div class="top"><span class="emoji">🚕</span><div><h3><a href="https://paxi.fyi" target="_blank" rel="noopener">Paxi</a></h3><div class="url">paxi.fyi</div></div></div>
       <p class="needline"><span class="need-label">Need</span> Use the best service for each task, without interface lock-in</p>
@@ -369,12 +370,12 @@
       <ul class="badges"><li>Free · closed source</li><li>iPhone (iOS 17+)</li><li>By Doug Feigelson, a friend of the maintainer</li></ul>
       <details class="editor-note"><summary>Editor's note</summary><p class="why">every app wants to be the only door. You should be able to compare providers, choose the best one for each job and switch freely. <a href="https://github.com/tmad4000/humanity-infrastructure/issues/2" target="_blank" rel="noopener">Community submission #2</a>.</p></details>
     </article>
-    <article class="card">
+    <article class="card" id="vibe-coding-guide" data-interest-item="vibe-coding-guide">
       <span class="tag live">Live</span>
       <a class="card-link" href="https://github.com/tmad4000/vibe-coding-guide" target="_blank" rel="noopener"><div class="top"><span class="emoji">⚡</span><div><h3>Vibe Coding Guide</h3><div class="url">github.com/tmad4000/vibe-coding-guide</div></div></div></a>
       <p class="card-description">Open guide to AI-assisted coding — making the craftsmanship of software buildable by everyone.</p>
     </article>
-    <article class="card">
+    <article class="card" id="claude-mind" data-interest-item="claude-mind">
       <span class="tag live">Live</span>
       <a class="card-link" href="https://github.com/tmad4000/claude-mind" target="_blank" rel="noopener"><div class="top"><span class="emoji">🔬</span><div><h3>Claude Mind</h3><div class="url">github.com/tmad4000/claude-mind</div></div></div></a>
       <p class="card-description">Collaborative AI–human exploration of open problems — research rabbits and guilds working the quests, Polymath-style.</p>
@@ -389,34 +390,29 @@
     <p>Find collaborators, build relationships and carry shared ideas forward. These projects are part of the Ideaflow ecosystem; access varies by tool.</p>
   </div>
   <div class="grid">
-    <article class="card" id="superconnector">
+    <article class="card" id="superconnector" data-interest-item="superconnector">
       <h3><a href="https://superconnector.network" target="_blank" rel="noopener">Superconnector</a></h3>
 
       <p class="card-description">Discover who to meet in your community or at your next event.</p>
-      <p style="margin-top:16px"><a href="/?interest=superconnector#letter">Express interest / request access →<span class="sr-only"> Superconnector</span></a></p>
     </article>
-    <article class="card" id="openchat">
+    <article class="card" id="openchat" data-interest-item="openchat">
       <h3><a href="https://chat.ideaflow.app" target="_blank" rel="noopener">OpenChat</a></h3>
       <p class="needline">Public beta</p>
       <p class="card-description">Bring people and their AI agents into the same real-time conversations.</p>
-      <p style="margin-top:16px"><a href="/?interest=openchat#letter">Express interest / request access →<span class="sr-only"> OpenChat</span></a></p>
     </article>
-    <article class="card" id="bookshelves">
+    <article class="card" id="bookshelves" data-interest-item="bookshelves">
       <h3><a href="https://bookshelves.ai" target="_blank" rel="noopener">Bookshelves</a></h3>
       <p class="card-description">Photograph your bookshelf and meet people who read what you read.</p>
-      <p style="margin-top:16px"><a href="/?interest=bookshelves#letter">Express interest / request access →<span class="sr-only"> Bookshelves</span></a></p>
     </article>
-    <article class="card" id="ideaflow-index">
+    <article class="card" id="ideaflow-index" data-interest-item="ideaflow-index">
       <h3><a href="https://index.ideaflow.app" target="_blank" rel="noopener">Ideaflow apps index</a></h3>
 
       <p class="card-description">Built on the shared knowledge graph.</p>
-      <p style="margin-top:16px"><a href="/?interest=ideaflow-index#letter">Express interest / request access →<span class="sr-only"> Ideaflow apps index</span></a></p>
     </article>
-    <article class="card" id="open-recordings">
+    <article class="card" id="open-recordings" data-interest-item="open-recordings">
       <h3><a href="https://index.ideaflow.app" target="_blank" rel="noopener">Open Recordings</a></h3>
       <p class="needline">Alpha</p>
       <p class="card-description">Record and revisit conversations and highlights, so shared insights stay useful.</p>
-      <p style="margin-top:16px"><a href="/?interest=open-recordings#letter">Express interest / request access →<span class="sr-only"> Open Recordings</span></a></p>
     </article>
   </div>
 </div></section>
@@ -432,7 +428,7 @@
   <div class="section-head">
     <div class="kicker">The Open Build List</div>
     <h2>What still needs to be built</h2>
-    <p>The infrastructure for human flourishing is mostly <em>not built yet</em>. Below is the running list — ideas, works-in-progress, and what's done. Lifted from the Codex master doc; we'll keep pulling in more from across the lists. See one you want to build? <strong>Claim it.</strong></p>
+    <p>The infrastructure for human flourishing is mostly <em>not built yet</em>. Below is the running list — ideas, works-in-progress, and what's done. Lifted from the Codex master doc; we'll keep pulling in more from across the lists. See one you want to build? <strong>Like it or tell us you’re building it.</strong></p>
   </div>
   <div class="filters" id="filters">
     <button class="chip active" data-f="all">All</button>
@@ -507,7 +503,8 @@
     <p>We're building the more general, not-just-engineering equivalent of the open-source movement. There's an enormous amount of low-hanging fruit — and we're looking for designers, engineers, writers, healers, and well-intended humans of every kind.</p>
     <div class="btns" style="justify-content:center">
       <a class="btn primary" href="mailto:jacob@ideaflow.io?subject=Joining%20the%20Codex%20%2F%20Humanity%20Infrastructure">Get involved →</a>
-      <a class="btn ghost" href="https://docs.google.com/document/d/1OggVeoEN4zAafRAox3yjFYtNwmYFJQHovXLviWI69zY/edit" target="_blank" rel="noopener">Join a guild</a>
+      <a class="btn primary" href="/join">Join a quest →</a>
+      <a class="btn ghost" href="https://docs.google.com/document/d/1OggVeoEN4zAafRAox3yjFYtNwmYFJQHovXLviWI69zY/edit" target="_blank" rel="noopener">World Quest Guild doc ↗</a>
     </div>
     <span class="direct">World Quest Guild · short link <a href="https://quests.world" target="_blank" rel="noopener">quests.world</a> (being repaired)</span>
   </div>
@@ -521,7 +518,7 @@
 </div></section>
 
 <footer><div class="wrap"><p class="letter-invite" id="letter"><button type="button" data-signup-open>Sign up for the interest list</button></p>
-<p style="width:100%;color:var(--muted)">Privacy: signup details are stored privately for this letter, never in the public issue tracker. Contact <a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a> to request deletion.</p>
+<p style="width:100%;color:var(--muted)">Privacy: contact details and builder signals stay private, never in the public issue tracker. Want counts are public from three signals. Contact <a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a> to request deletion.</p>
   <div>
     <strong style="color:var(--text)">Humanity Infrastructure · The Codex</strong> — basic infrastructure for human flourishing.<br/>
     Free to use. Open where possible. Featured listings show their license. <a href="https://github.com/tmad4000/humanity-infrastructure">Source on GitHub</a> · Contact <a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a>
@@ -550,6 +547,7 @@
 <button class="close" type="button" data-signup-close aria-label="Close signup">×</button>
 <h2 id="letter-title">Sign up for the interest list</h2>
 <p id="letter-description">A short, occasional letter about tools for human flourishing. No spam; unsubscribe any time.</p>
+<p id="letter-context-links"></p>
 <form id="letter-form">
 <div id="letter-email-step">
 <label for="letter-email">Email</label><input id="letter-email" name="email" type="email" maxlength="254" autocomplete="email" required autofocus>
@@ -610,17 +608,26 @@
 // Shelf links use /?interest=<approved-key>#letter.
 const signupInterestLabels = {
   'unlinked': 'Unlinked', 'superconnector': 'Superconnector', 'openchat': 'OpenChat',
-  'ideaflow-index': 'Ideaflow apps index', 'open-recordings': 'Open Recordings', 'bookshelves': 'Bookshelves'
+  'ideaflow-index': 'Ideaflow apps index', 'open-recordings': 'Open Recordings', 'bookshelves': 'Bookshelves', 'world-quest-guild': 'World Quest Guild'
 };
-const signupInterestParam = new URLSearchParams(location.search).get('interest');
-if (Object.hasOwn(signupInterestLabels, signupInterestParam)) document.getElementById('letter-interest').value = signupInterestLabels[signupInterestParam];
+const signupParams = new URLSearchParams(location.search);
+const signupInterestParam = signupParams.get('interest');
+function sanitizeSignupQuest(raw) {
+  return String(raw || '').normalize('NFKC').replace(/[^\p{L}\p{N} .,:()'_-]/gu, ' ').replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 100).trim();
+}
+const signupJoinRequested = ['/join','/join/'].includes(location.pathname) || signupInterestParam === 'world-quest-guild';
+const signupQuestName = signupJoinRequested ? sanitizeSignupQuest(signupParams.get('quest')) : '';
+const signupPrefilledInterest = signupJoinRequested ? (signupQuestName ? 'I want to join the quest: '+signupQuestName : 'I want to join World Quest Guild') : (Object.hasOwn(signupInterestLabels, signupInterestParam) ? signupInterestLabels[signupInterestParam] : '');
+const signupJoinDescription = signupJoinRequested ? (signupQuestName ? 'Join a quest: '+signupQuestName+'. ' : '')+'World Quest Guild welcomes people who want to help. Leave your email; more details are optional.' : '';
+if (signupPrefilledInterest) document.getElementById('letter-interest').value = signupPrefilledInterest;
+if (signupJoinDescription) document.getElementById('letter-description').textContent = signupJoinDescription;
 
 const signupDialog = document.getElementById('letter-dialog');
 const signupForm = document.getElementById('letter-form');
 const signupEmail = document.getElementById('letter-email');
 const signupDetails = document.getElementById('letter-details-step');
 const signupStatus = signupForm.querySelector('.status');
-let signupStep = 1, signupSubmitting = false, signupTrigger = null, signupSavedEmail = '';
+let signupStep = 1, signupSubmitting = false, signupTrigger = null, signupSavedEmail = '', signupContextInterest = signupJoinRequested ? signupPrefilledInterest : '';
 function openSignup() {
   if (signupDialog.open) return;
   signupTrigger = document.activeElement;
@@ -632,10 +639,30 @@ function finishSignup() {
   signupForm.reset(); signupEmail.disabled = false;
   document.getElementById('letter-email-step').hidden = false; signupDetails.hidden = true;
   signupDetails.querySelectorAll('input,textarea').forEach(field => field.disabled = true);
-  if (Object.hasOwn(signupInterestLabels, signupInterestParam)) document.getElementById('letter-interest').value = signupInterestLabels[signupInterestParam];
+  document.getElementById('letter-interest').value = signupPrefilledInterest;
+  signupContextInterest = signupJoinRequested ? signupPrefilledInterest : '';
+  document.getElementById('letter-context-links').replaceChildren();
   document.getElementById('letter-title').textContent = 'Sign up for the interest list';
-  document.getElementById('letter-description').textContent = 'A short, occasional letter about tools for human flourishing. No spam; unsubscribe any time.';
+  document.getElementById('letter-description').textContent = signupJoinDescription || 'A short, occasional letter about tools for human flourishing. No spam; unsubscribe any time.';
   signupStatus.textContent = '';
+}
+function openSignupWithInterest(label, description, links = []) {
+  finishSignup(); signupContextInterest = String(label).slice(0, 200);
+  document.getElementById('letter-interest').value = signupContextInterest;
+  document.getElementById('letter-title').textContent = 'Want updates on this? Leave your email';
+  document.getElementById('letter-description').textContent = String(description || 'Email is optional. Close this window to skip.');
+  const container = document.getElementById('letter-context-links');
+  for (const link of links) {
+    try {
+      const url = new URL(link.href);
+      const allowed = url.protocol === 'https:' && (url.hostname === 'worldissuetracker.com' || url.hostname.endsWith('.worldissuetracker.com') || (url.hostname === 'twitter.com' && url.pathname === '/intent/tweet'));
+      if (!allowed) continue;
+      const anchor = document.createElement('a'); anchor.href = url.href; anchor.target = '_blank'; anchor.rel = 'noopener noreferrer'; anchor.textContent = link.label;
+      if (typeof link.onClick === 'function') anchor.addEventListener('click', link.onClick);
+      container.append(anchor, document.createTextNode(' '));
+    } catch { /* Ignore invalid source links. */ }
+  }
+  openSignup();
 }
 document.querySelector('[data-signup-skip]').addEventListener('click', finishSignup);
 document.querySelectorAll('[data-signup-open]').forEach(button => button.addEventListener('click', openSignup));
@@ -650,7 +677,7 @@ signupDialog.addEventListener('keydown', event => {
 });
 // Native dialog provides modality and Escape-to-close. Hash links preserve shelf integration.
 window.addEventListener('hashchange', () => { if (location.hash === '#letter') openSignup(); });
-window.addEventListener('load', () => { if (location.hash === '#letter') setTimeout(openSignup, 0); });
+window.addEventListener('load', () => { if (location.hash === '#letter' || signupJoinRequested) setTimeout(openSignup, 0); });
 signupForm.addEventListener('submit', async function(event) {
   event.preventDefault();
   if (signupSubmitting) return;
@@ -660,6 +687,7 @@ signupForm.addEventListener('submit', async function(event) {
   const params = new URLSearchParams(location.search), utm = {};
   ['source','medium','campaign','term','content'].forEach(key => { if (params.has('utm_' + key)) utm['utm_' + key] = params.get('utm_' + key); });
   const payload = {email,website:signupForm.elements.website.value,source_page:location.pathname,utm,referrer:document.referrer};
+  if (submittedStep === 1 && signupContextInterest) payload.interest = signupContextInterest;
   if (submittedStep === 2) Object.assign(payload, {interest:signupForm.elements.interest.value,handle:signupForm.elements.handle.value,public_opt_in:signupForm.elements.public_opt_in.checked});
   signupSubmitting = true;
   signupForm.querySelectorAll('button[type=submit]').forEach(button => button.disabled = true);
@@ -669,7 +697,7 @@ signupForm.addEventListener('submit', async function(event) {
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || 'Please try again later.');
     if (submittedStep === 1) {
-      window.hiTrack('newsletter_signup', {placement: 'letter', method: 'email'});
+      try { if (typeof window.hiTrack === 'function') window.hiTrack('newsletter_signup', {placement: 'letter', method: 'email'}); } catch { /* Optional analytics never blocks signup. */ }
       signupSavedEmail = email; signupStep = 2;
       document.getElementById('letter-email-step').hidden = true; signupEmail.disabled = true;
       signupDetails.hidden = false;
@@ -687,66 +715,66 @@ signupForm.addEventListener('submit', async function(event) {
 
   // ---- Open Build List data (lifted from the Codex master doc) ----
   var BUILD=[
-    {c:"Collective Action",t:"ThunderPledge",s:"idea",u:"https://thunderpledge.jacobcole.net",d:"Kickstarter for collective action: pledge to go vegetarian, vote, or boycott — but only once a critical mass also commits. Variants: ThunderVote, ThunderBoycott ('Kickstopper')."},
-    {c:"Collective Action",t:"Zero-Sum Redirect",s:"idea",d:"A clearinghouse for opposing political donations — matched contributions cancel out and the saved money goes to charity instead."},
-    {c:"Collective Action",t:"Government Suggestion Box",s:"idea",d:"A suggestion-box platform for governments, including the ability to donate toward implementing specific suggestions."},
-    {c:"Collective Action",t:"Everyone-a-Philanthropist",s:"idea",d:"Infrastructure so communities can pool resources to fill missing government functions — help a neighbor afford insurance, get a kid a laptop."},
-    {c:"Collective Action",t:"Resource-Sharing Platform",s:"idea",u:"https://favorverse.jacobcole.net/",d:"Let people share what they can lend — tools, a U-Haul, time. Related: Favorverse & VolunteerForce."},
-    {c:"Reputation & Trust",t:"Open Reputation System",s:"idea",d:"A portable, open reputation layer — the missing primitive for trust in online coordination."},
-    {c:"Reputation & Trust",t:"Trust Layer / Meta-Brands",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A trust layer for the web — 'meta-brands' that vouch for quality and integrity."},
-    {c:"Reputation & Trust",t:"Fact-Check Extension",s:"idea",u:"https://factcheck.jacobcole.net/",d:"A browser extension surfacing fact-checks and provenance inline."},
-    {c:"Fixing the Internet",t:"Open Forum Software",s:"building",u:"https://github.com/gulkily/pollyanna",d:"Forum software that is transparent, consensual, and open-source (Pollyanna)."},
-    {c:"Fixing the Internet",t:"Minimalist Homepages",s:"idea",u:"https://worldissuetracker.com/tracker/missing-civ-infrastructure",d:"A better way to make calm, minimalist personal homepages."},
-    {c:"Fixing the Internet",t:"ThoughtfulWeb",s:"idea",u:"https://thoughtfulweb.jacobcole.net",d:"A directory of places on the web that are thoughtful, artful, and mindful — an oasis of good taste."},
-    {c:"Personal Leverage",t:"'Camel's Eye' Email Agent",s:"idea",d:"An agent that filters and triages email on your behalf (from Permutation City). Reclaim your attention."},
-    {c:"Personal Leverage",t:"Shortcut / Macro Coach",s:"idea",d:"Watches your actions and occasionally suggests a shortcut, auto-writing the macro for you."},
-    {c:"Personal Leverage",t:"Open Automation Tools",s:"idea",d:"Great open-source macro & browser-automation frameworks (Browserflow-style) for everyone."},
-    {c:"Personal Leverage",t:"Shopping Coach",s:"idea",d:"A service that shops on your behalf — finds the best, most ethical option so you don't have to."},
-    {c:"Open Knowledge",t:"Open Meditation Curricula",s:"building",u:"https://meditation.jacobcole.net/",d:"Basic open curricula for meditation and working with your body. Lists exist; needs a real course."},
-    {c:"Open Knowledge",t:"Open Medical Knowledge",s:"building",u:"https://chronicpain.jacobcole.net/",d:"How to treat chronic pain, RSI, and more — patient-first medical know-how. Lists started."},
-    {c:"Open Knowledge",t:"Open Academic Education",s:"idea",d:"University-level math, an open algorithms tutor, and interactive self-teaching programming resources."},
-    {c:"Open Knowledge",t:"Open Work Templates",s:"idea",d:"Open templates for every kind of work — invoices, gantt charts, proposals."},
-    {c:"Open Knowledge",t:"Role-Model Casting",s:"idea",u:"https://foodslist.jacobcole.net/",d:"For people without good role models — emulate the routines of healthy, effective people (e.g. foods lists)."},
-    {c:"Open Knowledge",t:"Motivation Database",s:"idea",u:"https://whyisitawesome.jacobcole.net/",d:"A wiki of why all the awesome things in the world are awesome — fuel for motivation."},
-    {c:"Open Knowledge",t:"'Books to Grow Up On'",s:"idea",u:"https://kidactivities.jacobcole.net",d:"An open list of literature that builds good mental models — plus kids' games & activities."},
-    {c:"Assistive Tech",t:"Hands-Free Voice Interfaces",s:"idea",d:"Good hands-free voice-recognition hooks into common sites (Gmail, etc.) for quadriplegics and others. Lots of low-hanging fruit."},
-    {c:"Assistive Tech",t:"Cueing App for Brain Injuries",s:"idea",d:"A cueing/reminder app for people recovering from brain injuries."},
-    {c:"Assistive Tech",t:"Better Foot Mouse",s:"idea",d:"A better foot-operated mouse for people who can't use their hands."},
-    {c:"Coordination Infra",t:"On-the-Fly Knowledge Capture",s:"building",u:"https://globalbr.ai",d:"Frictionless personal knowledge capture + a graph query engine. Being built as Noos."},
-    {c:"Coordination Infra",t:"Global Idea Bank",s:"building",u:"https://tmad4000.github.io/brainstorms/",d:"An open bank of ideas & hackathon projects anyone can take and build. Live as the Idea List."},
-    {c:"Coordination Infra",t:"Open Research Repository",s:"idea",u:"https://worldissuetracker.com/tracker/missing-civ-infrastructure",d:"A global, open repository for research — make the world's findings freely usable."},
-    {c:"Care & Society",t:"Adult 'Foster' Support Network",s:"idea",d:"Ubiquitous support — 'extra parents' — for adults facing challenges so no one falls through the cracks."},
-    {c:"Care & Society",t:"Non-Emergency Help Button",s:"idea",d:"A button to request non-emergency help: a compassionate responder for mental-health crises, a care coordinator, a 'life figure-outer'."},
-    {c:"Care & Society",t:"Database of Survival Guides",s:"idea",d:"'How to survive/thrive' guides across many contexts — including for highly sensitive people on a budget."},
-    {c:"Care & Society",t:"Database of Human Ideals",s:"idea",d:"Documenting the multiplicity of happy cultures and ways of being."},
-    {c:"Done",t:"OpenLibrary",s:"done",u:"https://openlibrary.org",d:"Open, universal catalog of books. Exists — and it's wonderful."},
-    {c:"Done",t:"Internet Archive",s:"done",u:"https://archive.org",d:"Humanity's library and memory. Exists — support it."},
-    {c:"Done",t:"Concentration Music",s:"done",d:"Open 'music for concentration' playlists everyone can access. Largely solved."},
-    {c:"Fixing the Internet",t:"Cross-Site Hashtag Search",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"Search a hashtag uniformly across every social platform and website at once."},
-    {c:"Fixing the Internet",t:"Universal Comments Layer",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"Attach comment threads to any webpage, email, or chat, viewable by anyone."},
-    {c:"Fixing the Internet",t:"Universal Web Annotations",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A shared highlight-and-note layer that pins annotations onto any page across the web."},
-    {c:"Open Knowledge",t:"Canonical Debate Lab",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A structured platform that organizes contested claims and their arguments toward resolution."},
-    {c:"Open Knowledge",t:"Scientific Assertions Database",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A machine-readable repository of scientific claims with their dependencies and evidence mapped."},
-    {c:"Open Knowledge",t:"Collaborative Theorem Prover",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A shared workspace where mathematicians jointly build and verify formal proofs."},
-    {c:"Open Knowledge",t:"Negative Results Repository",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"An archive of failed experiments and null results so research isn't needlessly duplicated."},
-    {c:"Open Knowledge",t:"Argument Repository",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A searchable database of debate outlines and reusable argumentative frameworks."},
-    {c:"Coordination Infra",t:"Policy & Science Simulator",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A sandbox for safely testing policy changes and hypotheses before real-world rollout."},
-    {c:"Personal Leverage",t:"Unified Feed Control",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A single interface managing emails, texts, calls, and feeds with user-defined routing rules."},
-    {c:"Fixing the Internet",t:"Soundbite Propagation Tracker",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"Audio-fingerprinting that traces how a specific quote or claim spreads across media."},
-    {c:"Civic & Government",t:"Global Goals Dashboard",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A public dashboard visualizing humanity's measured progress on major shared objectives."},
-    {c:"Collective Action",t:"Conditional Voting Pledge",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"Citizens commit to vote only if enough peers in their district also pledge, then all activate together."},
-    {c:"Care & Society",t:"Favor-Matching Network",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"Maps friends' skills so people can request and exchange favors locally."},
-    {c:"Health & Body",t:"ICU & Ventilator Tracker",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"A real-time map of available ventilators and ICU beds across hospitals during a crisis."},
-    {c:"Care & Society",t:"Proximity Hangout Suggester",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"Alerts you to nearby friends and suggests a meetup without persistent location tracking."},
-    {c:"Fixing the Internet",t:"Political Bias Classifier",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"An ML tool that detects and labels politically biased content in social feeds."},
-    {c:"Climate & Sustainability",t:"Wildfire Satellite Detection",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"A model that flags forest fires early from satellite imagery."},
-    {c:"Personal Leverage",t:"Ingredient Recipe Finder",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"Recommends recipes from what's in your kitchen and pairs you with a cooking partner."},
-    {c:"Reputation & Trust",t:"Used-Car History Database",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"A verified repository of repair and inspection histories for used vehicles."},
-    {c:"Open Knowledge",t:"Idea Graph IDE",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"A graph workspace that links hackathon and startup ideas by relationship."},
-    {c:"Open Knowledge",t:"Curiosity Thread Maps",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"A platform charting question-to-question sequences that lead from curiosity to expertise."},
-    {c:"Open Knowledge",t:"Best-in-Class Tool Registry",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A curated directory of the top tool for each purpose, organized by use case."},
-    {c:"Coordination Infra",t:"Curated List Publishing",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"Lets curators easily publish and distribute thematic lists and recommendations."},
-    {c:"Personal Leverage",t:"Context Engineering Prize",s:"idea",u:"https://jacobcole.ai/brainstorms/",d:"A competition to get small models to frontier-level performance through better context."}
+    {c:"Collective Action",k:"build-thunderpledge",t:"ThunderPledge",s:"idea",u:"https://thunderpledge.jacobcole.net",d:"Kickstarter for collective action: pledge to go vegetarian, vote, or boycott — but only once a critical mass also commits. Variants: ThunderVote, ThunderBoycott ('Kickstopper')."},
+    {c:"Collective Action",k:"build-zero-sum-redirect",t:"Zero-Sum Redirect",s:"idea",d:"A clearinghouse for opposing political donations — matched contributions cancel out and the saved money goes to charity instead."},
+    {c:"Collective Action",k:"build-government-suggestion-box",t:"Government Suggestion Box",s:"idea",d:"A suggestion-box platform for governments, including the ability to donate toward implementing specific suggestions."},
+    {c:"Collective Action",k:"build-everyone-a-philanthropist",t:"Everyone-a-Philanthropist",s:"idea",d:"Infrastructure so communities can pool resources to fill missing government functions — help a neighbor afford insurance, get a kid a laptop."},
+    {c:"Collective Action",k:"build-resource-sharing-platform",t:"Resource-Sharing Platform",s:"idea",u:"https://favorverse.jacobcole.net/",d:"Let people share what they can lend — tools, a U-Haul, time. Related: Favorverse & VolunteerForce."},
+    {c:"Reputation & Trust",k:"build-open-reputation-system",t:"Open Reputation System",s:"idea",d:"A portable, open reputation layer — the missing primitive for trust in online coordination."},
+    {c:"Reputation & Trust",k:"build-trust-layer-meta-brands",t:"Trust Layer / Meta-Brands",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A trust layer for the web — 'meta-brands' that vouch for quality and integrity."},
+    {c:"Reputation & Trust",k:"build-fact-check-extension",t:"Fact-Check Extension",s:"idea",u:"https://factcheck.jacobcole.net/",d:"A browser extension surfacing fact-checks and provenance inline."},
+    {c:"Fixing the Internet",k:"build-open-forum-software",t:"Open Forum Software",s:"building",u:"https://github.com/gulkily/pollyanna",d:"Forum software that is transparent, consensual, and open-source (Pollyanna)."},
+    {c:"Fixing the Internet",k:"build-minimalist-homepages",t:"Minimalist Homepages",s:"idea",u:"https://worldissuetracker.com/tracker/missing-civ-infrastructure",d:"A better way to make calm, minimalist personal homepages."},
+    {c:"Fixing the Internet",k:"build-thoughtfulweb",t:"ThoughtfulWeb",s:"idea",u:"https://thoughtfulweb.jacobcole.net",d:"A directory of places on the web that are thoughtful, artful, and mindful — an oasis of good taste."},
+    {c:"Personal Leverage",k:"build-camel-s-eye-email-agent",t:"'Camel's Eye' Email Agent",s:"idea",d:"An agent that filters and triages email on your behalf (from Permutation City). Reclaim your attention."},
+    {c:"Personal Leverage",k:"build-shortcut-macro-coach",t:"Shortcut / Macro Coach",s:"idea",d:"Watches your actions and occasionally suggests a shortcut, auto-writing the macro for you."},
+    {c:"Personal Leverage",k:"build-open-automation-tools",t:"Open Automation Tools",s:"idea",d:"Great open-source macro & browser-automation frameworks (Browserflow-style) for everyone."},
+    {c:"Personal Leverage",k:"build-shopping-coach",t:"Shopping Coach",s:"idea",d:"A service that shops on your behalf — finds the best, most ethical option so you don't have to."},
+    {c:"Open Knowledge",k:"build-open-meditation-curricula",t:"Open Meditation Curricula",s:"building",u:"https://meditation.jacobcole.net/",d:"Basic open curricula for meditation and working with your body. Lists exist; needs a real course."},
+    {c:"Open Knowledge",k:"build-open-medical-knowledge",t:"Open Medical Knowledge",s:"building",u:"https://chronicpain.jacobcole.net/",d:"How to treat chronic pain, RSI, and more — patient-first medical know-how. Lists started."},
+    {c:"Open Knowledge",k:"build-open-academic-education",t:"Open Academic Education",s:"idea",d:"University-level math, an open algorithms tutor, and interactive self-teaching programming resources."},
+    {c:"Open Knowledge",k:"build-open-work-templates",t:"Open Work Templates",s:"idea",d:"Open templates for every kind of work — invoices, gantt charts, proposals."},
+    {c:"Open Knowledge",k:"build-role-model-casting",t:"Role-Model Casting",s:"idea",u:"https://foodslist.jacobcole.net/",d:"For people without good role models — emulate the routines of healthy, effective people (e.g. foods lists)."},
+    {c:"Open Knowledge",k:"build-motivation-database",t:"Motivation Database",s:"idea",u:"https://whyisitawesome.jacobcole.net/",d:"A wiki of why all the awesome things in the world are awesome — fuel for motivation."},
+    {c:"Open Knowledge",k:"build-books-to-grow-up-on",t:"'Books to Grow Up On'",s:"idea",u:"https://kidactivities.jacobcole.net",d:"An open list of literature that builds good mental models — plus kids' games & activities."},
+    {c:"Assistive Tech",k:"build-hands-free-voice-interfaces",t:"Hands-Free Voice Interfaces",s:"idea",d:"Good hands-free voice-recognition hooks into common sites (Gmail, etc.) for quadriplegics and others. Lots of low-hanging fruit."},
+    {c:"Assistive Tech",k:"build-cueing-app-for-brain-injuries",t:"Cueing App for Brain Injuries",s:"idea",d:"A cueing/reminder app for people recovering from brain injuries."},
+    {c:"Assistive Tech",k:"build-better-foot-mouse",t:"Better Foot Mouse",s:"idea",d:"A better foot-operated mouse for people who can't use their hands."},
+    {c:"Coordination Infra",k:"build-on-the-fly-knowledge-capture",t:"On-the-Fly Knowledge Capture",s:"building",u:"https://globalbr.ai",d:"Frictionless personal knowledge capture + a graph query engine. Being built as Noos."},
+    {c:"Coordination Infra",k:"build-global-idea-bank",t:"Global Idea Bank",s:"building",u:"https://tmad4000.github.io/brainstorms/",d:"An open bank of ideas & hackathon projects anyone can take and build. Live as the Idea List."},
+    {c:"Coordination Infra",k:"build-open-research-repository",t:"Open Research Repository",s:"idea",u:"https://worldissuetracker.com/tracker/missing-civ-infrastructure",d:"A global, open repository for research — make the world's findings freely usable."},
+    {c:"Care & Society",k:"build-adult-foster-support-network",t:"Adult 'Foster' Support Network",s:"idea",d:"Ubiquitous support — 'extra parents' — for adults facing challenges so no one falls through the cracks."},
+    {c:"Care & Society",k:"build-non-emergency-help-button",t:"Non-Emergency Help Button",s:"idea",d:"A button to request non-emergency help: a compassionate responder for mental-health crises, a care coordinator, a 'life figure-outer'."},
+    {c:"Care & Society",k:"build-database-of-survival-guides",t:"Database of Survival Guides",s:"idea",d:"'How to survive/thrive' guides across many contexts — including for highly sensitive people on a budget."},
+    {c:"Care & Society",k:"build-database-of-human-ideals",t:"Database of Human Ideals",s:"idea",d:"Documenting the multiplicity of happy cultures and ways of being."},
+    {c:"Done",k:"build-openlibrary",t:"OpenLibrary",s:"done",u:"https://openlibrary.org",d:"Open, universal catalog of books. Exists — and it's wonderful."},
+    {c:"Done",k:"build-internet-archive",t:"Internet Archive",s:"done",u:"https://archive.org",d:"Humanity's library and memory. Exists — support it."},
+    {c:"Done",k:"build-concentration-music",t:"Concentration Music",s:"done",d:"Open 'music for concentration' playlists everyone can access. Largely solved."},
+    {c:"Fixing the Internet",k:"build-cross-site-hashtag-search",t:"Cross-Site Hashtag Search",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"Search a hashtag uniformly across every social platform and website at once."},
+    {c:"Fixing the Internet",k:"build-universal-comments-layer",t:"Universal Comments Layer",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"Attach comment threads to any webpage, email, or chat, viewable by anyone."},
+    {c:"Fixing the Internet",k:"build-universal-web-annotations",t:"Universal Web Annotations",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A shared highlight-and-note layer that pins annotations onto any page across the web."},
+    {c:"Open Knowledge",k:"build-canonical-debate-lab",t:"Canonical Debate Lab",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A structured platform that organizes contested claims and their arguments toward resolution."},
+    {c:"Open Knowledge",k:"build-scientific-assertions-database",t:"Scientific Assertions Database",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A machine-readable repository of scientific claims with their dependencies and evidence mapped."},
+    {c:"Open Knowledge",k:"build-collaborative-theorem-prover",t:"Collaborative Theorem Prover",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A shared workspace where mathematicians jointly build and verify formal proofs."},
+    {c:"Open Knowledge",k:"build-negative-results-repository",t:"Negative Results Repository",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"An archive of failed experiments and null results so research isn't needlessly duplicated."},
+    {c:"Open Knowledge",k:"build-argument-repository",t:"Argument Repository",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A searchable database of debate outlines and reusable argumentative frameworks."},
+    {c:"Coordination Infra",k:"build-policy-science-simulator",t:"Policy & Science Simulator",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A sandbox for safely testing policy changes and hypotheses before real-world rollout."},
+    {c:"Personal Leverage",k:"build-unified-feed-control",t:"Unified Feed Control",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A single interface managing emails, texts, calls, and feeds with user-defined routing rules."},
+    {c:"Fixing the Internet",k:"build-soundbite-propagation-tracker",t:"Soundbite Propagation Tracker",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"Audio-fingerprinting that traces how a specific quote or claim spreads across media."},
+    {c:"Civic & Government",k:"build-global-goals-dashboard",t:"Global Goals Dashboard",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A public dashboard visualizing humanity's measured progress on major shared objectives."},
+    {c:"Collective Action",k:"build-conditional-voting-pledge",t:"Conditional Voting Pledge",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"Citizens commit to vote only if enough peers in their district also pledge, then all activate together."},
+    {c:"Care & Society",k:"build-favor-matching-network",t:"Favor-Matching Network",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"Maps friends' skills so people can request and exchange favors locally."},
+    {c:"Health & Body",k:"build-icu-ventilator-tracker",t:"ICU & Ventilator Tracker",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"A real-time map of available ventilators and ICU beds across hospitals during a crisis."},
+    {c:"Care & Society",k:"build-proximity-hangout-suggester",t:"Proximity Hangout Suggester",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"Alerts you to nearby friends and suggests a meetup without persistent location tracking."},
+    {c:"Fixing the Internet",k:"build-political-bias-classifier",t:"Political Bias Classifier",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"An ML tool that detects and labels politically biased content in social feeds."},
+    {c:"Climate & Sustainability",k:"build-wildfire-satellite-detection",t:"Wildfire Satellite Detection",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"A model that flags forest fires early from satellite imagery."},
+    {c:"Personal Leverage",k:"build-ingredient-recipe-finder",t:"Ingredient Recipe Finder",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"Recommends recipes from what's in your kitchen and pairs you with a cooking partner."},
+    {c:"Reputation & Trust",k:"build-used-car-history-database",t:"Used-Car History Database",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"A verified repository of repair and inspection histories for used vehicles."},
+    {c:"Open Knowledge",k:"build-idea-graph-ide",t:"Idea Graph IDE",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"A graph workspace that links hackathon and startup ideas by relationship."},
+    {c:"Open Knowledge",k:"build-curiosity-thread-maps",t:"Curiosity Thread Maps",s:"idea",u:"https://hackathonprojects.jacobcole.net/",d:"A platform charting question-to-question sequences that lead from curiosity to expertise."},
+    {c:"Open Knowledge",k:"build-best-in-class-tool-registry",t:"Best-in-Class Tool Registry",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"A curated directory of the top tool for each purpose, organized by use case."},
+    {c:"Coordination Infra",k:"build-curated-list-publishing",t:"Curated List Publishing",s:"idea",u:"https://fixingtheinternet.jacobcole.net/",d:"Lets curators easily publish and distribute thematic lists and recommendations."},
+    {c:"Personal Leverage",k:"build-context-engineering-prize",t:"Context Engineering Prize",s:"idea",u:"https://jacobcole.ai/brainstorms/",d:"A competition to get small models to frontier-level performance through better context."}
   ];
   (function(){
     var grid=document.getElementById('buildgrid'), filters=document.getElementById('filters');
@@ -756,10 +784,11 @@ signupForm.addEventListener('submit', async function(event) {
       BUILD.filter(function(b){return f==='all'||b.s===f}).forEach(function(b){
         var lab=labels[b.s]||["idea","Idea"];
         var ext=b.u?'<a class="ext" href="'+b.u+'" target="_blank" rel="noopener">↗ link</a>':'';
-        var claim='<a class="claim" href="https://missing-civ-infrastructure.worldissuetracker.com/" target="_blank" rel="noopener">Claim →</a>';
+        // Anonymous quest Like is mounted by interest-ui.js.
         var el=document.createElement('div');
         el.className='bcard';
-        el.innerHTML='<span class="tag '+lab[0]+'">'+lab[1]+'</span><div class="cat">'+b.c+'</div><h3>'+b.t+'</h3><p>'+b.d+'</p><div class="row">'+claim+ext+'</div>';
+        el.dataset.interestItem=b.k; el.id=b.k;
+        el.innerHTML='<span class="tag '+lab[0]+'">'+lab[1]+'</span><div class="cat">'+b.c+'</div><h3>'+b.t+'</h3><p>'+b.d+'</p><div class="row">'+ext+'</div>';
         grid.appendChild(el);
       });
     }
@@ -788,11 +817,12 @@ signupForm.addEventListener('submit', async function(event) {
         var assignee=i.assignee_display_name;
         var action=assignee
           ? '<span class="claimedby">✓ Claimed by '+esc(assignee)+'</span>'
-          : '<a class="claim" href="'+issueUrl(i)+'" target="_blank" rel="noopener">Claim →</a>';
-        var votes=(i.votes!=null)?'<span class="votes">▲ '+i.votes+'</span>':'';
+          : '';
+        var votes=''; // HI like counts are loaded from the aggregate-only interest endpoint.
         var desc=esc((i.description||'').split(' Part of the Humanity')[0]).slice(0,150);
         var el=document.createElement('div');
         el.className='bcard';
+        el.dataset.interestItem='quest-'+i.slug; el.id='quest-'+i.slug; el.dataset.questUrl=issueUrl(i);
         el.innerHTML='<span class="tag '+(assignee?'build':'idea')+'">'+(assignee?'🔨 Claimed':'💡 Open')+'</span>'
           +'<div class="cat">'+esc(i.category||'infrastructure')+'</div>'
           +'<h3><a href="'+issueUrl(i)+'" target="_blank" rel="noopener" style="color:inherit">'+esc(i.title)+'</a></h3>'
@@ -913,5 +943,6 @@ signupForm.addEventListener('submit', async function(event) {
     }catch(e){btn.textContent='Try saving again';btn.disabled=false;mSaveFallback(ok);}
   }
 </script>
+<script src="/interest-ui.js" defer></script>
 </body>
 </html>

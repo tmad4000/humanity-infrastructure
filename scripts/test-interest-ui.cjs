@@ -1,0 +1,94 @@
+// Browser-only preview verification; fetch is stubbed before form interaction.
+// No signup, subscriber or credential reads/writes. Chrome sandbox stays enabled.
+const assert = require('node:assert/strict');
+const {spawn} = require('node:child_process');
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
+const origin = process.argv[2];
+if (!origin) throw Error('Usage: node scripts/test-interest-ui.cjs <preview-origin>');
+(async () => {
+  const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'hi-modal-browser-'));
+  const child = spawn(process.env.CHROME_BIN || '/opt/google/chrome/chrome', ['--headless','--disable-gpu','--remote-debugging-pipe','--user-data-dir='+profile,'about:blank'], {stdio:['ignore','ignore','ignore','pipe','pipe']});
+  let id=0, buffer='', pending=new Map();
+  child.stdio[4].on('data', data => {buffer+=data.toString();let i;while((i=buffer.indexOf('\0'))>=0){const m=JSON.parse(buffer.slice(0,i));buffer=buffer.slice(i+1);if(pending.has(m.id)){pending.get(m.id)(m);pending.delete(m.id);}}});
+  function send(method,params={},sessionId){return new Promise((resolve,reject)=>{const n=++id;const timer=setTimeout(()=>{pending.delete(n);reject(Error('CDP timeout: '+method));},15000);pending.set(n,m=>{clearTimeout(timer);m.error?reject(Error(m.error.message)):resolve(m);});child.stdio[3].write(JSON.stringify({id:n,method,params,sessionId})+'\0');});}
+  let sid;
+  async function evaluate(expression){const r=await send('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true},sid);if(r.result.exceptionDetails)throw Error(r.result.exceptionDetails.text);return r.result.result.value;}
+  async function key(key,shift=false){for(const type of ['keyDown','keyUp'])await send('Input.dispatchKeyEvent',{type,key,code:key,windowsVirtualKeyCode:key==='Escape'?27:9,modifiers:shift?8:0},sid);}
+  try {
+    const t=await send('Target.createTarget',{url:'about:blank'});sid=(await send('Target.attachToTarget',{targetId:t.result.targetId,flatten:true})).result.sessionId;
+    const items=JSON.parse(fs.readFileSync('interest-items.json','utf8')),quest=Object.keys(items).find(key=>key.startsWith('quest-'));
+    const stub=`window.cspViolations=[];document.addEventListener('securitypolicyviolation',event=>cspViolations.push({directive:event.effectiveDirective,blocked:event.blockedURI}));window.signalRequests=[];window.hiEvents=[];Object.defineProperty(window,'hiTrack',{get:()=>((name,props)=>hiEvents.push({name,props})),set:()=>{},configurable:true});window.signalFail=false;const realFetch=window.fetch;window.fetch=async(url,options)=>{if(url==='/api/interest/counts')return {ok:true,json:async()=>({counts:{lastbook:signalRequests.length?3:2,signudoc:3}})};if(url==='/api/interest'){signalRequests.push(JSON.parse(options.body));if(signalFail){signalFail=false;return {ok:false,json:async()=>({error:'Too many attempts. Please try again in an hour.'})}}return {ok:true,json:async()=>({ok:true})}}if(String(url).includes('get-issues'))return {json:async()=>({issues:[{slug:${JSON.stringify(quest.slice(6))},title:${JSON.stringify(items[quest])},description:'Browser fixture',status:'open',votes:0}]})};return realFetch(url,options);};`;
+    await send('Page.enable',{},sid);
+    await send('Page.addScriptToEvaluateOnNewDocument',{source:stub},sid);
+    await send('Emulation.setDeviceMetricsOverride',{width:390,height:900,deviceScaleFactor:1,mobile:true},sid);
+    await send('Page.navigate',{url:origin+'/?utm_source=ui-test'},sid);
+    for(let i=0;i<100;i++){if(await evaluate("!!document.querySelector('#lastbook [data-signal-kind]')"))break;await new Promise(r=>setTimeout(r,50));}
+    await new Promise(r=>setTimeout(r,100));
+    assert.deepEqual(await evaluate("[...document.querySelectorAll('#tools > .wrap > .grid > article.card')].slice(0,2).map(card=>card.id)"),['lastbook','unlinked']);
+    assert.equal(await evaluate("document.querySelectorAll('.editor-note[open]').length"),0);
+    await evaluate("document.querySelector('#lastbook .editor-note summary').click()");assert.equal(await evaluate("document.querySelector('#lastbook .editor-note').open"),true);await evaluate("document.querySelector('#lastbook .editor-note summary').click()");
+    assert.equal(await evaluate("!!document.getElementById('lastbook-conversation')"),true);
+    assert.equal(await evaluate("document.querySelector('#lastbook [data-interest-count]').textContent"),'Be the first');
+    assert.equal(await evaluate("document.querySelector('#signudoc [data-interest-count]').textContent"),'3 want signals');
+    assert.equal(await evaluate("document.documentElement.scrollWidth > innerWidth"),false);
+    assert.equal(await evaluate("[...document.querySelectorAll('#buildgrid [data-interest-item]')].every(card=>card.dataset.interestItem.startsWith('build-'))"),true);
+    assert.equal(await evaluate("(()=>{const ids=[...document.querySelectorAll('[data-interest-item]')].map(card=>card.id);return new Set(ids).size===ids.length})()"),true);
+    assert.equal(await evaluate("document.querySelectorAll('a [data-signal-kind]').length"),0);
+    assert.equal(await evaluate("document.querySelectorAll('#bookshelves [data-signal-kind]').length"),2);
+    // Simulate the layout owner's native row contract before testing the heart.
+    await evaluate("(()=>{const card=document.getElementById('lastbook'),details=document.createElement('details');details.className='resource-details';details.innerHTML='<summary>Lastbook</summary>';card.prepend(details)})()");
+    assert.equal(await evaluate("document.querySelectorAll('#lastbook > .resource-actions > .signal-actions').length"),1);
+    await evaluate("document.querySelector('#lastbook [data-signal-kind=want]').click()");await new Promise(r=>setTimeout(r,100));
+    assert.equal(await evaluate("document.querySelector('#lastbook .resource-details').open"),false);
+    assert.equal(await evaluate('document.activeElement.id'),'letter-email');
+    assert.equal(await evaluate("document.getElementById('letter-interest').value"),'Lastbook');
+    const anonymous=await evaluate('signalRequests[0]');assert.deepEqual(anonymous,{item_key:'lastbook',kind:'want',website:''});
+    await evaluate("document.querySelector('#letter-context-links a').addEventListener('click',event=>event.preventDefault(),{once:true});document.querySelector('#letter-context-links a').click()");
+    const intent=new URL(await evaluate("document.querySelector('#letter-context-links a').href"));assert.equal(intent.hostname,'twitter.com');const shared=new URL(intent.searchParams.get('url'));assert.equal(shared.searchParams.get('ref'),'x-interest');assert.equal(shared.hash,'#lastbook');
+    assert.equal(await evaluate("document.querySelector('#lastbook [data-interest-count]').textContent"),'3 want signals');
+    await key('Escape');
+    await evaluate("document.querySelector('#lastbook [data-signal-kind=want]').click()");await new Promise(r=>setTimeout(r,50));assert.equal(await evaluate('signalRequests.length'),1);await key('Escape');
+    await evaluate("document.querySelector('#paxi [data-signal-kind=building]').click();document.getElementById('signal-email').value='builder@example.com';document.getElementById('signal-handle').value='@maker';document.getElementById('signal-form').elements.letter_opt_in.checked=true;window.signalFail=true;document.getElementById('signal-form').requestSubmit()");await new Promise(r=>setTimeout(r,100));
+    assert.match(await evaluate("document.querySelector('.signal-dialog .status').textContent"),/Too many attempts/);
+    await evaluate("document.getElementById('signal-form').requestSubmit()");await new Promise(r=>setTimeout(r,100));
+    assert.match(await evaluate("document.getElementById('signal-summary').textContent"),/private/);
+    const builder=await evaluate('signalRequests[2]');assert.equal(builder.kind,'building');assert.equal(builder.email,'builder@example.com');assert.equal(builder.handle,'@maker');assert.equal(builder.letter_opt_in,true);assert.equal(Object.hasOwn(builder,'public_opt_in'),false);
+    const shot=await send('Page.captureScreenshot',{format:'png'},sid);fs.writeFileSync('/tmp/hi-interest-signal-mobile.png',Buffer.from(shot.result.data,'base64'));
+    await evaluate("document.getElementById('signal-updates').click()");await new Promise(r=>setTimeout(r,100));
+    assert.equal(await evaluate("document.getElementById('letter-dialog').open"),true);assert.equal(await evaluate('document.activeElement.id'),'letter-email');assert.equal(await evaluate("document.getElementById('letter-interest').value"),'Paxi');await key('Escape');
+    await evaluate("document.querySelector('#filters [data-f=idea]').click()");await new Promise(r=>setTimeout(r,100));
+    assert.equal(await evaluate("[...document.querySelectorAll('#buildgrid [data-interest-item]')].every(card=>card.querySelectorAll('[data-signal-kind]').length===2)"),true);
+    assert.equal(await evaluate("document.querySelectorAll('#witgrid [data-signal-kind]').length"),2);
+    await send('Emulation.setDeviceMetricsOverride',{width:1280,height:900,deviceScaleFactor:1,mobile:false},sid);assert.equal(await evaluate("document.documentElement.scrollWidth > innerWidth"),false);
+    assert.equal(await evaluate("!!document.querySelector('footer a[href=\"/classic\"]')"),true);
+    assert.equal(await evaluate("document.querySelectorAll('#buildgrid a.claim,#witgrid a.claim').length"),0);
+    const questKey=await evaluate("document.querySelector('#buildgrid [data-interest-item]').dataset.interestItem");
+    await evaluate("window.signalFail=true;document.querySelector('#buildgrid [data-signal-kind=want]').click()");await new Promise(r=>setTimeout(r,100));
+    assert.equal(await evaluate("document.getElementById('letter-dialog').open"),false);
+    await evaluate("document.querySelector('#buildgrid [data-signal-kind=want]').click()");await new Promise(r=>setTimeout(r,100));
+    assert.equal(await evaluate("document.getElementById('letter-dialog').open"),true);assert.equal(await evaluate("document.getElementById('letter-title').textContent"),'Want updates on this? Leave your email');
+    const like=await evaluate('signalRequests[4]');assert.deepEqual(Object.keys(like).sort(),['item_key','kind','website']);assert.equal(like.item_key,questKey);assert.equal(like.kind,'want');
+    await key('Escape');const before=await evaluate('signalRequests.length');
+    await evaluate("document.querySelector('#buildgrid [data-signal-kind=want]').click()");await new Promise(r=>setTimeout(r,50));assert.equal(await evaluate('signalRequests.length'),before);await key('Escape');
+    assert.equal(await evaluate("document.querySelector('#buildgrid [data-signal-kind=want]').getAttribute('aria-pressed')"),'true');
+    await evaluate("document.querySelector('#witgrid [data-signal-kind=want]').click()");await new Promise(r=>setTimeout(r,100));
+    assert.equal(await evaluate("!!document.querySelector('#letter-context-links a[href^=\"https://worldissuetracker.com/\"]')"),true);await key('Escape');
+    const events=await evaluate("hiEvents.filter(event=>event.name.startsWith('interest_'))");assert.deepEqual(events.map(event=>event.name),['interest_want','interest_tweet_intent','interest_building','interest_want','interest_want']);
+    for(const event of events)assert.deepEqual(Object.keys(event.props).sort(),['item_key','placement']);
+    assert.doesNotMatch(JSON.stringify(events),/builder@example|maker|letter_opt_in/);
+    await send('Page.reload',{},sid);
+    for(let i=0;i<100;i++){if(await evaluate("!!document.querySelector('#buildgrid [data-signal-kind=want]')"))break;await new Promise(r=>setTimeout(r,50));}
+    assert.equal(await evaluate("document.querySelector('#lastbook [data-signal-kind=want]').textContent"),'♥ Liked');
+    assert.equal(await evaluate("document.querySelector('#buildgrid [data-signal-kind=want]').textContent"),'♥ Liked');
+    await evaluate("document.querySelector('#buildgrid [data-signal-kind=want]').click()");await new Promise(r=>setTimeout(r,50));assert.equal(await evaluate('signalRequests.length'),0);assert.equal(await evaluate("document.getElementById('letter-dialog').open"),true);
+    assert.deepEqual(await evaluate('cspViolations'),[]);
+    console.log('PASS interest UI: every static/local/allowlisted-quest card, anonymous/contact flow, count threshold, private builders, retry, focus/Escape, tweet intent/referral, email-modal handoff, filters and mobile/desktop; fetch stubbed, no posts or subscriber writes');
+  } finally {
+    try {await send('Browser.close');} catch {}
+    await new Promise(resolve=>{if(child.exitCode!==null)return resolve();const timer=setTimeout(()=>child.kill(),3000);child.once('exit',()=>{clearTimeout(timer);resolve();});});
+    await new Promise(resolve=>setTimeout(resolve,200));
+    fs.rmSync(profile,{recursive:true,force:true,maxRetries:10,retryDelay:200});
+  }
+})().catch(error=>{console.error(error);process.exitCode=1;});
