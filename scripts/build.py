@@ -1,5 +1,5 @@
 from pathlib import Path
-import os, re
+import os, re, json, mimetypes
 
 def escape_js(s):
     s = s.replace('\\', '\\\\')
@@ -13,6 +13,12 @@ with open('v3.html') as f: v3 = f.read()
 with open('classic.html') as f: classic = f.read()
 with open('versions/v4/index.html') as f: archive_v4 = f.read()
 import base64
+designs = {}
+for p in sorted(Path('designs').rglob('*')):
+    if p.is_file():
+        mime = mimetypes.guess_type(p.name)[0] or 'application/octet-stream'
+        designs['/' + p.as_posix()] = [mime, base64.b64encode(p.read_bytes()).decode()]
+
 with open('og-card.png','rb') as f: og_b64 = base64.b64encode(f.read()).decode()
 
 worker = f"""export default {{
@@ -24,6 +30,20 @@ async function handleRequest(request, env) {{
   const path = url.pathname
   const signup = await handleSignup(request, env)
   if (signup) return signup
+  if (path === '/designs') return Response.redirect(url.origin + '/designs/', 302)
+  if (path.startsWith('/designs/')) {{
+    const key = path.endsWith('/') ? path + 'index.html' : path
+    const asset = DESIGN_ASSETS[key]
+    const headers = {{
+      'X-Robots-Tag': 'noindex, nofollow, noarchive',
+      'Referrer-Policy': 'no-referrer',
+      'X-Content-Type-Options': 'nosniff',
+      'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; form-action 'none'; frame-ancestors 'self'; base-uri 'none'"
+    }}
+    if (!asset) return new Response('Design not found', {{status: 404, headers}})
+    headers['Content-Type'] = asset[0] + (asset[0].startsWith('text/') ? ';charset=UTF-8' : '')
+    return new Response(Uint8Array.from(atob(asset[1]), c => c.charCodeAt(0)), {{headers}})
+  }}
   if (path === '/og-card.png') {{
     return new Response(OG_PNG, {{ headers: {{ 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=86400' }} }})
   }}
@@ -45,6 +65,7 @@ async function handleRequest(request, env) {{
   return new Response(MAIN_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8' }} }})
 }}
 
+const DESIGN_ASSETS = {json.dumps(designs)}
 const MAIN_HTML = `{escape_js(main)}`
 const V2_HTML = `{escape_js(v2)}`
 const V3_HTML = `{escape_js(v3)}`

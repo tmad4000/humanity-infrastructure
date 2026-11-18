@@ -1,0 +1,42 @@
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/designs/fonts/c2bef016fb9b4bcd.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/designs/fonts/541119bccb21575e.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/designs/fonts/011cb50bc76b8e25.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/designs/fonts/1d2d57cf6706d912.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/designs/fonts/92132b045906a1bb.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/designs/fonts/96ff6e64477b7eaf.ttf) format('truetype');
+}
