@@ -227,9 +227,12 @@ const ANALYTICS_JS = `// Anonymous, cookieless analytics. Never pass form values
     if (window.ideaflow) window.ideaflow.track(name, properties);
     else if (pending.length < 30) pending.push([name, properties]);
   };
-  document.addEventListener('DOMContentLoaded', function () {
+  // The shared wrapper loads async, so it may arrive after DOMContentLoaded: flush on both.
+  function flush() {
     if (window.ideaflow) pending.splice(0).forEach(([name, props]) => window.ideaflow.track(name, props));
-  });
+  }
+  window.hiAnalyticsFlush = flush;
+  document.addEventListener('DOMContentLoaded', flush);
   document.addEventListener('click', function (event) {
     const target = event.target.closest('a[href], [data-signup-open]');
     if (!target || target.closest('#signal-thanks, #letter-context-links')) return;
@@ -569,7 +572,7 @@ const MAIN_HTML = `<!DOCTYPE html>
   .signal-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:18px}.signal-actions .btn{font-size:.8rem;padding:7px 10px;cursor:pointer;font-family:inherit}.signal-count{font-size:.78rem;color:var(--muted);width:100%}.signal-dialog[hidden]{display:none}
 </style>
 <script src="/analytics.js"></script>
-<script defer src="https://analytics.ideaflow.app/ideaflow.js" data-product="humanity-infrastructure" data-respect-dnt="true" data-before-send="hiAnalyticsBeforeSend"></script>
+<script async src="https://analytics.ideaflow.app/ideaflow.js" onload="window.hiAnalyticsFlush && window.hiAnalyticsFlush()" data-product="humanity-infrastructure" data-respect-dnt="true" data-before-send="hiAnalyticsBeforeSend"></script>
 </head>
 <body>
 <nav><div class="wrap">
@@ -844,7 +847,7 @@ const MAIN_HTML = `<!DOCTYPE html>
   <div style="text-align:right">
     <a href="https://www.notion.so/jacobblog/Humanity-3-0-and-Dharmic-blueprint-314fda9cff6380bfae57ff843cce32dd" target="_blank" rel="noopener">Blueprint (Notion)</a> ·
     <a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" target="_blank" rel="noopener">Master doc</a><br/>
-    <span class="ver">v0.5.5 · 2026-11-18</span>
+    <span class="ver">v0.5.6 · 2026-11-18</span>
   </div>
 </div>
   <!-- Design versions + legacy -->
@@ -1622,7 +1625,7 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
 .reveal.in { opacity: 1; transform: none; }
 </style>
 <script src="/analytics.js"></script>
-<script defer src="https://analytics.ideaflow.app/ideaflow.js" data-product="humanity-infrastructure" data-respect-dnt="true" data-before-send="hiAnalyticsBeforeSend"></script>
+<script async src="https://analytics.ideaflow.app/ideaflow.js" onload="window.hiAnalyticsFlush && window.hiAnalyticsFlush()" data-product="humanity-infrastructure" data-respect-dnt="true" data-before-send="hiAnalyticsBeforeSend"></script>
 </head>
 <body>
 
@@ -2340,7 +2343,7 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
 .reveal.in { opacity: 1; transform: none; }
 </style>
 <script src="/analytics.js"></script>
-<script defer src="https://analytics.ideaflow.app/ideaflow.js" data-product="humanity-infrastructure" data-respect-dnt="true" data-before-send="hiAnalyticsBeforeSend"></script>
+<script async src="https://analytics.ideaflow.app/ideaflow.js" onload="window.hiAnalyticsFlush && window.hiAnalyticsFlush()" data-product="humanity-infrastructure" data-respect-dnt="true" data-before-send="hiAnalyticsBeforeSend"></script>
 </head>
 <body>
 
@@ -2902,7 +2905,7 @@ const CLASSIC_HTML = `<!DOCTYPE html>
   .m-save-ok.show{display:block}
 </style>
 <script src="/analytics.js"></script>
-<script defer src="https://analytics.ideaflow.app/ideaflow.js" data-product="humanity-infrastructure" data-respect-dnt="true" data-before-send="hiAnalyticsBeforeSend"></script>
+<script async src="https://analytics.ideaflow.app/ideaflow.js" onload="window.hiAnalyticsFlush && window.hiAnalyticsFlush()" data-product="humanity-infrastructure" data-respect-dnt="true" data-before-send="hiAnalyticsBeforeSend"></script>
 </head>
 <body>
 <nav><div class="wrap">
@@ -3574,7 +3577,7 @@ const ARCHIVE_V4_HTML = `<!DOCTYPE html>
   .m-save-ok.show{display:block}
 </style>
 <script src="/analytics.js"></script>
-<script defer src="https://analytics.ideaflow.app/ideaflow.js" data-product="humanity-infrastructure" data-respect-dnt="true" data-before-send="hiAnalyticsBeforeSend"></script>
+<script async src="https://analytics.ideaflow.app/ideaflow.js" onload="window.hiAnalyticsFlush && window.hiAnalyticsFlush()" data-product="humanity-infrastructure" data-respect-dnt="true" data-before-send="hiAnalyticsBeforeSend"></script>
 </head>
 <body>
 <nav><div class="wrap">

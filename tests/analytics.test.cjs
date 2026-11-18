@@ -59,3 +59,23 @@ test('tweet-card X link is an X event without listing ID; SignuDoc stays a resou
  assert.equal(c.calls[1][0],'resource_outbound_click');
  assert.equal(c.calls[1][1].listing_id,'signudoc');
 });
+
+test('async wrapper arriving after DOMContentLoaded still receives queued events exactly once',()=>{
+ const c=load(); delete c.window.ideaflow;
+ c.window.hiTrack('github_click',{placement:'header'});
+ c.callbacks.DOMContentLoaded(); // wrapper not loaded yet: events stay queued
+ assert.equal(c.calls.length,0);
+ c.window.ideaflow={track:(...args)=>c.calls.push(args)}; // async wrapper finishes loading
+ c.window.hiAnalyticsFlush(); c.window.hiAnalyticsFlush();
+ assert.equal(c.calls.length,1); assert.equal(c.calls[0][0],'github_click');
+});
+
+test('shared analytics wrapper loads async on every page so a stalled host never blocks deferred feature scripts',()=>{
+ for (const f of ['index.html','classic.html','v2.html','v3.html','versions/v4/index.html']) {
+  const html=fs.readFileSync(f,'utf8');
+  const tag=html.match(/<script[^>]*src="https:\/\/analytics\.ideaflow\.app\/ideaflow\.js"[^>]*>/);
+  assert.ok(tag,f+': wrapper tag present');
+  assert.match(tag[0],/\basync\b/,f+': async'); assert.doesNotMatch(tag[0],/\bdefer\b/,f+': not defer');
+  assert.match(tag[0],/onload="window\.hiAnalyticsFlush && window\.hiAnalyticsFlush\(\)"/,f+': flush on load');
+ }
+});
