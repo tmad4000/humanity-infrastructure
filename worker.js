@@ -589,10 +589,10 @@ const MAIN_HTML = `<!DOCTYPE html>
     <a href="/v2" style="color:var(--accent-2);">v2 — Editorial / Red</a>
     <a href="/v3" style="color:var(--accent-2);">v3 — Dark Blueprint</a>
     <a href="/v4" style="color:var(--accent-2);">v4 — Archived format</a>
+    <a href="/designs/" style="color:var(--accent-2);">Alternative designs</a>
     <a href="/classic" style="color:var(--accent-2);">Classic — Original layout</a>
     <a href="https://github.com/tmad4000/humanity-infrastructure/blob/main/VERSION_LOG.md" style="color:var(--accent-2);">Version log &amp; screenshots</a>
   </div>
-    <a href="/designs/" style="color:var(--accent-2);">Alternative designs</a>
 </footer>
 
 <!-- Contribute modal -->
