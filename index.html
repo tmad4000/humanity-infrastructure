@@ -49,7 +49,16 @@
     --border:rgba(10,20,40,.10); --border-strong:rgba(10,20,40,.18);
     --shadow:0 1px 2px rgba(20,30,50,.06),0 10px 34px rgba(20,30,50,.10);
   }
-  .tweet-card{margin:0;border-color:var(--border-strong)}
+  .tweet-spotlight{display:flex;flex-direction:column;align-items:flex-end;padding-bottom:36px}
+  .tweet-card{margin:0;width:100%;max-width:420px;padding:22px;background:var(--card);border:1px solid var(--border-strong);border-radius:16px;text-align:left;min-width:0}
+  .tweet-card blockquote p{margin:0 0 16px}
+  .tweet-card .tweet-meta{margin-bottom:8px}
+  .tweet-permalink{display:none;font-size:.8rem;text-align:right}
+  .tweet-rendered .tweet-permalink{display:block}
+  .tweet-card iframe{max-width:100%!important}
+  .tweet-spotlight.tweet-rendered .tweet-card{padding:0;border:0;background:none}
+  .tweet-spotlight.tweet-rendered figcaption{margin-bottom:8px}
+  @media(max-width:680px){.tweet-card{max-width:100%}}
   .tweet-kicker{color:var(--accent);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
   .tweet-meta{color:var(--muted);font-size:.8rem}
   .tweet-card blockquote{margin:16px 0;padding:0;border:0;border-radius:0;background:none;font-size:.95rem;line-height:1.65;overflow-wrap:anywhere}
@@ -290,6 +299,20 @@
   <p class="sub" style="margin-top:24px"><button class="signup-link" type="button" data-signup-open>Sign up for the interest list</button></p>
 </div></header>
 
+<aside class="wrap tweet-spotlight" id="lastbook-conversation" aria-label="Jacob Cole’s post about Lastbook">
+  <figure class="tweet-card">
+    <figcaption class="tweet-kicker">From the conversation</figcaption>
+    <blockquote class="twitter-tweet" data-dnt="true" data-conversation="none" data-width="420" data-theme="dark">
+      <p lang="en" dir="ltr">@farbood We featured Lastbook on humanityinfrastructure.com — a directory of tools and knowledge for human flourishing. What else belongs? Everyone’s invited to suggest resources or submit a GitHub PR via the site. Thanks for building this, @farbood!</p>
+      <div class="tweet-meta"><strong>Jacob Cole</strong> @jacobCole4000</div>
+      <div class="tweet-source"><time datetime="2026-11-17T08:33:06Z">November 17, 2026</time><a href="https://x.com/jacobcole4000/status/2122608959236493761" target="_blank" rel="noopener noreferrer">View on X ↗</a></div>
+    </blockquote>
+  </figure>
+  <a class="tweet-permalink" href="https://x.com/jacobcole4000/status/2122608959236493761" target="_blank" rel="noopener noreferrer">View on X ↗</a>
+</aside>
+<script src="/x-embed.js" defer></script>
+
+
 <section id="manifesto"><div class="wrap">
   <div class="section-head">
     <div class="kicker">The Premise</div>
@@ -319,11 +342,6 @@
       <ul class="badges"><li class="open">Open source · MIT</li><li>Mac · Windows · Linux</li><li>By farbood &amp; contributors</li></ul>
       <details class="editor-note"><summary>Editor's note</summary><p class="why">when the network goes down, the knowledge shouldn't. A library you can hand to a neighbour on a drive.</p></details>
     </article>
-    <figure class="card tweet-card" id="lastbook-conversation" aria-label="Jacob Cole’s post about Lastbook">
-      <figcaption><span class="tweet-kicker">From the conversation</span><br><strong>Jacob Cole</strong> <span class="tweet-meta">@jacobCole4000</span></figcaption>
-      <blockquote cite="https://x.com/jacobcole4000/status/2122608959236493761">@farbood We featured Lastbook on humanityinfrastructure.com — a directory of tools and knowledge for human flourishing. What else belongs? Everyone’s invited to suggest resources or submit a GitHub PR via the site. Thanks for building this, @farbood!</blockquote>
-      <div class="tweet-source"><time datetime="2026-11-17T08:33:06Z">November 17, 2026</time><a href="https://x.com/jacobcole4000/status/2122608959236493761" target="_blank" rel="noopener noreferrer">View on X ↗</a></div>
-    </figure>
     <article class="card" id="unlinked" data-interest-item="unlinked">
       <h3><a href="https://www.unlinked.ai" target="_blank" rel="noopener">Unlinked</a></h3>
 
@@ -526,7 +544,7 @@
   <div style="text-align:right">
     <a href="https://www.notion.so/jacobblog/Humanity-3-0-and-Dharmic-blueprint-314fda9cff6380bfae57ff843cce32dd" target="_blank" rel="noopener">Blueprint (Notion)</a> ·
     <a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" target="_blank" rel="noopener">Master doc</a><br/>
-    <span class="ver">v0.5.4 · 2026-11-18</span>
+    <span class="ver">v0.5.5 · 2026-11-18</span>
   </div>
 </div>
   <!-- Design versions + legacy -->
