@@ -865,7 +865,7 @@ const MAIN_HTML = `<!DOCTYPE html>
 
 <section id="submit"><div class="wrap">
   <h2>What else should be featured?</h2>
-  <p>Explore the <a href="https://social.ideaflow.app/directory">Directory of the Internet</a> for more tools and shared knowledge.</p>
+  <p>Explore the <a href="https://social.ideaflow.app/directory?curation=5380&amp;view=outline">Directory of the Internet</a> for more tools and shared knowledge.</p>
   <p>Help grow Humanity Infrastructure. Suggest useful tools, open knowledge, practical guides or projects that help people flourish. You do not need to be a developer.</p>
   <p>Send the name, link, a short description and who it helps. Include access or licensing details and any affiliation. We review suggestions before featuring them.</p>
   <div style="display:flex;flex-wrap:wrap;gap:12px;margin:24px 0">
