@@ -36,6 +36,7 @@ async function handleRequest(request, env) {{
     const asset = DESIGN_ASSETS[key]
     const headers = {{
       'X-Robots-Tag': 'noindex, nofollow, noarchive',
+      'Cache-Control': 'public, no-transform',
       'Referrer-Policy': 'no-referrer',
       'X-Content-Type-Options': 'nosniff',
       'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; form-action 'none'; frame-ancestors 'self'; base-uri 'none'"
