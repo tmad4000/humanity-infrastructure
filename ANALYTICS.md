@@ -1,7 +1,10 @@
 # Anonymous analytics
 
 Umami at https://analytics.ideaflow.app uses product `humanity-infrastructure`.
-Registration, its generated website UUID, and the live wrapper's optional
+Website UUID: `57b2fd1b-6e77-4536-9c87-798e3019c49d`.
+Dashboard: https://analytics.ideaflow.app/websites/57b2fd1b-6e77-4536-9c87-798e3019c49d
+
+The registered product map and the live wrapper's optional
 `data-before-send` forwarding must be deployed from ideaflow-telemetry before
 this client is released. A loaded script alone does not prove collection.
 
