@@ -1,0 +1,26 @@
+{
+  "name": "humanity-infrastructure",
+  "main": "worker.js",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": true,
+  "d1_databases": [
+    {
+      "binding": "SIGNUPS",
+      "database_name": "humanity-infrastructure-signups",
+      "database_id": "848844f3-4379-4cb6-a7a3-a39a7bfc3624"
+    }
+  ],
+  "env": {
+    "preview": {
+      "name": "humanity-infrastructure-signups-preview",
+      "workers_dev": true,
+      "d1_databases": [
+        {
+          "binding": "SIGNUPS",
+          "database_name": "humanity-infrastructure-signups-preview",
+          "database_id": "374eb125-c67a-46bf-b73a-4a949afe83b6"
+        }
+      ]
+    }
+  }
+}
