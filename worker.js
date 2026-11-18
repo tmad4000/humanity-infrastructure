@@ -172,7 +172,7 @@ const ANALYTICS_JS = `// Anonymous, cookieless analytics. Never pass form values
     if (['suggest_resource', 'pr_guide_open'].includes(declared)) return window.hiTrack(declared, {placement});
     if (!['http:', 'https:'].includes(url.protocol) || url.origin === location.origin) return;
     const host = url.hostname.replace(/^www\\./, '');
-    const listing = target.dataset.analyticsListing || target.closest('.card[id]')?.id;
+    const listing = target.closest('.tweet-card') ? null : target.dataset.analyticsListing || target.closest('.card[id]')?.id;
     const name = target.matches('.claim') ? 'quest_claim' : listing ? 'resource_outbound_click' : host === 'github.com' ? 'github_click' : ['x.com', 'twitter.com'].includes(host) ? 'x_outbound_click' : 'resource_outbound_click';
     const props = {placement, destination_host: host, elapsed_ms: Math.round(performance.now())};
     if (listing && /^[a-z0-9-]{1,80}$/.test(listing)) props.listing_id = listing;

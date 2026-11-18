@@ -44,3 +44,18 @@ test('join journey retains only fixed path and approved attribution, never quest
  assert.ok(!JSON.stringify(payload).includes('private'));
  assert.ok(!JSON.stringify(payload).includes('person'));
 });
+
+test('tweet-card X link is an X event without listing ID; SignuDoc stays a resource',()=>{
+ const c=load();
+ function click(href,id,tweet){
+  const link={href,dataset:{},matches:()=>false,closest:selector=>selector==='.tweet-card'?(tweet?{}:null):selector==='.card[id]'?{id}:null};
+  c.callbacks.click({target:{closest:()=>link}});
+ }
+ click('https://x.com/jacobcole4000/status/123','lastbook-conversation',true);
+ assert.equal(c.calls[0][0],'x_outbound_click');
+ assert.equal(c.calls[0][1].destination_host,'x.com');
+ assert.equal(Object.hasOwn(c.calls[0][1],'listing_id'),false);
+ click('https://github.com/NYLLON-SOFTWARE/SignuDoc','signudoc',false);
+ assert.equal(c.calls[1][0],'resource_outbound_click');
+ assert.equal(c.calls[1][1].listing_id,'signudoc');
+});
