@@ -54,21 +54,21 @@ async function handleRequest(request, env) {{
     return new Response(OG_PNG, {{ headers: {{ 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=86400' }} }})
   }}
   if (path === '/classic' || path.startsWith('/classic/')) {{
-    return new Response(CLASSIC_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Content-Security-Policy': "script-src 'self' 'unsafe-inline' https://analytics.ideaflow.app; connect-src 'self' https://api.worldissuetracker.com https://analytics.ideaflow.app; object-src 'none'; base-uri 'self'" }} }})
+    return new Response(CLASSIC_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Cache-Control': 'public, no-transform', 'Content-Security-Policy': "script-src 'self' 'unsafe-inline' https://analytics.ideaflow.app; connect-src 'self' https://api.worldissuetracker.com https://analytics.ideaflow.app; object-src 'none'; base-uri 'self'" }} }})
   }}
   if (path === '/v4' || path.startsWith('/v4/')) {{
-    return new Response(ARCHIVE_V4_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Content-Security-Policy': "script-src 'self' 'unsafe-inline' https://analytics.ideaflow.app; connect-src 'self' https://api.worldissuetracker.com https://analytics.ideaflow.app; object-src 'none'; base-uri 'self'" }} }})
+    return new Response(ARCHIVE_V4_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Cache-Control': 'public, no-transform', 'Content-Security-Policy': "script-src 'self' 'unsafe-inline' https://analytics.ideaflow.app; connect-src 'self' https://api.worldissuetracker.com https://analytics.ideaflow.app; object-src 'none'; base-uri 'self'" }} }})
   }}
   if (path === '/v2' || path.startsWith('/v2/')) {{
-    return new Response(V2_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Content-Security-Policy': "script-src 'self' 'unsafe-inline' https://analytics.ideaflow.app; connect-src 'self' https://api.worldissuetracker.com https://analytics.ideaflow.app; object-src 'none'; base-uri 'self'" }} }})
+    return new Response(V2_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Cache-Control': 'public, no-transform', 'Content-Security-Policy': "script-src 'self' 'unsafe-inline' https://analytics.ideaflow.app; connect-src 'self' https://api.worldissuetracker.com https://analytics.ideaflow.app; object-src 'none'; base-uri 'self'" }} }})
   }}
   if (path === '/v3' || path.startsWith('/v3/')) {{
-    return new Response(V3_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Content-Security-Policy': "script-src 'self' 'unsafe-inline' https://analytics.ideaflow.app; connect-src 'self' https://api.worldissuetracker.com https://analytics.ideaflow.app; object-src 'none'; base-uri 'self'" }} }})
+    return new Response(V3_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Cache-Control': 'public, no-transform', 'Content-Security-Policy': "script-src 'self' 'unsafe-inline' https://analytics.ideaflow.app; connect-src 'self' https://api.worldissuetracker.com https://analytics.ideaflow.app; object-src 'none'; base-uri 'self'" }} }})
   }}
   if (path === '/v1' || path.startsWith('/v1/')) {{
     return Response.redirect('https://humanityinfrastructure.com/', 301)
   }}
-  return new Response(MAIN_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Content-Security-Policy': "script-src 'self' 'unsafe-inline' https://analytics.ideaflow.app https://platform.twitter.com; connect-src 'self' https://api.worldissuetracker.com https://analytics.ideaflow.app https://syndication.twitter.com https://cdn.syndication.twimg.com; frame-src https://platform.twitter.com; object-src 'none'; base-uri 'self'" }} }})
+  return new Response(MAIN_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Cache-Control': 'public, no-transform', 'Content-Security-Policy': "script-src 'self' 'unsafe-inline' https://analytics.ideaflow.app https://platform.twitter.com; connect-src 'self' https://api.worldissuetracker.com https://analytics.ideaflow.app https://syndication.twitter.com https://cdn.syndication.twimg.com; frame-src https://platform.twitter.com; object-src 'none'; base-uri 'self'" }} }})
 }}
 
 const ANALYTICS_JS = `{escape_js(Path('analytics.js').read_text())}`
