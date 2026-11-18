@@ -35,3 +35,12 @@ test('feature-owned interest links do not produce a second generic outbound even
  assert.equal(c.calls[0][0],'interest_tweet_intent');
  assert.deepEqual(c.calls[0][1],{item_key:'lastbook',placement:'tool_card'});
 });
+
+test('join journey retains only fixed path and approved attribution, never quest free text or hash',()=>{
+ const c=load();
+ const payload=c.window.hiAnalyticsBeforeSend('event',{url:'/join?quest=private-user-text&email=person%40example.com&utm_source=x#private-context',referrer:'https://humanityinfrastructure.com/join?quest=private-referrer'});
+ assert.equal(payload.url,'/join?utm_source=x');
+ assert.equal(payload.referrer,'https://humanityinfrastructure.com');
+ assert.ok(!JSON.stringify(payload).includes('private'));
+ assert.ok(!JSON.stringify(payload).includes('person'));
+});

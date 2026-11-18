@@ -127,7 +127,7 @@ async function handleRequest(request, env) {
 const ANALYTICS_JS = `// Anonymous, cookieless analytics. Never pass form values or arbitrary URLs.
 (function () {
   'use strict';
-  const routes = new Set(['/', '/classic', '/v2', '/v3', '/v4']);
+  const routes = new Set(['/', '/classic', '/v2', '/v3', '/v4', '/join']);
   const sources = new Set(['x', 'twitter', 'buzz', 'hi_newsletter', 'github', 'lastbook', 'x-interest']);
   function safeUrl(raw) {
     const url = new URL(raw || '/', location.origin);

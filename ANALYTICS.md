@@ -8,7 +8,9 @@ The registered product map and the live wrapper's optional
 `data-before-send` forwarding must be deployed from ideaflow-telemetry before
 this client is released. A loaded script alone does not prove collection.
 
-Automatic pageviews are enabled on /, /classic, /v2, /v3 and /v4. Private signup,
+Automatic pageviews are enabled on /, /classic, /v2, /v3, /v4 and the fixed /join route.
+The /join quest query, hash and optional email context are never event properties
+or pageview URLs; only the approved acquisition parameters may survive. Private signup,
 unsubscribe, export, and design gallery routes have no tracker. DNT is respected;
 no cookies, identify calls, form values, query tokens, referrer paths, or arbitrary
 page titles are collected. UTM source/ref values are restricted to x, twitter,
