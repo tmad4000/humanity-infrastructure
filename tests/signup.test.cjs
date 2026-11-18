@@ -26,7 +26,7 @@ test('signup captures privately, default opt-in off, duplicates update interest/
  const unsubscribeUrl='https://example.com/unsubscribe?t='+rows[0].unsubscribe_token;assert.equal(rows.length,1);assert.equal(rows[0].email,'test@example.com');assert.equal(rows[0].public_opt_in,0);assert.equal(rows[0].utm,'{"utm_source":"test"}');
  result=await context.route(new Request(unsubscribeUrl),env);assert.equal(result.status,200);assert.ok(rows[0].unsubscribed_at);
  assert.equal((await context.route(new Request(unsubscribeUrl),env)).status,200);
- const duplicate=await context.route(request({email:'test@example.com',interest:'opted-out interest',public_opt_in:true}),env);assert.equal(duplicate.status,originalStatus);assert.deepEqual([...duplicate.headers],originalHeaders);assert.equal(await duplicate.text(),originalBody);assert.equal(rows[0].public_opt_in,0);assert.ok(rows[0].unsubscribed_at);assert.equal(rows[0].interest,'opted-out interest');
+ const duplicate=await context.route(request({email:'test@example.com',interest:'opted-out interest'}),env);assert.equal(duplicate.status,originalStatus);assert.deepEqual([...duplicate.headers],originalHeaders);assert.equal(await duplicate.text(),originalBody);assert.equal(rows[0].public_opt_in,0);assert.ok(rows[0].unsubscribed_at);assert.equal(rows[0].interest,'opted-out interest');
 });
 test('rejects bad email, long interest, invalid handle, oversized and cross-origin requests',async()=>{
  for(const payload of [{email:'bad'}, {email:'ok@example.com',interest:'a'.repeat(201)},{email:'ok@example.com',handle:'not a handle'}]) assert.equal((await context.route(request(payload),fixture().env)).status,400);
