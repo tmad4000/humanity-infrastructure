@@ -2,7 +2,7 @@
 
 **Knowledge is a birthright. So are the tools to use it.**
 
-[humanityinfrastructure.com](https://humanityinfrastructure.com) is an open directory of tools and knowledge for human flourishing. Each shelf starts with a **need** (knowledge that survives offline, open document signing, using the best service for each task without lock-in…) and then names the best tool we know for it. Every listing shows its license, and anyone can suggest what belongs.
+[humanityinfrastructure.com](https://humanityinfrastructure.com) is an open directory of tools and knowledge for human flourishing. Each shelf starts with a **need** (knowledge that survives offline, open document signing, using the best service for each task without lock-in…) and then names the best tool we know for it. Featured listings show their license, and anyone can suggest what belongs.
 
 ⭐ **If this resonates, star the repo** so more builders find it, then add the tool you wish everyone knew about.
 

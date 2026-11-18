@@ -4,20 +4,20 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Humanity Infrastructure — tools and knowledge for human flourishing</title>
-<meta name="description" content="A codex of human know-how as a public resource to humanity. Free, open-source tools and knowledge to coordinate human activity — and bring flourishing into every person's reach. This is how we coordinate as a superorganism." />
+<meta name="description" content="Humanity Infrastructure: a free directory of tools and knowledge for human flourishing. Each shelf names a need and the best tool we know for it. Suggest what belongs." />
 <meta property="og:title" content="Humanity Infrastructure — tools and knowledge for human flourishing" />
 <meta property="og:description" content="Knowledge is a birthright. So are the tools to use it. A free, open directory of tools and knowledge for human flourishing. Suggest what belongs." />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Humanity Infrastructure" />
 <meta property="og:url" content="https://humanityinfrastructure.com/" />
-<meta property="og:image" content="https://raw.githubusercontent.com/tmad4000/humanity-infrastructure/main/og-card.png" />
+<meta property="og:image" content="https://humanityinfrastructure.com/og-card.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content="Humanity Infrastructure: Knowledge is a birthright. So are the tools to use it." />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Humanity Infrastructure — tools and knowledge for human flourishing" />
 <meta name="twitter:description" content="A free, open directory of tools and knowledge for human flourishing. Suggest what belongs." />
-<meta name="twitter:image" content="https://raw.githubusercontent.com/tmad4000/humanity-infrastructure/main/og-card.png" />
+<meta name="twitter:image" content="https://humanityinfrastructure.com/og-card.png" />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>" />
 <style>
   :root{
@@ -36,7 +36,7 @@
     --shadow:0 1px 2px rgba(20,30,50,.06),0 10px 34px rgba(20,30,50,.10);
   }
   *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
+  html{scroll-behavior:smooth;scroll-padding-top:80px}
   body{
     margin:0;background:var(--bg);color:var(--text);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
@@ -54,12 +54,12 @@
   .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.01em;font-size:1.05rem;color:var(--text)}
   .brand span.logo{font-size:1.3rem}
   .nav-links{display:flex;gap:22px;align-items:center}
-  .nav-links a{color:var(--muted);font-size:.92rem;font-weight:500}
+  .nav-links a{color:var(--muted);font-size:.92rem;font-weight:500;white-space:nowrap}
   .nav-links a:hover{color:var(--text);text-decoration:none}
   .theme-btn{background:var(--card);border:1px solid var(--border-strong);color:var(--text);
     width:36px;height:36px;border-radius:10px;cursor:pointer;font-size:1rem;display:grid;place-items:center}
   .theme-btn:hover{background:var(--card-hover)}
-  @media(max-width:680px){.nav-links a:not(.cta){display:none}}
+  @media(max-width:1040px){.nav-links a:not(.cta):not(.gh){display:none}}
 
   /* hero */
   header.hero{padding:88px 0 56px;text-align:center}
@@ -141,9 +141,10 @@
   .why{font-size:.88rem;color:var(--muted);border-left:2px solid var(--accent-2);padding-left:10px;margin:0}
   .why b{color:var(--text);font-weight:650}
   .seemore{font-size:.86rem;font-weight:600;margin-top:auto}
-  .direct{display:block;font-size:.78rem;color:var(--faint);margin-top:4px}
-  .direct a{color:var(--faint);text-decoration:underline}
-  .maint{font-size:.68rem;color:var(--faint);font-weight:600;letter-spacing:.04em}
+  .direct{display:block;font-size:.78rem;color:var(--muted);margin-top:4px}
+  .direct a{color:var(--muted);text-decoration:underline}
+  .maint{font-size:.68rem;color:var(--muted);font-weight:600;letter-spacing:.04em}
+  [data-theme="light"] .shelf .need{color:#8a5a00}
   .witloading{color:var(--faint);padding:30px;grid-column:1/-1;text-align:center}
   .bcard .votes{font-size:.8rem;color:var(--faint);font-weight:600}
   .bcard .claimedby{font-size:.82rem;color:var(--accent-warm);font-weight:700}
@@ -222,7 +223,7 @@
     <a href="#vision">The Vision</a>
     <a href="#submit">Submit a resource</a>
     <a href="#join">Join</a>
-    <a href="https://github.com/tmad4000/humanity-infrastructure" target="_blank" rel="noopener" aria-label="Humanity Infrastructure on GitHub">GitHub ↗</a>
+    <a class="gh" href="https://github.com/tmad4000/humanity-infrastructure" target="_blank" rel="noopener" aria-label="Humanity Infrastructure on GitHub">GitHub ↗</a>
     <button class="theme-btn" id="themeBtn" title="Toggle light/dark" aria-label="Toggle theme">☀️</button>
   </div>
 </div></nav>
@@ -255,9 +256,9 @@
 
 <section id="tools"><div class="wrap">
   <div class="section-head">
-    <div class="kicker">Open Tools</div>
+    <div class="kicker">Tools</div>
     <h2>Pieces of the infrastructure that already exist</h2>
-    <p>Each shelf starts with a need, then the best tool we know for it. Free to use. Open where possible. Every listing shows its license. <a href="#submit">Suggest a resource →</a></p>
+    <p>Each shelf starts with a need, then the best tool we know for it. Free to use. Open where possible. Featured listings show license, platform and maker. <a href="#submit">Suggest a resource →</a></p>
   </div>
   <div class="shelves">
     <article class="shelf" id="lastbook">
@@ -269,7 +270,6 @@
         <ul class="badges"><li class="open">Open source · MIT</li><li>Mac · Windows · Linux</li><li>By farbood &amp; contributors</li></ul>
       </div>
       <p class="why"><b>Why it's here:</b> when the network goes down, the knowledge shouldn't. A library you can hand to a neighbour on a drive.</p>
-      <a class="seemore" href="https://directory.globalbr.ai" target="_blank" rel="noopener">See more in the Directory of the Internet →</a>
     </article>
     <article class="shelf" id="signudoc">
       <p class="need">The need</p>
@@ -280,7 +280,6 @@
         <ul class="badges"><li class="open">Open source · MIT</li><li>Self-hosted on your Vercel account</li><li>By Kevin Rose / NYLLON</li></ul>
       </div>
       <p class="why"><b>Why it's here:</b> agreeing on things is basic civic plumbing. Signing a PDF shouldn't need a per-seat licence or someone else's cloud.</p>
-      <a class="seemore" href="https://directory.globalbr.ai" target="_blank" rel="noopener">See more in the Directory of the Internet →</a>
     </article>
     <article class="shelf" id="paxi">
       <p class="need">The need</p>
@@ -291,7 +290,6 @@
         <ul class="badges"><li>Free · closed source</li><li>iPhone (iOS 17+)</li><li>By Doug Feigelson, a friend of the maintainer</li></ul>
       </div>
       <p class="why"><b>Why it's here:</b> every app wants to be the only door. You should be able to compare providers, choose the best one for each job and switch freely. <a href="https://github.com/tmad4000/humanity-infrastructure/issues/2" target="_blank" rel="noopener">Community submission #2</a>.</p>
-      <a class="seemore" href="https://directory.globalbr.ai" target="_blank" rel="noopener">See more in the Directory of the Internet →</a>
     </article>
   </div>
   <div class="grid">
@@ -375,7 +373,7 @@
         <li><a href="https://www.notion.so/jacobblog/Humanity-3-0-and-Dharmic-blueprint-314fda9cff6380bfae57ff843cce32dd" target="_blank" rel="noopener">Humanity 3.0 &amp; the Dharmic blueprint (Notion)</a></li>
         <li><a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" target="_blank" rel="noopener">The Codex — master doc (Google Docs)</a></li>
         <li><a href="https://plausible-text-76b.notion.site/Cody-s-Healing-List-v4-b05b097d529c4c54b5d62f87f55b1f6f" target="_blank" rel="noopener">Healing Resources — "Cody Codex" (Notion)</a></li>
-        <li><a href="https://quests.world" target="_blank" rel="noopener">World Quest Guild — add yourself</a><span class="direct">If that doesn’t load: <a href="https://docs.google.com/document/d/1OggVeoEN4zAafRAox3yjFYtNwmYFJQHovXLviWI69zY/edit" target="_blank" rel="noopener">open the guild doc directly</a></span></li>
+        <li><a href="https://docs.google.com/document/d/1OggVeoEN4zAafRAox3yjFYtNwmYFJQHovXLviWI69zY/edit" target="_blank" rel="noopener">World Quest Guild — add yourself</a><span class="direct">Short link: <a href="https://quests.world" target="_blank" rel="noopener">quests.world</a> (being repaired)</span></li>
       </ul>
     </div>
     <div class="lcol">
@@ -419,16 +417,16 @@
     <p>We're building the more general, not-just-engineering equivalent of the open-source movement. There's an enormous amount of low-hanging fruit — and we're looking for designers, engineers, writers, healers, and well-intended humans of every kind.</p>
     <div class="btns" style="justify-content:center">
       <a class="btn primary" href="mailto:jacob@ideaflow.io?subject=Joining%20the%20Codex%20%2F%20Humanity%20Infrastructure">Get involved →</a>
-      <a class="btn ghost" href="https://quests.world" target="_blank" rel="noopener">Join a guild</a>
+      <a class="btn ghost" href="https://docs.google.com/document/d/1OggVeoEN4zAafRAox3yjFYtNwmYFJQHovXLviWI69zY/edit" target="_blank" rel="noopener">Join a guild</a>
     </div>
-    <span class="direct">Guild link not loading? <a href="https://docs.google.com/document/d/1OggVeoEN4zAafRAox3yjFYtNwmYFJQHovXLviWI69zY/edit" target="_blank" rel="noopener">Open the World Quest Guild doc directly</a></span>
+    <span class="direct">World Quest Guild · short link <a href="https://quests.world" target="_blank" rel="noopener">quests.world</a> (being repaired)</span>
   </div>
 </div></section>
 
 <footer><div class="wrap">
   <div>
     <strong style="color:var(--text)">Humanity Infrastructure · The Codex</strong> — basic infrastructure for human flourishing.<br/>
-    Free to use. Open where possible. Every listing shows its license. <a href="https://github.com/tmad4000/humanity-infrastructure">Source on GitHub</a> · Contact <a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a>
+    Free to use. Open where possible. Featured listings show their license. <a href="https://github.com/tmad4000/humanity-infrastructure">Source on GitHub</a> · Contact <a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a>
   </div>
   <div style="text-align:right">
     <a href="https://www.notion.so/jacobblog/Humanity-3-0-and-Dharmic-blueprint-314fda9cff6380bfae57ff843cce32dd" target="_blank" rel="noopener">Blueprint (Notion)</a> ·
@@ -576,7 +574,7 @@
     var WIT="https://api.worldissuetracker.com/functions/v1/get-issues?tracker_slug=missing-civ-infrastructure&label=humanity3&limit=100";
     var grid=document.getElementById('witgrid');
     function esc(s){return (s||'').replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
-    function issueUrl(i){return i.canonical_issue_url || ('https://worldissuetracker.com/issue/'+i.slug)}
+    function issueUrl(i){try{return new URL(i.canonical_issue_url || ('/issue/'+encodeURIComponent(i.slug||'')), 'https://worldissuetracker.com').href}catch(e){return 'https://worldissuetracker.com/tracker/missing-civ-infrastructure'}}
     fetch(WIT).then(function(r){return r.json()}).then(function(d){
       var issues=(d.issues||d.data||[]).filter(function(i){return !i.deleted_at && i.status!=='closed'});
       if(!issues.length){grid.innerHTML='<div class="witloading">No open quests yet — <a href="https://missing-civ-infrastructure.worldissuetracker.com/" target="_blank" rel="noopener">file the first one →</a></div>';return}

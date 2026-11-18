@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Humanity Infrastructure — Open Infrastructure for Human Flourishing</title>
-<meta name="description" content="We build the missing civilization layer. Open-source tools, knowledge systems, and coordination infrastructure — free for all of humanity." />
+<meta name="description" content="We build the missing civilization layer. Tools, knowledge systems and coordination infrastructure: free to use, open where possible." />
 <meta property="og:title" content="Humanity Infrastructure" />
 <meta property="og:description" content="Open infrastructure for human flourishing. We build the missing civilization layer." />
 <meta property="og:type" content="website" />
@@ -49,7 +49,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 
 body {
   background: var(--bg);
@@ -108,7 +108,7 @@ nav .wrap {
 .brand-name { line-height: 1.2; }
 .brand-name em { display: block; font-style: normal; font-size: .65rem; color: var(--muted); font-weight: 400; letter-spacing: .06em; text-transform: uppercase; }
 .nav-links { display: flex; gap: 24px; align-items: center; }
-.nav-links a { color: var(--muted); font-size: .88rem; font-weight: 500; font-family: var(--mono); transition: color .12s; }
+.nav-links a { color: var(--muted); font-size: .88rem; font-weight: 500; font-family: var(--mono); transition: color .12s; white-space: nowrap; }
 .nav-links a:hover { color: var(--text); text-decoration: none; }
 .theme-btn {
   background: var(--card); border: 1px solid var(--border2);
@@ -117,7 +117,7 @@ nav .wrap {
   transition: background .12s;
 }
 .theme-btn:hover { background: var(--card-h); }
-@media(max-width:700px) { .nav-links a:not(.cta) { display: none; } }
+@media(max-width:1040px) { .nav-links a:not(.cta):not(.gh) { display: none; } }
 
 /* ── Hero ───────────────────────────────────────────────── */
 header.hero {
@@ -366,7 +366,7 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
     </div>
   </a>
   <div class="nav-links">
-    <a href="https://github.com/tmad4000/humanity-infrastructure" target="_blank" rel="noopener">GitHub ↗</a>
+    <a class="gh" href="https://github.com/tmad4000/humanity-infrastructure" target="_blank" rel="noopener">GitHub ↗</a>
     <a href="#mission">Mission</a>
     <a href="#tools">Tools</a>
     <a href="#buildlist">Build List</a>
@@ -381,7 +381,7 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
 <header class="hero"><div class="wrap">
   <div class="eyebrow">Infrastructure for Human Flourishing</div>
   <h1>We build the missing<br/><em>civilization layer.</em></h1>
-  <p class="lede">Open-source tools, knowledge systems, and coordination infrastructure — free for all of humanity. The not-just-engineering equivalent of the open-source movement.</p>
+  <p class="lede">Tools, knowledge systems and coordination infrastructure: free to use, open where possible. The not-just-engineering equivalent of the open-source movement.</p>
   <p class="sub">// knowledge as a birthright · tools that make people independent · coordinating as a superorganism</p>
   <div class="btns">
     <a class="btn primary" href="#tools">Explore the infrastructure →</a>
@@ -420,7 +420,7 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
 <section id="tools"><div class="wrap">
   <div class="sect-label">Working Infrastructure</div>
   <h2 class="sect-h">Pieces that <em>already exist.</em></h2>
-  <p class="sect-p">Each listing starts with a need. Free to use. Open where possible. Every listing shows its license. <a href="#submit">Suggest a resource →</a></p>
+  <p class="sect-p">Featured listings start with a need. Free to use. Open where possible. Featured listings show their license. <a href="#submit">Suggest a resource →</a></p>
   <div class="grid reveal">
     <a id="lastbook" class="tcard" href="https://lastbook.org" target="_blank" rel="noopener">
       <div class="tcard-top"><div class="tcard-icon">📖</div><span class="tag live">Featured</span></div>
@@ -527,7 +527,7 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
         <li><a href="https://www.notion.so/jacobblog/Humanity-3-0-and-Dharmic-blueprint-314fda9cff6380bfae57ff843cce32dd" target="_blank" rel="noopener">Humanity 3.0 &amp; the Dharmic blueprint</a></li>
         <li><a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" target="_blank" rel="noopener">The Codex — master doc (Google Docs)</a></li>
         <li><a href="https://plausible-text-76b.notion.site/Cody-s-Healing-List-v4-b05b097d529c4c54b5d62f87f55b1f6f" target="_blank" rel="noopener">Healing Resources — "Cody Codex"</a></li>
-        <li><a href="https://quests.world" target="_blank" rel="noopener">World Quest Guild — add yourself</a><br/><small>If that doesn’t load: <a href="https://docs.google.com/document/d/1OggVeoEN4zAafRAox3yjFYtNwmYFJQHovXLviWI69zY/edit" target="_blank" rel="noopener">open the guild doc directly</a></small></li>
+        <li><a href="https://docs.google.com/document/d/1OggVeoEN4zAafRAox3yjFYtNwmYFJQHovXLviWI69zY/edit" target="_blank" rel="noopener">World Quest Guild — add yourself</a><br/><small>Short link: <a href="https://quests.world" target="_blank" rel="noopener">quests.world</a> (being repaired)</small></li>
       </ul>
     </div>
     <div class="lcol">
@@ -693,7 +693,7 @@ async function loadWIT() {
     const esc = s => String(s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
     const issues = (data.issues || data.data || []).filter(i => !i.deleted_at && i.status !== 'closed')
       .sort((a,b) => (b.votes||0) - (a.votes||0)).slice(0, 6)
-      .map(i => ({ ...i, title: esc(i.title), description: esc((i.description||'').split(' Part of the Humanity')[0]), url: i.canonical_issue_url || ('https://worldissuetracker.com/issue/' + i.slug), id: '' }));
+      .map(i => ({ ...i, title: esc(i.title), description: esc((i.description||'').split(' Part of the Humanity')[0]), url: (() => { try { return new URL(i.canonical_issue_url || ('/issue/' + encodeURIComponent(i.slug || '')), 'https://worldissuetracker.com').href } catch { return 'https://worldissuetracker.com/tracker/missing-civ-infrastructure' } })(), id: '' }));
     if (!issues.length) { grid.innerHTML = '<div class="witloading">No open quests right now — check back soon.</div>'; return; }
     grid.innerHTML = issues.map(i => `
       <div class="bcard">
