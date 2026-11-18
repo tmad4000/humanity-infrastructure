@@ -2301,7 +2301,7 @@ const CLASSIC_HTML = `<!DOCTYPE html>
     --shadow:0 1px 2px rgba(20,30,50,.06),0 10px 34px rgba(20,30,50,.10);
   }
   *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
+  html{scroll-behavior:smooth;scroll-padding-top:80px}
   body{
     margin:0;background:var(--bg);color:var(--text);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
@@ -2319,12 +2319,12 @@ const CLASSIC_HTML = `<!DOCTYPE html>
   .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.01em;font-size:1.05rem;color:var(--text)}
   .brand span.logo{font-size:1.3rem}
   .nav-links{display:flex;gap:22px;align-items:center}
-  .nav-links a{color:var(--muted);font-size:.92rem;font-weight:500}
+  .nav-links a{color:var(--muted);font-size:.92rem;font-weight:500;white-space:nowrap}
   .nav-links a:hover{color:var(--text);text-decoration:none}
   .theme-btn{background:var(--card);border:1px solid var(--border-strong);color:var(--text);
     width:36px;height:36px;border-radius:10px;cursor:pointer;font-size:1rem;display:grid;place-items:center}
   .theme-btn:hover{background:var(--card-hover)}
-  @media(max-width:680px){.nav-links a:not(.cta){display:none}}
+  @media(max-width:1040px){.nav-links a:not(.cta):not(.gh){display:none}}
 
   /* hero */
   header.hero{padding:88px 0 56px;text-align:center}
@@ -2392,6 +2392,21 @@ const CLASSIC_HTML = `<!DOCTYPE html>
   .claim-head p{color:var(--muted);max-width:640px;margin:0 auto;font-size:.98rem}
   .livedot{width:10px;height:10px;border-radius:50%;background:#ef5f5f;display:inline-block;box-shadow:0 0 0 0 rgba(239,95,95,.5);animation:pulse 2s infinite}
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(239,95,95,.5)}70%{box-shadow:0 0 0 8px rgba(239,95,95,0)}100%{box-shadow:0 0 0 0 rgba(239,95,95,0)}}
+  .card.featured .needline{margin-bottom:8px;color:var(--muted);font-size:.84rem;line-height:1.5}
+  .need-label{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--accent-warm);margin-right:5px}
+  .card.featured .why{margin-top:12px;font-size:.88rem}
+  .card.featured .top>div{min-width:0}
+  .card.featured h3{padding-right:72px}
+  .card.featured h3 a{color:inherit}
+  .card.featured .url{overflow-wrap:anywhere}
+  .badges{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0;padding:0;list-style:none}
+  .badges li{font-size:.7rem;font-weight:650;padding:3px 8px;border-radius:999px;border:1px solid var(--border-strong);color:var(--muted)}
+  .badges li.open{color:var(--accent);border-color:rgba(95,211,168,.35)}
+  .why{font-size:.88rem;color:var(--muted);border-left:2px solid var(--accent-2);padding-left:10px;margin:0}
+  .why b{color:var(--text);font-weight:650}
+  .seemore{font-size:.86rem;font-weight:600;margin-top:auto}
+  .direct{display:block;font-size:.78rem;color:var(--muted);margin-top:4px}
+  .direct a{color:var(--muted);text-decoration:underline}
   .witloading{color:var(--faint);padding:30px;grid-column:1/-1;text-align:center}
   .bcard .votes{font-size:.8rem;color:var(--faint);font-weight:600}
   .bcard .claimedby{font-size:.82rem;color:var(--accent-warm);font-weight:700}
@@ -2470,6 +2485,7 @@ const CLASSIC_HTML = `<!DOCTYPE html>
     <a href="#vision">The Vision</a>
     <a href="#submit">Submit a resource</a>
     <a href="#join">Join</a>
+    <a class="gh" href="https://github.com/tmad4000/humanity-infrastructure" target="_blank" rel="noopener">GitHub ↗</a>
     <button class="theme-btn" id="themeBtn" title="Toggle light/dark" aria-label="Toggle theme">☀️</button>
   </div>
 </div></nav>
@@ -2504,13 +2520,14 @@ const CLASSIC_HTML = `<!DOCTYPE html>
   <div class="section-head">
     <div class="kicker">Working Tools</div>
     <h2>Pieces of the infrastructure that already exist</h2>
-    <p>Free and open. Use them today — and help build the rest. <a href="#submit">Suggest a resource →</a></p>
+    <p>Free to use. Open where possible. Featured listings show their license. <a href="#submit">Suggest a resource →</a></p>
   </div>
   <div class="grid">
     <a id="lastbook" class="card" href="https://lastbook.org" target="_blank" rel="noopener">
       <span class="tag live">Featured</span>
       <div class="top"><span class="emoji">📖</span><div><h3>Lastbook</h3><div class="url">lastbook.org</div></div></div>
       <p>A free, open-source offline library of practical manuals, videos and maps, with optional local AI. Knowledge for preparedness and rebuilding, available after setup without an internet connection.</p>
+      <ul class="badges"><li class="open">Open source · MIT</li></ul>
     </a>
     <a class="card" href="https://nvctranslator.com" target="_blank" rel="noopener">
       <span class="tag live">Live</span>
