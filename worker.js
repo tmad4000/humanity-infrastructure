@@ -175,6 +175,11 @@ const MAIN_HTML = `<!DOCTYPE html>
     --border:rgba(10,20,40,.10); --border-strong:rgba(10,20,40,.18);
     --shadow:0 1px 2px rgba(20,30,50,.06),0 10px 34px rgba(20,30,50,.10);
   }
+  .tweet-card{margin:0;border-color:var(--border-strong)}
+  .tweet-kicker{color:var(--accent);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+  .tweet-meta{color:var(--muted);font-size:.8rem}
+  .tweet-card blockquote{margin:16px 0;padding:0;border:0;border-radius:0;background:none;font-size:.95rem;line-height:1.65;overflow-wrap:anywhere}
+  .tweet-source{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;color:var(--muted);font-size:.8rem}
   .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
   *{box-sizing:border-box}
   html{scroll-behavior:smooth;scroll-padding-top:80px}
@@ -421,6 +426,11 @@ const MAIN_HTML = `<!DOCTYPE html>
       <ul class="badges"><li class="open">Open source · MIT</li><li>Mac · Windows · Linux</li><li>By farbood &amp; contributors</li></ul>
       <p class="why"><b>Editor's Note:</b> when the network goes down, the knowledge shouldn't. A library you can hand to a neighbour on a drive.</p>
     </article>
+    <figure class="card tweet-card" id="lastbook-conversation" aria-label="Jacob Cole’s post about Lastbook">
+      <figcaption><span class="tweet-kicker">From the conversation</span><br><strong>Jacob Cole</strong> <span class="tweet-meta">@jacobCole4000</span></figcaption>
+      <blockquote cite="https://x.com/jacobcole4000/status/2122608959236493761">@farbood We featured Lastbook on humanityinfrastructure.com — a directory of tools and knowledge for human flourishing. What else belongs? Everyone’s invited to suggest resources or submit a GitHub PR via the site. Thanks for building this, @farbood!</blockquote>
+      <div class="tweet-source"><time datetime="2026-11-17T08:33:06Z">November 17, 2026</time><a href="https://x.com/jacobcole4000/status/2122608959236493761" target="_blank" rel="noopener noreferrer">View on X ↗</a></div>
+    </figure>
     <a class="card" href="https://nvctranslator.com" target="_blank" rel="noopener">
       <span class="tag live">Live</span>
       <div class="top"><span class="emoji">🕊️</span><div><h3>NVC Translator</h3><div class="url">nvctranslator.com</div></div></div>
@@ -623,7 +633,7 @@ const MAIN_HTML = `<!DOCTYPE html>
   <div style="text-align:right">
     <a href="https://www.notion.so/jacobblog/Humanity-3-0-and-Dharmic-blueprint-314fda9cff6380bfae57ff843cce32dd" target="_blank" rel="noopener">Blueprint (Notion)</a> ·
     <a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" target="_blank" rel="noopener">Master doc</a><br/>
-    <span class="ver">v0.5.3 · 2026-11-18</span>
+    <span class="ver">v0.5.4 · 2026-11-18</span>
   </div>
 </div>
   <!-- Design versions + legacy -->
