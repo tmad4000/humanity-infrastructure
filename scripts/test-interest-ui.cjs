@@ -69,6 +69,10 @@ if (!origin) throw Error('Usage: node scripts/test-interest-ui.cjs <preview-orig
     const events=await evaluate('hiEvents');assert.deepEqual(events.map(event=>event.name),['interest_want','interest_tweet_intent','interest_building','interest_want','interest_want']);
     for(const event of events)assert.deepEqual(Object.keys(event.props).sort(),['item_key','placement']);
     assert.doesNotMatch(JSON.stringify(events),/builder@example|maker|letter_opt_in/);
+    await send('Page.reload',{},sid);
+    for(let i=0;i<100;i++){if(await evaluate("!!document.querySelector('#buildgrid [data-signal-kind=want]')"))break;await new Promise(r=>setTimeout(r,50));}
+    assert.equal(await evaluate("document.querySelector('#buildgrid [data-signal-kind=want]').textContent"),'♥ Liked');
+    await evaluate("document.querySelector('#buildgrid [data-signal-kind=want]').click()");await new Promise(r=>setTimeout(r,50));assert.equal(await evaluate('signalRequests.length'),0);assert.equal(await evaluate("document.getElementById('letter-dialog').open"),true);
     console.log('PASS interest UI: every static/local/allowlisted-quest card, anonymous/contact flow, count threshold, private builders, retry, focus/Escape, tweet intent/referral, email-modal handoff, filters and mobile/desktop; fetch stubbed, no posts or subscriber writes');
   } finally {
     try {await send('Browser.close');} catch {}
