@@ -86,3 +86,12 @@ test('no first-party boot behaviour waits for window load (an async third-party 
  }
  assert.match(fs.readFileSync('index.html','utf8'),/document\.addEventListener\('DOMContentLoaded', autoOpenSignup\)/,'signup auto-open on DOMContentLoaded');
 });
+
+test('a named element window.ideaflow (article#ideaflow) before the wrapper arrives queues instead of throwing',()=>{
+ const c=load(); c.window.ideaflow={tagName:'ARTICLE',id:'ideaflow'}; // what named access exposes pre-wrapper
+ assert.doesNotThrow(()=>c.window.hiTrack('x_outbound_click',{placement:'body'}));
+ assert.doesNotThrow(()=>c.callbacks.DOMContentLoaded());
+ assert.equal(c.calls.length,0);
+ c.window.ideaflow={track:(...args)=>c.calls.push(args)}; c.window.hiAnalyticsFlush(); c.window.hiAnalyticsFlush();
+ assert.equal(c.calls.length,1); assert.equal(c.calls[0][0],'x_outbound_click');
+});

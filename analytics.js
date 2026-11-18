@@ -28,14 +28,22 @@
     return payload;
   };
   const pending = [];
+  // Before the wrapper arrives, window.ideaflow can be the <article id="ideaflow"> listing
+  // (named element access), so require a real tracker, not just a truthy value.
+  function tracker() {
+    const t = window.ideaflow;
+    return t && typeof t.track === 'function' ? t : null;
+  }
   window.hiTrack = function (name, properties = {}) {
     if (navigator.doNotTrack === '1' || navigator.doNotTrack === 'yes') return;
-    if (window.ideaflow) window.ideaflow.track(name, properties);
+    const t = tracker();
+    if (t) t.track(name, properties);
     else if (pending.length < 30) pending.push([name, properties]);
   };
   // The shared wrapper loads async, so it may arrive after DOMContentLoaded: flush on both.
   function flush() {
-    if (window.ideaflow) pending.splice(0).forEach(([name, props]) => window.ideaflow.track(name, props));
+    const t = tracker();
+    if (t) pending.splice(0).forEach(([name, props]) => t.track(name, props));
   }
   window.hiAnalyticsFlush = flush;
   document.addEventListener('DOMContentLoaded', flush);
