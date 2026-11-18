@@ -366,6 +366,7 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
     </div>
   </a>
   <div class="nav-links">
+    <a href="https://github.com/tmad4000/humanity-infrastructure" target="_blank" rel="noopener">GitHub ↗</a>
     <a href="#mission">Mission</a>
     <a href="#tools">Tools</a>
     <a href="#buildlist">Build List</a>
@@ -419,12 +420,25 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
 <section id="tools"><div class="wrap">
   <div class="sect-label">Working Infrastructure</div>
   <h2 class="sect-h">Pieces that <em>already exist.</em></h2>
-  <p class="sect-p">Free and open. Use them today — and help build the rest. <a href="#submit">Suggest a resource →</a></p>
+  <p class="sect-p">Each listing starts with a need. Free to use. Open where possible. Every listing shows its license. <a href="#submit">Suggest a resource →</a></p>
   <div class="grid reveal">
     <a id="lastbook" class="tcard" href="https://lastbook.org" target="_blank" rel="noopener">
       <div class="tcard-top"><div class="tcard-icon">📖</div><span class="tag live">Featured</span></div>
       <h3>Lastbook</h3><span class="url">lastbook.org</span>
       <p>A free, open-source offline library of practical manuals, videos and maps, with optional local AI. Knowledge for preparedness and rebuilding, available after setup without an internet connection.</p>
+      <p><strong>Need:</strong> knowledge that survives when the internet doesn't. Open source (MIT) · Mac, Windows, Linux.</p>
+    </a>
+    <a id="signudoc" class="tcard" href="https://github.com/NYLLON-SOFTWARE/SignuDoc" target="_blank" rel="noopener">
+      <div class="tcard-top"><div class="tcard-icon">✍️</div><span class="tag live">Featured</span></div>
+      <h3>SignuDoc</h3><span class="url">github.com/NYLLON-SOFTWARE/SignuDoc</span>
+      <p>Open-source e-signatures. Send, sign and seal documents from your own cloud at $0 per seat, with audit trails and tamper-evident seals.</p>
+      <p><strong>Need:</strong> open document signing infrastructure. Open source (MIT) · self-hosted on Vercel · by Kevin Rose / NYLLON.</p>
+    </a>
+    <a id="paxi" class="tcard" href="https://paxi.fyi" target="_blank" rel="noopener">
+      <div class="tcard-top"><div class="tcard-icon">🚕</div><span class="tag live">Featured</span></div>
+      <h3>Paxi</h3><span class="url">paxi.fyi</span>
+      <p>Compares live ride prices and times across Uber, Lyft, Waymo, Tesla, Zoox, Curb and more, then books the one you choose.</p>
+      <p><strong>Need:</strong> use the best service for each task, without interface lock-in. Free · closed source · iPhone · by Doug Feigelson, a friend of the maintainer.</p>
     </a>
     <a class="tcard" href="https://nvctranslator.com" target="_blank" rel="noopener">
       <div class="tcard-top"><div class="tcard-icon">🕊️</div><span class="tag live">Live</span></div>
@@ -443,12 +457,6 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
       <h3>WikiHub</h3>
       <span class="url">wikihub.md</span>
       <p>GitHub for LLM wikis. Hosting for open, agent-native markdown knowledge bases — forkable, shareable, version-controlled.</p>
-    </a>
-    <a class="tcard" href="https://listhub.globalbr.ai" target="_blank" rel="noopener">
-      <div class="tcard-top"><div class="tcard-icon">📝</div><span class="tag live">Live</span></div>
-      <h3>ListHub</h3>
-      <span class="url">listhub.globalbr.ai</span>
-      <p>Open list & note publishing with a REST API and two-way git sync. Home of the open-lists movement.</p>
     </a>
     <a class="tcard" href="https://worldissuetracker.com" target="_blank" rel="noopener">
       <div class="tcard-top"><div class="tcard-icon">🌐</div><span class="tag live">Live</span></div>
@@ -519,7 +527,7 @@ footer .wrap { display: flex; flex-direction: column; gap: 36px; }
         <li><a href="https://www.notion.so/jacobblog/Humanity-3-0-and-Dharmic-blueprint-314fda9cff6380bfae57ff843cce32dd" target="_blank" rel="noopener">Humanity 3.0 &amp; the Dharmic blueprint</a></li>
         <li><a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" target="_blank" rel="noopener">The Codex — master doc (Google Docs)</a></li>
         <li><a href="https://plausible-text-76b.notion.site/Cody-s-Healing-List-v4-b05b097d529c4c54b5d62f87f55b1f6f" target="_blank" rel="noopener">Healing Resources — "Cody Codex"</a></li>
-        <li><a href="http://worldquestguild.connectordocs.com/" target="_blank" rel="noopener">World Quest Guild — add yourself</a></li>
+        <li><a href="https://quests.world" target="_blank" rel="noopener">World Quest Guild — add yourself</a><br/><small>If that doesn’t load: <a href="https://docs.google.com/document/d/1OggVeoEN4zAafRAox3yjFYtNwmYFJQHovXLviWI69zY/edit" target="_blank" rel="noopener">open the guild doc directly</a></small></li>
       </ul>
     </div>
     <div class="lcol">
@@ -679,14 +687,17 @@ renderBuildList();
 async function loadWIT() {
   const grid = document.getElementById('witgrid');
   try {
-    const res = await fetch('https://api.worldissuetracker.com/api/v1/issues?tracker=missing-civ-infrastructure&status=open&limit=6');
+    const res = await fetch('https://api.worldissuetracker.com/functions/v1/get-issues?tracker_slug=missing-civ-infrastructure&label=humanity3&limit=100');
     if (!res.ok) throw new Error();
     const data = await res.json();
-    const issues = data.issues || data.data || data || [];
+    const esc = s => String(s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    const issues = (data.issues || data.data || []).filter(i => !i.deleted_at && i.status !== 'closed')
+      .sort((a,b) => (b.votes||0) - (a.votes||0)).slice(0, 6)
+      .map(i => ({ ...i, title: esc(i.title), description: esc((i.description||'').split(' Part of the Humanity')[0]), url: i.canonical_issue_url || ('https://worldissuetracker.com/issue/' + i.slug), id: '' }));
     if (!issues.length) { grid.innerHTML = '<div class="witloading">No open quests right now — check back soon.</div>'; return; }
     grid.innerHTML = issues.map(i => `
       <div class="bcard">
-        <div class="cat">Open quest · #${i.id || i.number || ''}</div>
+        <div class="cat">Open quest</div>
         <h3>${i.title}</h3>
         ${i.description ? `<p>${i.description.slice(0,180)}${i.description.length>180?'…':''}</p>` : ''}
         <div class="row">
