@@ -17,7 +17,7 @@ def sql(statement, params):
 try:
     response=http('/api/signup',{'email':email,'interest':'smoke lifecycle','handle':'hi_test','public_opt_in':False,'source_page':'/smoke','utm':{'utm_source':'release-smoke'},'referrer':'https://example.com/'},{'Content-Type':'application/json','Origin':base})
     body=json.load(response); assert body == {'ok': True}
-    duplicate=json.load(http('/api/signup',{'email':email},{'Content-Type':'application/json','Origin':base}))
+    duplicate=json.load(http('/api/signup',{'email':email,'interest':'smoke lifecycle'},{'Content-Type':'application/json','Origin':base}))
     assert duplicate == body
     print(environment+': new/duplicate signup responses identical, no unsubscribe token exposed')
     row=sql('SELECT * FROM signups WHERE email = ?', [email])[0]
