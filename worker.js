@@ -65,9 +65,12 @@ async function handleSignup(request, env) {
     const utm = JSON.stringify(Object.fromEntries(Object.entries(data.utm || {}).filter(([k,v]) => /^utm_(source|medium|campaign|term|content)$/.test(k) && typeof v === 'string').map(([k,v]) => [k,v.slice(0,200)])));
     const referrer = typeof data.referrer === 'string' ? data.referrer.slice(0,500) : '';
     const token = crypto.randomUUID().replaceAll('-', '') + crypto.randomUUID().replaceAll('-', '');
-    // Duplicates leave existing consent and opt-out intact; never expose another subscriber's token.
-    const result = await env.SIGNUPS.prepare('INSERT INTO signups (id,email,interest,handle,public_opt_in,consent_at,source_page,utm,referrer,unsubscribe_token) VALUES (?,?,?,?,?,?,?,?,?,?) ON CONFLICT(email) DO NOTHING').bind(crypto.randomUUID(),email,interest,handle,handle && data.public_opt_in === true ? 1 : 0,new Date().toISOString(),source,utm,referrer,token).run();
-    return signupResponse({ ok: true, ...(result.meta.changes ? { unsubscribe_url: url.origin + '/unsubscribe?t=' + token } : {}) });
+    // Record the latest submitted interest and consent timestamp silently.
+    // Preserve unsubscribe state, handle publicity and the existing private token.
+    await env.SIGNUPS.prepare('INSERT INTO signups (id,email,interest,handle,public_opt_in,consent_at,source_page,utm,referrer,unsubscribe_token) VALUES (?,?,?,?,?,?,?,?,?,?) ON CONFLICT(email) DO UPDATE SET interest = excluded.interest, consent_at = excluded.consent_at').bind(crypto.randomUUID(),email,interest,handle,handle && data.public_opt_in === true ? 1 : 0,new Date().toISOString(),source,utm,referrer,token).run();
+    // Keep status, body and headers identical for new, duplicate and opted-out emails.
+    // Unsubscribe URLs are available only to the owner export for inclusion in letters.
+    return signupResponse({ ok: true });
   } catch {
     // Never log submitted fields or tokens.
     return signupResponse({ error: 'Signup temporarily unavailable. Please try again later.' }, 503);
@@ -605,7 +608,7 @@ const signupInterestLabels = {
   'ideaflow-index': 'Ideaflow apps index', 'open-recordings': 'Open Recordings'
 };
 const signupInterestParam = new URLSearchParams(location.search).get('interest');
-if (signupInterestParam) document.getElementById('letter-interest').value = (signupInterestLabels[signupInterestParam] || signupInterestParam).slice(0, 200);
+if (Object.hasOwn(signupInterestLabels, signupInterestParam)) document.getElementById('letter-interest').value = signupInterestLabels[signupInterestParam];
 
 document.getElementById('letter-form').addEventListener('submit', async function(event) {
   event.preventDefault();
@@ -618,7 +621,6 @@ document.getElementById('letter-form').addEventListener('submit', async function
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || 'Please try again later.');
     status.textContent = 'Thank you. If this email is new, you’re on the list.';
-    if (data.unsubscribe_url) { const link = document.createElement('a'); link.href = data.unsubscribe_url; link.textContent = ' Unsubscribe'; status.append(link); }
     form.reset();
   } catch(error) { status.textContent = error.message || 'Could not connect. Please try again.'; }
   finally { button.disabled = false; }
