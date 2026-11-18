@@ -251,7 +251,7 @@ const ANALYTICS_JS = `// Anonymous, cookieless analytics. Never pass form values
 `
 const X_EMBED_JS = `// X is contacted only once this standalone slot approaches the viewport.
 (() => {
-  const slot = document.getElementById('lastbook-conversation');
+  const slot = document.getElementById('conversation');
   if (!slot) return;
   const figure = slot.querySelector('figure');
   const fallback = figure.innerHTML;
@@ -599,8 +599,8 @@ const MAIN_HTML = `<!DOCTYPE html>
   <p class="sub" style="margin-top:24px"><button class="signup-link" type="button" data-signup-open>Sign up for the interest list</button></p>
 </div></header>
 
-<aside class="wrap tweet-spotlight" id="lastbook-conversation" aria-label="Jacob Cole’s post about Lastbook">
-  <figure class="tweet-card">
+<aside class="wrap conversation tweet-spotlight" id="conversation" aria-label="Jacob Cole’s post about Lastbook">
+  <figure class="tweet-card" id="lastbook-conversation">
     <figcaption class="tweet-kicker">From the conversation</figcaption>
     <blockquote class="twitter-tweet" data-dnt="true" data-conversation="none" data-width="420" data-theme="dark">
       <p lang="en" dir="ltr">@farbood We featured Lastbook on humanityinfrastructure.com — a directory of tools and knowledge for human flourishing. What else belongs? Everyone’s invited to suggest resources or submit a GitHub PR via the site. Thanks for building this, @farbood!</p>

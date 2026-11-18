@@ -1,6 +1,6 @@
 // X is contacted only once this standalone slot approaches the viewport.
 (() => {
-  const slot = document.getElementById('lastbook-conversation');
+  const slot = document.getElementById('conversation');
   if (!slot) return;
   const figure = slot.querySelector('figure');
   const fallback = figure.innerHTML;
