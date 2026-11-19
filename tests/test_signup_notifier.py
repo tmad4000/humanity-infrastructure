@@ -362,17 +362,49 @@ class RunBoundedTests(unittest.TestCase):
         with self.assertRaises(n.OutputLimit):
             n._run_bounded(self.py('import sys\nwhile True: sys.stderr.write("secret@example.invalid "*200); sys.stderr.flush()'), timeout=20, err_cap=4096)
 
-    def test_timeout_kills_whole_process_group(self):
-        marker = Path(tempfile.mkdtemp()) / 'child.pid'
-        code = f'import subprocess,sys,time;p=subprocess.Popen([sys.executable,"-c","import time;time.sleep(60)"]);open({str(marker)!r},"w").write(str(p.pid));time.sleep(60)'
+    def gone(self, pid, wait=8):
+        """True once pid is dead (absent or a zombie awaiting reaping by its new parent)."""
+        end = time.monotonic() + wait
+        while time.monotonic() < end:
+            try:
+                state = Path(f'/proc/{pid}/stat').read_text().rsplit(')', 1)[1].split()[0]
+            except FileNotFoundError:
+                return True
+            if state in ('Z', 'X'):
+                return True
+            time.sleep(0.05)
+        return False
+
+    def spawn_code(self, marker, ignore_term, hold_pipes, leader_exits):
+        grand = ('import signal,time;' + ('signal.signal(signal.SIGTERM,signal.SIG_IGN);' if ignore_term else '') + 'time.sleep(60)')
+        redirect = '' if hold_pipes else ',stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL'
+        tail = '' if leader_exits else ';time.sleep(60)'
+        return (f'import subprocess,sys,time;p=subprocess.Popen([sys.executable,"-c",{grand!r}]{redirect});'
+                f'open({str(marker)!r},"w").write(str(p.pid));time.sleep(0.3){tail}')
+
+    def run_case(self, ignore_term, hold_pipes, leader_exits, expect_timeout):
+        marker = Path(tempfile.mkdtemp()) / 'grandchild.pid'
         start = time.monotonic()
-        with self.assertRaises(TimeoutError):
-            n._run_bounded(self.py(code), timeout=2)
-        self.assertLess(time.monotonic() - start, 15)
-        grandchild = int(marker.read_text())
-        time.sleep(0.5)
-        with self.assertRaises(ProcessLookupError):
-            os.kill(grandchild, 0)
+        argv = self.py(self.spawn_code(marker, ignore_term, hold_pipes, leader_exits))
+        if expect_timeout:
+            with self.assertRaises(TimeoutError):
+                n._run_bounded(argv, timeout=2)
+        else:
+            self.assertEqual(n._run_bounded(argv, timeout=20)[0], 0)
+        self.assertLess(time.monotonic() - start, 20)
+        self.assertTrue(self.gone(int(marker.read_text())), 'descendant survived')
+
+    def test_timeout_kills_whole_process_group(self):
+        self.run_case(ignore_term=False, hold_pipes=True, leader_exits=False, expect_timeout=True)
+
+    def test_grandchild_ignoring_sigterm_gets_sigkill_after_leader_dies(self):
+        self.run_case(ignore_term=True, hold_pipes=True, leader_exits=False, expect_timeout=True)
+
+    def test_exited_leader_with_descendant_holding_pipes_is_killed(self):
+        self.run_case(ignore_term=True, hold_pipes=True, leader_exits=True, expect_timeout=True)
+
+    def test_exited_leader_with_detached_descendant_is_swept(self):
+        self.run_case(ignore_term=True, hold_pipes=False, leader_exits=True, expect_timeout=False)
 
 
 @unittest.skipUnless(shutil.which('node') and Path('/home/dev/code/paseo-buzz-bridge-20261114/listener/private_channel_scope.mjs').exists(),

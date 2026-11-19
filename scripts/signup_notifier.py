@@ -335,16 +335,32 @@ class OutputLimit(Exception):
     """Child wrote more than the bounded stdout/stderr budget."""
 
 
-def _kill_group(process):
-    # Kill ONLY this task-owned process group (start_new_session), never the shared listener.
-    for sig in (signal.SIGTERM, signal.SIGKILL):
-        with contextlib.suppress(ProcessLookupError):
-            os.killpg(process.pid, sig)
-        try:
-            process.wait(timeout=5)
-            return
-        except subprocess.TimeoutExpired:
-            continue
+def _group_alive(process):
+    process.poll()  # reap an exited leader so its zombie does not count as a live member
+    try:
+        os.killpg(process.pid, 0)
+        return True
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+
+
+def _kill_group(process, grace=2.0):
+    """Terminate the WHOLE task-owned process group (start_new_session), never the shared listener.
+    Escalation is driven by group membership, not by the leader: SIGTERM, a bounded grace period
+    while any member remains, then SIGKILL to the group regardless of whether the leader already
+    exited, so descendants that ignore SIGTERM or outlive the leader are always killed."""
+    with contextlib.suppress(ProcessLookupError):
+        os.killpg(process.pid, signal.SIGTERM)
+    deadline = time.monotonic() + grace
+    while _group_alive(process) and time.monotonic() < deadline:
+        time.sleep(0.05)
+    with contextlib.suppress(ProcessLookupError):
+        os.killpg(process.pid, signal.SIGKILL)
+    deadline = time.monotonic() + 5
+    while _group_alive(process) and time.monotonic() < deadline:
+        time.sleep(0.05)
 
 
 def _run_bounded(argv, stdin=b'', timeout=120, out_cap=OUTPUT_CAP, err_cap=4096):
@@ -389,7 +405,8 @@ def _run_bounded(argv, stdin=b'', timeout=120, out_cap=OUTPUT_CAP, err_cap=4096)
             raise TimeoutError('bounded subprocess timeout') from None
         return process.returncode, bytes(out)
     finally:
-        if process.poll() is None:
+        # Always sweep the owned group: a descendant may outlive an exited leader (holding pipes or not).
+        if _group_alive(process):
             _kill_group(process)
         for stream in (process.stdin, process.stdout, process.stderr):
             with contextlib.suppress(Exception):
