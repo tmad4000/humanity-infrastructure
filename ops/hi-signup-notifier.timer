@@ -1,0 +1,11 @@
+[Unit]
+Description=Check HI new signup IDs everyminute
+
+[Timer]
+OnBootSec=60
+OnUnitInactiveSec=60
+AccuracySec=5
+Unit=hi-signup-notifier.service
+
+[Install]
+WantedBy=timers.target
