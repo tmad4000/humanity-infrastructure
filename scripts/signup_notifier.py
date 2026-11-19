@@ -19,7 +19,8 @@ import signal
 
 ACCOUNT = '68d006db286e6366317c029df3bb76dd'
 DATABASE = '848844f3-4379-4cb6-a7a3-a39a7bfc3624'
-SELECT_IDS = 'SELECT id FROM signups ORDER BY id'
+SELECT_IDS = 'SELECT id FROM signups ORDER BY id'  # One-time baseline only.
+SELECT_PAGE = 'SELECT id FROM signups WHERE id > ? ORDER BY id LIMIT 50'
 HELPER_DIR = Path('/home/dev/code/paseo-buzz-bridge-20261114/listener')
 
 class SafeRetry(Exception):
@@ -72,6 +73,9 @@ class D1Reader:
     def ids(self):
         return [r['id'] for r in self._query(SELECT_IDS)]
 
+    def page(self, cursor):
+        return [r['id'] for r in self._query(SELECT_PAGE, [cursor])]
+
     def rows(self, ids):
         if not ids:return []
         if len(ids)>10:raise ValueError('bounded contact read required')
@@ -106,7 +110,7 @@ class Journal:
         ids = [checked_id(i) for i in ids]
         with self.db:
             self.db.executemany('INSERT INTO seen(signup_id,state,observed_at) VALUES (?,\'baseline\',?)', [(i,now) for i in ids])
-            self.db.executemany('INSERT INTO meta VALUES (?,?)', [('channel',self.channel),('cutover_at',timestamp(now))])
+            self.db.executemany('INSERT INTO meta VALUES (?,?)', [('channel',self.channel),('cutover_at',timestamp(now)),('scan_cursor','')])
 
     def ready(self):
         row = self.db.execute('SELECT value FROM meta WHERE key=\'channel\'').fetchone()
@@ -129,24 +133,26 @@ def card(row):
 
 def run_once(journal, reader, transport, now, settle=30, limit=10):
     journal.ready()
-    snapshot = reader.ids()
-    current = set(checked_id(identifier) for identifier in snapshot)
-    if len(current) != len(snapshot):raise ValueError('duplicate signup IDs')
+    cursor = journal.db.execute("SELECT value FROM meta WHERE key='scan_cursor'").fetchone()
+    if cursor is None:raise ValueError('cursor missing; explicit baseline required')
+    snapshot = reader.page(cursor[0])
+    current = [checked_id(identifier) for identifier in snapshot]
+    if len(current)>50 or current != sorted(set(current)) or any(i<=cursor[0] for i in current):
+        raise ValueError('invalid bounded discovery page')
     result = {'discovered':0,'published':0,'summary_cards':0,'summarized':0,'missing':0,'pending':0,'needs_reconcile':0}
     with journal.db:
         # Caller holds exclusive run_lock. Interrupted publication never auto-repeats.
         journal.db.execute("UPDATE seen SET state='reconcile',error='interrupted' WHERE state='dispatching'")
         journal.db.execute("UPDATE batches SET state='reconcile' WHERE state='dispatching'")
+        # Persist page discoveries and cursor together; wrap only after end of scan.
+        journal.db.execute("UPDATE meta SET value=? WHERE key='scan_cursor'",(current[-1] if current else '',))
         for identifier in current:
             result['discovered'] += journal.db.execute("INSERT OR IGNORE INTO seen(signup_id,state,observed_at) VALUES (?,'pending',?)",(identifier,now)).rowcount
     blocked = journal.db.execute("SELECT COUNT(*) FROM seen WHERE state='reconcile'").fetchone()[0] + journal.db.execute("SELECT COUNT(*) FROM batches WHERE state='reconcile'").fetchone()[0]
     pending = journal.db.execute("SELECT signup_id,observed_at FROM seen WHERE state='pending' ORDER BY observed_at,signup_id").fetchall()
     due = []
     for identifier, observed in pending:
-        if identifier not in current:
-            with journal.db:journal.db.execute("UPDATE seen SET state='missing' WHERE signup_id=?",(identifier,))
-            result['missing'] += 1
-        elif not blocked and now-observed >= settle:due.append(identifier)
+        if not blocked and now-observed >= settle:due.append(identifier)
     batch = journal.db.execute("SELECT batch_key,individual_ids,overflow_ids FROM batches WHERE state='pending' ORDER BY created_at LIMIT 1").fetchone()
     if not blocked:
         if batch:
@@ -265,7 +271,9 @@ def main():
             if args.dry_run:
                 known={r[0] for r in journal.db.execute('SELECT signup_id FROM seen')}
                 with journal.db:journal.db.execute("INSERT OR REPLACE INTO meta VALUES ('last_attempt_at',?)",(str(now),))
-                new=sorted(set(D1Reader(cfg['token_file']).ids())-known)
+                cursor=journal.db.execute("SELECT value FROM meta WHERE key='scan_cursor'").fetchone()
+                if cursor is None:raise ValueError('cursor missing')
+                new=sorted(set(D1Reader(cfg['token_file']).page(cursor[0]))-known)
                 print(json.dumps({'new_ids':new,'count':len(new),'published':0}));return 0
             if cfg.get('enabled') is not True:
                 print(json.dumps({'status':'disabled','published':0}));return 0

@@ -17,6 +17,7 @@ def row(i,interest='Tools'):
 class Reader:
     def __init__(self,*rows):self.data={r['id']:r for r in rows};self.reads=[]
     def ids(self):return list(self.data)
+    def page(self,cursor):return sorted(i for i in self.data if i>cursor)[:50]
     def rows(self,ids):self.reads.append(list(ids));return [self.data[i] for i in ids if i in self.data]
 class Base(unittest.TestCase):
     def setUp(self):
@@ -45,7 +46,7 @@ class Tests(Base):
     def test_deleted_before_delivery_not_copied_or_sent(self):
         self.j.bootstrap([],0);r=Reader(row(3));n.run_once(self.j,r,self.transport,1)
         r.data.clear();out=n.run_once(self.j,r,self.transport,50)
-        self.assertEqual(out['missing'],1);self.assertEqual(r.reads,[]);self.assertEqual(self.calls,[])
+        self.assertEqual(out['missing'],1);self.assertEqual(r.reads,[[ident(3)]]);self.assertEqual(self.calls,[])
     def test_busy_prepublication_retry_safe(self):
         self.j.bootstrap([],0);r=Reader(row(4))
         def busy(*args):raise n.SafeRetry()
@@ -114,6 +115,38 @@ class RealSignupCopyTest(Base):
         out=n.run_once(self.j,reader,self.transport,100,settle=0)
         self.assertEqual(out['published'],1);self.assertEqual(len(reader.queries),2)
         self.assertEqual(reader.queries[1][1],[ident(202)]);self.assertNotIn('unsubscribe_token',reader.queries[1][0]);self.assertNotIn('SECRET_TOKEN',self.calls[0][2]);db.close()
+
+
+class CursorTests(Base):
+    def cursor(self):return self.j.db.execute("SELECT value FROM meta WHERE key='scan_cursor'").fetchone()[0]
+    def test_cursor_advances_bounded_and_wraps(self):
+        self.j.bootstrap([],0);r=Reader(*(row(i) for i in range(1,121)))
+        n.run_once(self.j,r,self.transport,1,settle=999)
+        self.assertEqual(self.cursor(),ident(50))
+        n.run_once(self.j,r,self.transport,2,settle=999)
+        self.assertEqual(self.cursor(),ident(100))
+        n.run_once(self.j,r,self.transport,3,settle=999)
+        self.assertEqual(self.cursor(),ident(120))
+        n.run_once(self.j,r,self.transport,4,settle=999)
+        self.assertEqual(self.cursor(),'')
+        self.assertEqual(self.j.db.execute('SELECT count(*) FROM seen').fetchone()[0],120)
+    def test_deletion_gap_and_new_id_below_cursor_detected_on_wrap(self):
+        self.j.bootstrap([ident(1)],0);r=Reader(row(1),row(3))
+        n.run_once(self.j,r,self.transport,1,settle=0)
+        del r.data[ident(3)];r.data[ident(2)]=row(2)
+        n.run_once(self.j,r,self.transport,2,settle=0)
+        n.run_once(self.j,r,self.transport,3,settle=0)
+        self.assertEqual([c[1] for c in self.calls],['hi-signup/'+ident(3),'hi-signup/'+ident(2)])
+    def test_restart_retains_cursor_and_never_renotifies(self):
+        self.j.bootstrap([],0);r=Reader(row(9))
+        n.run_once(self.j,r,self.transport,1,settle=0)
+        reopened=n.Journal(self.j.path,self.j.channel)
+        try:
+            n.run_once(reopened,r,self.transport,2,settle=0)
+            n.run_once(reopened,r,self.transport,3,settle=0)
+            self.assertEqual(len(self.calls),1)
+            self.assertEqual(reopened.db.execute("SELECT state FROM seen WHERE signup_id=?",(ident(9),)).fetchone()[0],'sent')
+        finally:reopened.close()
 
 class TransportTests(unittest.TestCase):
     def setUp(self):
