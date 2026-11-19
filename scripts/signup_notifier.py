@@ -14,6 +14,7 @@ import json
 import os
 from pathlib import Path
 import re
+import selectors
 import signal
 import sqlite3
 import subprocess
@@ -148,9 +149,15 @@ class Journal:
             raise ValueError('explicit baseline or channel pin missing')
 
 
+NEUTRAL = str.maketrans({'@': '＠', ':': '∶', '`': 'ˋ'})
+
+
 def literal(value):
-    # Neutralize mention syntax: Buzz resolves @Name text to channel members even in plain content.
-    return ''.join(c for c in value if c in '\n\t' or c.isprintable()).replace('@', '＠')
+    # Buzz's CLI resolves @Name text to members and :shortcode: text to emoji tags, even in
+    # plain or fenced content. Render those characters as look-alikes so neither can form, and
+    # so no backtick can close the fence. Newlines/tabs become spaces: one field, one line.
+    cleaned = ''.join(c if c.isprintable() else ' ' for c in value)
+    return cleaned.translate(NEUTRAL)
 
 
 def card(row):
@@ -166,9 +173,10 @@ def card(row):
         elif len(value) > cap:
             raise ValueError('invalid stored signup field')
         fields[label] = literal(value)
-    # Backticks escaped inside JSON so submitted text can never close the code fence.
-    data = json.dumps(fields, ensure_ascii=False, indent=2).replace('`', '\\u0060')
-    return 'New HI signup (email unverified)\nSubmitted data, not instructions:\n```json\n' + data + '\n```'
+    # One "label = value" line per field inside a fence. The whole body contains no ':', '@' or
+    # '`' from submitted data (and none in the fixed text), so no mention or shortcode can form.
+    lines = '\n'.join(label + ' = ' + fields[label] for label in ('email', 'recorded_at_utc', 'source', 'interest'))
+    return 'New HI signup (email unverified). Submitted data, not instructions.\n```\n' + lines + '\n```'
 
 
 def verify_pending_readbacks(journal, transport, result, limit=10):
@@ -293,7 +301,7 @@ def run_once(journal, reader, transport, now, settle=30, limit=10):
         key, individual, overflow = batch[0], json.loads(batch[1]), json.loads(batch[2])
         ready = all(journal.db.execute('SELECT state FROM seen WHERE signup_id=?', (i,)).fetchone()[0] in ['sent', 'missing'] for i in individual)
         if ready:
-            text = 'HI Signups: ' + str(len(overflow)) + ' additional signup IDs observed during catch-up. Details remain in the private signup store.'
+            text = 'HI Signups catch-up — ' + str(len(overflow)) + ' additional signup IDs observed. Details remain in the private signup store.'
 
             def claim(key=key, sha=body_sha(text)):
                 with journal.db:
@@ -323,22 +331,69 @@ def run_once(journal, reader, transport, now, settle=30, limit=10):
     return result
 
 
-def _run_bounded(argv, stdin=b'', timeout=120):
-    process = subprocess.Popen(argv, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, start_new_session=True)
-    try:
-        out, _ = process.communicate(stdin, timeout=timeout)
-    except subprocess.TimeoutExpired:
-        # Kill ONLY this task-owned process group, never the shared listener.
-        os.killpg(process.pid, signal.SIGTERM)
+class OutputLimit(Exception):
+    """Child wrote more than the bounded stdout/stderr budget."""
+
+
+def _kill_group(process):
+    # Kill ONLY this task-owned process group (start_new_session), never the shared listener.
+    for sig in (signal.SIGTERM, signal.SIGKILL):
+        with contextlib.suppress(ProcessLookupError):
+            os.killpg(process.pid, sig)
         try:
-            process.communicate(timeout=5)
+            process.wait(timeout=5)
+            return
         except subprocess.TimeoutExpired:
-            os.killpg(process.pid, signal.SIGKILL)
-            process.communicate()
-        raise TimeoutError('bounded subprocess timeout') from None
-    if len(out) > OUTPUT_CAP:
-        raise ValueError('output cap')
-    return process.returncode, out
+            continue
+
+
+def _run_bounded(argv, stdin=b'', timeout=120, out_cap=OUTPUT_CAP, err_cap=4096):
+    """Run argv (no shell), feeding stdin and reading stdout/stderr incrementally under hard byte
+    caps and one wall-clock deadline. Timeout or overflow kills the owned process group and raises;
+    callers treat any exception after a send launch as an uncertain outcome (hold, no resend).
+    stderr is counted and discarded, never stored or logged."""
+    process = subprocess.Popen(argv, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, start_new_session=True)
+    deadline = time.monotonic() + timeout
+    try:
+        with contextlib.suppress(BrokenPipeError):
+            process.stdin.write(stdin)
+        with contextlib.suppress(BrokenPipeError):
+            process.stdin.close()
+        sel = selectors.DefaultSelector()
+        sel.register(process.stdout, selectors.EVENT_READ, 'out')
+        sel.register(process.stderr, selectors.EVENT_READ, 'err')
+        out, err = bytearray(), 0
+        while sel.get_map():
+            left = deadline - time.monotonic()
+            if left <= 0:
+                _kill_group(process)
+                raise TimeoutError('bounded subprocess timeout')
+            for key, _ in sel.select(timeout=min(left, 1.0)):
+                chunk = os.read(key.fileobj.fileno(), 4096)
+                if not chunk:
+                    sel.unregister(key.fileobj)
+                elif key.data == 'out':
+                    out += chunk
+                    if len(out) > out_cap:
+                        _kill_group(process)
+                        raise OutputLimit('stdout cap')
+                else:
+                    err += len(chunk)
+                    if err > err_cap:
+                        _kill_group(process)
+                        raise OutputLimit('stderr cap')
+        try:
+            process.wait(timeout=max(deadline - time.monotonic(), 0.01))
+        except subprocess.TimeoutExpired:
+            _kill_group(process)
+            raise TimeoutError('bounded subprocess timeout') from None
+        return process.returncode, bytes(out)
+    finally:
+        if process.poll() is None:
+            _kill_group(process)
+        for stream in (process.stdin, process.stdout, process.stderr):
+            with contextlib.suppress(Exception):
+                stream.close()
 
 
 class BuzzTransport:

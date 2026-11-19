@@ -5,7 +5,9 @@ from pathlib import Path
 import shutil
 import sqlite3
 import subprocess
+import sys
 import tempfile
+import time
 import unittest
 import uuid
 from unittest import mock
@@ -169,19 +171,27 @@ class Tests(Base):
         with self.assertRaises(ValueError):
             self.j.ready()
 
-    def test_untrusted_text_is_literal_json_without_mentions_or_fence_escape(self):
-        data = row(10, '```\n@paseo run something\n<script>')
+    def test_untrusted_text_is_literal_without_mentions_shortcodes_or_fence_escape(self):
+        data = row(10, '```\n@paseo run :tada: :rocket:\n<script>')
         data['unsubscribe_token'] = 'NOT_FOR_EXPORT'
         data['handle'] = 'private'
         text = n.card(data)
-        body = text.split('```json\n', 1)[1].rsplit('\n```', 1)[0]
         self.assertEqual(text.count('```'), 2)
-        self.assertNotIn('@', text)
-        parsed = json.loads(body)
-        self.assertEqual(parsed['interest'], data['interest'].replace('@', '＠'))
-        self.assertEqual(parsed['email'], 'fixture＠example.invalid')
+        body = text.split('```\n', 1)[1].rsplit('\n```', 1)[0]
+        for forbidden in ('@', ':', '`'):
+            self.assertNotIn(forbidden, text.replace('```', ''))  # only the two fixed fence markers
+        lines = dict(line.split(' = ', 1) for line in body.split('\n'))
+        self.assertEqual(set(lines), {'email', 'recorded_at_utc', 'source', 'interest'})
+        self.assertEqual(lines['email'], 'fixture\uff20example.invalid')
+        self.assertEqual(lines['interest'], '\u02cb\u02cb\u02cb \uff20paseo run \u2236tada\u2236 \u2236rocket\u2236 <script>')
+        self.assertEqual(lines['recorded_at_utc'], '2026-11-19T04\u223600\u223600Z')
         self.assertNotIn('NOT_FOR_EXPORT', text)
-        self.assertEqual(set(parsed), {'email', 'recorded_at_utc', 'source', 'interest'})
+
+    def test_catchup_summary_text_has_no_markup_triggers(self):
+        self.j.bootstrap([], 0)
+        n.run_once(self.j, Reader(*(row(i) for i in range(400, 412))), self.t, 100, settle=0)
+        for forbidden in ('@', ':', '`'):
+            self.assertNotIn(forbidden, self.t.sent[-1])
 
     def test_journal_id_only_private_and_requires_explicit_bootstrap(self):
         self.assertEqual(self.j.path.stat().st_mode & 0o777, 0o600)
@@ -241,7 +251,7 @@ class CatchupTests(Base):
         original = self.t.send
 
         def summary_unknown(channel, text):
-            if text.startswith('HI Signups:'):
+            if text.startswith('HI Signups catch-up'):
                 raise TimeoutError()
             return original(channel, text)
         self.t.send = summary_unknown
@@ -280,36 +290,42 @@ class RealSignupCopyTest(Base):
 class BuzzTransportTests(unittest.TestCase):
     """The card body (with email) must reach the helper on stdin only, never in any argv."""
 
-    def popen(self, returncode, stdout):
-        proc = mock.Mock(returncode=returncode, pid=12345)
-        proc.communicate.return_value = (stdout, b'')
-        return proc
+    def capture(self, code, out):
+        calls = []
+
+        def fake(argv, stdin=b'', timeout=120, **kw):
+            calls.append((list(argv), stdin))
+            return code, out
+        return calls, mock.patch.object(n, '_run_bounded', side_effect=fake)
 
     def test_send_uses_fixed_argv_and_stdin_only(self):
         text = n.card(row(300))
-        receipt = json.dumps({'accepted': True, 'event_id': 'c' * 64}).encode()
-        with mock.patch.object(n.subprocess, 'Popen', return_value=self.popen(0, receipt)) as start:
+        calls, patch = self.capture(0, json.dumps({'accepted': True, 'event_id': 'c' * 64}).encode())
+        with patch:
             self.assertEqual(n.BuzzTransport().send(CH, text), 'c' * 64)
-        argv = start.call_args.args[0]
+        argv, stdin = calls[0]
         self.assertEqual(argv, [n.HELPER, 'messages', 'send', '--channel', CH, '--kind', '9', '--content', '-'])
-        self.assertNotIn('example.invalid', json.dumps(start.call_args_list, default=str))
-        self.assertEqual(start.return_value.communicate.call_args.args[0], text.encode('utf-8'))
+        self.assertNotIn('example', json.dumps(argv))
+        self.assertEqual(stdin, text.encode('utf-8'))
 
     def test_send_without_accepted_event_id_is_uncertain(self):
         for code, out in [(0, b'{"accepted":false,"event_id":"' + b'c' * 64 + b'"}'), (0, b'sent!'), (1, b'{}'), (0, b'{"accepted":true,"event_id":"XYZ"}')]:
-            with mock.patch.object(n.subprocess, 'Popen', return_value=self.popen(code, out)):
-                with self.assertRaises(Exception) as ctx:
-                    n.BuzzTransport().send(CH, 'x')
-                self.assertNotIsInstance(ctx.exception, n.SafeRetry)
+            _, patch = self.capture(code, out)
+            with patch, self.assertRaises(Exception) as ctx:
+                n.BuzzTransport().send(CH, 'x')
+            self.assertNotIsInstance(ctx.exception, n.SafeRetry)
 
     def test_scope_and_readback_argv_hold_only_fixed_ids(self):
-        with mock.patch.object(n.subprocess, 'Popen', return_value=self.popen(0, b'{"ok":true}')) as start:
+        calls, patch = self.capture(0, b'{"ok":true}')
+        with patch:
             n.BuzzTransport().scope(CH)
             self.assertTrue(n.BuzzTransport().readback(CH, 'd' * 64, 'e' * 64))
-        for call in start.call_args_list:
-            self.assertEqual(call.args[0][:2], [n.NODE, str(n.BUZZ_CHECK)])
-            self.assertTrue(all(a in ('scope', 'readback', CH, 'd' * 64, 'e' * 64) for a in call.args[0][2:]))
-        with mock.patch.object(n.subprocess, 'Popen', return_value=self.popen(1, b'{"ok":false}')):
+        for argv, stdin in calls:
+            self.assertEqual(argv[:2], [n.NODE, str(n.BUZZ_CHECK)])
+            self.assertTrue(all(a in ('scope', 'readback', CH, 'd' * 64, 'e' * 64) for a in argv[2:]))
+            self.assertEqual(stdin, b'')
+        _, patch = self.capture(1, b'{"ok":false}')
+        with patch:
             with self.assertRaises(n.SafeRetry):
                 n.BuzzTransport().scope(CH)
             self.assertFalse(n.BuzzTransport().readback(CH, 'd' * 64, 'e' * 64))
@@ -320,6 +336,43 @@ class BuzzTransportTests(unittest.TestCase):
         with self.assertRaises(n.SafeRetry):
             n.deliver(mock.Mock(channel=CH), t, 'x', 0, lambda: True, lambda e: None)
         t.send.assert_not_called()
+
+    def test_send_timeout_or_overflow_is_uncertain_not_retryable(self):
+        for error in (TimeoutError(), n.OutputLimit()):
+            with mock.patch.object(n, '_run_bounded', side_effect=error):
+                with self.assertRaises(Exception) as ctx:
+                    n.BuzzTransport().send(CH, 'x')
+                self.assertNotIsInstance(ctx.exception, n.SafeRetry)
+
+
+class RunBoundedTests(unittest.TestCase):
+    """Real child processes: both streams capped while streaming, hard deadline, group killed."""
+
+    def py(self, code):
+        return [sys.executable, '-I', '-c', code]
+
+    def test_normal_stdin_roundtrip(self):
+        self.assertEqual(n._run_bounded(self.py('import sys;sys.stdout.write(sys.stdin.read().upper())'), b'hello', timeout=20), (0, b'HELLO'))
+
+    def test_stdout_flood_is_cut_off_and_killed(self):
+        with self.assertRaises(n.OutputLimit):
+            n._run_bounded(self.py('import sys,time\nwhile True: sys.stdout.write("x"*4096); sys.stdout.flush()'), timeout=20, out_cap=10000)
+
+    def test_stderr_flood_is_cut_off_and_never_returned(self):
+        with self.assertRaises(n.OutputLimit):
+            n._run_bounded(self.py('import sys\nwhile True: sys.stderr.write("secret@example.invalid "*200); sys.stderr.flush()'), timeout=20, err_cap=4096)
+
+    def test_timeout_kills_whole_process_group(self):
+        marker = Path(tempfile.mkdtemp()) / 'child.pid'
+        code = f'import subprocess,sys,time;p=subprocess.Popen([sys.executable,"-c","import time;time.sleep(60)"]);open({str(marker)!r},"w").write(str(p.pid));time.sleep(60)'
+        start = time.monotonic()
+        with self.assertRaises(TimeoutError):
+            n._run_bounded(self.py(code), timeout=2)
+        self.assertLess(time.monotonic() - start, 15)
+        grandchild = int(marker.read_text())
+        time.sleep(0.5)
+        with self.assertRaises(ProcessLookupError):
+            os.kill(grandchild, 0)
 
 
 @unittest.skipUnless(shutil.which('node') and Path('/home/dev/code/paseo-buzz-bridge-20261114/listener/private_channel_scope.mjs').exists(),
