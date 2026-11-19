@@ -1,0 +1,12 @@
+[Unit]
+Description=HI new signup private Buzz cards
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 -B -I %h/.local/share/hi-signup-notifier/current/scripts/signup_notifier.py --config %h/.config/hi-signup-notifier/config.json
+UMask=0077
+Nice=10
+TimeoutStartSec=240
+KillMode=control-group
+StandardOutput=journal
+StandardError=journal
