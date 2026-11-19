@@ -12,7 +12,10 @@ test('featured tweet is a dated static snapshot with native disclosure and no au
  assert.match(html,/4<span class="sr-only"> replies as of Nov 18, 2026/);
  assert.match(html,/216<span class="sr-only"> likes as of Nov 18, 2026/);
  assert.match(html,/130K<span class="sr-only"> views/);
- assert.match(html,/aria-label="View on X"/);
+ assert.match(html,/<a class="tweet-permalink" href="https:\/\/x\.com\/jacobcole4000\/status\/2122608959236493761" target="_blank" rel="noopener noreferrer"[^>]*>[\s\S]*?<span>View on X<\/span><\/a>/);
+ assert.match(html,/\.tweet-card\{[^}]*position:relative/);
+ assert.match(html,/\.tweet-permalink::after\{content:"";position:absolute;inset:0/);
+ assert.match(html,/\.tweet-copy summary\{position:relative;z-index:1\}/);
  assert.match(html,/<details class="tweet-copy">/);
  assert.match(html,/<img class="tweet-avatar" src="data:image\/jpeg;base64,[^"]+"[^>]+loading="lazy"[^>]+referrerpolicy="no-referrer"/);
  assert.doesNotMatch(html,/<img[^>]+src="https:\/\/pbs\.twimg\.com/);
