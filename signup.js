@@ -10,7 +10,7 @@ function signupCsv(value) {
 async function signupHash(value) {
   return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value))), b => b.toString(16).padStart(2, '0')).join('');
 }
-async function handleSignup(request, env) {
+async function handleSignup(request, env, ctx) {
   const url = new URL(request.url);
   if (!['/api/signup', '/unsubscribe', '/admin/signups.csv'].includes(url.pathname)) return null;
   try {
@@ -68,7 +68,12 @@ async function handleSignup(request, env) {
     // Keep the first nonempty interest: unverified retries cannot erase or replace it.
     // Update other optional fields only when explicitly submitted.
     // Preserve unsubscribe state and the existing private token.
-    await env.SIGNUPS.prepare('INSERT INTO signups (id,email,interest,handle,public_opt_in,consent_at,source_page,utm,referrer,unsubscribe_token) VALUES (?,?,?,?,?,?,?,?,?,?) ON CONFLICT(email) DO UPDATE SET interest = CASE WHEN ? AND length(excluded.interest) > 0 AND length(signups.interest) = 0 THEN excluded.interest ELSE signups.interest END, handle = CASE WHEN ? THEN excluded.handle ELSE signups.handle END, public_opt_in = CASE WHEN length(CASE WHEN ? THEN excluded.handle ELSE signups.handle END) = 0 THEN 0 WHEN ? THEN ? ELSE signups.public_opt_in END, consent_at = excluded.consent_at').bind(crypto.randomUUID(),email,interest,handle,handle && data.public_opt_in === true ? 1 : 0,new Date().toISOString(),source,utm,referrer,token,typeof data.interest === 'string' ? 1 : 0,typeof data.handle === 'string' ? 1 : 0,typeof data.handle === 'string' ? 1 : 0,typeof data.public_opt_in === 'boolean' ? 1 : 0,data.public_opt_in === true ? 1 : 0).run();
+    const signupId = crypto.randomUUID();
+    const statement = env.SIGNUPS.prepare('INSERT INTO signups (id,email,interest,handle,public_opt_in,consent_at,source_page,utm,referrer,unsubscribe_token) VALUES (?,?,?,?,?,?,?,?,?,?) ON CONFLICT(email) DO UPDATE SET interest = CASE WHEN ? AND length(excluded.interest) > 0 AND length(signups.interest) = 0 THEN excluded.interest ELSE signups.interest END, handle = CASE WHEN ? THEN excluded.handle ELSE signups.handle END, public_opt_in = CASE WHEN length(CASE WHEN ? THEN excluded.handle ELSE signups.handle END) = 0 THEN 0 WHEN ? THEN ? ELSE signups.public_opt_in END, consent_at = excluded.consent_at').bind(signupId,email,interest,handle,handle && data.public_opt_in === true ? 1 : 0,new Date().toISOString(),source,utm,referrer,token,typeof data.interest === 'string' ? 1 : 0,typeof data.handle === 'string' ? 1 : 0,typeof data.handle === 'string' ? 1 : 0,typeof data.public_opt_in === 'boolean' ? 1 : 0,data.public_opt_in === true ? 1 : 0);
+    if (typeof welcomeEnabled === 'function' && welcomeEnabled(env,ctx,url.origin)) {
+      await env.SIGNUPS.batch([statement,welcomeStatement(env,signupId)]);
+      scheduleWelcome(env,ctx,signupId);
+    } else { await statement.run(); }
     // Keep status, body and headers identical for new, duplicate and opted-out emails.
     // Unsubscribe URLs are available only to the owner export for inclusion in letters.
     return signupResponse({ ok: true });

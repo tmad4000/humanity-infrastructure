@@ -1,5 +1,5 @@
 // Private interest signals. The generated INTEREST_ITEMS catalogue is the only allowlist.
-async function handleInterest(request, env) {
+async function handleInterest(request, env, ctx) {
   const url = new URL(request.url);
   if (!['/api/interest', '/api/interest/counts', '/admin/interest.csv'].includes(url.pathname)) return null;
   try {
@@ -51,12 +51,15 @@ async function handleInterest(request, env) {
     const referrer=typeof data.referrer==='string'?data.referrer.slice(0,500):'', now=new Date().toISOString();
     // First signal wins across both kinds for this item/IP/UTC day. Never disclose duplicates.
     const statements=[env.SIGNUPS.prepare('INSERT INTO interest_signals (id,item_key,kind,ip_hash,day,email,handle,letter_opt_in,consent_at,source_page,utm,referrer) VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(item_key,ip_hash,day) DO NOTHING').bind(crypto.randomUUID(),data.item_key,data.kind,hash,day,email,handle,optIn?1:0,now,source,utm,referrer)];
+    const signupId=crypto.randomUUID(), sendWelcome=typeof welcomeEnabled==='function' && welcomeEnabled(env,ctx,url.origin);
     if(optIn){
       const token=crypto.randomUUID().replaceAll('-','')+crypto.randomUUID().replaceAll('-','');
       // Explicit letter consent only; never re-enable an unsubscribed email or replace saved details.
-      statements.push(env.SIGNUPS.prepare('INSERT INTO signups (id,email,interest,handle,public_opt_in,consent_at,source_page,utm,referrer,unsubscribe_token) VALUES (?,?,?,?,?,?,?,?,?,?) ON CONFLICT(email) DO UPDATE SET consent_at = excluded.consent_at').bind(crypto.randomUUID(),email,INTEREST_ITEMS[data.item_key],handle,0,now,source,utm,referrer,token));
+      statements.push(env.SIGNUPS.prepare('INSERT INTO signups (id,email,interest,handle,public_opt_in,consent_at,source_page,utm,referrer,unsubscribe_token) VALUES (?,?,?,?,?,?,?,?,?,?) ON CONFLICT(email) DO UPDATE SET consent_at = excluded.consent_at').bind(signupId,email,INTEREST_ITEMS[data.item_key],handle,0,now,source,utm,referrer,token));
     }
+    if(optIn && sendWelcome)statements.push(welcomeStatement(env,signupId));
     await env.SIGNUPS.batch(statements);
+    if(optIn && sendWelcome)scheduleWelcome(env,ctx,signupId);
     return signupResponse({ok:true});
   } catch {return signupResponse({error:'Interest signals temporarily unavailable. Please try again later.'},503);}
 }

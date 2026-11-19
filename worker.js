@@ -1,4 +1,63 @@
 const INTEREST_ITEMS = {"lastbook": "Lastbook", "nvc-translator": "NVC Translator", "noos": "Noos", "wikihub": "WikiHub", "world-issue-tracker": "World Issue Tracker", "idea-list": "Idea List", "claude-mind": "Claude Mind", "vibe-coding-guide": "Vibe Coding Guide", "signudoc": "SignuDoc", "paxi": "Paxi", "unlinked": "Unlinked", "superconnector": "Superconnector", "openchat": "OpenChat", "ideaflow-index": "Ideaflow apps index", "open-recordings": "Open Recordings", "build-thunderpledge": "ThunderPledge", "build-zero-sum-redirect": "Zero-Sum Redirect", "build-government-suggestion-box": "Government Suggestion Box", "build-everyone-a-philanthropist": "Everyone-a-Philanthropist", "build-resource-sharing-platform": "Resource-Sharing Platform", "build-open-reputation-system": "Open Reputation System", "build-trust-layer-meta-brands": "Trust Layer / Meta-Brands", "build-fact-check-extension": "Fact-Check Extension", "build-open-forum-software": "Open Forum Software", "build-minimalist-homepages": "Minimalist Homepages", "build-thoughtfulweb": "ThoughtfulWeb", "build-camel-s-eye-email-agent": "'Camel's Eye' Email Agent", "build-shortcut-macro-coach": "Shortcut / Macro Coach", "build-open-automation-tools": "Open Automation Tools", "build-shopping-coach": "Shopping Coach", "build-open-meditation-curricula": "Open Meditation Curricula", "build-open-medical-knowledge": "Open Medical Knowledge", "build-open-academic-education": "Open Academic Education", "build-open-work-templates": "Open Work Templates", "build-role-model-casting": "Role-Model Casting", "build-motivation-database": "Motivation Database", "build-books-to-grow-up-on": "'Books to Grow Up On'", "build-hands-free-voice-interfaces": "Hands-Free Voice Interfaces", "build-cueing-app-for-brain-injuries": "Cueing App for Brain Injuries", "build-better-foot-mouse": "Better Foot Mouse", "build-on-the-fly-knowledge-capture": "On-the-Fly Knowledge Capture", "build-global-idea-bank": "Global Idea Bank", "build-open-research-repository": "Open Research Repository", "build-adult-foster-support-network": "Adult 'Foster' Support Network", "build-non-emergency-help-button": "Non-Emergency Help Button", "build-database-of-survival-guides": "Database of Survival Guides", "build-database-of-human-ideals": "Database of Human Ideals", "build-openlibrary": "OpenLibrary", "build-internet-archive": "Internet Archive", "build-concentration-music": "Concentration Music", "build-cross-site-hashtag-search": "Cross-Site Hashtag Search", "build-universal-comments-layer": "Universal Comments Layer", "build-universal-web-annotations": "Universal Web Annotations", "build-canonical-debate-lab": "Canonical Debate Lab", "build-scientific-assertions-database": "Scientific Assertions Database", "build-collaborative-theorem-prover": "Collaborative Theorem Prover", "build-negative-results-repository": "Negative Results Repository", "build-argument-repository": "Argument Repository", "build-policy-science-simulator": "Policy & Science Simulator", "build-unified-feed-control": "Unified Feed Control", "build-soundbite-propagation-tracker": "Soundbite Propagation Tracker", "build-global-goals-dashboard": "Global Goals Dashboard", "build-conditional-voting-pledge": "Conditional Voting Pledge", "build-favor-matching-network": "Favor-Matching Network", "build-icu-ventilator-tracker": "ICU & Ventilator Tracker", "build-proximity-hangout-suggester": "Proximity Hangout Suggester", "build-political-bias-classifier": "Political Bias Classifier", "build-wildfire-satellite-detection": "Wildfire Satellite Detection", "build-ingredient-recipe-finder": "Ingredient Recipe Finder", "build-used-car-history-database": "Used-Car History Database", "build-idea-graph-ide": "Idea Graph IDE", "build-curiosity-thread-maps": "Curiosity Thread Maps", "build-best-in-class-tool-registry": "Best-in-Class Tool Registry", "build-curated-list-publishing": "Curated List Publishing", "build-context-engineering-prize": "Context Engineering Prize", "quest-integrate-bootloader-thesis-into-humanity-infrastructure-narrative": "Integrate bootloader thesis into Humanity Infrastructure narrative", "quest-open-templates-for-all-kinds-of-work": "Open Templates for all kinds of work", "quest-best-in-class-tool-registry": "Best-in-Class Tool Registry", "quest-hands-free-voice-interfaces-for-common-sites": "Hands-Free Voice Interfaces for common sites", "quest-adult-foster-support-network": "Adult 'Foster' Support Network", "quest-non-emergency-help-button": "Non-Emergency Help Button", "quest-resource-sharing-platform-tools-trucks-gear": "Resource-Sharing Platform (tools, trucks, gear)", "quest-negative-results-repository": "Negative Results Repository", "quest-scientific-assertions-database": "Scientific Assertions Database", "quest-camels-eye-agent-that-filters-your-inbox": "'Camel's Eye' \u2014 agent that filters your inbox", "quest-government-suggestion-box-with-fund-to-implement": "Government Suggestion Box with fund-to-implement", "quest-universal-comments-layer-for-any-page": "Universal Comments Layer for any page", "quest-universal-web-annotations-layer": "Universal Web Annotations layer", "quest-trust-layer-meta-brands-for-the-web": "Trust Layer / Meta-Brands for the web", "quest-zero-sum-redirect-cancel-opposing-donations-to-charity": "Zero-Sum Redirect \u2014 cancel opposing donations to charity", "quest-thunderpledge-critical-mass-collective-action": "ThunderPledge \u2014 critical-mass collective action", "bookshelves": "Bookshelves", "world-quest-guild": "World Quest Guild", "xfeed-paradise": "Xfeed Paradise", "global-idea-bank": "Global Idea Bank", "ideaflow": "Ideaflow", "ideaflow-local-only": "Ideaflow Local-only", "open-voice-assistant": "Open voice assistant", "paseo": "Paseo", "paseo-ideaflow": "Paseo \u00b7 Jacob\u2019s fork", "buzz-ideaflow": "Buzz Ideaflow", "flow-tools-directory": "Keeping a state of flow", "directory-of-the-internet": "Directory of the Internet"};
+// Optional transactional mail. Disabled unless the owner binds both explicit gates.
+// No delivery data, errors, contacts or tokens enter public signup responses/logs.
+const WELCOME_SUBJECT = 'Thanks for signing up for the interest list';
+const WELCOME_COPY = `Thanks for signing up for the Humanity Infrastructure interest list.
+
+We'll send you a short, occasional letter about tools for human flourishing and the people building them.
+
+Follow Jacob on X:
+https://x.com/jacobcole4000
+
+Explore the Ideaflow apps:
+https://index.ideaflow.app
+
+Build your own app in the Ideaflow ecosystem.
+Own your mind. Own your networks.
+
+You received this because you signed up at humanityinfrastructure.com.
+Unsubscribe any time: {{unsubscribe_url}}
+
+--
+Humanity Infrastructure
+https://humanityinfrastructure.com`;
+function welcomeEnabled(env, ctx, origin) {
+  return origin === 'https://humanityinfrastructure.com' && typeof ctx?.waitUntil === 'function' && env.WELCOME_EMAIL_ENABLED === 'true' && typeof env.HI_RESEND_API_KEY === 'string' && !!env.HI_RESEND_API_KEY;
+}
+function welcomeStatement(env, id) {
+  // The randomly proposed ID matches only a newly inserted signup, never a duplicate.
+  return env.SIGNUPS.prepare("INSERT INTO welcome_deliveries (signup_id,created_at,status,attempts) SELECT id,?,'pending',0 FROM signups WHERE id=? AND unsubscribed_at IS NULL ON CONFLICT(signup_id) DO NOTHING").bind(new Date().toISOString(),id);
+}
+function scheduleWelcome(env, ctx, id) {
+  // Keep provider latency/failure off the public response path.
+  try { ctx.waitUntil(deliverWelcome(env,id).catch(()=>{})); } catch { /* Optional mail never blocks signup. */ }
+}
+async function deliverWelcome(env,id) {
+  // Two bounded attempts with the SAME provider idempotency key. A failure stays private.
+  for(let attempt=0;attempt<2;attempt++) {
+    const claimed=await env.SIGNUPS.prepare("UPDATE welcome_deliveries SET status='sending',attempts=attempts+1 WHERE signup_id=? AND status IN ('pending','retry') AND attempts<2 RETURNING signup_id").bind(id).first();
+    if(!claimed)return;
+    const row=await env.SIGNUPS.prepare('SELECT email,unsubscribe_token,unsubscribed_at FROM signups WHERE id=?').bind(id).first();
+    if(!row || row.unsubscribed_at) {
+      await env.SIGNUPS.prepare("UPDATE welcome_deliveries SET status='cancelled' WHERE signup_id=?").bind(id).run();return;
+    }
+    const unsubscribe='https://humanityinfrastructure.com/unsubscribe?t='+row.unsubscribe_token;
+    const text=WELCOME_COPY.replace('{{unsubscribe_url}}',unsubscribe);
+    try {
+      const response=await fetch('https://api.resend.com/emails',{method:'POST',headers:{Authorization:'Bearer '+env.HI_RESEND_API_KEY,'Content-Type':'application/json','Idempotency-Key':'hi-welcome-'+id},body:JSON.stringify({from:'Humanity Infrastructure <noreply@id.ideaflow.app>',to:[row.email],subject:WELCOME_SUBJECT,text,headers:{'List-Unsubscribe':'<'+unsubscribe+'>'}}),signal:AbortSignal.timeout(8000)});
+      if(response.ok) {
+        await env.SIGNUPS.prepare("UPDATE welcome_deliveries SET status='sent',sent_at=? WHERE signup_id=?").bind(new Date().toISOString(),id).run();return;
+      }
+      // Do not retry rejected addresses/keys/payloads; retry only transient failures.
+      const retry=response.status===429 || response.status>=500;
+      await env.SIGNUPS.prepare('UPDATE welcome_deliveries SET status=? WHERE signup_id=?').bind(retry && attempt===0?'retry':'failed',id).run();
+      if(!retry)return;
+    } catch {
+      await env.SIGNUPS.prepare('UPDATE welcome_deliveries SET status=? WHERE signup_id=?').bind(attempt===0?'retry':'failed',id).run();
+    }
+  }
+}
+
 // Private signup routes. No personal data is published to WIT or public APIs.
 const PRIVATE_HEADERS = { 'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer', 'X-Content-Type-Options': 'nosniff' };
 function signupResponse(body, status = 200, extra = {}) {
@@ -11,7 +70,7 @@ function signupCsv(value) {
 async function signupHash(value) {
   return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value))), b => b.toString(16).padStart(2, '0')).join('');
 }
-async function handleSignup(request, env) {
+async function handleSignup(request, env, ctx) {
   const url = new URL(request.url);
   if (!['/api/signup', '/unsubscribe', '/admin/signups.csv'].includes(url.pathname)) return null;
   try {
@@ -69,7 +128,12 @@ async function handleSignup(request, env) {
     // Keep the first nonempty interest: unverified retries cannot erase or replace it.
     // Update other optional fields only when explicitly submitted.
     // Preserve unsubscribe state and the existing private token.
-    await env.SIGNUPS.prepare('INSERT INTO signups (id,email,interest,handle,public_opt_in,consent_at,source_page,utm,referrer,unsubscribe_token) VALUES (?,?,?,?,?,?,?,?,?,?) ON CONFLICT(email) DO UPDATE SET interest = CASE WHEN ? AND length(excluded.interest) > 0 AND length(signups.interest) = 0 THEN excluded.interest ELSE signups.interest END, handle = CASE WHEN ? THEN excluded.handle ELSE signups.handle END, public_opt_in = CASE WHEN length(CASE WHEN ? THEN excluded.handle ELSE signups.handle END) = 0 THEN 0 WHEN ? THEN ? ELSE signups.public_opt_in END, consent_at = excluded.consent_at').bind(crypto.randomUUID(),email,interest,handle,handle && data.public_opt_in === true ? 1 : 0,new Date().toISOString(),source,utm,referrer,token,typeof data.interest === 'string' ? 1 : 0,typeof data.handle === 'string' ? 1 : 0,typeof data.handle === 'string' ? 1 : 0,typeof data.public_opt_in === 'boolean' ? 1 : 0,data.public_opt_in === true ? 1 : 0).run();
+    const signupId = crypto.randomUUID();
+    const statement = env.SIGNUPS.prepare('INSERT INTO signups (id,email,interest,handle,public_opt_in,consent_at,source_page,utm,referrer,unsubscribe_token) VALUES (?,?,?,?,?,?,?,?,?,?) ON CONFLICT(email) DO UPDATE SET interest = CASE WHEN ? AND length(excluded.interest) > 0 AND length(signups.interest) = 0 THEN excluded.interest ELSE signups.interest END, handle = CASE WHEN ? THEN excluded.handle ELSE signups.handle END, public_opt_in = CASE WHEN length(CASE WHEN ? THEN excluded.handle ELSE signups.handle END) = 0 THEN 0 WHEN ? THEN ? ELSE signups.public_opt_in END, consent_at = excluded.consent_at').bind(signupId,email,interest,handle,handle && data.public_opt_in === true ? 1 : 0,new Date().toISOString(),source,utm,referrer,token,typeof data.interest === 'string' ? 1 : 0,typeof data.handle === 'string' ? 1 : 0,typeof data.handle === 'string' ? 1 : 0,typeof data.public_opt_in === 'boolean' ? 1 : 0,data.public_opt_in === true ? 1 : 0);
+    if (typeof welcomeEnabled === 'function' && welcomeEnabled(env,ctx,url.origin)) {
+      await env.SIGNUPS.batch([statement,welcomeStatement(env,signupId)]);
+      scheduleWelcome(env,ctx,signupId);
+    } else { await statement.run(); }
     // Keep status, body and headers identical for new, duplicate and opted-out emails.
     // Unsubscribe URLs are available only to the owner export for inclusion in letters.
     return signupResponse({ ok: true });
@@ -80,7 +144,7 @@ async function handleSignup(request, env) {
 }
 
 // Private interest signals. The generated INTEREST_ITEMS catalogue is the only allowlist.
-async function handleInterest(request, env) {
+async function handleInterest(request, env, ctx) {
   const url = new URL(request.url);
   if (!['/api/interest', '/api/interest/counts', '/admin/interest.csv'].includes(url.pathname)) return null;
   try {
@@ -132,27 +196,30 @@ async function handleInterest(request, env) {
     const referrer=typeof data.referrer==='string'?data.referrer.slice(0,500):'', now=new Date().toISOString();
     // First signal wins across both kinds for this item/IP/UTC day. Never disclose duplicates.
     const statements=[env.SIGNUPS.prepare('INSERT INTO interest_signals (id,item_key,kind,ip_hash,day,email,handle,letter_opt_in,consent_at,source_page,utm,referrer) VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(item_key,ip_hash,day) DO NOTHING').bind(crypto.randomUUID(),data.item_key,data.kind,hash,day,email,handle,optIn?1:0,now,source,utm,referrer)];
+    const signupId=crypto.randomUUID(), sendWelcome=typeof welcomeEnabled==='function' && welcomeEnabled(env,ctx,url.origin);
     if(optIn){
       const token=crypto.randomUUID().replaceAll('-','')+crypto.randomUUID().replaceAll('-','');
       // Explicit letter consent only; never re-enable an unsubscribed email or replace saved details.
-      statements.push(env.SIGNUPS.prepare('INSERT INTO signups (id,email,interest,handle,public_opt_in,consent_at,source_page,utm,referrer,unsubscribe_token) VALUES (?,?,?,?,?,?,?,?,?,?) ON CONFLICT(email) DO UPDATE SET consent_at = excluded.consent_at').bind(crypto.randomUUID(),email,INTEREST_ITEMS[data.item_key],handle,0,now,source,utm,referrer,token));
+      statements.push(env.SIGNUPS.prepare('INSERT INTO signups (id,email,interest,handle,public_opt_in,consent_at,source_page,utm,referrer,unsubscribe_token) VALUES (?,?,?,?,?,?,?,?,?,?) ON CONFLICT(email) DO UPDATE SET consent_at = excluded.consent_at').bind(signupId,email,INTEREST_ITEMS[data.item_key],handle,0,now,source,utm,referrer,token));
     }
+    if(optIn && sendWelcome)statements.push(welcomeStatement(env,signupId));
     await env.SIGNUPS.batch(statements);
+    if(optIn && sendWelcome)scheduleWelcome(env,ctx,signupId);
     return signupResponse({ok:true});
   } catch {return signupResponse({error:'Interest signals temporarily unavailable. Please try again later.'},503);}
 }
 
 export default {
-  async fetch(request, env) { return handleRequest(request, env) }
+  async fetch(request, env, ctx) { return handleRequest(request, env, ctx) }
 }
 
-async function handleRequest(request, env) {
+async function handleRequest(request, env, ctx) {
   const url = new URL(request.url)
   const path = url.pathname
-  const signup = await handleSignup(request, env)
+  const signup = await handleSignup(request, env, ctx)
   if (signup) return signup
   if (path === '/analytics.js') return new Response(ANALYTICS_JS, { headers: { 'Content-Type': 'application/javascript;charset=UTF-8', 'Cache-Control': 'public, max-age=300' } })
-  const interest = await handleInterest(request, env)
+  const interest = await handleInterest(request, env, ctx)
   if (interest) return interest
   if (path === '/interest-ui.js') return new Response(INTEREST_UI, { headers: { 'Content-Type': 'application/javascript;charset=UTF-8', 'Cache-Control': 'no-store' } })
   if (path === '/designs') return Response.redirect(url.origin + '/designs/', 302)
@@ -925,7 +992,7 @@ const MAIN_HTML = `<!DOCTYPE html>
   <div style="text-align:right">
     <a href="https://www.notion.so/jacobblog/Humanity-3-0-and-Dharmic-blueprint-314fda9cff6380bfae57ff843cce32dd" target="_blank" rel="noopener">Blueprint (Notion)</a> ·
     <a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" target="_blank" rel="noopener">Master doc</a><br/>
-    <span class="ver">v0.6.4 · 2026-11-18</span>
+    <span class="ver">v0.6.5 · 2026-11-19</span>
   </div>
 </div>
   <!-- Design versions + legacy -->

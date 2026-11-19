@@ -1,3 +1,6 @@
+// Optional welcome mail secrets (UNSET/DISABLED until Jacob approves exact copy):
+// HI_RESEND_API_KEY — dedicated sending_access key restricted to id.ideaflow.app.
+// WELCOME_EMAIL_ENABLED — only explicit true enables sending on canonical production origin.
 // Required Worker secrets, provisioned with wrangler-gcp secret bulk:
 // ADMIN_EXPORT_TOKEN — owner-only CSV authorization.
 // RATE_LIMIT_SALT — private IP hash salt for signup rate limiting.

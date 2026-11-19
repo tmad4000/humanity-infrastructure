@@ -22,16 +22,16 @@ for p in sorted(Path('designs').rglob('*')):
 with open('og-card.png','rb') as f: og_b64 = base64.b64encode(f.read()).decode()
 
 worker = f"""export default {{
-  async fetch(request, env) {{ return handleRequest(request, env) }}
+  async fetch(request, env, ctx) {{ return handleRequest(request, env, ctx) }}
 }}
 
-async function handleRequest(request, env) {{
+async function handleRequest(request, env, ctx) {{
   const url = new URL(request.url)
   const path = url.pathname
-  const signup = await handleSignup(request, env)
+  const signup = await handleSignup(request, env, ctx)
   if (signup) return signup
   if (path === '/analytics.js') return new Response(ANALYTICS_JS, {{ headers: {{ 'Content-Type': 'application/javascript;charset=UTF-8', 'Cache-Control': 'public, max-age=300' }} }})
-  const interest = await handleInterest(request, env)
+  const interest = await handleInterest(request, env, ctx)
   if (interest) return interest
   if (path === '/interest-ui.js') return new Response(INTEREST_UI, {{ headers: {{ 'Content-Type': 'application/javascript;charset=UTF-8', 'Cache-Control': 'no-store' }} }})
   if (path === '/designs') return Response.redirect(url.origin + '/designs/', 302)
@@ -84,7 +84,7 @@ const OG_PNG = Uint8Array.from(atob('{og_b64}'), c => c.charCodeAt(0))
 
 items = json.loads(Path('interest-items.json').read_text())
 interest_ui = Path('interest-ui.js').read_text().replace('__INTEREST_ITEMS__', json.dumps(items, ensure_ascii=True))
-worker = 'const INTEREST_ITEMS = ' + json.dumps(items, ensure_ascii=True) + ';\n' + Path('signup.js').read_text() + '\n' + Path('interest.js').read_text() + '\n' + worker + '\nconst INTEREST_UI = ' + json.dumps(interest_ui, ensure_ascii=True) + ';\n'
+worker = 'const INTEREST_ITEMS = ' + json.dumps(items, ensure_ascii=True) + ';\n' + Path('welcome.js').read_text() + '\n' + Path('signup.js').read_text() + '\n' + Path('interest.js').read_text() + '\n' + worker + '\nconst INTEREST_UI = ' + json.dumps(interest_ui, ensure_ascii=True) + ';\n'
 with open('worker.js', 'w') as f:
     f.write(worker)
 print(f"worker.js rebuilt: {len(worker)} bytes")
