@@ -1,8 +1,8 @@
-# Welcome email (disabled pending copy approval)
+# Welcome email (approved copy; release gated)
 
 The existing approved transactional sender is `noreply@id.ideaflow.app` on Resend. Machines provisioned a dedicated HI `sending_access` key restricted to that domain; no global/admin key is used. Neither that key nor an enable flag is committed or bound by this PR.
 
-Two optional Worker secrets enable delivery: `HI_RESEND_API_KEY` and `WELCOME_EMAIL_ENABLED` set to the exact string `true`. Without both, or outside the canonical `https://humanityinfrastructure.com` origin, no delivery receipt or provider request is made. Previews cannot send. **Jacob must approve the exact copy below before the first real send or production enablement.** Provisioning a key is not that approval.
+Two optional Worker secrets enable delivery: `HI_RESEND_API_KEY` and `WELCOME_EMAIL_ENABLED` set to the exact string `true`. Without both, or outside the canonical `https://humanityinfrastructure.com` origin, no delivery receipt or provider request is made. Previews cannot send. **Jacob approved the exact copy below on 2026-11-19 (DM 00:35Z, relayed by root).** Enablement still requires exact source review and the coordinator deploy slot. Provisioning a key alone is not release approval.
 
 Only a newly inserted signup ID can create a receipt in the additive `welcome_deliveries` table. Existing addresses, active duplicates and opted-out duplicates do not receive a welcome/backlog message. This also covers a new newsletter signup through explicit `letter_opt_in` in the private builder flow; merely providing contact details never opts in or sends mail.
 
@@ -12,7 +12,7 @@ There are at most two eight-second provider attempts, with identical body and a 
 
 Before an authorized release: obtain exact copy approval, final independent source GO and a coordinator slot; apply migration0003 inside the slot, bind the dedicated secret/explicit enable flag without printing values, upload/recheck, merge the reviewed head and deploy. Never merge built Worker changes early. Verify one approved test recipient, stored receipt, unsubscribe and synthetic-row cleanup. A code rollback leaves the additive table harmlessly present; remove the enable flag if disabling delivery. Preserve the scoped key in its established private location.
 
-## Exact draft copy
+## Exact approved copy
 
 From: Humanity Infrastructure <noreply@id.ideaflow.app>
 
