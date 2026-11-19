@@ -34,7 +34,7 @@ Review via a036208f, final exact-head GO, then an explicit b7541717 slot grant. 
 }
 ```
 
-5. Protected baseline file contains `{"signup_ids":["approved existing IDs"]}`. Run `python3 -I <release>/scripts/signup_notifier.py --config <config> --bootstrap-baseline <baseline>` once. IDs only; no posts. Confirm the three old IDs with a current read-only check; do not silently include a newly arrived signup in the old baseline.
+5. Protected baseline file contains `{"signup_ids":["approved existing IDs"]}`. Run `python3 -B -I <release>/scripts/signup_notifier.py --config <config> --bootstrap-baseline <baseline>` once. IDs only; no posts. Confirm the three old IDs with a current read-only check; do not silently include a newly arrived signup in the old baseline.
 6. Run `--dry-run` once: IDs/counts only, no contact reads, no publication. The command participates in the one-minute rate limit. No Worker/D1 schema migration is needed.
 7. Set enabled true in the private config. Install only `hi-signup-notifier.service` and `.timer` under `~/.config/systemd/user/`, user daemon-reload, and enable/start the timer. Never edit/restart the shared Buzz listener units. Verify at least two quiet minute-separated cycles and zero baseline cards; record unit/release/PID identity and counts-only logs. A genuine new signup is not a production test fixture.
 8. Report exact PR/review/release hashes, channel owner's scope receipt path, timer health, quiet-cycle/dry-run and unchanged Worker/health proofs. Share no email/interest contents in receipts.
@@ -50,4 +50,4 @@ This stops only the owned poller/child process group. Preserve the private journ
 
 ## Verification
 
-`python3 -I -m unittest discover -s tests -p test_signup_notifier.py -v` uses synthetic signup copies and local SQLite plus mocked transport. It verifies no backfill, contact minimization, settling/latest details, duplicate suppression, deletion, busy/ambiguous recovery, interrupted claims, private ID-only state, catch-up budget/summary, safe quoted text and stdin-only helper data. No real signup, email or Buzz post occurs.
+`python3 -B -I -m unittest discover -s tests -p test_signup_notifier.py -v` uses synthetic signup copies and local SQLite plus mocked transport. It verifies no backfill, contact minimization, settling/latest details, duplicate suppression, deletion, busy/ambiguous recovery, interrupted claims, private ID-only state, catch-up budget/summary, safe quoted text and stdin-only helper data. No real signup, email or Buzz post occurs.

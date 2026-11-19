@@ -213,7 +213,7 @@ def checked_receipt(receipt,channel,key):
 class ProcessTransport:
     def __call__(self, channel, key, text):
         helper = Path(__file__).resolve().with_name('signup_notifier_transport.py')
-        process = subprocess.Popen([sys.executable,'-I',str(helper)],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,start_new_session=True)
+        process = subprocess.Popen([sys.executable,'-B','-I',str(helper)],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,start_new_session=True)
         try:
             out,_ = process.communicate(json.dumps({'channel':channel,'item_key':key,'text':text}).encode(),timeout=180)
         except subprocess.TimeoutExpired:
