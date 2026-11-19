@@ -51,3 +51,9 @@ See [signup operations](SIGNUP-OPERATIONS.md) for storage, secrets, CSV export, 
 - [World Issue Tracker](https://worldissuetracker.com): public problem tracking (HI board: [humanity-infrastructure.worldissuetracker.com](https://humanity-infrastructure.worldissuetracker.com))
 - [Build on Ideaflow](https://index.ideaflow.app/build) and the [Ideaflow apps index](https://index.ideaflow.app)
 - Origin: `index.html` began in the `humanity3-earth` repo; the site previously redirected to humanity3.earth.
+
+## License
+
+Original code is [MIT licensed](LICENSES/MIT.txt). Original written content is
+[CC BY 4.0](LICENSES/CC-BY-4.0.txt). Third-party material retains its existing
+rights and notices; linked projects are not relicensed. See [scope and attribution](LICENSE).
