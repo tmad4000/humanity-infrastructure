@@ -1,8 +1,16 @@
 # Private HI signup notifications
 
-This host-side poller reads new HI signup IDs and uses the EXISTING Buzz bridge project-status helper to publish one private card per new ID. It never calls signup/interest APIs, Resend or an email sender. The public Worker, web pages and their configuration are unchanged.
+This host-side poller reads new HI signup IDs and posts one private card per new ID to the private Buzz channel **HI Signups** (`5f035fae-8731-41ac-9837-dd109d2ed1d8`, exactly Jacob and Paseo). It never calls signup/interest APIs, Resend or an email sender. The public Worker, web pages and their configuration are unchanged.
 
-Channel creation and every Buzz listener/route change belong exclusively to075fe138-b9c6-4277-80d6-addd30e38cf3. Activation requires that owner's signed/read-back proof that "HI Signups" is private and has exactly Jacob and Paseo, plus confirmation of this existing-helper contract. This repository does not create a channel, change a listener, or choose a fallback destination. Current helper location: `/home/dev/code/paseo-buzz-bridge-20261114/listener/project_status.py`; the adapter calls its existing main in a child process. The helper enforces ready private registry membership, fresh signed two-member scope, outbound locking, its durable operation journal and signed readback. No posting is allowed until075 supplies the exact verified channel ID/contract.
+The channel, its signed private scope and the transport contract belong to 075fe138-b9c6-4277-80d6-addd30e38cf3: `/home/dev/code/buzz-hi-signups-20261119/HOST-POLLER-CONTRACT.md` (sha256 `c1ebe0ba…`) and `ACL-HOST-POLLER-RECHECK.json`. This repository creates no channel, changes no listener or route, adds no credential and chooses no fallback destination. Per that contract, every post:
+
+1. **Re-checks the signed private scope** first, via 075's existing `listener/private_channel_scope.mjs::checkProjectScope` (39000 private/restricted/closed and 39002 exactly Jacob+Paseo). Any missing, broader or ambiguous scope keeps the signup pending; nothing is sent.
+2. **Claims the signup durably** (`dispatching`, body hash recorded) before invoking anything, so at most one attempt is ever made.
+3. **Sends once** with the existing bridge helper and fixed argv only: `buzz-paseo messages send --channel 5f035fae-… --kind 9 --content -`. The card body travels on stdin; no email or interest text is ever in any process argv, environment, log or receipt. The helper reads the bridge key itself; HI never sees it.
+4. **Retains the returned event ID** only if the helper reports `accepted: true` with a 64-hex `event_id`; otherwise the outcome is uncertain.
+5. **Reads back exactly that ID** via 075's existing `listener/status_card_read.mjs::authenticatedQuery` (`ids:[event_id]`, strong): exactly one event, kind 9, bridge author, exactly one `h` tag equal to HI Signups, and SHA-256 of the content equal to the recorded body hash. Only then is it `sent`.
+
+The raw helper has **no idempotency key**, so this is **at-most-once** delivery, not exactly-once: an interrupted, timed-out, non-accepted or malformed send becomes `reconcile` and halts all further posting until an operator (with 075) reconciles that exact signup ID. It is never resent automatically. An accepted post whose readback fails becomes `accepted_unverified`; later cycles retry **only the readback**, never the send, and hold new sends meanwhile. The scope check and readback run in `scripts/signup_notifier_buzz.mjs`, which imports 075's modules unchanged and never publishes.
 
 ## Behavior and privacy
 
@@ -10,9 +18,9 @@ Channel creation and every Buzz listener/route change belong exclusively to075fe
 - At most one D1 poll per minute, Nice10. Discover via IDs only. Read email/consent time/source/interest only for at most ten due new IDs, never baseline/sent contacts. Existing D1-only credential is read in place, never copied or printed. SQL is fixed/parameterized SELECT only; redirects are refused. No token/hash/handle columns are fetched.
 - Cost guard: the full IDs-only scan runs at most once per `max(60, ceil(count × 86400 / 3,000,000))` seconds when count exceeds 2,000 (60 seconds otherwise). The last observed count sets the next allowed scan time in the private journal; the minute timer skips intervening wakeups. Count and interval are logged, never contact data. At 3 IDs this reads about 4,320 discovery rows/day. The budget uses the last observed list size, so growth between scans can temporarily exceed that estimate; bounded new-contact reads also consume a small additional row budget. A future additive migration with an immutable monotonic `created_seq` or an `INTEGER PRIMARY KEY` would permit a genuine incremental cursor. Mutable consent timestamps, random UUID ordering and implicit reusable/renumberable rowids are not safe permanent cursors.
 - A30-second settling delay lets optional interest details be saved; on the minute timer normal notification latency is roughly60–120seconds. The card labels consent time as recorded, not an immutable creation date (which the existing schema does not store). Duplicate consent refreshes do not create new cards.
-- Email remains unverified. Submitted fields are quoted JSON data, not instructions. Control characters are removed; interest text is capped at280characters. Card contents go on stdin, never process argv. Local notifier state stores IDs, counts, times and delivery state only, never email/text. Its directory is0700 and files0600. The existing bridge keeps its own protected private card journal.
+- Email remains unverified. Submitted fields are quoted JSON data, not instructions. Control characters are removed; interest text is capped at 280 characters. Every `@` is rendered as `＠` (Buzz resolves `@Name` text to members even in plain content), and backticks are JSON-escaped so submitted text cannot close the code fence. Card contents go on stdin, never process argv. Local notifier state stores IDs, counts, times and delivery state only, never email/text. Its directory is0700 and files0600. The existing bridge keeps its own protected private card journal.
 - Fixed channel and stable `hi-signup/<signup-id>` item key. Each successful helper call must return the exact channel/key and a verified message ID. Cards use done state, avoiding a work-item stale watchdog. The channel owner must confirm Paseo-authored notification data cannot trigger inbound agent commands/mentions.
-- Busy shared outbound lock BEFORE publication can retry next minute. Unknown acceptance, timeout, interrupted publication or wrong readback halts all posting for owner075 reconciliation, never a blind resend. Shared listener services are not restarted. If the service is stopped mid-send, its pending journal is retained for inspection.
+- Only an unconfirmed private scope (checked before any send) retries next minute. Unknown acceptance, timeout, interrupted publication or malformed output halts all posting for reconciliation with 075, never a blind resend; a failed readback retries only the readback. Shared listener services are never restarted. If the service is stopped mid-send, its journal is retained for inspection.
 - Catch-up bursts use a durable batch: at most ten individual cards total, then one count-only summary for additional observed IDs. The budget survives lock-busy restarts, and overflow contact fields are never read. Summary ambiguity also halts rather than reposting. Deleted pending signup IDs are skipped.
 
 ## Install and rollback (owner slot only)
@@ -20,14 +28,14 @@ Channel creation and every Buzz listener/route change belong exclusively to075fe
 Review via a036208f, final exact-head GO, then an explicit b7541717 slot grant. No production signup/interest fixtures or email tests. Use the local synthetic SQLite/mock transport suite and a production IDs-only dry-run. Keep the public Worker unchanged; verify its source/body hashes and read-only health. Respect root's browser/CPU lane holds.
 
 1. Verify `loginctl show-user dev -p Linger` is already yes (verified during preparation). Do not change lingering or require sudo; report if unavailable.
-2. Obtain the approved channel and its fresh private two-member readback from075. Confirm the existing helper/registry is ready. No public fallback or synthetic post into the real channel. First real card is the next genuine signup.
-3. Create immutable release under `~/.local/share/hi-signup-notifier/releases/<reviewed-sha>/`, containing only the two notifier scripts, unit files and this document; record file hashes. Atomically point `current` at that release. Do not copy unrelated app assets or credentials.
+2. Channel `5f035fae-8731-41ac-9837-dd109d2ed1d8` and its signed private two-member scope come from 075 (`HOST-POLLER-CONTRACT.md`, `ACL-HOST-POLLER-RECHECK.json`); the poller re-checks that scope before every post. No public fallback or synthetic post into the real channel. First real card is the next genuine signup.
+3. Create immutable release under `~/.local/share/hi-signup-notifier/releases/<reviewed-sha>/`, containing only the notifier scripts (`signup_notifier.py`, `signup_notifier_buzz.mjs`), unit files and this document; record file hashes. Atomically point `current` at that release. Do not copy unrelated app assets or credentials.
 4. Create `~/.config/hi-signup-notifier/config.json`0600, directory0700:
 
 ```json
 {
   "channel_name": "HI Signups",
-  "channel_id": "EXACT-PRIVATE-UUID-FROM-075",
+  "channel_id": "5f035fae-8731-41ac-9837-dd109d2ed1d8",
   "state_file": "/home/dev/.local/state/hi-signup-notifier/journal.sqlite",
   "token_file": "/home/dev/.config/cloudflare/d1-api-token",
   "settle_seconds": 30,
