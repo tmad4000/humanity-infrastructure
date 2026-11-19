@@ -27,11 +27,21 @@ class Base(unittest.TestCase):
     def transport(self,channel,key,text):
         self.calls.append((channel,key,text));return {'channel':channel,'item_key':key,'status_message_id':'a'*64}
 
+class CostGuardTests(unittest.TestCase):
+    def test_interval_budget_and_boundaries(self):
+        for count,expected in [(0,60),(3,60),(2000,60),(2001,60),(2083,60),(2084,61),(3000,87),(10000,288),(100000,2880)]:
+            self.assertEqual(n.poll_interval(count),expected)
+            if count>2083:self.assertLessEqual(count*86400/n.poll_interval(count),3000000)
+        for invalid in [-1,True,1.5]:
+            with self.assertRaises(ValueError):n.poll_interval(invalid)
+
 class Tests(Base):
     def test_baseline_no_contact_reads_no_backfill(self):
         self.j.bootstrap([ident(1)],0);r=Reader(row(1))
         out=n.run_once(self.j,r,self.transport,100)
         self.assertEqual(out['published'],0);self.assertEqual(r.reads,[]);self.assertEqual(self.calls,[])
+        self.assertEqual(out['id_count'],1);self.assertEqual(out['interval_s'],60)
+        self.assertEqual(self.j.db.execute("SELECT value FROM meta WHERE key='poll_interval_s'").fetchone()[0],'60')
         with self.assertRaises(ValueError):self.j.bootstrap([],100)
     def test_settle_latest_details_one_card_and_duplicate_refresh_ignored(self):
         self.j.bootstrap([],0);r=Reader(row(2,''))

@@ -28,6 +28,12 @@ class SafeRetry(Exception):
 class UncertainDelivery(Exception):
     """Never retry an ambiguous publication automatically."""
 
+def poll_interval(count):
+    if not isinstance(count,int) or isinstance(count,bool) or count<0:
+        raise ValueError('invalid signup count')
+    # Integer ceil avoids floating-point drift at the daily row budget boundary.
+    return max(60,(count*86400+2999999)//3000000) if count>2000 else 60
+
 def timestamp(now):
     return dt.datetime.fromtimestamp(now, dt.timezone.utc).isoformat()
 
@@ -132,8 +138,10 @@ def run_once(journal, reader, transport, now, settle=30, limit=10):
     snapshot = reader.ids()
     current = set(checked_id(identifier) for identifier in snapshot)
     if len(current) != len(snapshot):raise ValueError('duplicate signup IDs')
-    result = {'discovered':0,'published':0,'summary_cards':0,'summarized':0,'missing':0,'pending':0,'needs_reconcile':0}
+    interval=poll_interval(len(current))
+    result = {'id_count':len(current),'interval_s':interval,'discovered':0,'published':0,'summary_cards':0,'summarized':0,'missing':0,'pending':0,'needs_reconcile':0}
     with journal.db:
+        journal.db.execute("INSERT OR REPLACE INTO meta VALUES ('poll_interval_s',?)",(str(interval),))
         # Caller holds exclusive run_lock. Interrupted publication never auto-repeats.
         journal.db.execute("UPDATE seen SET state='reconcile',error='interrupted' WHERE state='dispatching'")
         journal.db.execute("UPDATE batches SET state='reconcile' WHERE state='dispatching'")
@@ -260,13 +268,18 @@ def main():
             journal.ready()
             now=time.time()
             previous=journal.db.execute("SELECT value FROM meta WHERE key='last_attempt_at'").fetchone()
-            if previous and now-float(previous[0])<60:
+            interval_row=journal.db.execute("SELECT value FROM meta WHERE key='poll_interval_s'").fetchone()
+            interval=int(interval_row[0]) if interval_row else 60
+            if previous and now-float(previous[0])<interval:
                 print(json.dumps({'status':'rate_limited','published':0}));return 0
             if args.dry_run:
                 known={r[0] for r in journal.db.execute('SELECT signup_id FROM seen')}
                 with journal.db:journal.db.execute("INSERT OR REPLACE INTO meta VALUES ('last_attempt_at',?)",(str(now),))
-                new=sorted(set(D1Reader(cfg['token_file']).ids())-known)
-                print(json.dumps({'new_ids':new,'count':len(new),'published':0}));return 0
+                ids=D1Reader(cfg['token_file']).ids()
+                interval=poll_interval(len(ids))
+                with journal.db:journal.db.execute("INSERT OR REPLACE INTO meta VALUES ('poll_interval_s',?)",(str(interval),))
+                new=sorted(set(ids)-known)
+                print(json.dumps({'new_ids':new,'count':len(new),'id_count':len(ids),'interval_s':interval,'published':0}));return 0
             if cfg.get('enabled') is not True:
                 print(json.dumps({'status':'disabled','published':0}));return 0
             with journal.db:journal.db.execute("INSERT OR REPLACE INTO meta VALUES ('last_attempt_at',?)",(str(now),))
