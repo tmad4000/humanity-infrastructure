@@ -53,6 +53,7 @@ async function handleRequest(request, env, ctx) {{
   if (path === '/og-card.png') {{
     return new Response(OG_PNG, {{ headers: {{ 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=86400' }} }})
   }}
+  if (path === '/tools/lastbook' || path === '/tools/lastbook/') return new Response(LASTBOOK_HTML, {{headers: {{'Content-Type':'text/html;charset=UTF-8'}}}})
   if (path === '/classic' || path.startsWith('/classic/')) {{
     return new Response(CLASSIC_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Cache-Control': 'public, no-transform', 'Content-Security-Policy': "script-src 'self' 'unsafe-inline' https://analytics.ideaflow.app; connect-src 'self' https://api.worldissuetracker.com https://analytics.ideaflow.app; object-src 'none'; base-uri 'self'" }} }})
   }}
@@ -74,6 +75,7 @@ async function handleRequest(request, env, ctx) {{
 const ANALYTICS_JS = `{escape_js(Path('analytics.js').read_text())}`
 const X_EMBED_JS = `{escape_js(Path('scripts/x-embed.js').read_text())}`
 const DESIGN_ASSETS = {json.dumps(designs)}
+const LASTBOOK_HTML = {json.dumps(Path('tools/lastbook.html').read_text())}
 const MAIN_HTML = `{escape_js(main)}`
 const V2_HTML = `{escape_js(v2)}`
 const V3_HTML = `{escape_js(v3)}`
