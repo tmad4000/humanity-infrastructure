@@ -704,7 +704,7 @@ const MAIN_HTML = `<!DOCTYPE html>
   <div class="resource-list">
     <article class="card resource-row" id="lastbook" data-interest-item="lastbook" data-interest-title="Lastbook">
       <details class="resource-details">
-        <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">Lastbook</span><span class="resource-pitch">Offline knowledge for preparedness and rebuilding.</span><span class="lastbook-links"><a class="resource-url" href="https://lastbook.org/">Official Lastbook (offline edition)</a><a class="resource-url" href="https://lastbook.humanityinfrastructure.com/">Ideaflow-hosted library</a></span></span></summary>
+        <summary><span class="resource-overview"><span class="resource-title" role="heading" aria-level="3">Lastbook</span><span class="resource-pitch">Offline knowledge for preparedness and rebuilding.</span><span class="lastbook-links"><a class="resource-url" href="https://lastbook.org/">Official Lastbook (offline edition)</a><a class="resource-url" href="https://lastbook.humanityinfrastructure.com/">Lastbook Online - Hosted by Ideaflow.io</a></span></span></summary>
         <div class="resource-body"><p>A free, open-source offline library of practical manuals, videos and maps, with optional local AI. <a href="/tools/lastbook">About the hosted and offline editions</a>. Knowledge for preparedness and rebuilding, available after setup without an internet connection.</p><p class="needline"><span class="need-label">Need</span> Knowledge that survives when the internet doesn't</p><ul class="badges"><li class="open">Open source · MIT</li><li>Mac · Windows · Linux</li><li>By farbood &amp; contributors</li></ul><div class="editor-note"><h4>Editor's note</h4><p class="why">when the network goes down, the knowledge shouldn't. A library you can hand to a neighbour on a drive.</p></div></div>
       </details>
       <div class="resource-actions"></div>
@@ -996,7 +996,7 @@ const MAIN_HTML = `<!DOCTYPE html>
   <div style="text-align:right">
     <a href="https://www.notion.so/jacobblog/Humanity-3-0-and-Dharmic-blueprint-314fda9cff6380bfae57ff843cce32dd" target="_blank" rel="noopener">Blueprint (Notion)</a> ·
     <a href="https://docs.google.com/document/d/1-dxQdUBJ50f7qMO3lTemHEYcT7XUe4pOTgetf_KcMk0/edit" target="_blank" rel="noopener">Master doc</a><br/>
-    <span class="ver">v0.6.8 · 2026-11-23</span>
+    <span class="ver">v0.6.9 · 2026-11-24</span>
   </div>
 </div>
   <!-- Design versions + legacy -->
