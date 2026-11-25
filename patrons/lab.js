@@ -244,6 +244,87 @@
     });
   });
 
+
+  // ---- have a say: one voice per project, with optional comment ------------------
+  var voices = { counts: {}, comments: [] }, voiced = store.get('hi-patron-voiced', {});
+  if (!voiced || typeof voiced !== 'object' || Array.isArray(voiced)) voiced = {};
+  (function () { var clean = Object.create(null); Object.keys(voiced).slice(0, 200).forEach(function (id) { if (voiced[id] === 'use' || voiced[id] === 'benefit' || voiced[id] === 'believe') clean[id] = voiced[id]; }); voiced = clean; })();
+  var RELATION = { use: 'uses it', benefit: 'benefits from it', believe: 'thinks it matters' };
+  var vDlg = $('#voice'), vForm = $('#voice-form'), vErr = $('#voice-err'), vTarget = null, vOpener = null, vRefocus = null;
+  function voiceCount(id) { var c = voices.counts[id]; return c && typeof c.total === 'number' ? c.total : 0; }
+  function hasVoiced(id) { return typeof voiced[id] === 'string'; }
+  function openVoice(e, from) {
+    vTarget = e; vOpener = from || null; vErr.textContent = ''; vForm.reset();
+    var mineBefore = hasVoiced(e.id) && $('input[name="relation"][value="' + voiced[e.id] + '"]', vForm); if (mineBefore) mineBefore.checked = true;
+    $('#voice-project').textContent = e.name + (hasVoiced(e.id) ? ' · you have spoken up; this replaces your earlier voice.' : '');
+    if (vDlg.showModal) vDlg.showModal(); else vDlg.setAttribute('open', '');
+    $('input[name="relation"]:checked', vForm).focus();
+  }
+  function closeVoice(refocusId) {
+    vRefocus = refocusId || null;
+    if (vDlg.close) vDlg.close(); else { vDlg.removeAttribute('open'); refocusVoice(); }
+  }
+  // Runs for every way the dialog closes, including Escape, so focus never lands on a button that was redrawn away.
+  function refocusVoice() {
+    var refocusId = vRefocus || (vTarget && vTarget.id); vRefocus = null;
+    var again = refocusId && $$('.row-say').filter(function (b) { return b.getAttribute('data-id') === refocusId; })[0];
+    if (again) again.focus(); else if (vOpener && document.contains(vOpener)) vOpener.focus();
+  }
+  vDlg.addEventListener('close', refocusVoice);
+  $('#voice-close').addEventListener('click', function () { closeVoice(vTarget && vTarget.id); });
+  vDlg.addEventListener('click', function (ev) {
+    if (ev.target !== vDlg) return;
+    var r = vDlg.getBoundingClientRect();
+    if (ev.clientX < r.left || ev.clientX > r.right || ev.clientY < r.top || ev.clientY > r.bottom) closeVoice(vTarget && vTarget.id);
+  });
+  vForm.addEventListener('submit', function (ev) {
+    ev.preventDefault(); if (!vTarget) return;
+    var f = vForm.elements, target = vTarget, relation = (($('input[name="relation"]:checked', vForm)) || {}).value || 'use';
+    var btn = $('#voice-submit'); btn.disabled = true; vErr.textContent = '';
+    post('/api/patron-voice', { project: target.id, relation: relation, comment: f.comment.value.trim(), name: f.name.value.trim(), website: f.website.value, source_page: location.pathname }).then(function (res) {
+      btn.disabled = false;
+      if (!res.ok) { vErr.textContent = res.status === 429 ? 'Too many tries. Please try again in an hour.' : (res.status === 400 && res.error ? res.error : 'That did not save. Please try again.'); return; }
+      var c = voices.counts[target.id] || (voices.counts[target.id] = { total: 0, use: 0, benefit: 0, believe: 0 });
+      if (hasVoiced(target.id)) { if (c[voiced[target.id]] > 0) c[voiced[target.id]]--; } else c.total++;
+      c[relation]++; voiced[target.id] = relation; store.set('hi-patron-voiced', voiced);
+      var hadComment = !!f.comment.value.trim(); vForm.reset();
+      drawVoices(); core.redraw(); closeVoice(target.id);
+      say($('#say-status'), 'Your voice for ' + target.name + ' is counted.' + (hadComment ? ' Your comment will appear if a person approves it.' : ''));
+    });
+  });
+  core.onRow(function (li, e) {
+    if (e.tier !== 'featured') return;
+    var n = voiceCount(e.id), b = el('button', 'row-say', 'Have a say' + (n ? ' · ' + n : ''));
+    b.type = 'button'; b.setAttribute('data-id', e.id); b.setAttribute('aria-pressed', String(hasVoiced(e.id)));
+    b.setAttribute('aria-label', 'Have a say on ' + e.name + (n ? ', ' + n + (n === 1 ? ' voice' : ' voices') + ' so far' : ''));
+    b.addEventListener('click', function () { openVoice(e, b); });
+    $('.cat-meta', li).appendChild(b);
+  });
+  function drawVoices() {
+    var top = $('#say-top'), box = $('#say-comments');
+    var ranked = Object.keys(voices.counts).filter(listed).sort(function (a, b) { return voiceCount(b) - voiceCount(a) || byId[a].name.localeCompare(byId[b].name); }).filter(voiceCount).slice(0, 5);
+    top.textContent = '';
+    ranked.forEach(function (id) {
+      var c = voices.counts[id], li = el('li'); li.appendChild(el('span', null, byId[id].name));
+      var parts = []; if (c.use) parts.push(c.use + ' use it'); if (c.benefit) parts.push(c.benefit + ' benefit'); if (c.believe) parts.push(c.believe + ' think it matters');
+      li.appendChild(el('span', 'n', c.total + (c.total === 1 ? ' voice' : ' voices') + (parts.length ? ' (' + parts.join(', ') + ')' : ''))); top.appendChild(li);
+    });
+    if (!ranked.length) top.appendChild(el('li', 'empty', 'No voices yet. Be the first.'));
+    box.textContent = '';
+    var shown = (Array.isArray(voices.comments) ? voices.comments : []).filter(function (c) { return c && listed(c.project) && typeof c.text === 'string' && c.text; }).slice(0, 8);
+    shown.forEach(function (c) {
+      var li = el('li'); li.appendChild(el('blockquote', null, c.text));
+      li.appendChild(el('cite', null, (typeof c.name === 'string' && c.name ? c.name : 'Someone') + ' ' + (RELATION[c.relation] || 'spoke up') + ' · ' + byId[c.project].name));
+      box.appendChild(li);
+    });
+    if (!shown.length) box.appendChild(el('li', 'empty', 'Comments appear here once a person has approved them.'));
+  }
+  function loadVoices() {
+    return fetch('/api/patron-voices').then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+      if (d && d.counts && typeof d.counts === 'object') { voices = { counts: d.counts, comments: d.comments || [] }; drawVoices(); core.redraw(); }
+    }).catch(function () {});
+  }
+
   // ---- optional Ideaflow ID -----------------------------------------------------
   fetch('/api/patron-session').then(function (r) { return r.json(); }).then(function (s) {
     if (!s.enabled) return;
@@ -263,6 +344,6 @@
     entries.forEach(function (e) { byId[e.id] = e; });
     var dl = $('#pick-options'); entries.forEach(function (e) { if (e.tier === 'featured') { var o = el('option'); o.value = e.name; dl.appendChild(o); } });
     var box = $('#official-lists'); box.textContent = ''; lists.forEach(function (l) { box.appendChild(listCard(l, true)); });
-    drawPicks(); drawMine(); readShared(); core.redraw();
+    drawPicks(); drawMine(); readShared(); drawVoices(); core.redraw(); loadVoices();
   });
 })();

@@ -11,7 +11,7 @@ print(json.dumps(out))`;
 const IDS=['openchat','lastbook','nosleep'];
 function fixture(t,{secrets=false,fetchMock}={}){
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'hi-patron-sql-')),file=path.join(dir,'test.sqlite');t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
- const schema=['0001_signups.sql','0002_interest_signals.sql','0004_patron_interest.sql','0005_patron_followups.sql'].map(name=>fs.readFileSync('migrations/'+name,'utf8')).join('\n');
+ const schema=['0001_signups.sql','0002_interest_signals.sql','0004_patron_interest.sql','0005_patron_followups.sql','0006_patron_voices.sql'].map(name=>fs.readFileSync('migrations/'+name,'utf8')).join('\n');
  const init=spawnSync('python3',['-c',"import sqlite3,sys;sqlite3.connect(sys.argv[1]).executescript(sys.stdin.read())",file],{input:schema});assert.equal(init.status,0,String(init.stderr));
  const exec=statements=>{const result=spawnSync('python3',['-c',python],{input:JSON.stringify({file,statements}),encoding:'utf8'});if(result.status!==0)throw Error(result.stderr);return JSON.parse(result.stdout);};
  const db={prepare(sql){return {sql,args:[],bind(...args){this.args=args;return this;},async run(){return exec([this])[0];},async first(){return exec([this])[0].results[0] || null;},async all(){return exec([this])[0];}};},async batch(statements){return exec(statements);}};
@@ -21,7 +21,9 @@ function fixture(t,{secrets=false,fetchMock}={}){
  let counter=0;
  const send=(p,data,{ip='192.0.2.'+(++counter),headers={}}={})=>context.route(new Request('https://example.com'+p,{method:'POST',headers:{Origin:'https://example.com','Content-Type':'application/json','CF-Connecting-IP':ip,...headers},body:JSON.stringify(data)}),env);
  const table=async name=>(await db.prepare('SELECT * FROM '+name+' ORDER BY created_at').all()).results;
- return {db,env,context,send,post:(data,o)=>send('/api/patron-interest',data,o),nominate:(data,o)=>send('/api/patron-nominate',data,o),rows:()=>table('patron_interest'),noms:()=>table('patron_nominations'),get:(p,headers={})=>context.route(new Request('https://example.com'+p,{headers}),env)};
+ const voice=(data,o)=>send('/api/patron-voice',data,o),voices=async()=>(await context.route(new Request('https://example.com/api/patron-voices'),env)).json();
+ const admin=(p,data,token='test-secret')=>context.route(new Request('https://example.com'+p,{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+token},body:JSON.stringify(data)}),env);
+ return {voice,voices,admin,vrows:()=>table('patron_voices'),db,env,context,send,post:(data,o)=>send('/api/patron-interest',data,o),nominate:(data,o)=>send('/api/patron-nominate',data,o),rows:()=>table('patron_interest'),noms:()=>table('patron_nominations'),get:(p,headers={})=>context.route(new Request('https://example.com'+p,{headers}),env)};
 }
 test('other paths are not handled',async t=>{
  const f=fixture(t);assert.equal(await f.get('/patrons'),null);assert.equal(await f.get('/api/interest'),null);assert.equal(await f.get('/beyond'),null);
@@ -89,6 +91,75 @@ test('nominations go to a private pending queue; nothing is public',async t=>{
  assert.equal((await f.get('/admin/patron-nominations.csv')).status,401);
  const csv=await(await f.get('/admin/patron-nominations.csv',{Authorization:'Bearer test-secret'})).text();
  assert.match(csv,/^id,batch,name,url,ecosystem,why,email,status,created_at,source_page\r\n/);assert.ok(csv.includes('"Blender"'));
+});
+test('voices: one per project per address, public counts by relation, nothing private in the public read',async t=>{
+ const f=fixture(t);
+ assert.deepEqual(await f.voices(),{counts:{},comments:[]});
+ assert.equal((await f.voice({project:'openchat',relation:'use'},{ip:'203.0.113.1'})).status,200);
+ assert.equal((await f.voice({project:'openchat',relation:'benefit'},{ip:'203.0.113.2'})).status,200);
+ assert.equal((await f.voice({project:'lastbook',relation:'believe'},{ip:'203.0.113.1'})).status,200);
+ assert.deepEqual((await f.voices()).counts,{openchat:{total:2,use:1,benefit:1,believe:0},lastbook:{total:1,use:0,benefit:0,believe:1}});
+ // the same address speaking again replaces its voice, it does not add one
+ await f.voice({project:'openchat',relation:'believe'},{ip:'203.0.113.1'});
+ assert.deepEqual((await f.voices()).counts.openchat,{total:2,use:0,benefit:1,believe:1});
+ assert.equal((await f.vrows()).length,3);
+ const body=JSON.stringify(await f.voices());
+ assert.ok(!body.includes('203.0.113')&&!/voter|hash|"id"/.test(body),'no address, hash or row id in the public read');
+ const res=await f.context.route(new Request('https://example.com/api/patron-voices'),f.env);assert.match(res.headers.get('Cache-Control'),/max-age=30/);
+});
+test('voices: comments stay private until approved; editing a comment sends it back to pending',async t=>{
+ const f=fixture(t);
+ await f.voice({project:'openchat',relation:'use',comment:'  It runs our team chat.  ',name:' Maya '},{ip:'203.0.113.5'});
+ const [row]=await f.vrows();assert.equal(row.comment,'It runs our team chat.');assert.equal(row.display_name,'Maya');assert.equal(row.comment_status,'pending');
+ assert.deepEqual((await f.voices()).comments,[]);
+ const at=row.updated_at,mod=(id,status,updated_at=at,token)=>f.admin('/admin/patron-voices/moderate',{id,status,updated_at},token);
+ assert.equal((await mod(row.id,'approved',at,'wrong')).status,401);
+ assert.equal((await mod(row.id,'published')).status,400);
+ assert.equal((await f.admin('/admin/patron-voices/moderate',{id:row.id,status:'approved'})).status,400,'the revision read is required');
+ assert.equal((await mod('nope','approved')).status,404);
+ assert.equal((await mod(row.id,'approved','2000-01-01T00:00:00.000Z')).status,409,'a decision on an older revision is refused');
+ assert.deepEqual((await f.voices()).comments,[]);
+ assert.equal((await mod(row.id,'approved')).status,200);
+ const shown=(await f.voices()).comments;assert.equal(shown.length,1);
+ assert.deepEqual(Object.keys(shown[0]).sort(),['date','name','project','relation','text']);assert.equal(shown[0].text,'It runs our team chat.');assert.equal(shown[0].name,'Maya');
+ // same text again keeps the approval; changed text loses it; removing the text removes the comment
+ await f.voice({project:'openchat',relation:'benefit',comment:'It runs our team chat.',name:'Maya'},{ip:'203.0.113.5'});
+ assert.equal((await f.voices()).comments.length,1);
+ // same text under a different name is reviewed again
+ await f.voice({project:'openchat',relation:'benefit',comment:'It runs our team chat.',name:'Someone Famous'},{ip:'203.0.113.5'});
+ assert.equal((await f.vrows())[0].comment_status,'pending');assert.deepEqual((await f.voices()).comments,[]);
+ await f.voice({project:'openchat',relation:'benefit',comment:'Changed my mind <script>alert(1)</script>',name:'Maya'},{ip:'203.0.113.5'});
+ assert.equal((await f.vrows())[0].comment_status,'pending');assert.deepEqual((await f.voices()).comments,[]);
+ await f.voice({project:'openchat',relation:'benefit'},{ip:'203.0.113.5'});
+ const cleared=(await f.vrows())[0];assert.equal(cleared.comment,'');assert.equal(cleared.comment_status,'none');assert.equal(cleared.display_name,'');
+ // a voice with no comment cannot be 'approved' into the public list
+ assert.equal((await mod(cleared.id,'approved',cleared.updated_at)).status,404);
+});
+test('voices: validation, origin, honeypot, export',async t=>{
+ const f=fixture(t);
+ for(const bad of [{project:'not-listed',relation:'use'},{project:'constructor',relation:'use'},{project:'openchat',relation:'hate'},{project:'openchat'},{project:'openchat',relation:'use',comment:'x'.repeat(501)},{project:'openchat',relation:'use',name:'x'.repeat(61)},{project:'openchat',relation:'use',comment:5},{project:['openchat'],relation:'use'}])assert.equal((await f.voice(bad)).status,400,JSON.stringify(bad).slice(0,50));
+ assert.equal((await f.voice({project:'openchat',relation:'use'},{headers:{Origin:'https://evil.example'}})).status,403);
+ assert.equal((await f.voice({project:'openchat',relation:'use',website:'x'})).status,200);
+ assert.equal((await f.vrows()).length,0);
+ assert.equal((await f.get('/api/patron-voice')).status,405);assert.equal((await f.get('/admin/patron-voices/moderate')).status,405);
+ await f.voice({project:'openchat',relation:'use',comment:'=HYPERLINK("x")'},{ip:'203.0.113.9'});
+ assert.equal((await f.get('/admin/patron-voices.csv')).status,401);
+ const csv=await(await f.get('/admin/patron-voices.csv',{Authorization:'Bearer test-secret'})).text();
+ assert.match(csv,/^id,project_id,relation,comment,display_name,comment_status,created_at,updated_at\r\n/);assert.ok(csv.includes(`"'=HYPERLINK(""x"")"`));assert.ok(!csv.includes('203.0.113'));
+ assert.equal((await f.db.prepare('SELECT COUNT(*) AS n FROM signups').first()).n,0);
+});
+test('voices: an IPv6 /64 is one voter and one rate budget; different /64s are different voters',async t=>{
+ const f=fixture(t);
+ for(const ip of ['2001:db8:1:2::1','2001:db8:1:2:aaaa:bbbb:cccc:dddd','2001:0db8:0001:0002:0:0:0:9'])assert.equal((await f.voice({project:'openchat',relation:'use'},{ip})).status,200);
+ assert.equal((await f.vrows()).length,1);
+ await f.voice({project:'openchat',relation:'use'},{ip:'2001:db8:1:3::1'});await f.voice({project:'openchat',relation:'use'},{ip:'::1'});
+ assert.equal((await f.vrows()).length,3);
+ assert.equal((await f.db.prepare('SELECT COUNT(*) AS n FROM signup_rate_limits').first()).n,3);
+});
+test('voices: thirty an hour per address, then refused',async t=>{
+ const f=fixture(t);
+ for(let i=0;i<30;i++)assert.equal((await f.voice({project:IDS[i%3],relation:'use'},{ip:'203.0.113.30'})).status,200);
+ assert.equal((await f.voice({project:'openchat',relation:'use'},{ip:'203.0.113.30'})).status,429);
 });
 test('honeypot is accepted and stores nothing',async t=>{
  const f=fixture(t);const r=await f.post({email:'bot@example.com',tier:'patron',website:'x'});
@@ -187,11 +258,13 @@ test('generated worker: routes on both hosts, strict policy, placeholders intact
  const stray=await hit('https://patronage.humanityinfrastructure.com/tools/lastbook');assert.equal(stray.status,302);assert.equal(stray.headers.get('Location'),'https://humanityinfrastructure.com/tools/lastbook');
  for(const u of ['https://patronage.humanityinfrastructure.com/','https://patronage.humanityinfrastructure.com/beyond'])assert.match((await hit(u)).headers.get('Content-Security-Policy'),/default-src 'self'.*script-src 'self'/);
  assert.equal((await mod.default.fetch(new Request('https://patronage.humanityinfrastructure.com/api/patron-session'),{}, {})).status,200);
+ assert.ok(fs.readFileSync('docs/patrons/HAVE-A-SAY.md','utf8').includes('voting is just one step better than an open war'),'design notes keep the source words');
  for(const name of ['index.html','beyond.html']){
   const html=fs.readFileSync('patrons/'+name,'utf8');
   assert.ok(!/ style="/.test(html),name+': no inline styles (blocked by the page policy)');
   assert.ok(!/<script(?![^>]*\bsrc=)/.test(html),name+': no inline scripts');
   assert.ok(!/ on[a-z]+="/.test(html),name+': no inline handlers');
+  assert.ok(!/war\b/i.test(html.replace('voting is just one step better than an open war',''))||name!=='index.html',name+': the quotation is used once, as written');
   assert.ok(!html.includes('analytics.ideaflow.app'),name+': no tracker');
   assert.ok(!/tax[- ]deductible/i.test(html.replace(/not tax-deductible|Is this tax-deductible\?|nothing here is tax-deductible/gi,'')),name+': never claims deductibility');
  }

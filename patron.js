@@ -2,7 +2,8 @@
 // and optional Ideaflow ID sign-in. No payment is taken, no mail is sent, nothing is written to the
 // newsletter table and nothing here is public. PATRON_PROJECT_IDS is generated from patrons/catalog.json.
 const PATRON_TIERS = { seed: 100, supporter: 300, patron: 1000, custom: null };
-const PATRON_ROUTES = ['/api/patron-interest', '/api/patron-nominate', '/api/patron-session', '/auth/ideaflow/start', '/auth/ideaflow/callback', '/auth/ideaflow/signout', '/admin/patron-interest.csv', '/admin/patron-nominations.csv'];
+const PATRON_VOICE_RELATIONS = ['use', 'benefit', 'believe'];
+const PATRON_ROUTES = ['/api/patron-voice', '/api/patron-voices', '/admin/patron-voices.csv', '/admin/patron-voices/moderate', '/api/patron-interest', '/api/patron-nominate', '/api/patron-session', '/auth/ideaflow/start', '/auth/ideaflow/callback', '/auth/ideaflow/signout', '/admin/patron-interest.csv', '/admin/patron-nominations.csv'];
 const PATRON_ECOSYSTEMS = ['', 'npm', 'pypi', 'cargo', 'go', 'rubygems', 'homebrew', 'other'];
 const IDEAFLOW_ID = { authorize: 'https://id.ideaflow.app/api/auth/oauth2/authorize', token: 'https://id.ideaflow.app/api/auth/oauth2/token', userinfo: 'https://id.ideaflow.app/api/auth/oauth2/userinfo' };
 const PATRON_EMAIL = /^[^\s@,;<>]+@[^\s@,;<>]+\.[^\s@,;<>]+$/;
@@ -12,6 +13,13 @@ function patronUnB64(text) { return Uint8Array.from(atob(text.replaceAll('-', '+
 function patronCookie(request, name) {
   for (const part of (request.headers.get('Cookie') || '').split(';')) { const i = part.indexOf('='); if (i > 0 && part.slice(0, i).trim() === name) return part.slice(i + 1).trim(); }
   return '';
+}
+// One network, one key: an IPv6 customer holds a whole /64, so only its first four groups are used.
+function patronNet(ip) {
+  if (!ip.includes(':')) return ip;
+  const [head, tail = ''] = ip.toLowerCase().split('::'), left = head ? head.split(':') : [], right = tail ? tail.split(':') : [];
+  const groups = ip.includes('::') ? [...left, ...Array(Math.max(0, 8 - left.length - right.length)).fill('0'), ...right] : left;
+  return groups.slice(0, 4).map(g => g.replace(/^0+(?=.)/, '')).join(':') + '::/64';
 }
 function patronSignInEnabled(env) { return Boolean(env.IDEAFLOW_CLIENT_ID && env.IDEAFLOW_CLIENT_SECRET && env.PATRON_SESSION_SECRET); }
 async function patronSign(env, text) {
@@ -44,7 +52,7 @@ async function patronReadJson(request, limit) {
 // units (so twelve an hour); a stack scan costs one unit per package when that is more. Raw IPs are never stored.
 async function patronRate(request, env, units = 5) {
   const ip = request.headers.get('CF-Connecting-IP'); if (!ip) return signupResponse({ error: 'Temporarily unavailable.' }, 503);
-  const hash = await signupHash(env.RATE_LIMIT_SALT + ':patron:' + ip), hour = Math.floor(Date.now() / 3600000);
+  const hash = await signupHash(env.RATE_LIMIT_SALT + ':patron:' + patronNet(ip)), hour = Math.floor(Date.now() / 3600000);
   const rate = await env.SIGNUPS.prepare('INSERT INTO signup_rate_limits (ip_hash, window, attempts) VALUES (?, ?, ?) ON CONFLICT(ip_hash) DO UPDATE SET attempts = CASE WHEN window = excluded.window THEN attempts + excluded.attempts ELSE excluded.attempts END, window = excluded.window RETURNING attempts').bind(hash, hour, units).first();
   if (rate.attempts > 60) return signupResponse({ error: 'Too many attempts. Please try again in an hour.' }, 429, { 'Retry-After': '3600' });
   await env.SIGNUPS.prepare('DELETE FROM signup_rate_limits WHERE window < ?').bind(hour - 24).run();
@@ -68,6 +76,38 @@ async function handlePatron(request, env, ctx) {
   if (!PATRON_ROUTES.includes(path)) return null;
   try {
     if (path === '/admin/patron-interest.csv') return patronCsv(request, env, 'patron_interest', ['id', 'email', 'tier', 'amount_cents', 'notify_opt_in', 'allocations', 'ideaflow_sub', 'created_at', 'updated_at', 'source_page'], 'hi-patron-interest.csv');
+    if (path === '/admin/patron-voices.csv') return patronCsv(request, env, 'patron_voices', ['id', 'project_id', 'relation', 'comment', 'display_name', 'comment_status', 'created_at', 'updated_at'], 'hi-patron-voices.csv');
+    if (path === '/admin/patron-voices/moderate') {
+      // Owner-only: approve or decline one comment. A comment is public only while its status is 'approved'.
+      if (request.method !== 'POST') return signupResponse({ error: 'Method not allowed' }, 405);
+      if (!env.ADMIN_EXPORT_TOKEN || await signupHash(request.headers.get('Authorization') || '') !== await signupHash('Bearer ' + env.ADMIN_EXPORT_TOKEN)) return signupResponse({ error: 'Unauthorized' }, 401);
+      const { data, error } = await patronReadJson(request, 1024); if (error) return error;
+      if (typeof data.id !== 'string' || typeof data.updated_at !== 'string' || !['approved', 'declined'].includes(data.status)) return signupResponse({ error: 'Send the id and updated_at from the export, and a status of approved or declined.' }, 400);
+      // The decision applies only to the text the moderator read: an edit since the export changes updated_at.
+      const changed = await env.SIGNUPS.prepare("UPDATE patron_voices SET comment_status = ? WHERE id = ? AND comment != '' AND updated_at = ? RETURNING id").bind(data.status, data.id, data.updated_at).first();
+      if (changed) return signupResponse({ ok: true });
+      const exists = await env.SIGNUPS.prepare("SELECT id FROM patron_voices WHERE id = ? AND comment != ''").bind(data.id).first();
+      return exists ? signupResponse({ error: 'That comment was edited after the export. Read it again.' }, 409) : signupResponse({ error: 'No comment with that id.' }, 404);
+    }
+    if (path === '/api/patron-voices') {
+      // Public: how many people spoke up for each project, and the comments a person has approved. Nothing else leaves the table.
+      if (request.method !== 'GET') return signupResponse({ error: 'Method not allowed' }, 405);
+      // Worker responses are not cached at the edge by header alone, so use the Cache API: one database read per 30 seconds per location.
+      const edge = typeof caches !== 'undefined' && caches.default ? caches.default : null, cacheKey = new Request(url.origin + url.pathname);
+      const hit = edge ? await edge.match(cacheKey) : null; if (hit) return hit;
+      const totals = await env.SIGNUPS.prepare('SELECT project_id, relation, COUNT(*) AS n FROM patron_voices GROUP BY project_id, relation').all();
+      const counts = {};
+      for (const row of totals.results) {
+        if (!PATRON_PROJECT_IDS.includes(row.project_id) || !PATRON_VOICE_RELATIONS.includes(row.relation)) continue;
+        const entry = counts[row.project_id] || (counts[row.project_id] = { total: 0, use: 0, benefit: 0, believe: 0 });
+        entry[row.relation] = row.n; entry.total += row.n;
+      }
+      const approved = await env.SIGNUPS.prepare("SELECT project_id, relation, comment, display_name, updated_at FROM patron_voices WHERE comment_status = 'approved' ORDER BY updated_at DESC LIMIT 20").all();
+      const comments = approved.results.filter(row => PATRON_PROJECT_IDS.includes(row.project_id)).map(row => ({ project: row.project_id, relation: row.relation, text: row.comment, name: row.display_name, date: String(row.updated_at).slice(0, 10) }));
+      const fresh = new Response(JSON.stringify({ counts, comments }), { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=30', 'X-Content-Type-Options': 'nosniff' } });
+      if (edge) { const put = edge.put(cacheKey, fresh.clone()); if (ctx && ctx.waitUntil) ctx.waitUntil(put); else await put; }
+      return fresh;
+    }
     if (path === '/admin/patron-nominations.csv') return patronCsv(request, env, 'patron_nominations', ['id', 'batch', 'name', 'url', 'ecosystem', 'why', 'email', 'status', 'created_at', 'source_page'], 'hi-patron-nominations.csv');
 
     // ---- optional Ideaflow ID sign-in. Every route answers "not enabled" until the three secrets exist. ----
@@ -114,11 +154,26 @@ async function handlePatron(request, env, ctx) {
     const { data, error } = await patronReadJson(request, path === '/api/patron-nominate' ? 8192 : 4096);
     if (error) return error;
     if (data.website) return signupResponse({ ok: true });
-    const units = path === '/api/patron-nominate' && Array.isArray(data.items) ? Math.min(Math.max(data.items.length, 5), 31) : 5;
+    // A voice costs two units, so someone can speak up for thirty projects in an hour.
+    const units = path === '/api/patron-voice' ? 2 : path === '/api/patron-nominate' && Array.isArray(data.items) ? Math.min(Math.max(data.items.length, 5), 31) : 5;
     const limited = await patronRate(request, env, units); if (limited) return limited;
     const email = typeof data.email === 'string' ? data.email.trim().toLowerCase() : '';
     const source = typeof data.source_page === 'string' ? data.source_page.slice(0, 300) : '/patrons', now = new Date().toISOString();
 
+    if (path === '/api/patron-voice') {
+      // One voice per project per salted address hash. Speaking again replaces the earlier voice; a new or changed
+      // comment goes back to 'pending' and is not public until a person approves it.
+      if (typeof data.project !== 'string' || !PATRON_PROJECT_IDS.includes(data.project)) return signupResponse({ error: 'Choose a listed project.' }, 400);
+      if (!PATRON_VOICE_RELATIONS.includes(data.relation)) return signupResponse({ error: 'Say how you relate to the project.' }, 400);
+      if (data.comment !== undefined && typeof data.comment !== 'string' || data.name !== undefined && typeof data.name !== 'string') return signupResponse({ error: 'Invalid submission' }, 400);
+      const comment = (data.comment || '').trim(), name = (data.name || '').trim();
+      if (comment.length > 500) return signupResponse({ error: 'Comments can be up to 500 characters.' }, 400);
+      if (name.length > 60) return signupResponse({ error: 'Names can be up to 60 characters.' }, 400);
+      const voter = await signupHash(env.RATE_LIMIT_SALT + ':voice:' + patronNet(request.headers.get('CF-Connecting-IP')));
+      await env.SIGNUPS.prepare("INSERT INTO patron_voices (id,project_id,relation,voter_hash,comment,display_name,comment_status,created_at,updated_at) VALUES (?,?,?,?,?,?,?,?,?) ON CONFLICT(project_id, voter_hash) DO UPDATE SET relation = excluded.relation, display_name = excluded.display_name, updated_at = excluded.updated_at, comment_status = CASE WHEN excluded.comment = '' THEN 'none' WHEN excluded.comment = comment AND excluded.display_name = display_name THEN comment_status ELSE 'pending' END, comment = excluded.comment")
+        .bind(crypto.randomUUID(), data.project, data.relation, voter, comment, comment ? name : '', comment ? 'pending' : 'none', now, now).run();
+      return signupResponse({ ok: true });
+    }
     if (path === '/api/patron-nominate') {
       // Nominations wait in a private review queue (status 'pending'). Nothing is published from here.
       if (email && (email.length > 254 || !PATRON_EMAIL.test(email))) return signupResponse({ error: 'Please enter a valid email address or leave it blank.' }, 400);
