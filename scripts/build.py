@@ -53,6 +53,10 @@ async function handleRequest(request, env, ctx) {{
   if (path === '/og-card.png') {{
     return new Response(OG_PNG, {{ headers: {{ 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=86400' }} }})
   }}
+  const patron = await handlePatron(request, env, ctx)
+  if (patron) return patron
+  if (path === '/patrons' || path === '/patrons/') return new Response(PATRONS_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Cache-Control': 'public, max-age=300', 'Referrer-Policy': 'strict-origin-when-cross-origin', 'X-Content-Type-Options': 'nosniff', 'Content-Security-Policy': "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'" }} }})
+  if (Object.hasOwn(PATRONS_ASSETS, path)) return new Response(PATRONS_ASSETS[path][1], {{ headers: {{ 'Content-Type': PATRONS_ASSETS[path][0], 'Cache-Control': 'public, max-age=300', 'X-Content-Type-Options': 'nosniff' }} }})
   if (path === '/tools/lastbook' || path === '/tools/lastbook/') return new Response(LASTBOOK_HTML, {{headers: {{'Content-Type':'text/html;charset=UTF-8'}}}})
   if (path === '/classic' || path.startsWith('/classic/')) {{
     return new Response(CLASSIC_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Cache-Control': 'public, no-transform', 'Content-Security-Policy': "script-src 'self' 'unsafe-inline' https://analytics.ideaflow.app; connect-src 'self' https://api.worldissuetracker.com https://analytics.ideaflow.app; object-src 'none'; base-uri 'self'" }} }})
@@ -75,6 +79,8 @@ async function handleRequest(request, env, ctx) {{
 const ANALYTICS_JS = `{escape_js(Path('analytics.js').read_text())}`
 const X_EMBED_JS = `{escape_js(Path('scripts/x-embed.js').read_text())}`
 const DESIGN_ASSETS = {json.dumps(designs)}
+const PATRONS_HTML = {json.dumps(Path('patrons/index.html').read_text(), ensure_ascii=True)}
+const PATRONS_ASSETS = {json.dumps({'/patrons/' + name: [mime, Path('patrons/' + name).read_text()] for name, mime in [('styles.css', 'text/css;charset=UTF-8'), ('app.js', 'application/javascript;charset=UTF-8'), ('theme.js', 'application/javascript;charset=UTF-8'), ('catalog.json', 'application/json;charset=UTF-8')]}, ensure_ascii=True)}
 const LASTBOOK_HTML = {json.dumps(Path('tools/lastbook.html').read_text())}
 const MAIN_HTML = `{escape_js(main)}`
 const V2_HTML = `{escape_js(v2)}`
@@ -86,7 +92,7 @@ const OG_PNG = Uint8Array.from(atob('{og_b64}'), c => c.charCodeAt(0))
 
 items = json.loads(Path('interest-items.json').read_text())
 interest_ui = Path('interest-ui.js').read_text().replace('__INTEREST_ITEMS__', json.dumps(items, ensure_ascii=True))
-worker = 'const INTEREST_ITEMS = ' + json.dumps(items, ensure_ascii=True) + ';\n' + Path('welcome.js').read_text() + '\n' + Path('signup.js').read_text() + '\n' + Path('interest.js').read_text() + '\n' + worker + '\nconst INTEREST_UI = ' + json.dumps(interest_ui, ensure_ascii=True) + ';\n'
+worker = 'const INTEREST_ITEMS = ' + json.dumps(items, ensure_ascii=True) + ';\n' + Path('welcome.js').read_text() + '\n' + Path('signup.js').read_text() + '\n' + Path('interest.js').read_text() + '\n' + Path('patron.js').read_text() + '\n' + worker + '\nconst INTEREST_UI = ' + json.dumps(interest_ui, ensure_ascii=True) + ';\n'
 with open('worker.js', 'w') as f:
     f.write(worker)
 print(f"worker.js rebuilt: {len(worker)} bytes")

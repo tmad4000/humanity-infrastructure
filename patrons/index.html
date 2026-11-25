@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Patrons of the Commons · Humanity Infrastructure</title>
+<meta name="description" content="One small monthly subscription for the open software you use, shared across projects by usage, adjustable by you, with every dollar published." />
+<meta property="og:title" content="Patrons of the Commons · Humanity Infrastructure" />
+<meta property="og:description" content="One small monthly subscription for the open software you use. Shared by usage, adjustable by you, every dollar published." />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Humanity Infrastructure" />
+<meta property="og:url" content="https://humanityinfrastructure.com/patrons" />
+<meta property="og:image" content="https://humanityinfrastructure.com/og-card.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="canonical" href="https://humanityinfrastructure.com/patrons" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>" />
+<script src="/patrons/theme.js"></script>
+<link rel="stylesheet" href="/patrons/styles.css" />
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="preview-bar" role="note">
+  <div class="wrap"><strong>Early days.</strong> Payments are not open yet. The buttons save your place: no charge, and no email is sent.</div>
+</div>
+
+<header class="site-header">
+  <div class="wrap header-row">
+    <a class="brand" href="https://humanityinfrastructure.com/"><span class="logo" aria-hidden="true">🌍</span><span>Humanity Infrastructure</span><span class="brand-sub">Patrons</span></a>
+    <nav aria-label="Page sections" class="nav">
+      <a href="#how">How it works</a>
+      <a href="#split">Your split</a>
+      <a href="#ledger">Ledger</a>
+      <a href="#catalog">Catalog</a>
+      <a href="#featured">Featured</a>
+      <a href="#arc">Long arc</a>
+      <a href="#honest">Caveats</a>
+    </nav>
+    <div class="header-actions">
+      <button class="theme-btn" id="theme-btn" type="button" aria-label="Switch colour theme">Theme</button>
+      <button class="btn primary small" type="button" data-join="patron">Become a patron</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Patrons of the Commons</p>
+      <h1>One small subscription for the open software you use.</h1>
+      <p class="lede">$10 a month, shared across open projects by how much they are used. Move the split if a project matters more to you than the numbers show. Every dollar is published.</p>
+      <div class="cta-row">
+        <button class="btn primary" type="button" data-join="patron">Become a patron · $10/mo</button>
+        <button class="btn ghost" type="button" data-join="seed">Start at $1/mo</button>
+      </div>
+      <p class="fineprint">Payments are not open yet. Until then this saves your email and level privately. <a href="#privacy">What we store</a>.</p>
+    </div>
+    <aside class="hero-card" aria-label="What is in the catalog today">
+      <dl class="stats">
+        <div><dt>Projects listed</dt><dd id="stat-featured">94</dd></div>
+        <div><dt>Open-licensed today</dt><dd id="stat-open">16</dd></div>
+        <div><dt>Public repositories</dt><dd id="stat-repos">223</dd></div>
+      </dl>
+      <p class="hero-card-note">Counted on 25 Nov 2026 from the Ideaflow apps index, Humanity Infrastructure and GitHub. <a href="#catalog">See the catalog</a>.</p>
+    </aside>
+  </div>
+</section>
+
+<section id="tiers" aria-labelledby="tiers-h">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Choose a level</p>
+      <h2 id="tiers-h">Start dirt cheap. Stay because it works.</h2>
+      <p>Every level works the same way and gets the same say over its own split. Cancel any time.</p>
+    </div>
+    <div class="tiers">
+      <article class="tier">
+        <h3>Seed</h3>
+        <p class="price"><span class="amt">$1</span><span class="per">/ month</span></p>
+        <p class="tier-line">The cheapest way to say that patronage for software is normal.</p>
+        <ul><li>Your own split across projects</li><li>Patron badge</li><li>Billed yearly ($12), so card fees stay small</li></ul>
+        <button class="btn ghost block" type="button" data-join="seed">Start at $1</button>
+      </article>
+      <article class="tier">
+        <h3>Supporter</h3>
+        <p class="price"><span class="amt">$3</span><span class="per">/ month</span></p>
+        <p class="tier-line">A coffee a month for the tools you open every day.</p>
+        <ul><li>Your own split across projects</li><li>Patron badge</li><li>Monthly or yearly</li></ul>
+        <button class="btn ghost block" type="button" data-join="supporter">Start at $3</button>
+      </article>
+      <article class="tier featured">
+        <p class="tag">The standard</p>
+        <h3>Patron of the Commons</h3>
+        <p class="price"><span class="amt">$10</span><span class="per">/ month</span></p>
+        <p class="tier-line">One flat amount for all the free software you use, however much you use it.</p>
+        <ul><li>Your own split across projects</li><li>Patron badge</li><li>Invitations to patron events</li></ul>
+        <button class="btn primary block" type="button" data-join="patron">Become a patron</button>
+      </article>
+      <article class="tier">
+        <h3>Your amount</h3>
+        <p class="price"><span class="amt">$?</span><span class="per">/ month</span></p>
+        <p class="tier-line">Give more, or give on behalf of a team or a fund.</p>
+        <ul><li>Everything in Patron</li><li>Talk to us about grants and matching</li></ul>
+        <button class="btn ghost block" type="button" data-join="custom">Choose an amount</button>
+      </article>
+    </div>
+    <p class="fineprint center">Also planned for the first months: a Patreon mirror for people who already give there. <span class="pending-chip">Patreon link pending</span></p>
+  </div>
+</section>
+
+<section id="featured" aria-labelledby="featured-h">
+  <div class="wrap">
+    <div class="feature">
+      <div class="feature-main">
+        <p class="kicker">Featured app</p>
+        <h2 id="featured-h">LocalVocal</h2>
+        <p class="feature-tag">Let local models and agents speak and hear.</p>
+        <p>LocalVocal is a Mac app that runs entirely on your machine. It lets you talk with local AI models and with coding agents, so a voice conversation can stay confidential and can work offline. Speech to text and text to speech run on your Apple Silicon chip.</p>
+        <ul class="feature-facts">
+          <li>Talks to open-weight models through LM Studio, Ollama or any OpenAI-compatible server</li>
+          <li>A command line and MCP mode for agents such as Claude Code, Codex, OpenClaw and Hermes</li>
+          <li>Needs an Apple Silicon Mac with macOS 15 or later; English only for now</li>
+        </ul>
+        <p class="cta-row"><a class="btn ghost" href="https://localvocal.ai" rel="noopener">Visit localvocal.ai</a></p>
+      </div>
+      <aside class="feature-side" aria-label="How LocalVocal relates to patronage">
+        <dl>
+          <div><dt>Made by</dt><dd>The LocalVocal team, independent of Humanity Infrastructure</dd></div>
+          <div><dt>Price</dt><dd>Paid, from $9.99 one-time</dd></div>
+          <div><dt>Source</dt><dd>Closed. A downloadable app, not a repository</dd></div>
+          <div><dt>Patron funds</dt><dd>None. You pay its makers directly</dd></div>
+        </dl>
+        <p class="fineprint">Description taken from localvocal.ai on 25 Nov 2026. Featured by Jacob Cole.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section id="how" class="alt" aria-labelledby="how-h">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">How it works</p>
+      <h2 id="how-h">A subscription that follows use</h2>
+    </div>
+    <ol class="steps">
+      <li><span class="step-n" aria-hidden="true">1</span><h3>You pay one flat amount</h3><p>One subscription covers every project in the catalog. You do not pay per app or per seat.</p></li>
+      <li><span class="step-n" aria-hidden="true">2</span><h3>It is shared by usage</h3><p>By default the money is divided by how much each project is actually used, from aggregate counts. Nothing is tracked per patron.</p></li>
+      <li><span class="step-n" aria-hidden="true">3</span><h3>You can overrule the numbers</h3><p>If one project matters more to you than its usage shows, move more of your own share to it. Your split, your call.</p></li>
+      <li><span class="step-n" aria-hidden="true">4</span><h3>Everything is published</h3><p>Each month we publish what came in, what the card processor took, and what went to each project.</p></li>
+    </ol>
+    <div class="rule-card">
+      <h3>Who can receive money <span class="proposed">Proposed rule</span></h3>
+      <p>A project receives money when its source is public under an open license and its maintainers have agreed to take part. Today 16 of the 94 listed projects meet the license test. Most of the Ideaflow suite is free to use but not open yet, and many public repositories still need a license. The catalog shows where each one stands.</p>
+    </div>
+  </div>
+</section>
+
+<section id="split" aria-labelledby="split-h">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Your split</p>
+      <h2 id="split-h">See where your money would go</h2>
+      <p>Drag a slider to give a project more or less weight. The rest rebalances.</p>
+    </div>
+
+    <div class="viz-root split-card">
+      <div class="example-banner"><strong>Example numbers.</strong> These usage shares are made up to show how the split works. They are not real usage data.</div>
+
+      <div class="split-controls">
+        <fieldset class="seg">
+          <legend>Monthly amount</legend>
+          <label><input type="radio" name="amt" value="1" /><span>$1</span></label>
+          <label><input type="radio" name="amt" value="3" /><span>$3</span></label>
+          <label><input type="radio" name="amt" value="10" checked /><span>$10</span></label>
+          <label><input type="radio" name="amt" value="25" /><span>$25</span></label>
+        </fieldset>
+        <fieldset class="seg">
+          <legend>Billed</legend>
+          <label><input type="radio" name="bill" value="month" checked /><span>Monthly</span></label>
+          <label><input type="radio" name="bill" value="year" /><span>Yearly</span></label>
+        </fieldset>
+        <button class="btn ghost small" type="button" id="split-reset">Reset to usage</button>
+      </div>
+
+      <div class="bar" id="split-bar" role="img" aria-label="Stacked bar showing the share for each project. The same figures are in the list below."></div>
+
+      <ul class="split-rows" id="split-rows"></ul>
+
+      <p class="split-summary" id="split-summary" aria-live="polite"></p>
+      <p class="fineprint">Card fee shown at a typical rate of 2.9% + 30¢ per charge; the real fee depends on the payment account. Vision's source is not public yet, so under the proposed rule it would need to open before receiving money.</p>
+    </div>
+  </div>
+</section>
+
+<section id="ledger" class="alt" aria-labelledby="ledger-h">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Transparency</p>
+      <h2 id="ledger-h">A public ledger, every month</h2>
+      <p>Totals are public. People are not. The ledger is published as a page and as a file anyone can check.</p>
+    </div>
+    <div class="ledger-grid">
+      <div class="table-card">
+        <div class="example-banner"><strong>Example month.</strong> Invented figures that show the format. No money has been collected.</div>
+        <table>
+          <caption class="sr-only">Example monthly ledger</caption>
+          <thead><tr><th scope="col">Line</th><th scope="col" class="num">Amount</th><th scope="col" class="num">Share</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">In: 154 patrons (84 at $10, 30 at $3, 40 at $1)</th><td class="num">$970.00</td><td class="num"></td></tr>
+            <tr><th scope="row">Card processing fees</th><td class="num">−$74.33</td><td class="num"></td></tr>
+            <tr class="total"><th scope="row">Paid out to projects</th><td class="num">$895.67</td><td class="num">100%</td></tr>
+            <tr><th scope="row">Vision</th><td class="num">$358.27</td><td class="num">40%</td></tr>
+            <tr><th scope="row">Buzz</th><td class="num">$179.13</td><td class="num">20%</td></tr>
+            <tr><th scope="row">OpenChat</th><td class="num">$107.48</td><td class="num">12%</td></tr>
+            <tr><th scope="row">WikiHub</th><td class="num">$89.57</td><td class="num">10%</td></tr>
+            <tr><th scope="row">Noos</th><td class="num">$71.65</td><td class="num">8%</td></tr>
+            <tr><th scope="row">Lastbook</th><td class="num">$53.74</td><td class="num">6%</td></tr>
+            <tr><th scope="row">All other projects</th><td class="num">$35.83</td><td class="num">4%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="pub-lists">
+        <div class="pub">
+          <h3>Published</h3>
+          <ul>
+            <li>Total received and number of patrons</li>
+            <li>Processing fees, at cost</li>
+            <li>Amount paid to each project</li>
+            <li>The usage counts and the formula behind the default split</li>
+            <li>How much moved because patrons changed their split, in total</li>
+          </ul>
+        </div>
+        <div class="pub">
+          <h3>Never published</h3>
+          <ul>
+            <li>Who gave, or how much, unless you ask to be named</li>
+            <li>Any one person's split</li>
+            <li>Any one person's usage</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="perks" aria-labelledby="perks-h">
+  <div class="wrap perks-grid">
+    <div>
+      <p class="kicker">What patrons get</p>
+      <h2 id="perks-h">A badge, an invitation, and a say</h2>
+      <ul class="perks">
+        <li><h3>A patron badge</h3><p>For your profile, your site or your README. It says you pay for the commons you use.</p></li>
+        <li><h3>Event invitations</h3><p>Patron gatherings and demo days with the people building these tools, online and in person.</p></li>
+        <li><h3>A say in the split</h3><p>Your override is a signal maintainers can see in aggregate: this is worth more than the usage shows.</p></li>
+      </ul>
+      <p class="fineprint">Badge design and event dates are not final.</p>
+    </div>
+    <figure class="badge-fig">
+      <svg class="badge" viewBox="0 0 260 260" role="img" aria-labelledby="badge-t">
+        <title id="badge-t">Sample patron badge: Patron of the Commons, 2026</title>
+        <circle class="b-ring" cx="130" cy="130" r="118" />
+        <circle class="b-disc" cx="130" cy="130" r="104" />
+        <path class="b-leaf" d="M130 74c26 18 38 40 38 62 0 24-17 42-38 50-21-8-38-26-38-50 0-22 12-44 38-62z" />
+        <path class="b-vein" d="M130 96v82M130 128l18-14M130 148l-18-14" />
+        <text class="b-top" x="130" y="58" text-anchor="middle">PATRON OF THE</text>
+        <text class="b-main" x="130" y="214" text-anchor="middle">COMMONS · 2026</text>
+      </svg>
+      <figcaption>Sample badge. Not final.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="catalog" class="alt" aria-labelledby="catalog-h">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">The catalog</p>
+      <h2 id="catalog-h">Every project, and where it stands</h2>
+      <p>The Ideaflow suite, everything featured on Humanity Infrastructure, and Jacob Cole's public repositories. Being listed does not mean a project's maintainers have agreed to receive money.</p>
+    </div>
+    <div class="catalog-tools">
+      <div class="chips" role="group" aria-label="Filter by source status">
+        <button type="button" class="chip" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" class="chip" data-filter="open" aria-pressed="false">Open license</button>
+        <button type="button" class="chip" data-filter="needs-license" aria-pressed="false">Needs a license</button>
+        <button type="button" class="chip" data-filter="closed" aria-pressed="false">Source not public</button>
+        <button type="button" class="chip" data-filter="third" aria-pressed="false">Made by others</button>
+      </div>
+      <label class="search"><span class="sr-only">Search the catalog</span><input type="search" id="cat-search" placeholder="Search projects" autocomplete="off" /></label>
+    </div>
+    <p class="cat-count" id="cat-count" aria-live="polite"></p>
+    <div id="cat-list" class="cat-list"><p class="fineprint">Loading the catalog… If it does not appear, open <a href="/patrons/catalog.json">catalog.json</a>.</p></div>
+    <p class="cat-more"><button type="button" class="btn ghost small" id="cat-all" aria-pressed="false">Show every public repository</button> <a href="/patrons/catalog.json">Download catalog.json</a></p>
+    <dl class="legend">
+      <div><dt><span class="pill s-open">Open</span></dt><dd>Public source under an open license.</dd></div>
+      <div><dt><span class="pill s-needs-license">Needs a license</span></dt><dd>Source is public but has no license file, so reuse is not yet permitted.</dd></div>
+      <div><dt><span class="pill s-source-available">Source-available</span></dt><dd>Public source with a license that restricts use.</dd></div>
+      <div><dt><span class="pill s-closed">Not public</span></dt><dd>Free to use or in testing; no public source found.</dd></div>
+      <div><dt><span class="pill s-content">Content</span></dt><dd>A public list or page, not software.</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section id="arc" aria-labelledby="arc-h">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">The long arc</p>
+      <h2 id="arc-h">From a few patrons to a way of funding the commons</h2>
+      <p>Open source is a feature: you can read it, change it and keep it. It deserves a funding model as simple as the software is free.</p>
+    </div>
+    <ol class="arc">
+      <li>
+        <p class="arc-when">Now</p>
+        <h3>Patrons</h3>
+        <p>Individuals paying a small flat amount, starting at $1. The goal of the first year is to show that the split is fair and the ledger is honest.</p>
+      </li>
+      <li>
+        <p class="arc-when">Next</p>
+        <h3>Grants and matching</h3>
+        <p>Foundations, companies and public funders can add to the same pool and let patrons' choices direct it. A grant that follows thousands of small signals is hard to capture and easy to audit.</p>
+      </li>
+      <li>
+        <p class="arc-when">Next</p>
+        <h3>Crypto communities</h3>
+        <p>Public-goods funding already has a home there: matching rounds, retroactive funding and streaming payments. We plan to accept on-chain contributions and publish the same ledger. <span class="pending-chip">Not live</span></p>
+      </li>
+      <li>
+        <p class="arc-when">Later</p>
+        <h3>A discretionary share of public money</h3>
+        <p>Imagine a small part of your taxes being yours to direct. If the subway is failing you, you move some of that share to the community composting project that works. Versions of this exist: participatory budgeting in many cities, and Italy's rule letting taxpayers direct 0.5% of income tax to a nonprofit they choose. Software is a good place to learn how to do it well.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section id="honest" class="alt" aria-labelledby="honest-h">
+  <div class="wrap narrow">
+    <div class="section-head">
+      <p class="kicker">Caveats</p>
+      <h2 id="honest-h">What is true today</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>Is this tax-deductible?</summary>
+        <p>No. Deductibility in the United States needs a 501(c)(3) nonprofit or a fiscal sponsor that is one. Neither is in place. Until that changes, treat a contribution as a payment, not a charitable gift.</p>
+      </details>
+      <details>
+        <summary>How is usage measured?</summary>
+        <p>This page itself carries no analytics. For the split, only from aggregate counts our sites already collect through Ideaflow's own analytics, which is anonymous, sets no cookies and respects Do Not Track. We do not add tracking for this, we do not build a usage profile per patron, and projects without counts are not guessed at. They receive money through patrons' own choices. The privacy policy for this is not final.</p>
+      </details>
+      <details>
+        <summary>Who holds the money?</summary>
+        <p>Not decided. At the start it would be received by Ideaflow, the company that maintains this site, and paid out in full after card fees. The plan is to move it to a nonprofit or fiscal sponsor.</p>
+      </details>
+      <details>
+        <summary>Have the listed projects agreed?</summary>
+        <p>Not yet. Projects made by other people are listed because they are part of this commons. Each will be asked before any money is offered in its name, and any can decline or be removed.</p>
+      </details>
+      <details id="privacy">
+        <summary>What do you store when I save my place?</summary>
+        <p>Your email, the level and amount you chose, whether you asked to be told when patronage opens, and the time. It is kept in Humanity Infrastructure's own private database, hosted on Cloudflare, which also hosts this site. No separate form or marketing service is used. It is not public, not sold and not shared, and saving your place does not add you to the newsletter. To limit abuse we keep a salted hash of your network address for up to 24 hours, never the address itself. To have your entry deleted, write to <a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a>.</p>
+      </details>
+      <details>
+        <summary>Can I pay today?</summary>
+        <p>No. Nothing can be charged from this page yet. Leaving your email tells us which level you would choose. We do not send anything now.</p>
+      </details>
+      <details>
+        <summary>What about Patreon?</summary>
+        <p>A Patreon page is planned as a short-term mirror for people who prefer it. Long term, patronage lives here, where the split and the ledger are.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="closing">
+  <div class="wrap narrow center">
+    <h2>Make paying for free software normal.</h2>
+    <p>Tell us which level you would choose. It takes ten seconds and costs nothing.</p>
+    <div class="cta-row center">
+      <button class="btn primary" type="button" data-join="patron">Become a patron · $10/mo</button>
+      <button class="btn ghost" type="button" data-join="seed">Start at $1/mo</button>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-row">
+    <p>Humanity Infrastructure · Patrons of the Commons. Payments are not open yet. <a href="#privacy">Privacy</a> · Contact <a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a></p>
+    <p><a href="https://humanityinfrastructure.com/">humanityinfrastructure.com</a> · <a href="https://index.ideaflow.app/">Ideaflow apps index</a> · Supported by Ideaflow, the maintainer's company.</p>
+  </div>
+</footer>
+
+<dialog id="join" aria-labelledby="join-h">
+  <form id="join-form" novalidate>
+    <div class="dlg-head">
+      <h2 id="join-h">Save my place</h2>
+      <button type="button" class="dlg-close" id="join-close" aria-label="Close">×</button>
+    </div>
+    <p class="dlg-note">Payments are not open yet. This saves your email and the level you would choose. Nothing is charged and no email is sent now.</p>
+    <fieldset class="tier-pick">
+      <legend>Level</legend>
+      <label><input type="radio" name="tier" value="seed" /><span><b>$1</b> Seed</span></label>
+      <label><input type="radio" name="tier" value="supporter" /><span><b>$3</b> Supporter</span></label>
+      <label><input type="radio" name="tier" value="patron" checked /><span><b>$10</b> Patron</span></label>
+      <label><input type="radio" name="tier" value="custom" /><span><b>Other</b> amount</span></label>
+    </fieldset>
+    <div class="field" id="amount-field" hidden>
+      <label for="join-amount">Amount per month, in US dollars</label>
+      <input id="join-amount" name="amount" type="number" min="1" max="1000" step="1" inputmode="decimal" />
+    </div>
+    <div class="field">
+      <label for="join-email">Email</label>
+      <input id="join-email" name="email" type="email" autocomplete="email" required aria-describedby="join-err" />
+    </div>
+    <div class="hp" aria-hidden="true"><label for="join-website">Website</label><input id="join-website" name="website" type="text" tabindex="-1" autocomplete="off" /></div>
+    <label class="check"><input type="checkbox" name="notify" checked /><span>Email me once when patronage opens.</span></label>
+    <p class="dlg-err" id="join-err" role="alert"></p>
+    <button class="btn primary block" type="submit" id="join-submit">Save my place</button>
+    <p class="dlg-fine">We store your email and chosen level in our own private database. It is never public, sold or shared, and this does not add you to a newsletter. To delete it, write to jacob@ideaflow.io. <a href="#privacy" id="dlg-privacy">What we store</a>.</p>
+  </form>
+  <div id="join-done" hidden>
+    <div class="dlg-head"><h2>Saved. Thank you.</h2><button type="button" class="dlg-close" id="done-close" aria-label="Close">×</button></div>
+    <p class="dlg-note" id="done-text"></p>
+    <button class="btn ghost block" type="button" id="done-ok">Close</button>
+  </div>
+</dialog>
+
+<script src="/patrons/app.js" defer></script>
+</body>
+</html>
