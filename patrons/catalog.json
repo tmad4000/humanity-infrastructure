@@ -11,6 +11,76 @@
    "closedFeatured": 36
   }
  },
+ "lists": [
+  {
+   "id": "open-today",
+   "name": "Open-licensed today",
+   "by": "Humanity Infrastructure",
+   "line": "Every listed project whose source is public under an open license right now.",
+   "items": [
+    "agent-first-web",
+    "paseo-fork",
+    "box-breathing-free",
+    "cap-ideaflow-fork",
+    "humanity-infrastructure-the-site",
+    "lastbook",
+    "signudoc",
+    "paseo",
+    "buzz-ideaflow-fork",
+    "openchat-native",
+    "noos-bridge",
+    "ideaflow-skills-marketplace",
+    "nosleep",
+    "open-date",
+    "brc-navigator",
+    "event-navigator"
+   ]
+  },
+  {
+   "id": "hi-shelf",
+   "name": "On the Humanity Infrastructure shelf",
+   "by": "Humanity Infrastructure",
+   "line": "Tools and knowledge featured on humanityinfrastructure.com.",
+   "items": [
+    "humanity-infrastructure-the-site",
+    "lastbook",
+    "xfeed-paradise",
+    "signudoc",
+    "paseo",
+    "buzz-ideaflow-fork",
+    "nvc-translator",
+    "vibe-coding-guide",
+    "claude-mind",
+    "keeping-a-state-of-flow",
+    "idea-list",
+    "global-idea-bank",
+    "directory-of-the-internet",
+    "ideaflow-local-only",
+    "ideaflow-apps-index",
+    "paxi"
+   ]
+  },
+  {
+   "id": "agent-tools",
+   "name": "Working with AI agents",
+   "by": "Humanity Infrastructure",
+   "line": "Open tools for running, steering and talking to agents.",
+   "items": [
+    "paseo",
+    "paseo-fork",
+    "buzz-ideaflow-fork",
+    "openchat",
+    "openchat-mcp-server",
+    "noos-bridge",
+    "agent-first-web",
+    "ideaflow-skills-marketplace",
+    "artifact-gateway",
+    "shared-chats",
+    "vibe-coding-guide",
+    "claude-mind"
+   ]
+  }
+ ],
  "entries": [
   {
    "group": "Ideaflow suite · thinking and capture",
@@ -22,7 +92,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Live",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "ideaflow-notes"
   },
   {
    "group": "Ideaflow suite · thinking and capture",
@@ -34,7 +105,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Prototype",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "notestream"
   },
   {
    "group": "Ideaflow suite · thinking and capture",
@@ -46,7 +118,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Beta",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "thoughtstream-vision"
   },
   {
    "group": "Ideaflow suite · thinking and capture",
@@ -58,7 +131,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Beta",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "meetings"
   },
   {
    "group": "Ideaflow suite · thinking and capture",
@@ -70,7 +144,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Prototype",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "bloomscroll-next"
   },
   {
    "group": "Ideaflow suite · thinking and capture",
@@ -82,7 +157,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Live",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "ideapad"
   },
   {
    "group": "Ideaflow suite · thinking and capture",
@@ -94,7 +170,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Prototype",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "ideapad-neo4j"
   },
   {
    "group": "Ideaflow suite · thinking and capture",
@@ -106,7 +183,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Prototype",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "ideapad-retrofit"
   },
   {
    "group": "Ideaflow suite · thinking and capture",
@@ -118,7 +196,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Live",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "instadefine"
   },
   {
    "group": "Ideaflow suite · people and conversation",
@@ -133,7 +212,8 @@
    "fork": false,
    "stage": "Live",
    "thirdParty": false,
-   "pushed": "2026-11-25"
+   "pushed": "2026-11-25",
+   "id": "openchat"
   },
   {
    "group": "Ideaflow suite · people and conversation",
@@ -145,7 +225,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Beta",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "unlinked"
   },
   {
    "group": "Ideaflow suite · people and conversation",
@@ -157,7 +238,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Live",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "superconnector"
   },
   {
    "group": "Ideaflow suite · people and conversation",
@@ -169,7 +251,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Prototype",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "superconnector-ideaflow-id-build"
   },
   {
    "group": "Ideaflow suite · people and conversation",
@@ -181,7 +264,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Beta",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "superconnector-events"
   },
   {
    "group": "Ideaflow suite · people and conversation",
@@ -193,7 +277,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Internal",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "ideaflow-augment"
   },
   {
    "group": "Ideaflow suite · people and conversation",
@@ -205,7 +290,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Prototype",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "thoughtstreams"
   },
   {
    "group": "Ideaflow suite · people and conversation",
@@ -217,7 +303,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Prototype",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "social"
   },
   {
    "group": "Ideaflow suite · people and conversation",
@@ -229,7 +316,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Prototype",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "bookshelves-ai"
   },
   {
    "group": "Ideaflow suite · shared knowledge",
@@ -246,7 +334,8 @@
    "note": "Fork of harqian/wikihub; neither the fork nor the upstream has a license file.",
    "stage": "Beta",
    "thirdParty": false,
-   "pushed": "2026-11-25"
+   "pushed": "2026-11-25",
+   "id": "wikihub"
   },
   {
    "group": "Ideaflow suite · shared knowledge",
@@ -258,7 +347,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Beta",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "mew"
   },
   {
    "group": "Ideaflow suite · shared knowledge",
@@ -271,7 +361,8 @@
    "tier": "featured",
    "note": "The Noos Bridge companion is public under Apache-2.0 (listed separately).",
    "stage": "Beta",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "noos"
   },
   {
    "group": "Ideaflow suite · shared knowledge",
@@ -286,7 +377,8 @@
    "fork": false,
    "stage": "Beta",
    "thirdParty": false,
-   "pushed": "2026-11-18"
+   "pushed": "2026-11-18",
+   "id": "listhub"
   },
   {
    "group": "Ideaflow suite · shared knowledge",
@@ -301,7 +393,8 @@
    "fork": false,
    "stage": "Live",
    "thirdParty": false,
-   "pushed": "2026-11-18"
+   "pushed": "2026-11-18",
+   "id": "deep-dialogues"
   },
   {
    "group": "Ideaflow suite · shared knowledge",
@@ -313,7 +406,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Prototype",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "court-of-the-internet"
   },
   {
    "group": "Ideaflow suite · shared knowledge",
@@ -325,7 +419,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Beta",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "world-issue-tracker"
   },
   {
    "group": "Ideaflow suite · shared knowledge",
@@ -340,7 +435,8 @@
    "fork": false,
    "stage": "Prototype",
    "thirdParty": false,
-   "pushed": "2026-04-16"
+   "pushed": "2026-04-16",
+   "id": "agent-first-web"
   },
   {
    "group": "Ideaflow suite · shared knowledge",
@@ -355,7 +451,8 @@
    "fork": false,
    "stage": "Prototype",
    "thirdParty": false,
-   "pushed": "2026-11-18"
+   "pushed": "2026-11-18",
+   "id": "paper2graph"
   },
   {
    "group": "Ideaflow suite · thinking and capture",
@@ -367,7 +464,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Internal",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "blurbs"
   },
   {
    "group": "Ideaflow suite · thinking and capture",
@@ -379,7 +477,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Internal",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "open-recordings"
   },
   {
    "group": "Ideaflow suite · thinking and capture",
@@ -391,7 +490,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Beta",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "install"
   },
   {
    "group": "Ideaflow suite · people and conversation",
@@ -403,7 +503,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Internal",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "people-by-ideaflow-friendcrm"
   },
   {
    "group": "Ideaflow suite · people and conversation",
@@ -415,7 +516,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Internal",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "custom-messages-mobile"
   },
   {
    "group": "Ideaflow suite · thinking and capture",
@@ -431,7 +533,8 @@
    "note": "Only the self-host server kit is public, under a personal-use license. Not open source.",
    "stage": "Internal",
    "thirdParty": false,
-   "pushed": "2026-11-10"
+   "pushed": "2026-11-10",
+   "id": "voice-assistant-v3"
   },
   {
    "group": "Ideaflow suite · thinking and capture",
@@ -443,7 +546,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Internal",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "helm"
   },
   {
    "group": "Ideaflow suite · thinking and capture",
@@ -460,7 +564,8 @@
    "note": "Jacob's fork of getpaseo/paseo.",
    "stage": "Internal",
    "thirdParty": false,
-   "pushed": "2026-11-20"
+   "pushed": "2026-11-20",
+   "id": "paseo-fork"
   },
   {
    "group": "Ideaflow suite · thinking and capture",
@@ -472,7 +577,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Beta",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "dashboard-by-ideaflow"
   },
   {
    "group": "Ideaflow suite · thinking and capture",
@@ -484,7 +590,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Internal",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "enforce"
   },
   {
    "group": "Ideaflow suite · thinking and capture",
@@ -496,7 +603,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Internal",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "offramp"
   },
   {
    "group": "Ideaflow suite · thinking and capture",
@@ -508,7 +616,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Internal",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "murmur-dictation"
   },
   {
    "group": "Ideaflow suite · thinking and capture",
@@ -523,7 +632,8 @@
    "fork": false,
    "stage": "Internal",
    "thirdParty": false,
-   "pushed": "2026-11-14"
+   "pushed": "2026-11-14",
+   "id": "box-breathing-free"
   },
   {
    "group": "Ideaflow suite · thinking and capture",
@@ -535,7 +645,8 @@
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
    "stage": "Internal",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "qi-flow"
   },
   {
    "group": "Ideaflow suite · recording",
@@ -552,7 +663,8 @@
    "note": "Self-hosted fork of CapSoftware/Cap.",
    "stage": "Internal",
    "thirdParty": false,
-   "pushed": "2026-11-18"
+   "pushed": "2026-11-18",
+   "id": "cap-ideaflow-fork"
   },
   {
    "group": "Humanity Infrastructure",
@@ -566,7 +678,8 @@
    "repo": "https://github.com/tmad4000/humanity-infrastructure",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-11-24"
+   "pushed": "2026-11-24",
+   "id": "humanity-infrastructure-the-site"
   },
   {
    "group": "Humanity Infrastructure",
@@ -578,7 +691,8 @@
    "maker": "farbood & contributors",
    "tier": "featured",
    "note": "Ideaflow also hosts an online edition at lastbook.humanityinfrastructure.com.",
-   "thirdParty": true
+   "thirdParty": true,
+   "id": "lastbook"
   },
   {
    "group": "Humanity Infrastructure",
@@ -590,7 +704,8 @@
    "maker": "opentoolshub contributors",
    "tier": "featured",
    "note": "The README says MIT, but the repository has no license file, so GitHub reports none. Jacob contributes through a fork.",
-   "thirdParty": true
+   "thirdParty": true,
+   "id": "xfeed-paradise"
   },
   {
    "group": "Humanity Infrastructure",
@@ -601,7 +716,8 @@
    "license": "MIT",
    "maker": "Kevin Rose / NYLLON",
    "tier": "featured",
-   "thirdParty": true
+   "thirdParty": true,
+   "id": "signudoc"
   },
   {
    "group": "Humanity Infrastructure",
@@ -612,7 +728,8 @@
    "license": "Apache-2.0",
    "maker": "Mohamed Boudra / getpaseo",
    "tier": "featured",
-   "thirdParty": true
+   "thirdParty": true,
+   "id": "paseo"
   },
   {
    "group": "Humanity Infrastructure",
@@ -628,7 +745,8 @@
    "upstream": "block/buzz",
    "note": "Development fork of block/buzz.",
    "thirdParty": false,
-   "pushed": "2026-11-23"
+   "pushed": "2026-11-23",
+   "id": "buzz-ideaflow-fork"
   },
   {
    "group": "Humanity Infrastructure",
@@ -644,7 +762,8 @@
    "upstream": "ethanlolomg/nvc-api",
    "note": "Fork of ethanlolomg/nvc-api; neither has a license file.",
    "thirdParty": false,
-   "pushed": "2026-09-14"
+   "pushed": "2026-09-14",
+   "id": "nvc-translator"
   },
   {
    "group": "Humanity Infrastructure",
@@ -658,7 +777,8 @@
    "repo": "https://github.com/tmad4000/vibe-coding-guide",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-07-18"
+   "pushed": "2026-07-18",
+   "id": "vibe-coding-guide"
   },
   {
    "group": "Humanity Infrastructure",
@@ -672,7 +792,8 @@
    "repo": "https://github.com/tmad4000/claude-mind",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-11-15"
+   "pushed": "2026-11-15",
+   "id": "claude-mind"
   },
   {
    "group": "Humanity Infrastructure",
@@ -683,7 +804,8 @@
    "license": "Content license not stated",
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "keeping-a-state-of-flow"
   },
   {
    "group": "Humanity Infrastructure",
@@ -694,7 +816,8 @@
    "license": "Content license not stated",
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "idea-list"
   },
   {
    "group": "Humanity Infrastructure",
@@ -705,7 +828,8 @@
    "license": "Content license not stated",
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "global-idea-bank"
   },
   {
    "group": "Humanity Infrastructure",
@@ -716,7 +840,8 @@
    "license": "Content license not stated",
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "directory-of-the-internet"
   },
   {
    "group": "Humanity Infrastructure",
@@ -727,7 +852,8 @@
    "license": "Source not public",
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "ideaflow-local-only"
   },
   {
    "group": "Humanity Infrastructure",
@@ -738,7 +864,8 @@
    "license": "Source not public",
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "ideaflow-apps-index"
   },
   {
    "group": "Humanity Infrastructure",
@@ -750,7 +877,8 @@
    "maker": "the LocalVocal team",
    "tier": "featured",
    "note": "Featured app. A paid product, so it receives no patron funds.",
-   "thirdParty": true
+   "thirdParty": true,
+   "id": "localvocal"
   },
   {
    "group": "Humanity Infrastructure",
@@ -762,7 +890,8 @@
    "maker": "Doug Feigelson",
    "tier": "featured",
    "note": "Free to use, closed source.",
-   "thirdParty": true
+   "thirdParty": true,
+   "id": "paxi"
   },
   {
    "group": "Annotation and commentary",
@@ -773,7 +902,8 @@
    "license": "Content license not stated",
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
-   "thirdParty": false
+   "thirdParty": false,
+   "id": "global-brain"
   },
   {
    "group": "Open tools and libraries",
@@ -787,7 +917,8 @@
    "repo": "https://github.com/IdeaFlowCo/OpenChatNative",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-08-23"
+   "pushed": "2026-08-23",
+   "id": "openchat-native"
   },
   {
    "group": "Open tools and libraries",
@@ -801,7 +932,8 @@
    "repo": "https://github.com/IdeaFlowCo/noos-bridge",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-05-28"
+   "pushed": "2026-05-28",
+   "id": "noos-bridge"
   },
   {
    "group": "Open tools and libraries",
@@ -815,7 +947,8 @@
    "repo": "https://github.com/tmad4000/openchat-mcp-server",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-06-01"
+   "pushed": "2026-06-01",
+   "id": "openchat-mcp-server"
   },
   {
    "group": "Open tools and libraries",
@@ -829,7 +962,8 @@
    "repo": "https://github.com/IdeaFlowCo/ideaflow-skills-marketplace",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-03-04"
+   "pushed": "2026-03-04",
+   "id": "ideaflow-skills-marketplace"
   },
   {
    "group": "Open tools and libraries",
@@ -843,7 +977,8 @@
    "repo": "https://github.com/IdeaFlowCo/listhub-community",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-04-10"
+   "pushed": "2026-04-10",
+   "id": "listhub-community-directory"
   },
   {
    "group": "Open tools and libraries",
@@ -857,7 +992,8 @@
    "repo": "https://github.com/tmad4000/nosleep",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-08-15"
+   "pushed": "2026-08-15",
+   "id": "nosleep"
   },
   {
    "group": "Open tools and libraries",
@@ -871,7 +1007,8 @@
    "repo": "https://github.com/tmad4000/homebrew-nosleep",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-08-01"
+   "pushed": "2026-08-01",
+   "id": "nosleep-homebrew-tap"
   },
   {
    "group": "Open tools and libraries",
@@ -885,7 +1022,8 @@
    "repo": "https://github.com/tmad4000/OpenMarkdownReader",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-11-09"
+   "pushed": "2026-11-09",
+   "id": "openmarkdownreader"
   },
   {
    "group": "Open tools and libraries",
@@ -899,7 +1037,8 @@
    "repo": "https://github.com/tmad4000/iphone-layout-tool",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-02-05"
+   "pushed": "2026-02-05",
+   "id": "iphone-layout-tool"
   },
   {
    "group": "Open tools and libraries",
@@ -913,7 +1052,8 @@
    "repo": "https://github.com/tmad4000/open-date",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-11-15"
+   "pushed": "2026-11-15",
+   "id": "open-date"
   },
   {
    "group": "Open tools and libraries",
@@ -927,7 +1067,8 @@
    "repo": "https://github.com/tmad4000/breathe",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-11-17"
+   "pushed": "2026-11-17",
+   "id": "breathe"
   },
   {
    "group": "Open tools and libraries",
@@ -941,7 +1082,8 @@
    "repo": "https://github.com/tmad4000/listwise",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-11-15"
+   "pushed": "2026-11-15",
+   "id": "listwise"
   },
   {
    "group": "Open tools and libraries",
@@ -955,7 +1097,8 @@
    "repo": "https://github.com/tmad4000/artifact-gateway",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-07-12"
+   "pushed": "2026-07-12",
+   "id": "artifact-gateway"
   },
   {
    "group": "Open tools and libraries",
@@ -969,7 +1112,8 @@
    "repo": "https://github.com/tmad4000/shared-chats",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-07-10"
+   "pushed": "2026-07-10",
+   "id": "shared-chats"
   },
   {
    "group": "Open tools and libraries",
@@ -983,7 +1127,8 @@
    "repo": "https://github.com/tmad4000/VoiceFlow",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-07-10"
+   "pushed": "2026-07-10",
+   "id": "voiceflow"
   },
   {
    "group": "Open tools and libraries",
@@ -997,7 +1142,8 @@
    "repo": "https://github.com/tmad4000/entrain",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-05-12"
+   "pushed": "2026-05-12",
+   "id": "entrain"
   },
   {
    "group": "Open tools and libraries",
@@ -1011,7 +1157,8 @@
    "repo": "https://github.com/tmad4000/RayNeoX3Tools",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-04-20"
+   "pushed": "2026-04-20",
+   "id": "rayneo-x3-tools"
   },
   {
    "group": "Open tools and libraries",
@@ -1025,7 +1172,8 @@
    "repo": "https://github.com/tmad4000/mantra-visualization",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-03-25"
+   "pushed": "2026-03-25",
+   "id": "mantra-visualization"
   },
   {
    "group": "Open tools and libraries",
@@ -1039,7 +1187,8 @@
    "repo": "https://github.com/tmad4000/enneagram-map",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-03-29"
+   "pushed": "2026-03-29",
+   "id": "enneagram-map"
   },
   {
    "group": "Open tools and libraries",
@@ -1053,7 +1202,8 @@
    "repo": "https://github.com/tmad4000/renaissance-engineer",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-03-03"
+   "pushed": "2026-03-03",
+   "id": "renaissance-engineer"
   },
   {
    "group": "Open tools and libraries",
@@ -1067,7 +1217,8 @@
    "repo": "https://github.com/tmad4000/idea-hunt",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-02-28"
+   "pushed": "2026-02-28",
+   "id": "idea-hunt"
   },
   {
    "group": "Open tools and libraries",
@@ -1081,7 +1232,8 @@
    "repo": "https://github.com/tmad4000/apple-notes-reader",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2025-12-12"
+   "pushed": "2025-12-12",
+   "id": "apple-notes-reader"
   },
   {
    "group": "Open tools and libraries",
@@ -1095,7 +1247,8 @@
    "repo": "https://github.com/tmad4000/spiking-neural-network-playground",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2025-11-30"
+   "pushed": "2025-11-30",
+   "id": "spiking-neural-network-playground"
   },
   {
    "group": "Open tools and libraries",
@@ -1109,7 +1262,8 @@
    "repo": "https://github.com/IdeaFlowCo/graph-fs",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-01-30"
+   "pushed": "2026-01-30",
+   "id": "graph-fs"
   },
   {
    "group": "Open tools and libraries",
@@ -1123,7 +1277,8 @@
    "repo": "https://github.com/IdeaFlowCo/govtrack",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-01-17"
+   "pushed": "2026-01-17",
+   "id": "govtrack"
   },
   {
    "group": "Open tools and libraries",
@@ -1137,7 +1292,8 @@
    "repo": "https://github.com/IdeaFlowCo/BRCNavigator",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2025-08-22"
+   "pushed": "2025-08-22",
+   "id": "brc-navigator"
   },
   {
    "group": "Open tools and libraries",
@@ -1151,7 +1307,8 @@
    "repo": "https://github.com/IdeaFlowCo/EventNavigator",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2025-06-19"
+   "pushed": "2025-06-19",
+   "id": "event-navigator"
   },
   {
    "group": "Open tools and libraries",
@@ -1165,7 +1322,8 @@
    "repo": "https://github.com/IdeaFlowCo/ts-pocket-extension",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2025-08-08"
+   "pushed": "2025-08-08",
+   "id": "thoughtstream-pocket-extension"
   },
   {
    "group": "Open tools and libraries",
@@ -1179,7 +1337,8 @@
    "repo": "https://github.com/IdeaFlowCo/world-progress-bar",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2025-06-20"
+   "pushed": "2025-06-20",
+   "id": "world-progress-bar"
   },
   {
    "group": "Open tools and libraries",
@@ -1193,7 +1352,8 @@
    "repo": "https://github.com/IdeaFlowCo/QueryMySheet",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2025-05-16"
+   "pushed": "2025-05-16",
+   "id": "querymysheet"
   },
   {
    "group": "Open tools and libraries",
@@ -1207,7 +1367,8 @@
    "repo": "https://github.com/IdeaFlowCo/mew-multi-agents",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2025-06-11"
+   "pushed": "2025-06-11",
+   "id": "mew-multi-agents"
   },
   {
    "group": "Open tools and libraries",
@@ -1221,7 +1382,8 @@
    "repo": "https://github.com/IdeaFlowCo/claude-collective-intelligence",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-10-28"
+   "pushed": "2026-10-28",
+   "id": "claude-collective-intelligence"
   },
   {
    "group": "Open tools and libraries",
@@ -1235,7 +1397,8 @@
    "repo": "https://github.com/tmad4000/lexical-mentions",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2025-01-24"
+   "pushed": "2025-01-24",
+   "id": "lexical-mentions"
   },
   {
    "group": "Open tools and libraries",
@@ -1249,7 +1412,8 @@
    "repo": "https://github.com/IdeaFlowCo/template-autocomplete",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2025-02-17"
+   "pushed": "2025-02-17",
+   "id": "template-autocomplete"
   },
   {
    "group": "Other public repositories",
@@ -1263,7 +1427,8 @@
    "repo": "https://github.com/tmad4000/HarmonyClaudeCodeTest",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-11-18"
+   "pushed": "2026-11-18",
+   "id": "repo-tmad4000-harmonyclaudecodetest"
   },
   {
    "group": "Other public repositories",
@@ -1277,7 +1442,8 @@
    "repo": "https://github.com/tmad4000/tmad4000.github.io",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-11-18"
+   "pushed": "2026-11-18",
+   "id": "repo-tmad4000-tmad4000-github-io"
   },
   {
    "group": "Other public repositories",
@@ -1291,7 +1457,8 @@
    "repo": "https://github.com/tmad4000/jsart",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-11-15"
+   "pushed": "2026-11-15",
+   "id": "repo-tmad4000-jsart"
   },
   {
    "group": "Other public repositories",
@@ -1305,7 +1472,8 @@
    "repo": "https://github.com/tmad4000/LiveLog",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-11-15"
+   "pushed": "2026-11-15",
+   "id": "repo-tmad4000-livelog"
   },
   {
    "group": "Other public repositories",
@@ -1319,7 +1487,8 @@
    "repo": "https://github.com/tmad4000/playground",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-11-15"
+   "pushed": "2026-11-15",
+   "id": "repo-tmad4000-playground"
   },
   {
    "group": "Other public repositories",
@@ -1333,7 +1502,8 @@
    "repo": "https://github.com/tmad4000/CursorDocsGemini",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-11-15"
+   "pushed": "2026-11-15",
+   "id": "repo-tmad4000-cursordocsgemini"
   },
   {
    "group": "Other public repositories",
@@ -1347,7 +1517,8 @@
    "repo": "https://github.com/tmad4000/QigongApp",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-11-15"
+   "pushed": "2026-11-15",
+   "id": "repo-tmad4000-qigongapp"
   },
   {
    "group": "Other public repositories",
@@ -1361,7 +1532,8 @@
    "repo": "https://github.com/tmad4000/Ocean-Connection",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-11-15"
+   "pushed": "2026-11-15",
+   "id": "repo-tmad4000-ocean-connection"
   },
   {
    "group": "Other public repositories",
@@ -1375,7 +1547,8 @@
    "repo": "https://github.com/tmad4000/incepto-house",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-11-02"
+   "pushed": "2026-11-02",
+   "id": "repo-tmad4000-incepto-house"
   },
   {
    "group": "Other public repositories",
@@ -1389,7 +1562,8 @@
    "repo": "https://github.com/tmad4000/VocalHarmony",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-10-28"
+   "pushed": "2026-10-28",
+   "id": "repo-tmad4000-vocalharmony"
   },
   {
    "group": "Other public repositories",
@@ -1403,7 +1577,8 @@
    "repo": "https://github.com/tmad4000/ai-browser",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-10-28"
+   "pushed": "2026-10-28",
+   "id": "repo-tmad4000-ai-browser"
   },
   {
    "group": "Other public repositories",
@@ -1417,7 +1592,8 @@
    "repo": "https://github.com/tmad4000/symposium-feedback-viewer",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-10-28"
+   "pushed": "2026-10-28",
+   "id": "repo-tmad4000-symposium-feedback-viewer"
   },
   {
    "group": "Forks of other projects",
@@ -1432,7 +1608,8 @@
    "fork": true,
    "upstream": "kunchenguid/lavish-axi",
    "thirdParty": true,
-   "pushed": "2026-10-09"
+   "pushed": "2026-10-09",
+   "id": "repo-tmad4000-lavish-axi"
   },
   {
    "group": "Forks of other projects",
@@ -1447,7 +1624,8 @@
    "fork": true,
    "upstream": "kunchenguid/firstmate",
    "thirdParty": true,
-   "pushed": "2026-10-02"
+   "pushed": "2026-10-02",
+   "id": "repo-tmad4000-firstmate"
   },
   {
    "group": "Other public repositories",
@@ -1461,7 +1639,8 @@
    "repo": "https://github.com/tmad4000/humanity3-earth",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-09-20"
+   "pushed": "2026-09-20",
+   "id": "repo-tmad4000-humanity3-earth"
   },
   {
    "group": "Forks of other projects",
@@ -1476,7 +1655,8 @@
    "fork": true,
    "upstream": "artjing/gramclaw",
    "thirdParty": true,
-   "pushed": "2026-08-20"
+   "pushed": "2026-08-20",
+   "id": "repo-tmad4000-gramclaw-fix-upstream"
   },
   {
    "group": "Other public repositories",
@@ -1490,7 +1670,8 @@
    "repo": "https://github.com/tmad4000/CellSim",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-07-25"
+   "pushed": "2026-07-25",
+   "id": "repo-tmad4000-cellsim"
   },
   {
    "group": "Other public repositories",
@@ -1504,7 +1685,8 @@
    "repo": "https://github.com/tmad4000/Loom2Ticket",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-07-25"
+   "pushed": "2026-07-25",
+   "id": "repo-tmad4000-loom2ticket"
   },
   {
    "group": "Other public repositories",
@@ -1518,7 +1700,8 @@
    "repo": "https://github.com/tmad4000/replit-worldtechtree2-EarthMissionControl",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-07-25"
+   "pushed": "2026-07-25",
+   "id": "repo-tmad4000-replit-worldtechtree2-earthmissioncontrol"
   },
   {
    "group": "Other public repositories",
@@ -1532,7 +1715,8 @@
    "repo": "https://github.com/tmad4000/replit-worldtechtree1-TechProgressionMap",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-07-25"
+   "pushed": "2026-07-25",
+   "id": "repo-tmad4000-replit-worldtechtree1-techprogressionmap"
   },
   {
    "group": "Forks of other projects",
@@ -1547,7 +1731,8 @@
    "fork": true,
    "upstream": "NousResearch/hermes-agent",
    "thirdParty": true,
-   "pushed": "2026-06-08"
+   "pushed": "2026-06-08",
+   "id": "repo-tmad4000-hermes-agent"
   },
   {
    "group": "Forks of other projects",
@@ -1561,7 +1746,8 @@
    "repo": "https://github.com/tmad4000/Sunshine",
    "fork": true,
    "thirdParty": true,
-   "pushed": "2026-04-19"
+   "pushed": "2026-04-19",
+   "id": "repo-tmad4000-sunshine"
   },
   {
    "group": "Other public repositories",
@@ -1575,7 +1761,8 @@
    "repo": "https://github.com/tmad4000/wikihub-landing",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-04-10"
+   "pushed": "2026-04-10",
+   "id": "repo-tmad4000-wikihub-landing"
   },
   {
    "group": "Other public repositories",
@@ -1589,7 +1776,8 @@
    "repo": "https://github.com/tmad4000/openlark",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-04-09"
+   "pushed": "2026-04-09",
+   "id": "repo-tmad4000-openlark"
   },
   {
    "group": "Other public repositories",
@@ -1603,7 +1791,8 @@
    "repo": "https://github.com/tmad4000/systematicaltruism.org",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-04-07"
+   "pushed": "2026-04-07",
+   "id": "repo-tmad4000-systematicaltruism-org"
   },
   {
    "group": "Other public repositories",
@@ -1617,7 +1806,8 @@
    "repo": "https://github.com/tmad4000/moyle-academy",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-03-21"
+   "pushed": "2026-03-21",
+   "id": "repo-tmad4000-moyle-academy"
   },
   {
    "group": "Forks of other projects",
@@ -1632,7 +1822,8 @@
    "fork": true,
    "upstream": "slopus/happy-server",
    "thirdParty": true,
-   "pushed": "2026-03-19"
+   "pushed": "2026-03-19",
+   "id": "repo-ideaflowco-happy-server"
   },
   {
    "group": "Other public repositories",
@@ -1646,7 +1837,8 @@
    "repo": "https://github.com/tmad4000/Dancebot",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-03-07"
+   "pushed": "2026-03-07",
+   "id": "repo-tmad4000-dancebot"
   },
   {
    "group": "Other public repositories",
@@ -1660,7 +1852,8 @@
    "repo": "https://github.com/tmad4000/concentric-circles",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-02-18"
+   "pushed": "2026-02-18",
+   "id": "repo-tmad4000-concentric-circles"
   },
   {
    "group": "Other public repositories",
@@ -1674,7 +1867,8 @@
    "repo": "https://github.com/tmad4000/arya-plank-display",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-02-18"
+   "pushed": "2026-02-18",
+   "id": "repo-tmad4000-arya-plank-display"
   },
   {
    "group": "Other public repositories",
@@ -1688,7 +1882,8 @@
    "repo": "https://github.com/tmad4000/spec-file-task-manager",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-02-18"
+   "pushed": "2026-02-18",
+   "id": "repo-tmad4000-spec-file-task-manager"
   },
   {
    "group": "Other public repositories",
@@ -1702,7 +1897,8 @@
    "repo": "https://github.com/tmad4000/inceptowebsitebentoclone-old",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-02-12"
+   "pushed": "2026-02-12",
+   "id": "repo-tmad4000-inceptowebsitebentoclone-old"
   },
   {
    "group": "Other public repositories",
@@ -1716,7 +1912,8 @@
    "repo": "https://github.com/tmad4000/GlobalAssistant",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-02-06"
+   "pushed": "2026-02-06",
+   "id": "repo-tmad4000-globalassistant"
   },
   {
    "group": "Forks of other projects",
@@ -1731,7 +1928,8 @@
    "fork": true,
    "upstream": "anthropics/skills",
    "thirdParty": true,
-   "pushed": "2026-01-28"
+   "pushed": "2026-01-28",
+   "id": "repo-tmad4000-skills"
   },
   {
    "group": "Other public repositories",
@@ -1745,7 +1943,8 @@
    "repo": "https://github.com/tmad4000/kaleshwar",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-01-27"
+   "pushed": "2026-01-27",
+   "id": "repo-tmad4000-kaleshwar"
   },
   {
    "group": "Other public repositories",
@@ -1759,7 +1958,8 @@
    "repo": "https://github.com/tmad4000/ClaudeCodeMobileTest",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-01-25"
+   "pushed": "2026-01-25",
+   "id": "repo-tmad4000-claudecodemobiletest"
   },
   {
    "group": "Archived repositories",
@@ -1773,7 +1973,8 @@
    "repo": "https://github.com/IdeaFlowCo/old-OpenChat",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-01-21"
+   "pushed": "2026-01-21",
+   "id": "repo-ideaflowco-old-openchat"
   },
   {
    "group": "Other public repositories",
@@ -1787,7 +1988,8 @@
    "repo": "https://github.com/tmad4000/fibonacci-sim-edu",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-01-11"
+   "pushed": "2026-01-11",
+   "id": "repo-tmad4000-fibonacci-sim-edu"
   },
   {
    "group": "Other public repositories",
@@ -1801,7 +2003,8 @@
    "repo": "https://github.com/tmad4000/ai-theremin",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-01-11"
+   "pushed": "2026-01-11",
+   "id": "repo-tmad4000-ai-theremin"
   },
   {
    "group": "Other public repositories",
@@ -1815,7 +2018,8 @@
    "repo": "https://github.com/tmad4000/fourier-sim-edu",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-01-11"
+   "pushed": "2026-01-11",
+   "id": "repo-tmad4000-fourier-sim-edu"
   },
   {
    "group": "Other public repositories",
@@ -1829,7 +2033,8 @@
    "repo": "https://github.com/tmad4000/sonic-boom-sim-edu",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-01-11"
+   "pushed": "2026-01-11",
+   "id": "repo-tmad4000-sonic-boom-sim-edu"
   },
   {
    "group": "Other public repositories",
@@ -1843,7 +2048,8 @@
    "repo": "https://github.com/tmad4000/wallE-3d-flight",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-01-11"
+   "pushed": "2026-01-11",
+   "id": "repo-tmad4000-walle-3d-flight"
   },
   {
    "group": "Other public repositories",
@@ -1857,7 +2063,8 @@
    "repo": "https://github.com/tmad4000/beads-better-ui",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2026-01-01"
+   "pushed": "2026-01-01",
+   "id": "repo-tmad4000-beads-better-ui"
   },
   {
    "group": "Other public repositories",
@@ -1871,7 +2078,8 @@
    "repo": "https://github.com/tmad4000/ThreadBoard",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2025-12-28"
+   "pushed": "2025-12-28",
+   "id": "repo-tmad4000-threadboard"
   },
   {
    "group": "Other public repositories",
@@ -1885,7 +2093,8 @@
    "repo": "https://github.com/tmad4000/Gemini3Workflowy",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2025-12-27"
+   "pushed": "2025-12-27",
+   "id": "repo-tmad4000-gemini3workflowy"
   },
   {
    "group": "Other public repositories",
@@ -1899,7 +2108,8 @@
    "repo": "https://github.com/tmad4000/xAIHack",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2025-12-11"
+   "pushed": "2025-12-11",
+   "id": "repo-tmad4000-xaihack"
   },
   {
    "group": "Other public repositories",
@@ -1913,7 +2123,8 @@
    "repo": "https://github.com/tmad4000/apple-notes-exporter",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2025-12-10"
+   "pushed": "2025-12-10",
+   "id": "repo-tmad4000-apple-notes-exporter"
   },
   {
    "group": "Other public repositories",
@@ -1927,7 +2138,8 @@
    "repo": "https://github.com/tmad4000/VoiceAssistant",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2025-11-29"
+   "pushed": "2025-11-29",
+   "id": "repo-tmad4000-voiceassistant"
   },
   {
    "group": "Forks of other projects",
@@ -1942,7 +2154,8 @@
    "fork": true,
    "upstream": "earendil-works/pi",
    "thirdParty": true,
-   "pushed": "2025-11-28"
+   "pushed": "2025-11-28",
+   "id": "repo-ideaflowco-pi-mono"
   },
   {
    "group": "Other public repositories",
@@ -1956,7 +2169,8 @@
    "repo": "https://github.com/tmad4000/BetterClaudeCodeOpus",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2025-11-26"
+   "pushed": "2025-11-26",
+   "id": "repo-tmad4000-betterclaudecodeopus"
   },
   {
    "group": "Other public repositories",
@@ -1970,7 +2184,8 @@
    "repo": "https://github.com/tmad4000/autocomplete-editors",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2025-11-23"
+   "pushed": "2025-11-23",
+   "id": "repo-tmad4000-autocomplete-editors"
   },
   {
    "group": "Other public repositories",
@@ -1984,7 +2199,8 @@
    "repo": "https://github.com/tmad4000/ClaudeCodeCloudWorkflowy-",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2025-10-30"
+   "pushed": "2025-10-30",
+   "id": "repo-tmad4000-claudecodecloudworkflowy"
   },
   {
    "group": "Other public repositories",
@@ -1998,7 +2214,8 @@
    "repo": "https://github.com/tmad4000/chill-house-voice",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2025-06-22"
+   "pushed": "2025-06-22",
+   "id": "repo-tmad4000-chill-house-voice"
   },
   {
    "group": "Other public repositories",
@@ -2012,7 +2229,8 @@
    "repo": "https://github.com/tmad4000/olddraft-MediatorBot",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2025-06-21"
+   "pushed": "2025-06-21",
+   "id": "repo-tmad4000-olddraft-mediatorbot"
   },
   {
    "group": "Other public repositories",
@@ -2026,7 +2244,8 @@
    "repo": "https://github.com/IdeaFlowCo/mingle-match-party",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2025-04-11"
+   "pushed": "2025-04-11",
+   "id": "repo-ideaflowco-mingle-match-party"
   },
   {
    "group": "Other public repositories",
@@ -2040,7 +2259,8 @@
    "repo": "https://github.com/IdeaFlowCo/apple-contacts-integration",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2025-04-08"
+   "pushed": "2025-04-08",
+   "id": "repo-ideaflowco-apple-contacts-integration"
   },
   {
    "group": "Other public repositories",
@@ -2054,7 +2274,8 @@
    "repo": "https://github.com/tmad4000/hacker-homepage-harbor",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2025-03-10"
+   "pushed": "2025-03-10",
+   "id": "repo-tmad4000-hacker-homepage-harbor"
   },
   {
    "group": "Other public repositories",
@@ -2068,7 +2289,8 @@
    "repo": "https://github.com/IdeaFlowCo/liveeditor.ai-tyi6pm",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2025-02-28"
+   "pushed": "2025-02-28",
+   "id": "repo-ideaflowco-liveeditor-ai-tyi6pm"
   },
   {
    "group": "Other public repositories",
@@ -2082,7 +2304,8 @@
    "repo": "https://github.com/tmad4000/write-buddy-assistant",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2025-02-21"
+   "pushed": "2025-02-21",
+   "id": "repo-tmad4000-write-buddy-assistant"
   },
   {
    "group": "Other public repositories",
@@ -2096,7 +2319,8 @@
    "repo": "https://github.com/tmad4000/harmonizer",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2025-01-26"
+   "pushed": "2025-01-26",
+   "id": "repo-tmad4000-harmonizer"
   },
   {
    "group": "Other public repositories",
@@ -2110,7 +2334,8 @@
    "repo": "https://github.com/tmad4000/jovial-jabber",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2024-12-24"
+   "pushed": "2024-12-24",
+   "id": "repo-tmad4000-jovial-jabber"
   },
   {
    "group": "Other public repositories",
@@ -2124,7 +2349,8 @@
    "repo": "https://github.com/tmad4000/ProgressBarsByGPT",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2024-10-10"
+   "pushed": "2024-10-10",
+   "id": "repo-tmad4000-progressbarsbygpt"
   },
   {
    "group": "Forks of other projects",
@@ -2138,7 +2364,8 @@
    "repo": "https://github.com/IdeaFlowCo/RichTextKit",
    "fork": true,
    "thirdParty": true,
-   "pushed": "2024-08-15"
+   "pushed": "2024-08-15",
+   "id": "repo-ideaflowco-richtextkit"
   },
   {
    "group": "Other public repositories",
@@ -2152,7 +2379,8 @@
    "repo": "https://github.com/tmad4000/react-context-todo",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2024-04-14"
+   "pushed": "2024-04-14",
+   "id": "repo-tmad4000-react-context-todo"
   },
   {
    "group": "Forks of other projects",
@@ -2166,7 +2394,8 @@
    "repo": "https://github.com/IdeaFlowCo/talktogpt",
    "fork": true,
    "thirdParty": true,
-   "pushed": "2023-12-05"
+   "pushed": "2023-12-05",
+   "id": "repo-ideaflowco-talktogpt"
   },
   {
    "group": "Forks of other projects",
@@ -2180,7 +2409,8 @@
    "repo": "https://github.com/IdeaFlowCo/swift-lame",
    "fork": true,
    "thirdParty": true,
-   "pushed": "2023-10-17"
+   "pushed": "2023-10-17",
+   "id": "repo-ideaflowco-swift-lame"
   },
   {
    "group": "Other public repositories",
@@ -2194,7 +2424,8 @@
    "repo": "https://github.com/IdeaFlowCo/obsidian-import",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2023-09-29"
+   "pushed": "2023-09-29",
+   "id": "repo-ideaflowco-obsidian-import"
   },
   {
    "group": "Other public repositories",
@@ -2208,7 +2439,8 @@
    "repo": "https://github.com/tmad4000/SimpleGames",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2023-08-24"
+   "pushed": "2023-08-24",
+   "id": "repo-tmad4000-simplegames"
   },
   {
    "group": "Other public repositories",
@@ -2222,7 +2454,8 @@
    "repo": "https://github.com/tmad4000/JSSpinner",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2022-04-18"
+   "pushed": "2022-04-18",
+   "id": "repo-tmad4000-jsspinner"
   },
   {
    "group": "Other public repositories",
@@ -2236,7 +2469,8 @@
    "repo": "https://github.com/tmad4000/react-idea-relater",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2021-07-30"
+   "pushed": "2021-07-30",
+   "id": "repo-tmad4000-react-idea-relater"
   },
   {
    "group": "Other public repositories",
@@ -2250,7 +2484,8 @@
    "repo": "https://github.com/tmad4000/sounddance",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2021-06-26"
+   "pushed": "2021-06-26",
+   "id": "repo-tmad4000-sounddance"
   },
   {
    "group": "Other public repositories",
@@ -2264,7 +2499,8 @@
    "repo": "https://github.com/tmad4000/LineGraphyThingy",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2021-05-08"
+   "pushed": "2021-05-08",
+   "id": "repo-tmad4000-linegraphythingy"
   },
   {
    "group": "Other public repositories",
@@ -2278,7 +2514,8 @@
    "repo": "https://github.com/tmad4000/jGamedev-Canvas-workshop",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2020-10-17"
+   "pushed": "2020-10-17",
+   "id": "repo-tmad4000-jgamedev-canvas-workshop"
   },
   {
    "group": "Other public repositories",
@@ -2292,7 +2529,8 @@
    "repo": "https://github.com/tmad4000/basicmaze-ts",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2020-07-19"
+   "pushed": "2020-07-19",
+   "id": "repo-tmad4000-basicmaze-ts"
   },
   {
    "group": "Archived repositories",
@@ -2306,7 +2544,8 @@
    "repo": "https://github.com/IdeaFlowCo/facebook-followup",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2020-04-06"
+   "pushed": "2020-04-06",
+   "id": "repo-ideaflowco-facebook-followup"
   },
   {
    "group": "Forks of other projects",
@@ -2320,7 +2559,8 @@
    "repo": "https://github.com/IdeaFlowCo/CodeMirror",
    "fork": true,
    "thirdParty": true,
-   "pushed": "2019-09-17"
+   "pushed": "2019-09-17",
+   "id": "repo-ideaflowco-codemirror"
   },
   {
    "group": "Forks of other projects",
@@ -2334,7 +2574,8 @@
    "repo": "https://github.com/IdeaFlowCo/react-virtualized",
    "fork": true,
    "thirdParty": true,
-   "pushed": "2018-10-24"
+   "pushed": "2018-10-24",
+   "id": "repo-ideaflowco-react-virtualized"
   },
   {
    "group": "Forks of other projects",
@@ -2348,7 +2589,8 @@
    "repo": "https://github.com/tmad4000/plivo-node",
    "fork": true,
    "thirdParty": true,
-   "pushed": "2018-10-17"
+   "pushed": "2018-10-17",
+   "id": "repo-tmad4000-plivo-node"
   },
   {
    "group": "Forks of other projects",
@@ -2362,7 +2604,8 @@
    "repo": "https://github.com/tmad4000/followup-messenger",
    "fork": true,
    "thirdParty": true,
-   "pushed": "2018-08-08"
+   "pushed": "2018-08-08",
+   "id": "repo-tmad4000-followup-messenger"
   },
   {
    "group": "Archived repositories",
@@ -2376,7 +2619,8 @@
    "repo": "https://github.com/IdeaFlowCo/list-text-test",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2018-05-07"
+   "pushed": "2018-05-07",
+   "id": "repo-ideaflowco-list-text-test"
   },
   {
    "group": "Other public repositories",
@@ -2390,7 +2634,8 @@
    "repo": "https://github.com/tmad4000/multiAgentPy",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2017-12-29"
+   "pushed": "2017-12-29",
+   "id": "repo-tmad4000-multiagentpy"
   },
   {
    "group": "Other public repositories",
@@ -2404,7 +2649,8 @@
    "repo": "https://github.com/tmad4000/textrpg",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2017-12-13"
+   "pushed": "2017-12-13",
+   "id": "repo-tmad4000-textrpg"
   },
   {
    "group": "Other public repositories",
@@ -2418,7 +2664,8 @@
    "repo": "https://github.com/tmad4000/patternMatcher",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2017-12-09"
+   "pushed": "2017-12-09",
+   "id": "repo-tmad4000-patternmatcher"
   },
   {
    "group": "Forks of other projects",
@@ -2432,7 +2679,8 @@
    "repo": "https://github.com/IdeaFlowCo/draft-js",
    "fork": true,
    "thirdParty": true,
-   "pushed": "2017-12-06"
+   "pushed": "2017-12-06",
+   "id": "repo-ideaflowco-draft-js"
   },
   {
    "group": "Other public repositories",
@@ -2446,7 +2694,8 @@
    "repo": "https://github.com/tmad4000/jsplot",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2017-11-23"
+   "pushed": "2017-11-23",
+   "id": "repo-tmad4000-jsplot"
   },
   {
    "group": "Other public repositories",
@@ -2460,7 +2709,8 @@
    "repo": "https://github.com/tmad4000/compiler-test",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2017-11-04"
+   "pushed": "2017-11-04",
+   "id": "repo-tmad4000-compiler-test"
   },
   {
    "group": "Other public repositories",
@@ -2474,7 +2724,8 @@
    "repo": "https://github.com/tmad4000/reactmath",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2017-10-31"
+   "pushed": "2017-10-31",
+   "id": "repo-tmad4000-reactmath"
   },
   {
    "group": "Other public repositories",
@@ -2488,7 +2739,8 @@
    "repo": "https://github.com/tmad4000/jacob-draftjs",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2017-10-14"
+   "pushed": "2017-10-14",
+   "id": "repo-tmad4000-jacob-draftjs"
   },
   {
    "group": "Forks of other projects",
@@ -2502,7 +2754,8 @@
    "repo": "https://github.com/tmad4000/draft-js",
    "fork": true,
    "thirdParty": true,
-   "pushed": "2017-09-30"
+   "pushed": "2017-09-30",
+   "id": "repo-tmad4000-draft-js"
   },
   {
    "group": "Other public repositories",
@@ -2516,7 +2769,8 @@
    "repo": "https://github.com/tmad4000/jacob-ts-hotload-starter",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2017-09-27"
+   "pushed": "2017-09-27",
+   "id": "repo-tmad4000-jacob-ts-hotload-starter"
   },
   {
    "group": "Other public repositories",
@@ -2530,7 +2784,8 @@
    "repo": "https://github.com/tmad4000/tsd3test",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2017-09-27"
+   "pushed": "2017-09-27",
+   "id": "repo-tmad4000-tsd3test"
   },
   {
    "group": "Other public repositories",
@@ -2544,7 +2799,8 @@
    "repo": "https://github.com/tmad4000/dp_fun",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2017-05-31"
+   "pushed": "2017-05-31",
+   "id": "repo-tmad4000-dp-fun"
   },
   {
    "group": "Other public repositories",
@@ -2558,7 +2814,8 @@
    "repo": "https://github.com/tmad4000/TaskQuad",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2017-05-17"
+   "pushed": "2017-05-17",
+   "id": "repo-tmad4000-taskquad"
   },
   {
    "group": "Forks of other projects",
@@ -2572,7 +2829,8 @@
    "repo": "https://github.com/IdeaFlowCo/evolving-immutable",
    "fork": true,
    "thirdParty": true,
-   "pushed": "2017-04-14"
+   "pushed": "2017-04-14",
+   "id": "repo-ideaflowco-evolving-immutable"
   },
   {
    "group": "Other public repositories",
@@ -2586,7 +2844,8 @@
    "repo": "https://github.com/tmad4000/meteor-todos",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2016-12-27"
+   "pushed": "2016-12-27",
+   "id": "repo-tmad4000-meteor-todos"
   },
   {
    "group": "Other public repositories",
@@ -2600,7 +2859,8 @@
    "repo": "https://github.com/tmad4000/ts-react",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2016-12-27"
+   "pushed": "2016-12-27",
+   "id": "repo-tmad4000-ts-react"
   },
   {
    "group": "Archived repositories",
@@ -2614,7 +2874,8 @@
    "repo": "https://github.com/IdeaFlowCo/demos",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2016-11-15"
+   "pushed": "2016-11-15",
+   "id": "repo-ideaflowco-demos"
   },
   {
    "group": "Other public repositories",
@@ -2628,7 +2889,8 @@
    "repo": "https://github.com/tmad4000/robocode-bots",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2016-10-04"
+   "pushed": "2016-10-04",
+   "id": "repo-tmad4000-robocode-bots"
   },
   {
    "group": "Other public repositories",
@@ -2642,7 +2904,8 @@
    "repo": "https://github.com/tmad4000/gittest",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2016-10-04"
+   "pushed": "2016-10-04",
+   "id": "repo-tmad4000-gittest"
   },
   {
    "group": "Archived repositories",
@@ -2656,7 +2919,8 @@
    "repo": "https://github.com/IdeaFlowCo/LinkedMap",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2016-09-29"
+   "pushed": "2016-09-29",
+   "id": "repo-ideaflowco-linkedmap"
   },
   {
    "group": "Archived repositories",
@@ -2670,7 +2934,8 @@
    "repo": "https://github.com/IdeaFlowCo/raindrop",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2016-09-20"
+   "pushed": "2016-09-20",
+   "id": "repo-ideaflowco-raindrop"
   },
   {
    "group": "Other public repositories",
@@ -2684,7 +2949,8 @@
    "repo": "https://github.com/tmad4000/d3force",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2016-09-14"
+   "pushed": "2016-09-14",
+   "id": "repo-tmad4000-d3force"
   },
   {
    "group": "Archived repositories",
@@ -2698,7 +2964,8 @@
    "repo": "https://github.com/IdeaFlowCo/Landmass",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2016-09-05"
+   "pushed": "2016-09-05",
+   "id": "repo-ideaflowco-landmass"
   },
   {
    "group": "Archived repositories",
@@ -2712,7 +2979,8 @@
    "repo": "https://github.com/IdeaFlowCo/JenkinsCleanup",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2016-08-23"
+   "pushed": "2016-08-23",
+   "id": "repo-ideaflowco-jenkinscleanup"
   },
   {
    "group": "Forks of other projects",
@@ -2726,7 +2994,8 @@
    "repo": "https://github.com/IdeaFlowCo/mysql",
    "fork": true,
    "thirdParty": true,
-   "pushed": "2016-08-23"
+   "pushed": "2016-08-23",
+   "id": "repo-ideaflowco-mysql"
   },
   {
    "group": "Other public repositories",
@@ -2740,7 +3009,8 @@
    "repo": "https://github.com/tmad4000/Brain2",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2016-06-12"
+   "pushed": "2016-06-12",
+   "id": "repo-tmad4000-brain2"
   },
   {
    "group": "Forks of other projects",
@@ -2754,7 +3024,8 @@
    "repo": "https://github.com/tmad4000/clearinghouse",
    "fork": true,
    "thirdParty": true,
-   "pushed": "2016-05-11"
+   "pushed": "2016-05-11",
+   "id": "repo-tmad4000-clearinghouse"
   },
   {
    "group": "Other public repositories",
@@ -2768,7 +3039,8 @@
    "repo": "https://github.com/tmad4000/kanban_app",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2016-04-14"
+   "pushed": "2016-04-14",
+   "id": "repo-tmad4000-kanban-app"
   },
   {
    "group": "Forks of other projects",
@@ -2782,7 +3054,8 @@
    "repo": "https://github.com/tmad4000/re-assay",
    "fork": true,
    "thirdParty": true,
-   "pushed": "2016-03-30"
+   "pushed": "2016-03-30",
+   "id": "repo-tmad4000-re-assay"
   },
   {
    "group": "Archived repositories",
@@ -2796,7 +3069,8 @@
    "repo": "https://github.com/IdeaFlowCo/Pool",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2016-03-28"
+   "pushed": "2016-03-28",
+   "id": "repo-ideaflowco-pool"
   },
   {
    "group": "Archived repositories",
@@ -2810,7 +3084,8 @@
    "repo": "https://github.com/IdeaFlowCo/Seots",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2016-03-21"
+   "pushed": "2016-03-21",
+   "id": "repo-ideaflowco-seots"
   },
   {
    "group": "Other public repositories",
@@ -2824,7 +3099,8 @@
    "repo": "https://github.com/tmad4000/ska",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2016-03-11"
+   "pushed": "2016-03-11",
+   "id": "repo-tmad4000-ska"
   },
   {
    "group": "Other public repositories",
@@ -2838,7 +3114,8 @@
    "repo": "https://github.com/tmad4000/nodeschool",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2016-01-04"
+   "pushed": "2016-01-04",
+   "id": "repo-tmad4000-nodeschool"
   },
   {
    "group": "Other public repositories",
@@ -2852,7 +3129,8 @@
    "repo": "https://github.com/tmad4000/test3",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2015-12-04"
+   "pushed": "2015-12-04",
+   "id": "repo-tmad4000-test3"
   },
   {
    "group": "Other public repositories",
@@ -2866,7 +3144,8 @@
    "repo": "https://github.com/tmad4000/ideationflow",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2015-11-06"
+   "pushed": "2015-11-06",
+   "id": "repo-tmad4000-ideationflow"
   },
   {
    "group": "Other public repositories",
@@ -2880,7 +3159,8 @@
    "repo": "https://github.com/tmad4000/stream-adventure",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2015-11-02"
+   "pushed": "2015-11-02",
+   "id": "repo-tmad4000-stream-adventure"
   },
   {
    "group": "Forks of other projects",
@@ -2894,7 +3174,8 @@
    "repo": "https://github.com/tmad4000/learnyounode",
    "fork": true,
    "thirdParty": true,
-   "pushed": "2015-10-24"
+   "pushed": "2015-10-24",
+   "id": "repo-tmad4000-learnyounode"
   },
   {
    "group": "Other public repositories",
@@ -2908,7 +3189,8 @@
    "repo": "https://github.com/tmad4000/GestaltBrainBot",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2015-08-29"
+   "pushed": "2015-08-29",
+   "id": "repo-tmad4000-gestaltbrainbot"
   },
   {
    "group": "Other public repositories",
@@ -2922,7 +3204,8 @@
    "repo": "https://github.com/tmad4000/browser-timetracker",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2015-06-27"
+   "pushed": "2015-06-27",
+   "id": "repo-tmad4000-browser-timetracker"
   },
   {
    "group": "Forks of other projects",
@@ -2936,7 +3219,8 @@
    "repo": "https://github.com/tmad4000/etymology-finder",
    "fork": true,
    "thirdParty": true,
-   "pushed": "2015-03-24"
+   "pushed": "2015-03-24",
+   "id": "repo-tmad4000-etymology-finder"
   },
   {
    "group": "Forks of other projects",
@@ -2950,7 +3234,8 @@
    "repo": "https://github.com/tmad4000/readwriteweb",
    "fork": true,
    "thirdParty": true,
-   "pushed": "2015-03-23"
+   "pushed": "2015-03-23",
+   "id": "repo-tmad4000-readwriteweb"
   },
   {
    "group": "Forks of other projects",
@@ -2964,7 +3249,8 @@
    "repo": "https://github.com/tmad4000/Entry-Filter",
    "fork": true,
    "thirdParty": true,
-   "pushed": "2015-02-06"
+   "pushed": "2015-02-06",
+   "id": "repo-tmad4000-entry-filter"
   },
   {
    "group": "Other public repositories",
@@ -2978,7 +3264,8 @@
    "repo": "https://github.com/tmad4000/BayesFun",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2014-11-10"
+   "pushed": "2014-11-10",
+   "id": "repo-tmad4000-bayesfun"
   },
   {
    "group": "Other public repositories",
@@ -2992,7 +3279,8 @@
    "repo": "https://github.com/tmad4000/ideaflowyhack_mobile",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2014-11-02"
+   "pushed": "2014-11-02",
+   "id": "repo-tmad4000-ideaflowyhack-mobile"
   },
   {
    "group": "Other public repositories",
@@ -3006,7 +3294,8 @@
    "repo": "https://github.com/tmad4000/ideaflowyhack",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2014-11-01"
+   "pushed": "2014-11-01",
+   "id": "repo-tmad4000-ideaflowyhack"
   },
   {
    "group": "Other public repositories",
@@ -3020,7 +3309,8 @@
    "repo": "https://github.com/tmad4000/firebasetest",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2014-11-01"
+   "pushed": "2014-11-01",
+   "id": "repo-tmad4000-firebasetest"
   },
   {
    "group": "Other public repositories",
@@ -3034,7 +3324,8 @@
    "repo": "https://github.com/tmad4000/mygithubpage",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2014-10-05"
+   "pushed": "2014-10-05",
+   "id": "repo-tmad4000-mygithubpage"
   },
   {
    "group": "Other public repositories",
@@ -3048,7 +3339,8 @@
    "repo": "https://github.com/tmad4000/HackersAtMIT",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2014-09-26"
+   "pushed": "2014-09-26",
+   "id": "repo-tmad4000-hackersatmit"
   },
   {
    "group": "Other public repositories",
@@ -3062,7 +3354,8 @@
    "repo": "https://github.com/tmad4000/IdeaJoin",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2014-09-12"
+   "pushed": "2014-09-12",
+   "id": "repo-tmad4000-ideajoin"
   },
   {
    "group": "Other public repositories",
@@ -3076,7 +3369,8 @@
    "repo": "https://github.com/tmad4000/reactcommentstest2",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2014-08-26"
+   "pushed": "2014-08-26",
+   "id": "repo-tmad4000-reactcommentstest2"
   },
   {
    "group": "Other public repositories",
@@ -3090,7 +3384,8 @@
    "repo": "https://github.com/tmad4000/idea-mapper-ec2",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2014-08-21"
+   "pushed": "2014-08-21",
+   "id": "repo-tmad4000-idea-mapper-ec2"
   },
   {
    "group": "Other public repositories",
@@ -3104,7 +3399,8 @@
    "repo": "https://github.com/tmad4000/ThoughtStream",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2014-08-15"
+   "pushed": "2014-08-15",
+   "id": "repo-tmad4000-thoughtstream"
   },
   {
    "group": "Other public repositories",
@@ -3118,7 +3414,8 @@
    "repo": "https://github.com/tmad4000/ideamesh",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2014-08-13"
+   "pushed": "2014-08-13",
+   "id": "repo-tmad4000-ideamesh"
   },
   {
    "group": "Forks of other projects",
@@ -3132,7 +3429,8 @@
    "repo": "https://github.com/tmad4000/wiki-expander",
    "fork": true,
    "thirdParty": true,
-   "pushed": "2014-08-06"
+   "pushed": "2014-08-06",
+   "id": "repo-tmad4000-wiki-expander"
   },
   {
    "group": "Other public repositories",
@@ -3146,7 +3444,8 @@
    "repo": "https://github.com/tmad4000/IdeaRelaterTopicMod",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2014-08-01"
+   "pushed": "2014-08-01",
+   "id": "repo-tmad4000-idearelatertopicmod"
   },
   {
    "group": "Other public repositories",
@@ -3160,7 +3459,8 @@
    "repo": "https://github.com/tmad4000/IdeaRelater",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2014-08-01"
+   "pushed": "2014-08-01",
+   "id": "repo-tmad4000-idearelater"
   },
   {
    "group": "Forks of other projects",
@@ -3174,7 +3474,8 @@
    "repo": "https://github.com/tmad4000/meteor_hackathon",
    "fork": true,
    "thirdParty": true,
-   "pushed": "2014-07-29"
+   "pushed": "2014-07-29",
+   "id": "repo-tmad4000-meteor-hackathon"
   },
   {
    "group": "Other public repositories",
@@ -3188,7 +3489,8 @@
    "repo": "https://github.com/tmad4000/DonationCancel",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2014-07-27"
+   "pushed": "2014-07-27",
+   "id": "repo-tmad4000-donationcancel"
   },
   {
    "group": "Other public repositories",
@@ -3202,7 +3504,8 @@
    "repo": "https://github.com/tmad4000/Telehackathon2",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2014-05-16"
+   "pushed": "2014-05-16",
+   "id": "repo-tmad4000-telehackathon2"
   },
   {
    "group": "Other public repositories",
@@ -3216,7 +3519,8 @@
    "repo": "https://github.com/tmad4000/test",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2014-04-13"
+   "pushed": "2014-04-13",
+   "id": "repo-tmad4000-test"
   },
   {
    "group": "Forks of other projects",
@@ -3230,7 +3534,8 @@
    "repo": "https://github.com/tmad4000/holoGraph",
    "fork": true,
    "thirdParty": true,
-   "pushed": "2014-02-24"
+   "pushed": "2014-02-24",
+   "id": "repo-tmad4000-holograph"
   },
   {
    "group": "Other public repositories",
@@ -3244,7 +3549,8 @@
    "repo": "https://github.com/tmad4000/CSToys",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2014-02-21"
+   "pushed": "2014-02-21",
+   "id": "repo-tmad4000-cstoys"
   },
   {
    "group": "Other public repositories",
@@ -3258,7 +3564,8 @@
    "repo": "https://github.com/tmad4000/GestaltHofstadterBots",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2014-02-18"
+   "pushed": "2014-02-18",
+   "id": "repo-tmad4000-gestalthofstadterbots"
   },
   {
    "group": "Forks of other projects",
@@ -3272,7 +3579,8 @@
    "repo": "https://github.com/tmad4000/celestrium",
    "fork": true,
    "thirdParty": true,
-   "pushed": "2013-12-08"
+   "pushed": "2013-12-08",
+   "id": "repo-tmad4000-celestrium"
   },
   {
    "group": "Other public repositories",
@@ -3286,7 +3594,8 @@
    "repo": "https://github.com/tmad4000/MLCCDefault",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2013-12-03"
+   "pushed": "2013-12-03",
+   "id": "repo-tmad4000-mlccdefault"
   },
   {
    "group": "Other public repositories",
@@ -3300,7 +3609,8 @@
    "repo": "https://github.com/tmad4000/Ou",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2013-10-31"
+   "pushed": "2013-10-31",
+   "id": "repo-tmad4000-ou"
   },
   {
    "group": "Other public repositories",
@@ -3314,7 +3624,8 @@
    "repo": "https://github.com/tmad4000/ideaflow-meteor-mongo",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2013-10-26"
+   "pushed": "2013-10-26",
+   "id": "repo-tmad4000-ideaflow-meteor-mongo"
   },
   {
    "group": "Forks of other projects",
@@ -3328,7 +3639,8 @@
    "repo": "https://github.com/tmad4000/uap",
    "fork": true,
    "thirdParty": true,
-   "pushed": "2013-10-01"
+   "pushed": "2013-10-01",
+   "id": "repo-tmad4000-uap"
   },
   {
    "group": "Other public repositories",
@@ -3342,7 +3654,8 @@
    "repo": "https://github.com/tmad4000/ideaflow-meteor",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2013-08-31"
+   "pushed": "2013-08-31",
+   "id": "repo-tmad4000-ideaflow-meteor"
   },
   {
    "group": "Other public repositories",
@@ -3356,7 +3669,8 @@
    "repo": "https://github.com/tmad4000/epb-server",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2013-08-15"
+   "pushed": "2013-08-15",
+   "id": "repo-tmad4000-epb-server"
   },
   {
    "group": "Other public repositories",
@@ -3370,7 +3684,8 @@
    "repo": "https://github.com/tmad4000/epb",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2013-08-15"
+   "pushed": "2013-08-15",
+   "id": "repo-tmad4000-epb"
   },
   {
    "group": "Other public repositories",
@@ -3384,7 +3699,8 @@
    "repo": "https://github.com/tmad4000/TZMITHackathon",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2013-07-07"
+   "pushed": "2013-07-07",
+   "id": "repo-tmad4000-tzmithackathon"
   },
   {
    "group": "Other public repositories",
@@ -3398,7 +3714,8 @@
    "repo": "https://github.com/tmad4000/IdeaOverflow_integ2",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2013-06-06"
+   "pushed": "2013-06-06",
+   "id": "repo-tmad4000-ideaoverflow-integ2"
   },
   {
    "group": "Other public repositories",
@@ -3412,7 +3729,8 @@
    "repo": "https://github.com/tmad4000/IdeaOverflow_integ",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2013-06-06"
+   "pushed": "2013-06-06",
+   "id": "repo-tmad4000-ideaoverflow-integ"
   },
   {
    "group": "Other public repositories",
@@ -3426,7 +3744,8 @@
    "repo": "https://github.com/tmad4000/IdeaOverflow_",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2013-06-06"
+   "pushed": "2013-06-06",
+   "id": "repo-tmad4000-ideaoverflow"
   },
   {
    "group": "Other public repositories",
@@ -3440,7 +3759,8 @@
    "repo": "https://github.com/tmad4000/Mapr",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2013-05-28"
+   "pushed": "2013-05-28",
+   "id": "repo-tmad4000-mapr"
   },
   {
    "group": "Other public repositories",
@@ -3454,7 +3774,8 @@
    "repo": "https://github.com/tmad4000/IdeaOverflow_som",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2013-05-17"
+   "pushed": "2013-05-17",
+   "id": "repo-tmad4000-ideaoverflow-som"
   },
   {
    "group": "Other public repositories",
@@ -3468,7 +3789,8 @@
    "repo": "https://github.com/tmad4000/Hofstadter3Robots",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2013-05-08"
+   "pushed": "2013-05-08",
+   "id": "repo-tmad4000-hofstadter3robots"
   },
   {
    "group": "Other public repositories",
@@ -3482,7 +3804,8 @@
    "repo": "https://github.com/tmad4000/IdeaOverflow3_ruby",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2013-03-10"
+   "pushed": "2013-03-10",
+   "id": "repo-tmad4000-ideaoverflow3-ruby"
   },
   {
    "group": "Other public repositories",
@@ -3496,7 +3819,8 @@
    "repo": "https://github.com/tmad4000/Rails_boilerplate",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2013-03-10"
+   "pushed": "2013-03-10",
+   "id": "repo-tmad4000-rails-boilerplate"
   },
   {
    "group": "Other public repositories",
@@ -3510,7 +3834,8 @@
    "repo": "https://github.com/tmad4000/IdeaOverflow2",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2013-03-09"
+   "pushed": "2013-03-09",
+   "id": "repo-tmad4000-ideaoverflow2"
   },
   {
    "group": "Other public repositories",
@@ -3524,7 +3849,8 @@
    "repo": "https://github.com/tmad4000/World",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2012-12-28"
+   "pushed": "2012-12-28",
+   "id": "repo-tmad4000-world"
   },
   {
    "group": "Other public repositories",
@@ -3538,7 +3864,8 @@
    "repo": "https://github.com/tmad4000/NealChaseJacob",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2012-12-14"
+   "pushed": "2012-12-14",
+   "id": "repo-tmad4000-nealchasejacob"
   },
   {
    "group": "Other public repositories",
@@ -3552,7 +3879,8 @@
    "repo": "https://github.com/tmad4000/NealChaseJacob2",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2012-12-01"
+   "pushed": "2012-12-01",
+   "id": "repo-tmad4000-nealchasejacob2"
   },
   {
    "group": "Other public repositories",
@@ -3566,7 +3894,8 @@
    "repo": "https://github.com/tmad4000/IdeaOverflow",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2012-10-07"
+   "pushed": "2012-10-07",
+   "id": "repo-tmad4000-ideaoverflow-2"
   },
   {
    "group": "Other public repositories",
@@ -3580,7 +3909,8 @@
    "repo": "https://github.com/tmad4000/TruonexHackathon",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2012-09-30"
+   "pushed": "2012-09-30",
+   "id": "repo-tmad4000-truonexhackathon"
   },
   {
    "group": "Other public repositories",
@@ -3594,7 +3924,8 @@
    "repo": "https://github.com/tmad4000/FriendsGMailStatusLogger",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2012-09-28"
+   "pushed": "2012-09-28",
+   "id": "repo-tmad4000-friendsgmailstatuslogger"
   },
   {
    "group": "Other public repositories",
@@ -3608,7 +3939,8 @@
    "repo": "https://github.com/tmad4000/hellodjango",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2012-08-18"
+   "pushed": "2012-08-18",
+   "id": "repo-tmad4000-hellodjango"
   },
   {
    "group": "Other public repositories",
@@ -3622,7 +3954,8 @@
    "repo": "https://github.com/tmad4000/test2",
    "fork": false,
    "thirdParty": false,
-   "pushed": "2012-08-18"
+   "pushed": "2012-08-18",
+   "id": "repo-tmad4000-test2"
   },
   {
    "group": "Forks of other projects",
@@ -3636,7 +3969,8 @@
    "repo": "https://github.com/tmad4000/gitignore",
    "fork": true,
    "thirdParty": true,
-   "pushed": "2012-08-10"
+   "pushed": "2012-08-10",
+   "id": "repo-tmad4000-gitignore"
   },
   {
    "group": "Forks of other projects",
@@ -3650,7 +3984,8 @@
    "repo": "https://github.com/tmad4000/quizbowl",
    "fork": true,
    "thirdParty": true,
-   "pushed": "2012-03-17"
+   "pushed": "2012-03-17",
+   "id": "repo-tmad4000-quizbowl"
   },
   {
    "group": "Forks of other projects",
@@ -3664,7 +3999,8 @@
    "repo": "https://github.com/tmad4000/hackSwyp",
    "fork": true,
    "thirdParty": true,
-   "pushed": "2012-02-11"
+   "pushed": "2012-02-11",
+   "id": "repo-tmad4000-hackswyp"
   }
  ]
 }

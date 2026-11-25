@@ -29,11 +29,10 @@
     <a class="brand" href="https://humanityinfrastructure.com/"><span class="logo" aria-hidden="true">🌍</span><span>Humanity Infrastructure</span><span class="brand-sub">Patrons</span></a>
     <nav aria-label="Page sections" class="nav">
       <a href="#how">How it works</a>
-      <a href="#split">Your split</a>
-      <a href="#ledger">Ledger</a>
+      <a href="#fund">Fund</a>
       <a href="#catalog">Catalog</a>
-      <a href="#featured">Featured</a>
-      <a href="#arc">Long arc</a>
+      <a href="#lists">Lists</a>
+      <a href="#makers">For makers</a>
       <a href="#honest">Caveats</a>
     </nav>
     <div class="header-actions">
@@ -44,6 +43,8 @@
 </header>
 
 <main id="main">
+
+<div class="wrap signin" id="signin" hidden><span id="signin-text">Optional: sign in so your place and split attach to your Ideaflow account.</span> <a id="signin-btn" href="/auth/ideaflow/start">Sign in with Ideaflow</a></div>
 
 <section class="hero">
   <div class="wrap hero-grid">
@@ -194,6 +195,35 @@
   </div>
 </section>
 
+<section id="fund" class="alt" aria-labelledby="fund-h">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Or choose yourself</p>
+      <h2 id="fund-h">Fund any project, at the amount you set</h2>
+      <p>Skip the usage default. Pick the projects you care about and put a monthly amount beside each. The total is your subscription.</p>
+    </div>
+    <div class="split-card">
+      <form id="pick-form" class="pick-form">
+        <label for="pick-search">Add a project</label>
+        <div class="pick-add">
+          <input id="pick-search" list="pick-options" type="text" autocomplete="off" placeholder="Start typing a project name" />
+          <datalist id="pick-options"></datalist>
+          <button class="btn ghost small" type="submit">Add</button>
+        </div>
+        <p class="form-status" id="pick-status" role="status"></p>
+      </form>
+      <ul class="pick-rows" id="pick-rows"></ul>
+      <p class="pick-total" id="pick-total" aria-live="polite"></p>
+      <p class="fineprint" id="pick-note"></p>
+      <p class="cta-row">
+        <button class="btn primary" type="button" id="pick-save" disabled>Save this split</button>
+        <button class="btn ghost" type="button" id="pick-clear">Clear</button>
+      </p>
+      <p class="fineprint">Payments are not open, so this records what you would give. Your picks are kept in this browser until you save; saving stores them privately with your email.</p>
+    </div>
+  </div>
+</section>
+
 <section id="ledger" class="alt" aria-labelledby="ledger-h">
   <div class="wrap">
     <div class="section-head">
@@ -302,6 +332,92 @@
   </div>
 </section>
 
+<section id="lists" aria-labelledby="lists-h">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Lists</p>
+      <h2 id="lists-h">Start from a list, or make your own</h2>
+      <p>A list is a set of projects you can fund together. Ours are curated; yours stays in your browser and travels as a link.</p>
+    </div>
+    <article class="list-card shared" id="shared-list" hidden></article>
+    <div class="list-grid" id="official-lists"><p class="fineprint">Loading lists…</p></div>
+    <article class="list-card mine" aria-labelledby="mine-h">
+      <p class="list-by">Yours. Kept in this browser only.</p>
+      <h3 id="mine-h">My list</h3>
+      <div class="field"><label for="mine-name">Name</label><input id="mine-name" type="text" maxlength="60" placeholder="Tools I rely on" autocomplete="off" /></div>
+      <ul class="chips-list" id="mine-items"></ul>
+      <p class="list-actions">
+        <button class="btn ghost small" type="button" id="mine-share" disabled>Copy share link</button>
+        <button class="btn ghost small" type="button" id="mine-fund" disabled>Add to my split</button>
+        <button class="btn ghost small" type="button" id="mine-clear" disabled>Clear</button>
+      </p>
+      <p class="form-status" id="mine-status" role="status"></p>
+    </article>
+  </div>
+</section>
+
+<section id="scan" class="alt" aria-labelledby="scan-h">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Scan your stack</p>
+      <h2 id="scan-h">See the free software you already depend on</h2>
+      <p>Paste or open a dependency file. It is read in your browser and is not uploaded. Nothing is sent unless you press Nominate, and then only the package names you ticked.</p>
+    </div>
+    <div class="split-card">
+      <div class="field"><label for="scan-text">package.json, requirements.txt, Cargo.toml, go.mod, Gemfile or Brewfile</label>
+        <textarea id="scan-text" rows="7" spellcheck="false" placeholder='{ "dependencies": { "react": "^19.0.0" } }'></textarea></div>
+      <p class="cta-row">
+        <button class="btn primary small" type="button" id="scan-run">Scan</button>
+        <label class="btn ghost small file-btn" for="scan-file">Open a file</label>
+        <input class="sr-only" id="scan-file" type="file" accept=".json,.txt,.toml,.mod,.lock,text/plain,application/json" />
+      </p>
+      <p class="form-status" id="scan-status" role="status"></p>
+      <ul class="scan-out" id="scan-out"></ul>
+      <p class="cta-row"><button class="btn ghost small" type="button" id="scan-send" disabled>Nominate selected</button></p>
+    </div>
+  </div>
+</section>
+
+<section id="nominate" aria-labelledby="nominate-h">
+  <div class="wrap two-col">
+    <div>
+      <p class="kicker">Nominate</p>
+      <h2 id="nominate-h">Something missing? Add it.</h2>
+      <p class="muted">Patronage is meant to cover all the free software people use, not only ours. Tell us what belongs. Each nomination goes to a private review queue; a person checks the project, its license and its maintainers before it is listed.</p>
+      <p class="fineprint">We store what you enter here privately. Your email is optional and is used only to tell you what happened to your nomination.</p>
+    </div>
+    <form id="nominate-form" class="split-card" novalidate>
+      <div class="field"><label for="nom-name">Project name</label><input id="nom-name" name="name" type="text" maxlength="120" required /></div>
+      <div class="field"><label for="nom-url">Link</label><input id="nom-url" name="url" type="url" maxlength="300" placeholder="https://" required /></div>
+      <div class="field"><label for="nom-why">Why it matters to you (optional)</label><textarea id="nom-why" name="why" rows="3" maxlength="500"></textarea></div>
+      <div class="field"><label for="nom-email">Your email (optional)</label><input id="nom-email" name="email" type="email" autocomplete="email" /></div>
+      <div class="hp" aria-hidden="true"><label for="nom-website">Website</label><input id="nom-website" name="website" type="text" tabindex="-1" autocomplete="off" /></div>
+      <button class="btn primary block" type="submit">Send for review</button>
+      <p class="form-status" id="nominate-status" role="status"></p>
+    </form>
+  </div>
+</section>
+
+<section id="makers" class="alt" aria-labelledby="makers-h">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">For app makers</p>
+      <h2 id="makers-h">If you maintain free software</h2>
+      <p>You should not have to run a fundraiser to be paid for work people use every day.</p>
+    </div>
+    <ol class="steps">
+      <li><span class="step-n" aria-hidden="true">1</span><h3>Be open</h3><p>Public source and an open license. A repository without a license file does not count yet, because nobody may legally reuse it.</p></li>
+      <li><span class="step-n" aria-hidden="true">2</span><h3>Say yes</h3><p>Nothing is collected in your project's name without your agreement. You can decline, or leave later, and the listing is removed.</p></li>
+      <li><span class="step-n" aria-hidden="true">3</span><h3>Share a count, if you want</h3><p>The default split follows aggregate use. Bring a number you already publish, such as downloads or active installs. No new tracking is asked of you, and projects without a count still receive what patrons choose to give them.</p></li>
+      <li><span class="step-n" aria-hidden="true">4</span><h3>Get paid, in public</h3><p>Payouts appear in the monthly ledger. How money reaches you (a sponsor page you already have, or a transfer) is settled with you before the first payment.</p></li>
+    </ol>
+    <div class="rule-card">
+      <h3>Where this stands today</h3>
+      <p>No money is moving yet and payout terms are not written. If you maintain something that belongs here, <a href="#nominate">nominate it</a> and leave your email; we will write to you before anything is offered in your project's name.</p>
+    </div>
+  </div>
+</section>
+
 <section id="arc" aria-labelledby="arc-h">
   <div class="wrap">
     <div class="section-head">
@@ -359,7 +475,7 @@
       </details>
       <details id="privacy">
         <summary>What do you store when I save my place?</summary>
-        <p>Your email, the level and amount you chose, whether you asked to be told when patronage opens, the time, and the page you sent it from. It is kept in Humanity Infrastructure's own private database, hosted on Cloudflare, which also hosts this site. No separate form or marketing service is used. It is not public, not sold and not shared, and saving your place does not add you to the newsletter. To limit abuse we keep a salted hash of your network address for about a day, never the address itself. To have your entry deleted, write to <a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a>.</p>
+        <p>Your email, the level and amount you chose, your own split if you made one, whether you asked to be told when patronage opens, the time, and the page you sent it from. A nomination stores the project, your reason and your email if you gave one. Lists you make and files you scan stay in your browser. It is kept in Humanity Infrastructure's own private database, hosted on Cloudflare, which also hosts this site. No separate form or marketing service is used. It is not public, not sold and not shared, and saving your place does not add you to the newsletter. To limit abuse we keep a salted hash of your network address for about a day, never the address itself. To have your entry deleted, write to <a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a>.</p>
       </details>
       <details>
         <summary>Can I pay today?</summary>
@@ -388,7 +504,7 @@
 
 <footer class="site-footer">
   <div class="wrap footer-row">
-    <p>Humanity Infrastructure · Patrons of the Commons. Payments are not open yet. <a href="#privacy">Privacy</a> · Contact <a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a></p>
+    <p>Humanity Infrastructure · Patrons of the Commons. Payments are not open yet. <a href="https://patronage.humanityinfrastructure.com/beyond">Beyond software</a> · <a href="#privacy">Privacy</a> · Contact <a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a></p>
     <p><a href="https://humanityinfrastructure.com/">humanityinfrastructure.com</a> · <a href="https://index.ideaflow.app/">Ideaflow apps index</a> · Supported by Ideaflow, the maintainer's company.</p>
   </div>
 </footer>
@@ -399,6 +515,7 @@
       <h2 id="join-h">Save my place</h2>
       <button type="button" class="dlg-close" id="join-close" aria-label="Close">×</button>
     </div>
+    <p class="dlg-summary" id="join-summary" hidden></p>
     <p class="dlg-note">Payments are not open yet. This saves your email and the level you would choose. Nothing is charged and no email is sent now.</p>
     <fieldset class="tier-pick">
       <legend>Level</legend>
@@ -429,5 +546,6 @@
 </dialog>
 
 <script src="/patrons/app.js" defer></script>
+<script src="/patrons/lab.js" defer></script>
 </body>
 </html>
