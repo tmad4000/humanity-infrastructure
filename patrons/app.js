@@ -51,7 +51,11 @@
   $$('[data-join]').forEach(function (b) { b.addEventListener('click', function () { openJoin(b.getAttribute('data-join'), b); }); });
   $$('input[name="tier"]', form).forEach(function (r) { r.addEventListener('change', syncAmount); });
   ['#join-close', '#done-close', '#done-ok'].forEach(function (s) { $(s).addEventListener('click', closeJoin); });
-  dlg.addEventListener('click', function (e) { if (e.target === dlg) closeJoin(); });
+  dlg.addEventListener('click', function (e) {
+    if (e.target !== dlg) return;
+    var r = dlg.getBoundingClientRect();
+    if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) closeJoin();
+  });
   $('#dlg-privacy').addEventListener('click', function () { var d = $('#privacy'); if (d) d.open = true; closeJoin(); });
   // Deep link: /#join or /#join-seed opens the form, so other pages can link straight to it.
   var deep = /^#join(?:-(seed|supporter|patron|custom))?$/.exec(location.hash);
@@ -77,7 +81,7 @@
       .then(function (res) {
         if (!res.ok) throw new Error(res.status === 429 ? 'slow_down' : 'failed');
         var amt = tier === 'custom' ? body.amount : TIERS[tier].usd;
-        $('#done-text').textContent = 'We saved ' + email + ' at $' + amt + ' a month. Nothing was charged and no email was sent.' +
+        $('#done-text').textContent = 'We saved ' + email + ' at $' + (amt % 1 ? amt.toFixed(2) : amt) + ' a month. Nothing was charged and no email was sent.' +
           (body.notify ? ' We will write once when patronage opens.' : ' We will not email you.');
         form.hidden = true; done.hidden = false; form.reset(); $('#done-ok').focus();
       })
@@ -140,6 +144,8 @@
       (yearly ? ' (one yearly charge)' : '') + ' and ' + money(pool) + ' reaches projects. ' +
       (changed ? 'You have changed the split from the usage default.' : 'This is the usage default.');
   }
+  // The $1 level is billed yearly, so choosing it switches the billing control to match.
+  $$('input[name="amt"]').forEach(function (r) { r.addEventListener('change', function () { if (r.value === '1') $('input[name="bill"][value="year"]').checked = true; }); });
   $$('input[name="amt"], input[name="bill"]').forEach(function (r) { r.addEventListener('change', render); });
   $('#split-reset').addEventListener('click', function () {
     EXAMPLE.forEach(function (p, i) { weights[i] = p.usage; sliders[i].value = p.usage; }); render();

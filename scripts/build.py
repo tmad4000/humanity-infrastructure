@@ -55,7 +55,9 @@ async function handleRequest(request, env, ctx) {{
   }}
   const patron = await handlePatron(request, env, ctx)
   if (patron) return patron
-  if (path === '/patrons' || path === '/patrons/') return new Response(PATRONS_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Cache-Control': 'public, max-age=300', 'Referrer-Policy': 'strict-origin-when-cross-origin', 'X-Content-Type-Options': 'nosniff', 'Content-Security-Policy': "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'" }} }})
+  const patronHost = url.hostname === 'patronage.humanityinfrastructure.com'
+  if (patronHost && path !== '/' && !Object.hasOwn(PATRONS_ASSETS, path)) return Response.redirect(path === '/patrons' || path === '/patrons/' ? url.origin + '/' : 'https://humanityinfrastructure.com' + path + url.search, 302)
+  if (patronHost || path === '/patrons' || path === '/patrons/') return new Response(PATRONS_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Cache-Control': 'public, max-age=300', 'Referrer-Policy': 'strict-origin-when-cross-origin', 'X-Content-Type-Options': 'nosniff', 'Content-Security-Policy': "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'" }} }})
   if (Object.hasOwn(PATRONS_ASSETS, path)) return new Response(PATRONS_ASSETS[path][1], {{ headers: {{ 'Content-Type': PATRONS_ASSETS[path][0], 'Cache-Control': 'public, max-age=300', 'X-Content-Type-Options': 'nosniff' }} }})
   if (path === '/tools/lastbook' || path === '/tools/lastbook/') return new Response(LASTBOOK_HTML, {{headers: {{'Content-Type':'text/html;charset=UTF-8'}}}})
   if (path === '/classic' || path.startsWith('/classic/')) {{

@@ -9,10 +9,10 @@
 <meta property="og:description" content="One small monthly subscription for the open software you use. Shared by usage, adjustable by you, every dollar published." />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Humanity Infrastructure" />
-<meta property="og:url" content="https://humanityinfrastructure.com/patrons" />
+<meta property="og:url" content="https://patronage.humanityinfrastructure.com/" />
 <meta property="og:image" content="https://humanityinfrastructure.com/og-card.png" />
 <meta name="twitter:card" content="summary_large_image" />
-<link rel="canonical" href="https://humanityinfrastructure.com/patrons" />
+<link rel="canonical" href="https://patronage.humanityinfrastructure.com/" />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>" />
 <script src="/patrons/theme.js"></script>
 <link rel="stylesheet" href="/patrons/styles.css" />
@@ -37,7 +37,7 @@
       <a href="#honest">Caveats</a>
     </nav>
     <div class="header-actions">
-      <button class="theme-btn" id="theme-btn" type="button" aria-label="Switch colour theme">Theme</button>
+      <button class="theme-btn" id="theme-btn" type="button">Theme</button>
       <button class="btn primary small" type="button" data-join="patron">Become a patron</button>
     </div>
   </div>
@@ -203,7 +203,7 @@
     </div>
     <div class="ledger-grid">
       <div class="table-card">
-        <div class="example-banner"><strong>Example month.</strong> Invented figures that show the format. No money has been collected.</div>
+        <div class="example-banner"><strong>Example month.</strong> Invented figures that show the format, with every patron charged monthly. No money has been collected.</div>
         <table>
           <caption class="sr-only">Example monthly ledger</caption>
           <thead><tr><th scope="col">Line</th><th scope="col" class="num">Amount</th><th scope="col" class="num">Share</th></tr></thead>
@@ -313,7 +313,7 @@
       <li>
         <p class="arc-when">Now</p>
         <h3>Patrons</h3>
-        <p>Individuals paying a small flat amount, starting at $1. The goal of the first year is to show that the split is fair and the ledger is honest.</p>
+        <p>Individuals choosing a small flat amount, starting at $1. Today you can save your place; payments open next. The goal of the first year is to show that the split is fair and the ledger is honest.</p>
       </li>
       <li>
         <p class="arc-when">Next</p>
@@ -359,7 +359,7 @@
       </details>
       <details id="privacy">
         <summary>What do you store when I save my place?</summary>
-        <p>Your email, the level and amount you chose, whether you asked to be told when patronage opens, and the time. It is kept in Humanity Infrastructure's own private database, hosted on Cloudflare, which also hosts this site. No separate form or marketing service is used. It is not public, not sold and not shared, and saving your place does not add you to the newsletter. To limit abuse we keep a salted hash of your network address for up to 24 hours, never the address itself. To have your entry deleted, write to <a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a>.</p>
+        <p>Your email, the level and amount you chose, whether you asked to be told when patronage opens, the time, and the page you sent it from. It is kept in Humanity Infrastructure's own private database, hosted on Cloudflare, which also hosts this site. No separate form or marketing service is used. It is not public, not sold and not shared, and saving your place does not add you to the newsletter. To limit abuse we keep a salted hash of your network address for about a day, never the address itself. To have your entry deleted, write to <a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a>.</p>
       </details>
       <details>
         <summary>Can I pay today?</summary>
@@ -416,7 +416,7 @@
       <input id="join-email" name="email" type="email" autocomplete="email" required aria-describedby="join-err" />
     </div>
     <div class="hp" aria-hidden="true"><label for="join-website">Website</label><input id="join-website" name="website" type="text" tabindex="-1" autocomplete="off" /></div>
-    <label class="check"><input type="checkbox" name="notify" checked /><span>Email me once when patronage opens.</span></label>
+    <label class="check"><input type="checkbox" name="notify" /><span>Email me once when patronage opens.</span></label>
     <p class="dlg-err" id="join-err" role="alert"></p>
     <button class="btn primary block" type="submit" id="join-submit">Save my place</button>
     <p class="dlg-fine">We store your email and chosen level in our own private database. It is never public, sold or shared, and this does not add you to a newsletter. To delete it, write to jacob@ideaflow.io. <a href="#privacy" id="dlg-privacy">What we store</a>.</p>

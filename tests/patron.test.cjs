@@ -83,6 +83,8 @@ test('generated worker serves the page, its assets and a strict policy',async t=
  assert.ok(!/ style="/.test(html),'no inline styles (blocked by the page policy)');
  assert.ok(!/<script(?![^>]*\bsrc=)/.test(html),'no inline scripts');
  assert.ok(!html.includes('analytics.ideaflow.app'),'no tracker on the patrons page');
+ assert.match(html,/<input type="checkbox" name="notify" \/>/,'email opt-in is unticked by default');
+ assert.ok(worker.includes("url.hostname === 'patronage.humanityinfrastructure.com'"),'subdomain is routed');
  const app=fs.readFileSync('patrons/app.js','utf8');
  assert.match(app,/stripe: \{ seed: null, supporter: null, patron: null, custom: null \}/,'payments stay placeholders until links are approved');
  assert.match(app,/patreon: null/);
