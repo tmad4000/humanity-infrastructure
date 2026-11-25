@@ -79,6 +79,7 @@ test('owner export needs the bearer token and neutralises spreadsheet formulas',
 test('generated worker serves the page, its assets and a strict policy',async t=>{
  const worker=fs.readFileSync('worker.js','utf8');
  for(const needle of ["path === '/patrons'","PATRONS_ASSETS","handlePatron(request, env, ctx)","/patrons/catalog.json","script-src 'self'"])assert.ok(worker.includes(needle),needle);
+ assert.ok(worker.indexOf("if (Object.hasOwn(PATRONS_ASSETS, path))")<worker.indexOf("if (patronHost || path === '/patrons'"),'assets are matched before the page so the subdomain serves them');
  const html=fs.readFileSync('patrons/index.html','utf8');
  assert.ok(!/ style="/.test(html),'no inline styles (blocked by the page policy)');
  assert.ok(!/<script(?![^>]*\bsrc=)/.test(html),'no inline scripts');
