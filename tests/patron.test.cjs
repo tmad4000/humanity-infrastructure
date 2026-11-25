@@ -250,6 +250,8 @@ test('LocalVocal concept page: unlisted, noindex, carries its banner, and invent
  }
  assert.equal((await hit('https://patronage.humanityinfrastructure.com/patrons/concept.js')).headers.get('Content-Type'),'application/javascript;charset=UTF-8');
  assert.equal((await hit('https://patronage.humanityinfrastructure.com/concepts/other')).status,302,'only the one concept path exists');
+ const slash=await hit('https://patronage.humanityinfrastructure.com/concepts/localvocal/');assert.equal(slash.headers.get('Location'),'https://patronage.humanityinfrastructure.com/concepts/localvocal');
+ assert.ok(fs.readFileSync('patrons/concept-localvocal.html','utf8').includes('It was not made or reviewed by LocalVocal.'));
  const html=fs.readFileSync('patrons/concept-localvocal.html','utf8');
  assert.ok(html.includes("<strong>Concept preview</strong> made for a conversation with LocalVocal's makers. LocalVocal is a paid app today; nothing here is an offer, a price change or an endorsement."),'banner wording');
  assert.match(html,/<meta name="robots" content="noindex, nofollow, noarchive" \/>/);

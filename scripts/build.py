@@ -57,6 +57,7 @@ async function handleRequest(request, env, ctx) {{
   if (patron) return patron
   const patronHost = url.hostname === 'patronage.humanityinfrastructure.com'
   if (patronHost && path === '/beyond/') return Response.redirect(url.origin + '/beyond', 302)
+  if (patronHost && path === '/concepts/localvocal/') return Response.redirect(url.origin + '/concepts/localvocal', 302)
   if (patronHost && path !== '/' && path !== '/beyond' && path !== '/concepts/localvocal' && !Object.hasOwn(PATRONS_ASSETS, path)) return Response.redirect(path === '/patrons' || path === '/patrons/' ? url.origin + '/' : 'https://humanityinfrastructure.com' + path + url.search, 302)
   if ((patronHost && path === '/beyond') || path === '/patrons/beyond') return new Response(PATRONS_BEYOND_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Cache-Control': 'public, max-age=300', 'Referrer-Policy': 'strict-origin-when-cross-origin', 'X-Content-Type-Options': 'nosniff', 'Content-Security-Policy': "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'" }} }})
   // Unlisted concept page: not linked from the site, and marked noindex in both the header and the page.
