@@ -240,6 +240,28 @@ test('Ideaflow ID sign-in: PKCE start, state-checked callback, signed session, s
  const out=await f.send('/auth/ideaflow/signout',{});assert.equal(out.status,200);assert.match(out.headers.get('Set-Cookie'),/^hi_patron=;.*Max-Age=0$/);
  assert.equal((await f.send('/auth/ideaflow/signout',{},{headers:{Origin:'https://evil.example'}})).status,403);
 });
+test('LocalVocal concept page: unlisted, noindex, carries its banner, and invents nothing about the product',async t=>{
+ const worker=fs.readFileSync('worker.js','utf8');
+ const tmp=path.join(fs.mkdtempSync(path.join(os.tmpdir(),'hi-worker-')),'worker.mjs');fs.writeFileSync(tmp,worker);t.after(()=>fs.rmSync(path.dirname(tmp),{recursive:true,force:true}));
+ const mod=await import(tmp),hit=u=>mod.default.fetch(new Request(u),{}, {});
+ for(const u of ['https://patronage.humanityinfrastructure.com/concepts/localvocal','https://humanityinfrastructure.com/patrons/concepts/localvocal']){
+  const r=await hit(u);assert.equal(r.status,200,u);assert.match(r.headers.get('X-Robots-Tag'),/noindex/);assert.match(r.headers.get('Content-Security-Policy'),/script-src 'self'/);assert.equal(r.headers.get('Cache-Control'),'no-store');
+  assert.match(await r.text(),/<title>Concept: LocalVocal on patronage/);
+ }
+ assert.equal((await hit('https://patronage.humanityinfrastructure.com/patrons/concept.js')).headers.get('Content-Type'),'application/javascript;charset=UTF-8');
+ assert.equal((await hit('https://patronage.humanityinfrastructure.com/concepts/other')).status,302,'only the one concept path exists');
+ const html=fs.readFileSync('patrons/concept-localvocal.html','utf8');
+ assert.ok(html.includes("<strong>Concept preview</strong> made for a conversation with LocalVocal's makers. LocalVocal is a paid app today; nothing here is an offer, a price change or an endorsement."),'banner wording');
+ assert.match(html,/<meta name="robots" content="noindex, nofollow, noarchive" \/>/);
+ assert.ok(!/ style="/.test(html)&&!/<script(?![^>]*\bsrc=)/.test(html)&&!/ on[a-z]+="/.test(html),'no inline style, script or handler');
+ assert.ok(!/<img\b/.test(html),'no screenshots or logos: the product site offers no press assets');
+ assert.ok(!html.includes('analytics.ideaflow.app'));
+ // the live pages and the catalog do not link to it
+ for(const name of ['index.html','beyond.html','catalog.json','app.js','lab.js'])assert.ok(!fs.readFileSync('patrons/'+name,'utf8').includes('concepts/localvocal'),name+' must not link to the concept page');
+ assert.ok(!fs.readFileSync('index.html','utf8').includes('concepts/localvocal'));
+ // the catalog still says what is true today
+ const lv=JSON.parse(fs.readFileSync('patrons/catalog.json','utf8')).entries.find(e=>e.id==='localvocal');assert.equal(lv.status,'closed');assert.match(lv.license,/Paid/);
+});
 test('generated worker: routes on both hosts, strict policy, placeholders intact',async t=>{
  const worker=fs.readFileSync('worker.js','utf8');
  const tmp=path.join(fs.mkdtempSync(path.join(os.tmpdir(),'hi-worker-')),'worker.mjs');fs.writeFileSync(tmp,worker);t.after(()=>fs.rmSync(path.dirname(tmp),{recursive:true,force:true}));
