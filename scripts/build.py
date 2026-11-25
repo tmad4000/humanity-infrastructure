@@ -57,8 +57,11 @@ async function handleRequest(request, env, ctx) {{
   if (patron) return patron
   const patronHost = url.hostname === 'patronage.humanityinfrastructure.com'
   if (patronHost && path === '/beyond/') return Response.redirect(url.origin + '/beyond', 302)
-  if (patronHost && path !== '/' && path !== '/beyond' && !Object.hasOwn(PATRONS_ASSETS, path)) return Response.redirect(path === '/patrons' || path === '/patrons/' ? url.origin + '/' : 'https://humanityinfrastructure.com' + path + url.search, 302)
+  if (patronHost && path === '/concepts/localvocal/') return Response.redirect(url.origin + '/concepts/localvocal', 302)
+  if (patronHost && path !== '/' && path !== '/beyond' && path !== '/concepts/localvocal' && !Object.hasOwn(PATRONS_ASSETS, path)) return Response.redirect(path === '/patrons' || path === '/patrons/' ? url.origin + '/' : 'https://humanityinfrastructure.com' + path + url.search, 302)
   if ((patronHost && path === '/beyond') || path === '/patrons/beyond') return new Response(PATRONS_BEYOND_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Cache-Control': 'public, max-age=300', 'Referrer-Policy': 'strict-origin-when-cross-origin', 'X-Content-Type-Options': 'nosniff', 'Content-Security-Policy': "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'" }} }})
+  // Unlisted concept page: not linked from the site, and marked noindex in both the header and the page.
+  if ((patronHost && path === '/concepts/localvocal') || path === '/patrons/concepts/localvocal') return new Response(PATRONS_CONCEPT_LOCALVOCAL_HTML, {{ headers: {{ 'X-Robots-Tag': 'noindex, nofollow, noarchive', 'Content-Type': 'text/html;charset=UTF-8', 'Cache-Control': 'no-store', 'Referrer-Policy': 'strict-origin-when-cross-origin', 'X-Content-Type-Options': 'nosniff', 'Content-Security-Policy': "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'" }} }})
   if (Object.hasOwn(PATRONS_ASSETS, path)) return new Response(PATRONS_ASSETS[path][1], {{ headers: {{ 'Content-Type': PATRONS_ASSETS[path][0], 'Cache-Control': 'public, max-age=300', 'X-Content-Type-Options': 'nosniff' }} }})
   if (patronHost || path === '/patrons' || path === '/patrons/') return new Response(PATRONS_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Cache-Control': 'public, max-age=300', 'Referrer-Policy': 'strict-origin-when-cross-origin', 'X-Content-Type-Options': 'nosniff', 'Content-Security-Policy': "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'" }} }})
   if (path === '/tools/lastbook' || path === '/tools/lastbook/') return new Response(LASTBOOK_HTML, {{headers: {{'Content-Type':'text/html;charset=UTF-8'}}}})
@@ -83,9 +86,10 @@ async function handleRequest(request, env, ctx) {{
 const ANALYTICS_JS = `{escape_js(Path('analytics.js').read_text())}`
 const X_EMBED_JS = `{escape_js(Path('scripts/x-embed.js').read_text())}`
 const DESIGN_ASSETS = {json.dumps(designs)}
+const PATRONS_CONCEPT_LOCALVOCAL_HTML = {json.dumps(Path('patrons/concept-localvocal.html').read_text(), ensure_ascii=True)}
 const PATRONS_BEYOND_HTML = {json.dumps(Path('patrons/beyond.html').read_text(), ensure_ascii=True)}
 const PATRONS_HTML = {json.dumps(Path('patrons/index.html').read_text(), ensure_ascii=True)}
-const PATRONS_ASSETS = {json.dumps({'/patrons/' + name: [mime, Path('patrons/' + name).read_text()] for name, mime in [('styles.css', 'text/css;charset=UTF-8'), ('app.js', 'application/javascript;charset=UTF-8'), ('lab.js', 'application/javascript;charset=UTF-8'), ('theme.js', 'application/javascript;charset=UTF-8'), ('catalog.json', 'application/json;charset=UTF-8')]}, ensure_ascii=True)}
+const PATRONS_ASSETS = {json.dumps({'/patrons/' + name: [mime, Path('patrons/' + name).read_text()] for name, mime in [('styles.css', 'text/css;charset=UTF-8'), ('app.js', 'application/javascript;charset=UTF-8'), ('lab.js', 'application/javascript;charset=UTF-8'), ('concept.js', 'application/javascript;charset=UTF-8'), ('theme.js', 'application/javascript;charset=UTF-8'), ('catalog.json', 'application/json;charset=UTF-8')]}, ensure_ascii=True)}
 const LASTBOOK_HTML = {json.dumps(Path('tools/lastbook.html').read_text())}
 const MAIN_HTML = `{escape_js(main)}`
 const V2_HTML = `{escape_js(v2)}`
