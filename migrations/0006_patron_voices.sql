@@ -11,3 +11,4 @@ CREATE TABLE IF NOT EXISTS patron_voices (
  UNIQUE(project_id, voter_hash)
 );
 CREATE INDEX IF NOT EXISTS patron_voices_comments ON patron_voices(comment_status, updated_at);
+CREATE INDEX IF NOT EXISTS patron_voices_counts ON patron_voices(project_id, relation);

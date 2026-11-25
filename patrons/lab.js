@@ -248,21 +248,29 @@
   // ---- have a say: one voice per project, with optional comment ------------------
   var voices = { counts: {}, comments: [] }, voiced = store.get('hi-patron-voiced', {});
   if (!voiced || typeof voiced !== 'object' || Array.isArray(voiced)) voiced = {};
+  (function () { var clean = Object.create(null); Object.keys(voiced).slice(0, 200).forEach(function (id) { if (voiced[id] === 'use' || voiced[id] === 'benefit' || voiced[id] === 'believe') clean[id] = voiced[id]; }); voiced = clean; })();
   var RELATION = { use: 'uses it', benefit: 'benefits from it', believe: 'thinks it matters' };
-  var vDlg = $('#voice'), vForm = $('#voice-form'), vErr = $('#voice-err'), vTarget = null, vOpener = null;
+  var vDlg = $('#voice'), vForm = $('#voice-form'), vErr = $('#voice-err'), vTarget = null, vOpener = null, vRefocus = null;
   function voiceCount(id) { var c = voices.counts[id]; return c && typeof c.total === 'number' ? c.total : 0; }
-  function hasVoiced(id) { return Object.prototype.hasOwnProperty.call(voiced, id); }
+  function hasVoiced(id) { return typeof voiced[id] === 'string'; }
   function openVoice(e, from) {
-    vTarget = e; vOpener = from || null; vErr.textContent = '';
+    vTarget = e; vOpener = from || null; vErr.textContent = ''; vForm.reset();
+    var mineBefore = hasVoiced(e.id) && $('input[name="relation"][value="' + voiced[e.id] + '"]', vForm); if (mineBefore) mineBefore.checked = true;
     $('#voice-project').textContent = e.name + (hasVoiced(e.id) ? ' · you have spoken up; this replaces your earlier voice.' : '');
     if (vDlg.showModal) vDlg.showModal(); else vDlg.setAttribute('open', '');
     $('input[name="relation"]:checked', vForm).focus();
   }
   function closeVoice(refocusId) {
-    if (vDlg.close) vDlg.close(); else vDlg.removeAttribute('open');
+    vRefocus = refocusId || null;
+    if (vDlg.close) vDlg.close(); else { vDlg.removeAttribute('open'); refocusVoice(); }
+  }
+  // Runs for every way the dialog closes, including Escape, so focus never lands on a button that was redrawn away.
+  function refocusVoice() {
+    var refocusId = vRefocus || (vTarget && vTarget.id); vRefocus = null;
     var again = refocusId && $$('.row-say').filter(function (b) { return b.getAttribute('data-id') === refocusId; })[0];
     if (again) again.focus(); else if (vOpener && document.contains(vOpener)) vOpener.focus();
   }
+  vDlg.addEventListener('close', refocusVoice);
   $('#voice-close').addEventListener('click', function () { closeVoice(vTarget && vTarget.id); });
   vDlg.addEventListener('click', function (ev) {
     if (ev.target !== vDlg) return;
@@ -281,7 +289,7 @@
       c[relation]++; voiced[target.id] = relation; store.set('hi-patron-voiced', voiced);
       var hadComment = !!f.comment.value.trim(); vForm.reset();
       drawVoices(); core.redraw(); closeVoice(target.id);
-      say($('#say-status'), 'Your voice for ' + target.name + ' is counted.' + (hadComment ? ' Your comment will appear once a person has read it.' : ''));
+      say($('#say-status'), 'Your voice for ' + target.name + ' is counted.' + (hadComment ? ' Your comment will appear if a person approves it.' : ''));
     });
   });
   core.onRow(function (li, e) {
@@ -309,7 +317,7 @@
       li.appendChild(el('cite', null, (typeof c.name === 'string' && c.name ? c.name : 'Someone') + ' ' + (RELATION[c.relation] || 'spoke up') + ' · ' + byId[c.project].name));
       box.appendChild(li);
     });
-    if (!shown.length) box.appendChild(el('li', 'empty', 'Comments appear here once a person has read them.'));
+    if (!shown.length) box.appendChild(el('li', 'empty', 'Comments appear here once a person has approved them.'));
   }
   function loadVoices() {
     return fetch('/api/patron-voices').then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {

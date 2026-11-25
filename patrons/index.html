@@ -315,7 +315,7 @@
         <h3>Most spoken for</h3>
         <ol class="say-top" id="say-top"><li class="empty">No voices yet. Be the first.</li></ol>
         <h3>What people said</h3>
-        <ul class="say-comments" id="say-comments"><li class="empty">Comments appear here once a person has read them.</li></ul>
+        <ul class="say-comments" id="say-comments"><li class="empty">Comments appear here once a person has approved them.</li></ul>
         <p class="form-status" id="say-status" role="status"></p>
       </div>
       <div class="say-how">
@@ -507,7 +507,7 @@
       </details>
       <details id="privacy">
         <summary>What do you store when I save my place?</summary>
-        <p>Your email, the level and amount you chose, your own split if you made one, whether you asked to be told when patronage opens, the time, and the page you sent it from. A nomination stores the project, your reason and your email if you gave one. A voice stores the project, how you relate to it, your comment and name if you gave them, and a salted hash of your network address so each person counts once. Lists you make and files you scan stay in your browser. It is kept in Humanity Infrastructure's own private database, hosted on Cloudflare, which also hosts this site. No separate form or marketing service is used. It is not public, not sold and not shared, and saving your place does not add you to the newsletter. To limit abuse we keep a salted hash of your network address for about a day, never the address itself. To have your entry deleted, write to <a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a>.</p>
+        <p>Your email, the level and amount you chose, your own split if you made one, whether you asked to be told when patronage opens, the time, and the page you sent it from. A nomination stores the project, your reason and your email if you gave one. A voice stores the project, how you relate to it, your comment and name if you gave them, and a salted hash of your network so each person counts once; that hash is kept as long as the voice is. A voice has no email, so to have one removed, quote the project and your comment when you write. Lists you make and files you scan stay in your browser. It is kept in Humanity Infrastructure's own private database, hosted on Cloudflare, which also hosts this site. No separate form or marketing service is used. It is not public, not sold and not shared, and saving your place does not add you to the newsletter. To limit abuse we keep a salted hash of your network address for about a day, never the address itself. To have your entry deleted, write to <a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a>.</p>
       </details>
       <details>
         <summary>Can I pay today?</summary>
@@ -595,7 +595,7 @@
     <div class="hp" aria-hidden="true"><label for="voice-website">Website</label><input id="voice-website" name="website" type="text" tabindex="-1" autocomplete="off" /></div>
     <p class="dlg-err" id="voice-err" role="alert"></p>
     <button class="btn primary block" type="submit" id="voice-submit">Add my voice</button>
-    <p class="dlg-fine">One voice per person per project; speaking again replaces your earlier one. The count is public. A comment becomes public only after a person has read it. To count one voice each we keep a salted hash of your network address, never the address itself.</p>
+    <p class="dlg-fine">One voice per person per project; speaking again replaces your earlier one. The count is public. A comment or name becomes public only if a person approves it. To count one voice each we keep a salted hash of your network, never the address itself, for as long as your voice stays.</p>
   </form>
 </dialog>
 

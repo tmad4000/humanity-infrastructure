@@ -45,14 +45,14 @@ One rule holds across all three: **a patron's own split is always theirs.** None
 
 Table `patron_voices` (migration 0006): `id`, `project_id`, `relation`, `voter_hash`, `comment`, `display_name`, `comment_status` (`none`, `pending`, `approved`, `declined`), `created_at`, `updated_at`, unique on (`project_id`, `voter_hash`).
 
-- `voter_hash` is a salted SHA-256 of the network address. It is how one person counts once without an account. The address itself is never stored. This hash is kept as long as the voice is.
+- `voter_hash` is a salted SHA-256 of the network address (for IPv6, of its /64, since one customer holds a whole /64). It is how one person counts once without an account. The address itself is never stored. This hash is kept as long as the voice is.
 - `POST /api/patron-voice` `{project, relation, comment?, name?}`: same-origin only, catalog ids only, rate limited (two units of the sixty-unit hourly budget).
 - `GET /api/patron-voices`: `{counts: {projectId: {total, use, benefit, believe}}, comments: [{project, relation, text, name, date}]}`. Approved comments only. No hashes, ids or pending text.
-- `GET /admin/patron-voices.csv` and `POST /admin/patron-voices/moderate` `{id, status}` with the owner bearer token.
+- `GET /admin/patron-voices.csv` and `POST /admin/patron-voices/moderate` `{id, updated_at, status}` with the owner bearer token. The decision is bound to the revision read; a changed comment or name returns to pending.
 
 ### Known limits of v1
 
-- **One address is not one person.** A household or office shares a voice per project; a person on two networks has two. Good enough for a show of hands, not for anything that moves money by itself.
+- **One network is not one person.** A household or office shares a voice per project, and people sharing an address can replace each other's voice or send each other's comment back to pending; a person on two networks has two. Good enough for a show of hands, not for anything that moves money by itself.
 - **Counts can be farmed** by rotating addresses. This is why the split formula below takes a logarithm and a small weight.
 - **Moderation is manual.** Someone must read pending comments. Until they do, comments do not appear.
 

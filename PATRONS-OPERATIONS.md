@@ -39,8 +39,9 @@ Design and roadmap: `docs/patrons/HAVE-A-SAY.md`.
 
 - `POST /api/patron-voice` stores one voice per project per salted address hash in `patron_voices` (migration 0006): relation (`use`, `benefit`, `believe`), optional comment (500 characters) and display name. Speaking again replaces the earlier voice. A voice costs two rate-limit units, so thirty an hour.
 - `GET /api/patron-voices` is public: counts per project by relation, and comments whose status is `approved`. It never returns hashes, row ids or pending text. Cached for 30 seconds.
-- **Comments are not public until approved.** Read the queue with `GET /admin/patron-voices.csv` (bearer token; rows with `comment_status = pending`), then approve or decline each with `POST /admin/patron-voices/moderate` and body `{"id": "...", "status": "approved"}` (same token). Changing a comment sends it back to `pending`.
-- Counts are a show of hands, not a ballot: one address is not one person. Nothing here moves money.
+- **Comments are not public until approved.** Read the queue with `GET /admin/patron-voices.csv` (bearer token; rows with `comment_status = pending`), then approve or decline each with `POST /admin/patron-voices/moderate` and body `{"id": "...", "updated_at": "...", "status": "approved"}` (same token; `updated_at` is copied from the export so the decision applies only to the text you read; an edit since then returns 409). Changing a comment or its display name sends it back to `pending`.
+- Counts are a show of hands, not a ballot: one network is not one person. IPv4 addresses count singly and an IPv6 /64 counts as one, so people behind one shared address share a voice per project and can replace each other's. Nothing here moves money.
+- The public read is cached at the edge for 30 seconds through the Cache API, so a new voice or approval can take that long to show.
 - For a deletion request, delete by row id after finding it in the export; there is no email on a voice.
 
 ## Optional Ideaflow ID sign-in (off until configured)

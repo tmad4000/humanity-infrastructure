@@ -112,22 +112,28 @@ test('voices: comments stay private until approved; editing a comment sends it b
  await f.voice({project:'openchat',relation:'use',comment:'  It runs our team chat.  ',name:' Maya '},{ip:'203.0.113.5'});
  const [row]=await f.vrows();assert.equal(row.comment,'It runs our team chat.');assert.equal(row.display_name,'Maya');assert.equal(row.comment_status,'pending');
  assert.deepEqual((await f.voices()).comments,[]);
- assert.equal((await f.admin('/admin/patron-voices/moderate',{id:row.id,status:'approved'},'wrong')).status,401);
- assert.equal((await f.admin('/admin/patron-voices/moderate',{id:row.id,status:'published'})).status,400);
- assert.equal((await f.admin('/admin/patron-voices/moderate',{id:'nope',status:'approved'})).status,404);
- assert.equal((await f.admin('/admin/patron-voices/moderate',{id:row.id,status:'approved'})).status,200);
+ const at=row.updated_at,mod=(id,status,updated_at=at,token)=>f.admin('/admin/patron-voices/moderate',{id,status,updated_at},token);
+ assert.equal((await mod(row.id,'approved',at,'wrong')).status,401);
+ assert.equal((await mod(row.id,'published')).status,400);
+ assert.equal((await f.admin('/admin/patron-voices/moderate',{id:row.id,status:'approved'})).status,400,'the revision read is required');
+ assert.equal((await mod('nope','approved')).status,404);
+ assert.equal((await mod(row.id,'approved','2000-01-01T00:00:00.000Z')).status,409,'a decision on an older revision is refused');
+ assert.deepEqual((await f.voices()).comments,[]);
+ assert.equal((await mod(row.id,'approved')).status,200);
  const shown=(await f.voices()).comments;assert.equal(shown.length,1);
  assert.deepEqual(Object.keys(shown[0]).sort(),['date','name','project','relation','text']);assert.equal(shown[0].text,'It runs our team chat.');assert.equal(shown[0].name,'Maya');
  // same text again keeps the approval; changed text loses it; removing the text removes the comment
  await f.voice({project:'openchat',relation:'benefit',comment:'It runs our team chat.',name:'Maya'},{ip:'203.0.113.5'});
  assert.equal((await f.voices()).comments.length,1);
+ // same text under a different name is reviewed again
+ await f.voice({project:'openchat',relation:'benefit',comment:'It runs our team chat.',name:'Someone Famous'},{ip:'203.0.113.5'});
+ assert.equal((await f.vrows())[0].comment_status,'pending');assert.deepEqual((await f.voices()).comments,[]);
  await f.voice({project:'openchat',relation:'benefit',comment:'Changed my mind <script>alert(1)</script>',name:'Maya'},{ip:'203.0.113.5'});
  assert.equal((await f.vrows())[0].comment_status,'pending');assert.deepEqual((await f.voices()).comments,[]);
  await f.voice({project:'openchat',relation:'benefit'},{ip:'203.0.113.5'});
  const cleared=(await f.vrows())[0];assert.equal(cleared.comment,'');assert.equal(cleared.comment_status,'none');assert.equal(cleared.display_name,'');
  // a voice with no comment cannot be 'approved' into the public list
- assert.equal((await f.admin('/admin/patron-voices/moderate',{id:cleared.id,status:'approved'})).status,404);
- await f.admin('/admin/patron-voices/moderate',{id:row.id,status:'declined'});assert.deepEqual((await f.voices()).comments,[]);
+ assert.equal((await mod(cleared.id,'approved',cleared.updated_at)).status,404);
 });
 test('voices: validation, origin, honeypot, export',async t=>{
  const f=fixture(t);
@@ -141,6 +147,14 @@ test('voices: validation, origin, honeypot, export',async t=>{
  const csv=await(await f.get('/admin/patron-voices.csv',{Authorization:'Bearer test-secret'})).text();
  assert.match(csv,/^id,project_id,relation,comment,display_name,comment_status,created_at,updated_at\r\n/);assert.ok(csv.includes(`"'=HYPERLINK(""x"")"`));assert.ok(!csv.includes('203.0.113'));
  assert.equal((await f.db.prepare('SELECT COUNT(*) AS n FROM signups').first()).n,0);
+});
+test('voices: an IPv6 /64 is one voter and one rate budget; different /64s are different voters',async t=>{
+ const f=fixture(t);
+ for(const ip of ['2001:db8:1:2::1','2001:db8:1:2:aaaa:bbbb:cccc:dddd','2001:0db8:0001:0002:0:0:0:9'])assert.equal((await f.voice({project:'openchat',relation:'use'},{ip})).status,200);
+ assert.equal((await f.vrows()).length,1);
+ await f.voice({project:'openchat',relation:'use'},{ip:'2001:db8:1:3::1'});await f.voice({project:'openchat',relation:'use'},{ip:'::1'});
+ assert.equal((await f.vrows()).length,3);
+ assert.equal((await f.db.prepare('SELECT COUNT(*) AS n FROM signup_rate_limits').first()).n,3);
 });
 test('voices: thirty an hour per address, then refused',async t=>{
  const f=fixture(t);
