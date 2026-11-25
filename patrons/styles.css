@@ -337,3 +337,27 @@ dialog::backdrop { background: rgba(5, 8, 14, .6); }
 .page-top h1 { font-size: clamp(1.9rem, 4vw, 2.8rem); letter-spacing: -.03em; line-height: 1.1; }
 .page-body { padding: 0 0 80px; }
 .cat-fold { margin-top: 10px; }
+
+.say-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 40px; align-items: start; }
+.say-grid h3 { font-size: 1rem; margin-bottom: 12px; }
+.say-live h3 + ol + h3, .say-live ul + h3 { margin-top: 28px; }
+.say-top, .say-comments, .say-steps { list-style: none; padding: 0; margin: 0; }
+.say-top li { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-top: 1px solid var(--border); }
+.say-top li.empty, .say-comments li.empty { display: block; color: var(--faint); font-size: .92rem; border-top: 1px solid var(--border); padding: 10px 0; }
+.say-top .n { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.say-comments li { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; }
+.say-comments blockquote { margin: 0 0 8px; font-size: .96rem; overflow-wrap: anywhere; }
+.say-comments cite { font-style: normal; color: var(--muted); font-size: .84rem; }
+.say-steps { display: grid; gap: 14px; margin-bottom: 20px; }
+.say-steps li { color: var(--muted); font-size: .95rem; padding-left: 64px; position: relative; }
+.say-steps strong { color: var(--text); font-weight: 600; }
+.stage { position: absolute; left: 0; top: 2px; width: 52px; text-align: center; font-size: .7rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; padding: 2px 0; border-radius: 999px; }
+.stage.live { background: var(--open-bg); color: var(--open-text); }
+.stage.next { background: var(--info-bg); color: var(--info-text); }
+.stage.later { background: var(--border); color: var(--muted); }
+.say-how .rule-card { margin-top: 0; }
+.row-say { background: none; border: 1px solid var(--border-strong); color: var(--muted); border-radius: 8px; font: inherit; font-size: .8rem; padding: 5px 10px; cursor: pointer; white-space: nowrap; }
+.row-say:hover { color: var(--text); }
+.row-say[aria-pressed="true"] { border-color: var(--accent-2); color: var(--info-text); background: var(--info-bg); }
+.relation-pick { grid-template-columns: 1fr; }
+@media (max-width: 820px) { .say-grid { grid-template-columns: 1fr; } }

@@ -30,6 +30,7 @@
     <nav aria-label="Page sections" class="nav">
       <a href="#how">How it works</a>
       <a href="#fund">Fund</a>
+      <a href="#say">Have a say</a>
       <a href="#catalog">Catalog</a>
       <a href="#lists">Lists</a>
       <a href="#makers">For makers</a>
@@ -302,6 +303,37 @@
   </div>
 </section>
 
+<section id="say" aria-labelledby="say-h">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Have a say</p>
+      <h2 id="say-h">Speak up for the software you rely on</h2>
+      <p>You do not need to be a patron. If you use a project, benefit from it, or simply think it matters, say so, and say why. Use "Have a say" on any project in the catalog below.</p>
+    </div>
+    <div class="say-grid">
+      <div class="say-live">
+        <h3>Most spoken for</h3>
+        <ol class="say-top" id="say-top"><li class="empty">No voices yet. Be the first.</li></ol>
+        <h3>What people said</h3>
+        <ul class="say-comments" id="say-comments"><li class="empty">Comments appear here once a person has read them.</li></ul>
+        <p class="form-status" id="say-status" role="status"></p>
+      </div>
+      <div class="say-how">
+        <h3>From a show of hands to a reasoned case</h3>
+        <ol class="say-steps">
+          <li><span class="stage live">Live</span><strong>Voices.</strong> One voice per person per project, with a few words if you want. A count is a start, and only a start: as one advisor put it, voting is just one step better than an open war.</li>
+          <li><span class="stage next">Next</span><strong>Needs and thanks.</strong> A project says what it needs and why. People write, in their own words and under their own name, what the project did for them.</li>
+          <li><span class="stage later">Later</span><strong>Reasons on the record.</strong> Each case is laid out as an argument anyone can inspect and answer, using the Internet Court's rule: a point stands until a standing objection refutes it.</li>
+        </ol>
+        <div class="rule-card">
+          <h3>How this would shape the split <span class="proposed">Proposed</span></h3>
+          <p>Your own split is always yours. Voices and reasons would shape only the default, for patrons who chose nothing, alongside measured use. Counts weigh little on their own, because they are easy to give and not hard to fake. No money moves on any of this yet.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="catalog" class="alt" aria-labelledby="catalog-h">
   <div class="wrap">
     <div class="section-head">
@@ -475,7 +507,7 @@
       </details>
       <details id="privacy">
         <summary>What do you store when I save my place?</summary>
-        <p>Your email, the level and amount you chose, your own split if you made one, whether you asked to be told when patronage opens, the time, and the page you sent it from. A nomination stores the project, your reason and your email if you gave one. Lists you make and files you scan stay in your browser. It is kept in Humanity Infrastructure's own private database, hosted on Cloudflare, which also hosts this site. No separate form or marketing service is used. It is not public, not sold and not shared, and saving your place does not add you to the newsletter. To limit abuse we keep a salted hash of your network address for about a day, never the address itself. To have your entry deleted, write to <a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a>.</p>
+        <p>Your email, the level and amount you chose, your own split if you made one, whether you asked to be told when patronage opens, the time, and the page you sent it from. A nomination stores the project, your reason and your email if you gave one. A voice stores the project, how you relate to it, your comment and name if you gave them, and a salted hash of your network address so each person counts once. Lists you make and files you scan stay in your browser. It is kept in Humanity Infrastructure's own private database, hosted on Cloudflare, which also hosts this site. No separate form or marketing service is used. It is not public, not sold and not shared, and saving your place does not add you to the newsletter. To limit abuse we keep a salted hash of your network address for about a day, never the address itself. To have your entry deleted, write to <a href="mailto:jacob@ideaflow.io">jacob@ideaflow.io</a>.</p>
       </details>
       <details>
         <summary>Can I pay today?</summary>
@@ -543,6 +575,28 @@
     <p class="dlg-note" id="done-text"></p>
     <button class="btn ghost block" type="button" id="done-ok">Close</button>
   </div>
+</dialog>
+
+<dialog id="voice" aria-labelledby="voice-h">
+  <form id="voice-form" novalidate>
+    <div class="dlg-head">
+      <h2 id="voice-h">Have a say</h2>
+      <button type="button" class="dlg-close" id="voice-close" aria-label="Close">×</button>
+    </div>
+    <p class="dlg-summary" id="voice-project"></p>
+    <fieldset class="tier-pick relation-pick">
+      <legend>How do you relate to it?</legend>
+      <label><input type="radio" name="relation" value="use" checked /><span><b>I use it</b></span></label>
+      <label><input type="radio" name="relation" value="benefit" /><span><b>I benefit from it</b></span></label>
+      <label><input type="radio" name="relation" value="believe" /><span><b>I think it matters</b></span></label>
+    </fieldset>
+    <div class="field"><label for="voice-comment">Why? (optional, up to 500 characters)</label><textarea id="voice-comment" name="comment" rows="4" maxlength="500"></textarea></div>
+    <div class="field"><label for="voice-name">Name to show with your comment (optional)</label><input id="voice-name" name="name" type="text" maxlength="60" autocomplete="name" /></div>
+    <div class="hp" aria-hidden="true"><label for="voice-website">Website</label><input id="voice-website" name="website" type="text" tabindex="-1" autocomplete="off" /></div>
+    <p class="dlg-err" id="voice-err" role="alert"></p>
+    <button class="btn primary block" type="submit" id="voice-submit">Add my voice</button>
+    <p class="dlg-fine">One voice per person per project; speaking again replaces your earlier one. The count is public. A comment becomes public only after a person has read it. To count one voice each we keep a salted hash of your network address, never the address itself.</p>
+  </form>
 </dialog>
 
 <script src="/patrons/app.js" defer></script>
