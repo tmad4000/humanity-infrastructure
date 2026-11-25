@@ -32,13 +32,16 @@
   // ---- interest dialog ------------------------------------------------------
   var dlg = $('#join'), form = $('#join-form'), done = $('#join-done'), err = $('#join-err');
   var amountField = $('#amount-field'), emailInput = $('#join-email'), amountInput = $('#join-amount');
-  var opener = null;
+  var opener = null, pending = null, rowHooks = [], readyHooks = [], idFilter = null;
 
   function currentTier() { var c = $('input[name="tier"]:checked', form); return c ? c.value : 'patron'; }
   function syncAmount() { amountField.hidden = currentTier() !== 'custom'; }
-  function openJoin(tier, from) {
-    if (PAYMENTS.stripe[tier]) { window.location.href = PAYMENTS.stripe[tier]; return; }
-    opener = from || null;
+  function openJoin(tier, from, extra) {
+    if (!extra && PAYMENTS.stripe[tier]) { window.location.href = PAYMENTS.stripe[tier]; return; }
+    opener = from || null; pending = extra || null;
+    var note = $('#join-summary'); note.hidden = !pending; note.textContent = pending ? pending.summary : '';
+    amountInput.readOnly = !!pending; if (pending) amountInput.value = pending.amount;
+    $('.tier-pick', form).hidden = !!pending;
     form.hidden = false; done.hidden = true; err.textContent = '';
     emailInput.removeAttribute('aria-invalid');
     var r = $('input[name="tier"][value="' + tier + '"]', form); if (r) r.checked = true;
@@ -70,7 +73,8 @@
     }
     emailInput.removeAttribute('aria-invalid');
     var body = { email: email, tier: tier, notify: form.elements.notify.checked, website: form.elements.website.value, source_page: location.pathname };
-    if (tier === 'custom') {
+    if (pending && tier === 'custom') { body.allocations = pending.allocations; body.amount = pending.amount; }
+    else if (tier === 'custom') {
       var a = parseFloat(amountInput.value);
       if (!(a >= 1 && a <= 1000)) { err.textContent = 'Enter an amount between $1 and $1,000.'; amountInput.focus(); return; }
       body.amount = a;
@@ -83,13 +87,23 @@
         var amt = tier === 'custom' ? body.amount : TIERS[tier].usd;
         $('#done-text').textContent = 'We saved ' + email + ' at $' + (amt % 1 ? amt.toFixed(2) : amt) + ' a month. Nothing was charged and no email was sent.' +
           (body.notify ? ' We will write once when patronage opens.' : ' We will not email you.');
-        form.hidden = true; done.hidden = false; form.reset(); $('#done-ok').focus();
+        form.hidden = true; done.hidden = false; form.reset(); pending = null; $('#done-ok').focus();
       })
       .catch(function (x) {
         err.textContent = x.message === 'slow_down' ? 'Too many tries. Please try again in an hour.' : 'That did not save. Please try again.';
       })
       .then(function () { btn.disabled = false; btn.textContent = 'Save my place'; });
   });
+
+  // Hooks used by lab.js (fund-your-own split, lists, scan, nominate, sign-in).
+  window.hiPatrons = {
+    openJoin: openJoin,
+    onRow: function (h) { rowHooks.push(h); },
+    onReady: function (h) { readyHooks.push(h); },
+    redraw: function () { if (entries.length) draw(); },
+    filterIds: function (ids, label) { idFilter = { ids: ids, label: label }; $$('.chip').forEach(function (o) { o.setAttribute('aria-pressed', 'false'); }); draw(); },
+    prefillEmail: function (email) { if (email && !emailInput.value) emailInput.value = email; }
+  };
 
   // ---- allocation preview (illustrative numbers only) ------------------------
   var EXAMPLE = [
@@ -154,10 +168,11 @@
 
   // ---- catalog ----------------------------------------------------------------
   var LABEL = { open: 'Open', 'needs-license': 'Needs a license', 'source-available': 'Source-available', closed: 'Not public', content: 'Content', fork: 'Fork' };
-  var RANK = ['open', 'needs-license', 'source-available', 'content', 'fork', 'closed'];
+  var RANK = ['open', 'needs-license', 'source-available', 'content', 'fork', 'closed'], FOLD = 5, expanded = {};
   var list = $('#cat-list'), count = $('#cat-count'), entries = [], filter = 'all', showAll = false, query = '';
 
   function match(e) {
+    if (idFilter) return idFilter.ids.indexOf(e.id) >= 0;
     if (!showAll && e.tier !== 'featured') return false;
     if (filter === 'third' ? !e.thirdParty : (filter !== 'all' && e.status !== filter)) return false;
     if (query && (e.name + ' ' + e.line + ' ' + e.license + ' ' + e.maker).toLowerCase().indexOf(query) < 0) return false;
@@ -170,7 +185,9 @@
     groups.forEach(function (g) {
       var sec = el('div', 'cat-group'); sec.appendChild(el('h3', null, g + ' · ' + by[g].length));
       var ul = el('ul', 'cat-items');
-      by[g].sort(function (x, y) { return RANK.indexOf(x.status) - RANK.indexOf(y.status); }).forEach(function (e) {
+      var all = by[g].sort(function (x, y) { return RANK.indexOf(x.status) - RANK.indexOf(y.status); });
+      var folded = !query && !idFilter && !expanded[g] && all.length > FOLD;
+      (folded ? all.slice(0, FOLD) : all).forEach(function (e) {
         var li = el('li'), head = el('div');
         var a = el('a', 'cat-name', e.name); a.href = e.link; a.rel = 'noopener'; head.appendChild(a);
         if (e.thirdParty) head.appendChild(el('span', 'cat-maker', 'by ' + e.maker));
@@ -183,16 +200,29 @@
         li.appendChild(meta);
         li.appendChild(el('p', 'cat-line', e.line));
         if (e.note) li.appendChild(el('p', 'cat-note', e.note));
+        rowHooks.forEach(function (h) { h(li, e); });
         ul.appendChild(li);
       });
-      sec.appendChild(ul); list.appendChild(sec);
+      sec.appendChild(ul);
+      if (folded) {
+        var more = el('button', 'btn ghost small cat-fold', 'Show all ' + all.length + ' in ' + g);
+        more.type = 'button';
+        more.addEventListener('click', function () {
+          expanded[g] = true; draw();
+          var heads = $$('.cat-group h3').filter(function (h) { return h.textContent.indexOf(g + ' ·') === 0; });
+          var next = heads[0] && $$('.cat-name', heads[0].parentNode)[FOLD]; if (next) next.focus();
+        });
+        sec.appendChild(more);
+      }
+      list.appendChild(sec);
     });
     if (!shown.length) list.appendChild(el('p', 'fineprint', 'Nothing matches.'));
-    count.textContent = shown.length + (shown.length === 1 ? ' project' : ' projects') + ' shown' + (showAll ? ', including every public repository.' : '.');
+    count.textContent = idFilter ? 'Showing the list "' + idFilter.label + '": ' + shown.length + (shown.length === 1 ? ' project.' : ' projects.') + ' Choose a filter above to leave the list.'
+      : shown.length + (shown.length === 1 ? ' project' : ' projects') + ' shown' + (showAll ? ', including every public repository.' : '.');
   }
   $$('.chip').forEach(function (c) {
     c.addEventListener('click', function () {
-      filter = c.getAttribute('data-filter');
+      filter = c.getAttribute('data-filter'); idFilter = null;
       $$('.chip').forEach(function (o) { o.setAttribute('aria-pressed', String(o === c)); });
       draw();
     });
@@ -208,5 +238,6 @@
     $('#stat-open').textContent = d.summary.counts.open;
     $('#stat-repos').textContent = d.summary.counts.publicRepos;
     draw();
+    readyHooks.forEach(function (h) { h(d); });
   }).catch(function () { /* the fallback link to catalog.json stays visible */ });
 })();

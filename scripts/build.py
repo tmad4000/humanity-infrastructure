@@ -56,7 +56,9 @@ async function handleRequest(request, env, ctx) {{
   const patron = await handlePatron(request, env, ctx)
   if (patron) return patron
   const patronHost = url.hostname === 'patronage.humanityinfrastructure.com'
-  if (patronHost && path !== '/' && !Object.hasOwn(PATRONS_ASSETS, path)) return Response.redirect(path === '/patrons' || path === '/patrons/' ? url.origin + '/' : 'https://humanityinfrastructure.com' + path + url.search, 302)
+  if (patronHost && path === '/beyond/') return Response.redirect(url.origin + '/beyond', 302)
+  if (patronHost && path !== '/' && path !== '/beyond' && !Object.hasOwn(PATRONS_ASSETS, path)) return Response.redirect(path === '/patrons' || path === '/patrons/' ? url.origin + '/' : 'https://humanityinfrastructure.com' + path + url.search, 302)
+  if ((patronHost && path === '/beyond') || path === '/patrons/beyond') return new Response(PATRONS_BEYOND_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Cache-Control': 'public, max-age=300', 'Referrer-Policy': 'strict-origin-when-cross-origin', 'X-Content-Type-Options': 'nosniff', 'Content-Security-Policy': "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'" }} }})
   if (Object.hasOwn(PATRONS_ASSETS, path)) return new Response(PATRONS_ASSETS[path][1], {{ headers: {{ 'Content-Type': PATRONS_ASSETS[path][0], 'Cache-Control': 'public, max-age=300', 'X-Content-Type-Options': 'nosniff' }} }})
   if (patronHost || path === '/patrons' || path === '/patrons/') return new Response(PATRONS_HTML, {{ headers: {{ 'Content-Type': 'text/html;charset=UTF-8', 'Cache-Control': 'public, max-age=300', 'Referrer-Policy': 'strict-origin-when-cross-origin', 'X-Content-Type-Options': 'nosniff', 'Content-Security-Policy': "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'" }} }})
   if (path === '/tools/lastbook' || path === '/tools/lastbook/') return new Response(LASTBOOK_HTML, {{headers: {{'Content-Type':'text/html;charset=UTF-8'}}}})
@@ -81,8 +83,9 @@ async function handleRequest(request, env, ctx) {{
 const ANALYTICS_JS = `{escape_js(Path('analytics.js').read_text())}`
 const X_EMBED_JS = `{escape_js(Path('scripts/x-embed.js').read_text())}`
 const DESIGN_ASSETS = {json.dumps(designs)}
+const PATRONS_BEYOND_HTML = {json.dumps(Path('patrons/beyond.html').read_text(), ensure_ascii=True)}
 const PATRONS_HTML = {json.dumps(Path('patrons/index.html').read_text(), ensure_ascii=True)}
-const PATRONS_ASSETS = {json.dumps({'/patrons/' + name: [mime, Path('patrons/' + name).read_text()] for name, mime in [('styles.css', 'text/css;charset=UTF-8'), ('app.js', 'application/javascript;charset=UTF-8'), ('theme.js', 'application/javascript;charset=UTF-8'), ('catalog.json', 'application/json;charset=UTF-8')]}, ensure_ascii=True)}
+const PATRONS_ASSETS = {json.dumps({'/patrons/' + name: [mime, Path('patrons/' + name).read_text()] for name, mime in [('styles.css', 'text/css;charset=UTF-8'), ('app.js', 'application/javascript;charset=UTF-8'), ('lab.js', 'application/javascript;charset=UTF-8'), ('theme.js', 'application/javascript;charset=UTF-8'), ('catalog.json', 'application/json;charset=UTF-8')]}, ensure_ascii=True)}
 const LASTBOOK_HTML = {json.dumps(Path('tools/lastbook.html').read_text())}
 const MAIN_HTML = `{escape_js(main)}`
 const V2_HTML = `{escape_js(v2)}`
@@ -94,7 +97,8 @@ const OG_PNG = Uint8Array.from(atob('{og_b64}'), c => c.charCodeAt(0))
 
 items = json.loads(Path('interest-items.json').read_text())
 interest_ui = Path('interest-ui.js').read_text().replace('__INTEREST_ITEMS__', json.dumps(items, ensure_ascii=True))
-worker = 'const INTEREST_ITEMS = ' + json.dumps(items, ensure_ascii=True) + ';\n' + Path('welcome.js').read_text() + '\n' + Path('signup.js').read_text() + '\n' + Path('interest.js').read_text() + '\n' + Path('patron.js').read_text() + '\n' + worker + '\nconst INTEREST_UI = ' + json.dumps(interest_ui, ensure_ascii=True) + ';\n'
+patron_ids = [e['id'] for e in json.loads(Path('patrons/catalog.json').read_text())['entries'] if e['tier'] == 'featured']
+worker = 'const PATRON_PROJECT_IDS = ' + json.dumps(patron_ids) + ';\nconst INTEREST_ITEMS = ' + json.dumps(items, ensure_ascii=True) + ';\n' + Path('welcome.js').read_text() + '\n' + Path('signup.js').read_text() + '\n' + Path('interest.js').read_text() + '\n' + Path('patron.js').read_text() + '\n' + worker + '\nconst INTEREST_UI = ' + json.dumps(interest_ui, ensure_ascii=True) + ';\n'
 with open('worker.js', 'w') as f:
     f.write(worker)
 print(f"worker.js rebuilt: {len(worker)} bytes")
