@@ -319,7 +319,7 @@ dialog::backdrop { background: rgba(5, 8, 14, .6); }
 .chips-list button:hover { background: var(--card-hover); color: var(--text); }
 @media (max-width: 900px) { .list-grid { grid-template-columns: 1fr; } }
 .file-btn { cursor: pointer; }
-#scan-file:focus-visible + * , .file-btn:focus-within { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+#scan-file:focus-visible + .file-btn { outline: 2px solid var(--accent-2); outline-offset: 2px; }
 .scan-out { max-height: 340px; overflow: auto; margin-top: 8px; }
 .scan-out li { display: flex; align-items: center; gap: 10px; padding: 7px 4px; border-top: 1px solid var(--border); font-size: .92rem; }
 .scan-out input { width: 18px; height: 18px; accent-color: var(--accent); flex: none; }

@@ -8,7 +8,8 @@
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var el = function (tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
   var money = function (n) { return '$' + n.toFixed(2); };
-  var byId = {}, entries = [], lists = [];
+  var byId = Object.create(null), entries = [], lists = [];
+  var listed = function (id) { return typeof id === 'string' && byId[id] && byId[id].tier === 'featured'; };
   var store = {
     get: function (k, d) { try { var v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch (e) { return d; } },
     set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
@@ -21,27 +22,33 @@
 
   // ---- my list (kept in this browser only) -------------------------------------
   var mine = store.get('hi-patron-list', { name: '', items: [] });
-  if (!mine || !Array.isArray(mine.items)) mine = { name: '', items: [] };
-  function saveMine() { store.set('hi-patron-list', mine); drawMine(); core.redraw(); }
+  if (!mine || typeof mine !== 'object' || !Array.isArray(mine.items)) mine = { name: '', items: [] };
+  mine.name = typeof mine.name === 'string' ? mine.name.slice(0, 60) : '';
+  mine.items = mine.items.filter(function (id) { return typeof id === 'string'; }).slice(0, 40);
+  function saveMine(focusId) {
+    store.set('hi-patron-list', mine); drawMine(); core.redraw();
+    if (focusId) { var again = $$('.row-add').filter(function (b) { return b.getAttribute('data-id') === focusId; })[0]; if (again) again.focus(); }
+  }
   function inMine(id) { return mine.items.indexOf(id) >= 0; }
-  function toggleMine(id) { var i = mine.items.indexOf(id); if (i >= 0) mine.items.splice(i, 1); else if (mine.items.length < 40) mine.items.push(id); saveMine(); }
+  function toggleMine(id, refocus) { var i = mine.items.indexOf(id); if (i >= 0) mine.items.splice(i, 1); else if (mine.items.length < 40) mine.items.push(id); saveMine(refocus ? id : null); }
 
   core.onRow(function (li, e) {
     if (e.tier !== 'featured') return;
     var b = el('button', 'row-add', inMine(e.id) ? 'In my list' : 'Add to my list');
-    b.type = 'button'; b.setAttribute('aria-pressed', String(inMine(e.id)));
+    b.type = 'button'; b.setAttribute('data-id', e.id); b.setAttribute('aria-pressed', String(inMine(e.id)));
     b.setAttribute('aria-label', (inMine(e.id) ? 'Remove ' : 'Add ') + e.name + (inMine(e.id) ? ' from my list' : ' to my list'));
-    b.addEventListener('click', function () { toggleMine(e.id); });
+    b.addEventListener('click', function () { toggleMine(e.id, true); });
     $('.cat-meta', li).appendChild(b);
   });
 
   // ---- fund what you choose -----------------------------------------------------
   var picks = store.get('hi-patron-picks', {});            // {projectId: dollars}
   if (!picks || typeof picks !== 'object' || Array.isArray(picks)) picks = {};
+  (function () { var clean = Object.create(null); Object.keys(picks).slice(0, 40).forEach(function (id) { var v = picks[id]; if (typeof v === 'number' && isFinite(v) && v >= 0.5 && v <= 1000) clean[id] = v; }); picks = clean; })();
   var pickRows = $('#pick-rows'), pickTotal = $('#pick-total'), pickNote = $('#pick-note'), pickSave = $('#pick-save');
-  function addPick(id, dollars) { if (!byId[id] || Object.keys(picks).length >= 40 && !(id in picks)) return; if (!(id in picks)) picks[id] = dollars || 1; }
+  function addPick(id, dollars) { if (!listed(id) || Object.keys(picks).length >= 40 && !(id in picks)) return; if (!(id in picks)) picks[id] = dollars || 1; }
   function drawPicks() {
-    Object.keys(picks).forEach(function (id) { if (!byId[id]) delete picks[id]; });
+    Object.keys(picks).forEach(function (id) { if (!listed(id)) delete picks[id]; });
     store.set('hi-patron-picks', picks);
     pickRows.textContent = '';
     var ids = Object.keys(picks), total = 0, notOpen = 0;
@@ -77,10 +84,10 @@
     Object.keys(picks).forEach(function (id) { copy[id] = picks[id]; });
     core.openJoin('custom', pickSave, { allocations: copy, amount: total, summary: 'Your own split: ' + money(total) + ' a month across ' + Object.keys(copy).length + ' projects.' });
   });
-  $('#pick-clear').addEventListener('click', function () { picks = {}; drawPicks(); });
+  $('#pick-clear').addEventListener('click', function () { picks = Object.create(null); drawPicks(); });
 
   // ---- lists --------------------------------------------------------------------
-  function names(ids, n) { var a = ids.filter(function (id) { return byId[id]; }).slice(0, n).map(function (id) { return byId[id].name; }); return a.join(', ') + (ids.length > n ? ' and ' + (ids.length - n) + ' more' : ''); }
+  function names(ids, n) { var all = ids.filter(function (id) { return byId[id]; }), a = all.slice(0, n).map(function (id) { return byId[id].name; }); return a.join(', ') + (all.length > n ? ' and ' + (all.length - n) + ' more' : ''); }
   function fundList(ids, from) { ids.forEach(function (id) { addPick(id, 1); }); drawPicks(); $('#fund').scrollIntoView(); $('#pick-save').focus(); }
   function listCard(l, official) {
     var card = el('article', 'list-card');
@@ -99,7 +106,7 @@
   function shareLink() { return location.origin + location.pathname + '#list=' + mine.items.join(',') + (mine.name ? '&name=' + encodeURIComponent(mine.name) : ''); }
   function drawMine() {
     mineBox.textContent = '';
-    mine.items = mine.items.filter(function (id) { return byId[id]; });
+    mine.items = mine.items.filter(listed);
     mine.items.forEach(function (id) {
       var chip = el('li'); chip.appendChild(el('span', null, byId[id].name));
       var rm = el('button', null, '×'); rm.type = 'button'; rm.setAttribute('aria-label', 'Remove ' + byId[id].name + ' from my list');
@@ -119,7 +126,7 @@
   $('#mine-clear').addEventListener('click', function () { mine = { name: '', items: [] }; saveMine(); say(mineStatus, 'Cleared.'); });
   function readShared() {
     var m = /^#list=([a-z0-9,\-]{1,2000})(?:&name=([^&]{0,300}))?$/.exec(location.hash); if (!m) return;
-    var ids = m[1].split(',').filter(function (id, i, a) { return byId[id] && byId[id].tier === 'featured' && a.indexOf(id) === i; }).slice(0, 40);
+    var ids = m[1].split(',').filter(function (id, i, a) { return listed(id) && a.indexOf(id) === i; }).slice(0, 40);
     if (!ids.length) return;
     var name = ''; try { name = decodeURIComponent(m[2] || '').slice(0, 60); } catch (e) {}
     var box = $('#shared-list'); box.hidden = false; box.textContent = '';
@@ -137,30 +144,48 @@
 
   // ---- scan your stack (parsed here; nothing leaves the page unless you nominate) --
   var REG = { npm: 'https://www.npmjs.com/package/', pypi: 'https://pypi.org/project/', cargo: 'https://crates.io/crates/', go: 'https://pkg.go.dev/', rubygems: 'https://rubygems.org/gems/', homebrew: 'https://formulae.brew.sh/formula/' };
+  var CASK = 'https://formulae.brew.sh/cask/';
   var ECO = { npm: 'npm', pypi: 'PyPI', cargo: 'Cargo', go: 'Go', rubygems: 'RubyGems', homebrew: 'Homebrew' };
   function parseStack(text) {
-    var out = [], seen = {}, add = function (eco, name) { name = String(name).trim(); var k = eco + ':' + name.toLowerCase(); if (name && name.length <= 120 && !seen[k]) { seen[k] = 1; out.push({ ecosystem: eco, name: name }); } };
+    var out = [], seen = Object.create(null), add = function (eco, name, cask) { name = String(name).trim(); var k = eco + ':' + name.toLowerCase(); if (name && name.length <= 120 && !seen[k]) { seen[k] = 1; out.push({ ecosystem: eco, name: name, cask: !!cask }); } };
     var json = null; try { json = JSON.parse(text); } catch (e) {}
     if (json && typeof json === 'object') {
       ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies'].forEach(function (k) { if (json[k] && typeof json[k] === 'object') Object.keys(json[k]).forEach(function (n) { add('npm', n); }); });
       return out;
     }
-    var section = '', inRequire = false;
+    // Lock files and prose are not manifests: without this, their bare words would be read as Python packages.
+    if (/^(GEM|PATH|GIT)\s*$/m.test(text) && /^\s+specs:/m.test(text) || /^# (THIS IS AN AUTOGENERATED FILE|yarn lockfile)/m.test(text) || /^lockfileVersion:/m.test(text)) return out;
+    var section = '', inRequire = false, depth = 0, pyPinned = /^[A-Za-z0-9][A-Za-z0-9._\-]*\s*(\[[^\]]*\])?\s*([=<>!~]=|[<>]|@\s|;)/m.test(text), bare = [];
     text.split(/\r?\n/).forEach(function (raw) {
+      if (raw.length > 500) return;
       var line = raw.replace(/\s+#.*$/, '').trim(), m;
       if (!line || line.charAt(0) === '#' || line.indexOf('//') === 0) return;
-      if ((m = /^\[([^\]]+)\]$/.exec(line))) { section = m[1].trim(); return; }
-      if (/^(dependencies|dev-dependencies|build-dependencies)$/.test(section) || /^(workspace\.dependencies|target\..+\.dependencies)$/.test(section)) { if ((m = /^([A-Za-z0-9_\-]+)\s*=/.exec(line))) add('cargo', m[1]); return; }
+      if ((m = /^\[([^\]]+)\]$/.exec(line))) {
+        section = m[1].trim(); depth = 0;
+        // Cargo sub-table form: [dependencies.serde]
+        if ((m = /^(?:dependencies|dev-dependencies|build-dependencies|workspace\.dependencies)\.([A-Za-z0-9_\-]+)$/.exec(section))) { add('cargo', m[1]); section = 'cargo-sub'; }
+        return;
+      }
+      if (section === 'cargo-sub') return;
+      if (/^(dependencies|dev-dependencies|build-dependencies)$/.test(section) || /^(workspace\.dependencies|target\..+\.dependencies)$/.test(section)) {
+        // Skip the continuation lines of a multi-line inline table or array.
+        if (depth === 0 && (m = /^([A-Za-z0-9_\-]+)\s*=/.exec(line))) add('cargo', m[1]);
+        depth = Math.max(0, depth + (line.match(/[\[{]/g) || []).length - (line.match(/[\]}]/g) || []).length);
+        return;
+      }
       if (section) return;
       if (/^require\s*\($/.test(line)) { inRequire = true; return; }
       if (inRequire) { if (line === ')') { inRequire = false; return; } if ((m = /^([\w.\-]+\.[a-z]{2,}\/\S+)\s+v\S+/.exec(line))) add('go', m[1]); return; }
       if ((m = /^require\s+([\w.\-]+\.[a-z]{2,}\/\S+)\s+v\S+/.exec(line))) { add('go', m[1]); return; }
       if (/^(module|go|toolchain|replace|exclude|retract)\b/.test(line)) return;
       if ((m = /^gem\s+["']([^"']+)["']/.exec(line))) { add('rubygems', m[1]); return; }
-      if ((m = /^(?:brew|cask)\s+["']([^"']+)["']/.exec(line))) { add('homebrew', m[1].split('/').pop()); return; }
+      if ((m = /^(brew|cask)\s+["']([^"']+)["']/.exec(line))) { add('homebrew', m[2].split('/').pop(), m[1] === 'cask'); return; }
       if (/^(source|ruby|group|end|tap|mas|platforms?|gemspec|plugin)\b/.test(line) || line.charAt(0) === '-') return;
-      if ((m = /^([A-Za-z0-9][A-Za-z0-9._\-]*)\s*(?:\[[^\]]*\])?\s*(?:[=<>!~]=?|===|;|@|$)/.exec(line))) add('pypi', m[1]);
+      if ((m = /^([A-Za-z0-9][A-Za-z0-9._\-]*)\s*(?:\[[^\]]*\])?\s*(?:[=<>!~]=?|===|;|@\s)/.exec(line))) { add('pypi', m[1]); return; }
+      if (/^[A-Za-z0-9][A-Za-z0-9._\-]*$/.test(line)) bare.push(line);
     });
+    // Bare names count as Python requirements only when the file also pins at least one version, or is nothing but names.
+    if (bare.length && (pyPinned || !out.length && bare.length === text.split(/\r?\n/).filter(function (l) { l = l.trim(); return l && l.charAt(0) !== '#' && l.charAt(0) !== '-'; }).length)) bare.forEach(function (n) { add('pypi', n); });
     return out;
   }
   var scanOut = $('#scan-out'), scanStatus = $('#scan-status'), scanSend = $('#scan-send'), found = [];
@@ -173,7 +198,7 @@
       var lab = el('label', null, p.name); lab.htmlFor = id; li.appendChild(box); li.appendChild(lab);
       li.appendChild(el('span', 'scan-eco', ECO[p.ecosystem]));
       if (hit) li.appendChild(el('span', 'pill s-open', 'In the catalog'));
-      var a = el('a', 'cat-src', 'Registry'); a.href = REG[p.ecosystem] + encodeURIComponent(p.name).replace(/%2F/g, '/').replace(/%40/g, '@'); a.rel = 'noopener'; a.setAttribute('aria-label', p.name + ' on ' + ECO[p.ecosystem]); li.appendChild(a);
+      var a = el('a', 'cat-src', 'Registry'); a.href = (p.cask ? CASK : REG[p.ecosystem]) + encodeURIComponent(p.name).replace(/%2F/g, '/').replace(/%40/g, '@'); a.rel = 'noopener noreferrer'; a.setAttribute('aria-label', p.name + ' on ' + ECO[p.ecosystem]); li.appendChild(a);
       box.addEventListener('change', function () { var n = $$('input:checked', scanOut).length; scanSend.disabled = !n || n > 30; scanSend.textContent = n ? 'Nominate ' + n + ' selected' : 'Nominate selected'; if (n > 30) say(scanStatus, 'Choose up to 30 at a time.', true); });
       scanOut.appendChild(li);
     });
@@ -193,7 +218,7 @@
     var r = new FileReader(); r.onload = function () { $('#scan-text').value = String(r.result).slice(0, 200000); runScan(String(r.result)); }; r.readAsText(f);
   });
   scanSend.addEventListener('click', function () {
-    var items = $$('input:checked', scanOut).map(function (b) { return found[+b.value]; }).slice(0, 30);
+    var items = $$('input:checked', scanOut).map(function (b) { var p = found[+b.value]; return { ecosystem: p.ecosystem, name: p.name }; }).slice(0, 30);
     if (!items.length) return;
     scanSend.disabled = true;
     post('/api/patron-nominate', { items: items, why: 'From a stack scan', website: '', source_page: location.pathname }).then(function (res) {

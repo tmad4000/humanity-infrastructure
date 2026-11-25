@@ -207,7 +207,11 @@
       if (folded) {
         var more = el('button', 'btn ghost small cat-fold', 'Show all ' + all.length + ' in ' + g);
         more.type = 'button';
-        more.addEventListener('click', function () { expanded[g] = true; draw(); });
+        more.addEventListener('click', function () {
+          expanded[g] = true; draw();
+          var heads = $$('.cat-group h3').filter(function (h) { return h.textContent.indexOf(g + ' ·') === 0; });
+          var next = heads[0] && $$('.cat-name', heads[0].parentNode)[FOLD]; if (next) next.focus();
+        });
         sec.appendChild(more);
       }
       list.appendChild(sec);

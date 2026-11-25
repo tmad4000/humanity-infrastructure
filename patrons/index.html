@@ -368,8 +368,8 @@
         <textarea id="scan-text" rows="7" spellcheck="false" placeholder='{ "dependencies": { "react": "^19.0.0" } }'></textarea></div>
       <p class="cta-row">
         <button class="btn primary small" type="button" id="scan-run">Scan</button>
+        <input class="sr-only" id="scan-file" type="file" />
         <label class="btn ghost small file-btn" for="scan-file">Open a file</label>
-        <input class="sr-only" id="scan-file" type="file" accept=".json,.txt,.toml,.mod,.lock,text/plain,application/json" />
       </p>
       <p class="form-status" id="scan-status" role="status"></p>
       <ul class="scan-out" id="scan-out"></ul>
@@ -384,7 +384,7 @@
       <p class="kicker">Nominate</p>
       <h2 id="nominate-h">Something missing? Add it.</h2>
       <p class="muted">Patronage is meant to cover all the free software people use, not only ours. Tell us what belongs. Each nomination goes to a private review queue; a person checks the project, its license and its maintainers before it is listed.</p>
-      <p class="fineprint">We store what you enter here privately. Your email is optional and is used only to tell you what happened to your nomination.</p>
+      <p class="fineprint">We store what you enter here privately. Your email is optional and is used only to write to you about this nomination.</p>
     </div>
     <form id="nominate-form" class="split-card" novalidate>
       <div class="field"><label for="nom-name">Project name</label><input id="nom-name" name="name" type="text" maxlength="120" required /></div>

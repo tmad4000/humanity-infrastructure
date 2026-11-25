@@ -40,12 +40,13 @@ async function patronReadJson(request, limit) {
   if (!data || typeof data !== 'object' || Array.isArray(data)) return { error: signupResponse({ error: 'Invalid submission' }, 400) };
   return { data };
 }
-// Twelve attempts per salted address hash per hour, kept apart from the newsletter forms' budget. Raw IPs are never stored.
-async function patronRate(request, env) {
+// Sixty units per salted address hash per hour, kept apart from the newsletter forms' budget. A submission costs five
+// units (so twelve an hour); a stack scan costs one unit per package when that is more. Raw IPs are never stored.
+async function patronRate(request, env, units = 5) {
   const ip = request.headers.get('CF-Connecting-IP'); if (!ip) return signupResponse({ error: 'Temporarily unavailable.' }, 503);
   const hash = await signupHash(env.RATE_LIMIT_SALT + ':patron:' + ip), hour = Math.floor(Date.now() / 3600000);
-  const rate = await env.SIGNUPS.prepare('INSERT INTO signup_rate_limits (ip_hash, window, attempts) VALUES (?, ?, 1) ON CONFLICT(ip_hash) DO UPDATE SET attempts = CASE WHEN window = excluded.window THEN attempts + 1 ELSE 1 END, window = excluded.window RETURNING attempts').bind(hash, hour).first();
-  if (rate.attempts > 12) return signupResponse({ error: 'Too many attempts. Please try again in an hour.' }, 429, { 'Retry-After': '3600' });
+  const rate = await env.SIGNUPS.prepare('INSERT INTO signup_rate_limits (ip_hash, window, attempts) VALUES (?, ?, ?) ON CONFLICT(ip_hash) DO UPDATE SET attempts = CASE WHEN window = excluded.window THEN attempts + excluded.attempts ELSE excluded.attempts END, window = excluded.window RETURNING attempts').bind(hash, hour, units).first();
+  if (rate.attempts > 60) return signupResponse({ error: 'Too many attempts. Please try again in an hour.' }, 429, { 'Retry-After': '3600' });
   await env.SIGNUPS.prepare('DELETE FROM signup_rate_limits WHERE window < ?').bind(hour - 24).run();
   return null;
 }
@@ -113,7 +114,8 @@ async function handlePatron(request, env, ctx) {
     const { data, error } = await patronReadJson(request, path === '/api/patron-nominate' ? 8192 : 4096);
     if (error) return error;
     if (data.website) return signupResponse({ ok: true });
-    const limited = await patronRate(request, env); if (limited) return limited;
+    const units = path === '/api/patron-nominate' && Array.isArray(data.items) ? Math.min(Math.max(data.items.length, 5), 31) : 5;
+    const limited = await patronRate(request, env, units); if (limited) return limited;
     const email = typeof data.email === 'string' ? data.email.trim().toLowerCase() : '';
     const source = typeof data.source_page === 'string' ? data.source_page.slice(0, 300) : '/patrons', now = new Date().toISOString();
 
@@ -128,10 +130,13 @@ async function handlePatron(request, env, ctx) {
         const name = typeof item.name === 'string' ? item.name.trim() : '', link = typeof item.url === 'string' ? item.url.trim() : '', ecosystem = typeof item.ecosystem === 'string' ? item.ecosystem : '';
         if (!name || name.length > 120) return signupResponse({ error: 'Each project needs a name of up to 120 characters.' }, 400);
         if (!PATRON_ECOSYSTEMS.includes(ecosystem)) return signupResponse({ error: 'Unknown package source.' }, 400);
-        if (link) { let parsed; try { parsed = new URL(link); } catch { parsed = null; } if (!parsed || parsed.protocol !== 'https:' || link.length > 300) return signupResponse({ error: 'Links must start with https:// and be under 300 characters.' }, 400); }
+        if (link) { let parsed; try { parsed = new URL(link); } catch { parsed = null; } if (!parsed || parsed.protocol !== 'https:' || parsed.username || parsed.password || link.length > 300) return signupResponse({ error: 'Links must start with https:// and be under 300 characters.' }, 400); }
         if (!link && !ecosystem) return signupResponse({ error: 'Add a link to the project.' }, 400);
         rows.push([crypto.randomUUID(), batch, name, link, ecosystem, why, email, now, source]);
       }
+      // The queue is reviewed by a person; refuse new rows while it is implausibly full.
+      const waiting = await env.SIGNUPS.prepare("SELECT COUNT(*) AS n FROM patron_nominations WHERE status = 'pending'").first();
+      if (waiting && waiting.n > 5000) return signupResponse({ error: 'The review queue is full right now. Please try again later.' }, 503);
       await env.SIGNUPS.batch(rows.map(row => env.SIGNUPS.prepare("INSERT INTO patron_nominations (id,batch,name,url,ecosystem,why,email,status,created_at,source_page) VALUES (?,?,?,?,?,?,?,'pending',?,?)").bind(...row)));
       return signupResponse({ ok: true });
     }
@@ -160,8 +165,10 @@ async function handlePatron(request, env, ctx) {
     }
     const session = await patronSession(request, env);
     // One row per email. A repeat submission updates the choice; the response never says whether the email was new.
-    await env.SIGNUPS.prepare("INSERT INTO patron_interest (id,email,tier,amount_cents,notify_opt_in,created_at,updated_at,source_page,allocations,ideaflow_sub) VALUES (?,?,?,?,?,?,?,?,?,?) ON CONFLICT(email) DO UPDATE SET tier = excluded.tier, amount_cents = excluded.amount_cents, notify_opt_in = excluded.notify_opt_in, updated_at = excluded.updated_at, allocations = excluded.allocations, ideaflow_sub = CASE WHEN excluded.ideaflow_sub != '' THEN excluded.ideaflow_sub ELSE ideaflow_sub END")
-      .bind(crypto.randomUUID(), email, data.tier, cents, data.notify === true ? 1 : 0, now, now, source, JSON.stringify(allocations), session ? session.sub : '').run();
+    // The account id is attached only when the signed-in account's verified email matches, and is never replaced.
+    // Emails are otherwise unverified: do not treat ideaflow_sub or any column as proof of ownership.
+    await env.SIGNUPS.prepare("INSERT INTO patron_interest (id,email,tier,amount_cents,notify_opt_in,created_at,updated_at,source_page,allocations,ideaflow_sub) VALUES (?,?,?,?,?,?,?,?,?,?) ON CONFLICT(email) DO UPDATE SET tier = excluded.tier, amount_cents = excluded.amount_cents, notify_opt_in = excluded.notify_opt_in, updated_at = excluded.updated_at, allocations = excluded.allocations, ideaflow_sub = CASE WHEN ideaflow_sub = '' THEN excluded.ideaflow_sub ELSE ideaflow_sub END")
+      .bind(crypto.randomUUID(), email, data.tier, cents, data.notify === true ? 1 : 0, now, now, source, JSON.stringify(allocations), session && session.email === email ? session.sub : '').run();
     return signupResponse({ ok: true });
   } catch { return signupResponse({ error: 'Temporarily unavailable. Please try again later.' }, 503); }
 }

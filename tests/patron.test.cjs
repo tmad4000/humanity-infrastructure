@@ -94,6 +94,14 @@ test('honeypot is accepted and stores nothing',async t=>{
  const f=fixture(t);const r=await f.post({email:'bot@example.com',tier:'patron',website:'x'});
  assert.equal(r.status,200);assert.equal((await f.rows()).length,0);
 });
+test('a stack scan spends one unit per package: two scans of 30 fit in an hour, a third does not',async t=>{
+ const f=fixture(t),scan=()=>f.nominate({items:Array.from({length:30},(_,i)=>({name:'pkg'+i,ecosystem:'npm'}))},{ip:'198.51.100.9'});
+ assert.equal((await scan()).status,200);assert.equal((await scan()).status,200);assert.equal((await scan()).status,429);
+ assert.equal((await f.noms()).length,60);
+});
+test('nominated links may not carry credentials',async t=>{
+ const f=fixture(t);assert.equal((await f.nominate({name:'x',url:'https://user:pass@example.org/x'})).status,400);assert.equal((await f.noms()).length,0);
+});
 test('twelve attempts per hashed address per hour, separate from the newsletter budget; raw address never stored',async t=>{
  const f=fixture(t);
  for(let i=0;i<12;i++)assert.equal((await f.post({email:'r'+i+'@example.com',tier:'seed'},{ip:'198.51.100.7'})).status,200);
@@ -152,10 +160,12 @@ test('Ideaflow ID sign-in: PKCE start, state-checked callback, signed session, s
  const [name,value]=[session.slice(0,10),session.slice(10)],[body,mac]=value.split('.');
  const forged=Buffer.from(JSON.stringify({sub:'someone-else',email:'x@example.com',exp:Date.now()+1e9})).toString('base64url');
  for(const bad of [name+forged+'.'+mac,name+body+'.'+mac.slice(0,-2)+'xx',name+body])assert.equal((await(await f.get('/api/patron-session',{Cookie:bad})).json()).signedIn,false);
+ await f.post({email:'someone-else@example.com',tier:'patron'},{headers:{Cookie:session}});
+ assert.equal((await f.rows()).find(r=>r.email==='someone-else@example.com').ideaflow_sub,'','a session cannot attach its account to another email');
  await f.post({email:'me@example.com',tier:'patron'},{headers:{Cookie:session}});
- assert.equal((await f.rows())[0].ideaflow_sub,'user-123');
+ assert.equal((await f.rows()).find(r=>r.email==='me@example.com').ideaflow_sub,'user-123');
  await f.post({email:'me@example.com',tier:'seed'});
- assert.equal((await f.rows())[0].ideaflow_sub,'user-123','a later signed-out update keeps the link');
+ assert.equal((await f.rows()).find(r=>r.email==='me@example.com').ideaflow_sub,'user-123','a later signed-out update keeps the link');
  const out=await f.send('/auth/ideaflow/signout',{});assert.equal(out.status,200);assert.match(out.headers.get('Set-Cookie'),/^hi_patron=;.*Max-Age=0$/);
  assert.equal((await f.send('/auth/ideaflow/signout',{},{headers:{Origin:'https://evil.example'}})).status,403);
 });
@@ -173,6 +183,7 @@ test('generated worker: routes on both hosts, strict policy, placeholders intact
  }
  assert.match(await(await hit('https://patronage.humanityinfrastructure.com/beyond')).text(),/<title>Beyond software/);
  assert.match(await(await hit('https://humanityinfrastructure.com/')).text(),/<title>Humanity Infrastructure/);
+ const slash=await hit('https://patronage.humanityinfrastructure.com/beyond/');assert.equal(slash.status,302);assert.equal(slash.headers.get('Location'),'https://patronage.humanityinfrastructure.com/beyond');
  const stray=await hit('https://patronage.humanityinfrastructure.com/tools/lastbook');assert.equal(stray.status,302);assert.equal(stray.headers.get('Location'),'https://humanityinfrastructure.com/tools/lastbook');
  for(const u of ['https://patronage.humanityinfrastructure.com/','https://patronage.humanityinfrastructure.com/beyond'])assert.match((await hit(u)).headers.get('Content-Security-Policy'),/default-src 'self'.*script-src 'self'/);
  assert.equal((await mod.default.fetch(new Request('https://patronage.humanityinfrastructure.com/api/patron-session'),{}, {})).status,200);
