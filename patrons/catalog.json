@@ -5,10 +5,10 @@
    "entries": 266,
    "featured": 94,
    "publicRepos": 223,
-   "open": 16,
+   "open": 17,
    "needsLicenseFeatured": 36,
    "needsLicenseAll": 172,
-   "closedFeatured": 36
+   "closedFeatured": 35
   }
  },
  "lists": [
@@ -18,6 +18,7 @@
    "by": "Humanity Infrastructure",
    "line": "Every listed project whose source is public under an open license right now.",
    "items": [
+    "unlinked",
     "agent-first-web",
     "paseo-fork",
     "box-breathing-free",
@@ -220,10 +221,12 @@
    "name": "Unlinked",
    "line": "Bring your LinkedIn connections and explore your own professional network.",
    "link": "https://www.unlinked.ai",
-   "status": "closed",
-   "license": "Source not public",
+   "status": "open",
+   "license": "AGPL-3.0",
    "maker": "Jacob Cole / Ideaflow",
    "tier": "featured",
+   "repo": "https://github.com/opentoolshub/unlinked",
+   "note": "The public source is a snapshot (0.6.127 when the live app was 0.6.130); refreshing it each release is planned.",
    "stage": "Beta",
    "thirdParty": false,
    "id": "unlinked"

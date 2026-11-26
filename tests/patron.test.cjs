@@ -303,4 +303,6 @@ test('generated worker: routes on both hosts, strict policy, placeholders intact
  assert.equal(ids.size,catalog.entries.length,'catalog ids are unique');
  for(const list of catalog.lists)for(const id of list.items)assert.ok(ids.has(id),list.id+' -> '+id);
  for(const e of catalog.entries){assert.match(e.link,/^https:\/\//);if(e.repo)assert.match(e.repo,/^https:\/\//);}
+ const unlinked=catalog.entries.find(e=>e.id==='unlinked');assert.equal(unlinked.status,'open');assert.equal(unlinked.license,'AGPL-3.0');assert.equal(unlinked.repo,'https://github.com/opentoolshub/unlinked');
+ assert.ok(html.includes('Today '+catalog.summary.counts.open+' of the '+catalog.summary.counts.featured+' listed projects'),'the page count matches the catalog');
 });
