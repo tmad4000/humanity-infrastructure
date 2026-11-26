@@ -263,6 +263,8 @@ test('LocalVocal concept page: unlisted, noindex, carries its banner, and invent
  assert.ok(!fs.readFileSync('index.html','utf8').includes('concepts/localvocal'));
  // the catalog still says what is true today
  const lv=JSON.parse(fs.readFileSync('patrons/catalog.json','utf8')).entries.find(e=>e.id==='localvocal');assert.equal(lv.status,'closed');assert.match(lv.license,/Paid/);
+ assert.equal(lv.maker,'Josh Whiton');assert.equal(lv.thirdParty,true);
+ for(const name of ['index.html','concept-localvocal.html'])assert.ok(fs.readFileSync('patrons/'+name,'utf8').includes('Josh Whiton (LocalVocal LLC), independent of Humanity Infrastructure'),name+': maker named and kept independent');
 });
 test('generated worker: routes on both hosts, strict policy, placeholders intact',async t=>{
  const worker=fs.readFileSync('worker.js','utf8');
